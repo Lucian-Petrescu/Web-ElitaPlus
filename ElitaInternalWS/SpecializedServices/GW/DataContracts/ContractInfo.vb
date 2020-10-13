@@ -43,17 +43,17 @@ Namespace SpecializedServices.GW
             ExpirationDate = pContract.Expiration
             PolicyNumber = pContract.POLICY
             PeriodicBilling = pContract.RECURRING_PREMIUM_ID.ToDescription(pCommonManager, ListCodes.PeriodicBilling, pLanguage)
-            If Not pContract.LineOfBusinessId Is Nothing Then
+            If pContract.LineOfBusinessId IsNot Nothing Then
                 Dim countryLOB As New BO.CountryLineOfBusiness(pContract.LineOfBusinessId)
                 LineOfBusiness = countryLOB.Description
             End If
 
-            If Not contractProducer Is Nothing Then
+            If contractProducer IsNot Nothing Then
                 ProducerName = contractProducer.Description
                 ProducerTaxId = contractProducer.TaxIdNumber
                 RegulatorRegistrationId = contractProducer.RegulatorRegistrationId
 
-                If Not producerAddress Is Nothing Then
+                If producerAddress IsNot Nothing Then
                     Me.ProducerAddress = New AddressInfo(producerAddress, pCountryManager)
                 End If
 

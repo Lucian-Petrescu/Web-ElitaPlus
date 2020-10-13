@@ -9,7 +9,7 @@ Imports System.Collections.Generic
 Imports System.Linq
 
 Partial Class UserControlInvoiceRegionTaxes
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
     Public Class RequestDataEventArgs
         Inherits EventArgs
@@ -173,7 +173,7 @@ Partial Class UserControlInvoiceRegionTaxes
 
 #End Region
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
             'SetControlState()
             If Page.IsPostBack Then
@@ -282,7 +282,7 @@ Partial Class UserControlInvoiceRegionTaxes
 
     End Sub
 
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridIIBBTaxes.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridIIBBTaxes.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
@@ -357,7 +357,7 @@ Partial Class UserControlInvoiceRegionTaxes
 
     End Sub
 
-    Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles GridIIBBTaxes.RowCommand
+    Public Sub RowCommand(source As Object, e As GridViewCommandEventArgs) Handles GridIIBBTaxes.RowCommand
 
         Try
             Dim index As Integer
@@ -457,7 +457,7 @@ Partial Class UserControlInvoiceRegionTaxes
 
     End Sub
 
-    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles GridIIBBTaxes.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As EventArgs) Handles GridIIBBTaxes.PageIndexChanged
         Try
             If (Not (TheState.IsEditMode)) Then
                 TheState.PageIndex = GridIIBBTaxes.PageIndex
@@ -469,7 +469,7 @@ Partial Class UserControlInvoiceRegionTaxes
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridIIBBTaxes.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridIIBBTaxes.PageIndexChanging
         Try
             GridIIBBTaxes.PageIndex = e.NewPageIndex
             TheState.PageIndex = GridIIBBTaxes.PageIndex
@@ -478,7 +478,7 @@ Partial Class UserControlInvoiceRegionTaxes
         End Try
     End Sub
 
-    Public Sub RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles GridIIBBTaxes.RowCreated
+    Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs) Handles GridIIBBTaxes.RowCreated
         Try
             ThePage.BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -715,7 +715,7 @@ Partial Class UserControlInvoiceRegionTaxes
         End If
     End Sub
 
-    Protected Sub cboDiPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboDiPageSize.SelectedIndexChanged
+    Protected Sub cboDiPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboDiPageSize.SelectedIndexChanged
         Try
             TheState.PageSize = CType(cboDiPageSize.SelectedValue, Integer)
             TheState.SelectedPageSize = TheState.PageSize
@@ -763,7 +763,7 @@ Partial Class UserControlInvoiceRegionTaxes
     End Function
 
     Public Sub SetSelectedItem(lstControl As ListControl, SelectItem As String)
-        Dim item As System.Web.UI.WebControls.ListItem = lstControl.SelectedItem
+        Dim item As WebControls.ListItem = lstControl.SelectedItem
         If item IsNot Nothing Then item.Selected = False
         Try
             lstControl.Items.FindByValue(SelectItem.ToString).Selected = True

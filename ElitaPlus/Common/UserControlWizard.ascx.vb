@@ -25,7 +25,7 @@ Public Class UserControlWizard
         End Set
     End Property
 
-    Protected Overrides Sub Render(writer As System.Web.UI.HtmlTextWriter)
+    Protected Overrides Sub Render(writer As HtmlTextWriter)
         MyBase.Render(writer)
 
         Dim blnFirst As Boolean = True
@@ -80,7 +80,7 @@ Public Class UserControlWizard
     Protected Overrides Function SaveControlState() As Object
         Return CType(Steps, Object)
     End Function
-    Protected Overrides Sub OnInit(e As System.EventArgs)
+    Protected Overrides Sub OnInit(e As EventArgs)
         MyBase.OnInit(e)
         MyBase.Page.RegisterRequiresControlState(Me)
     End Sub

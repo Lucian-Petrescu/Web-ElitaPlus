@@ -137,7 +137,7 @@ Public NotInheritable Class OverlapValidatorAttribute
                 Else
                     rhsExpirationDate = CType(oRhsRow(ExpirationDateColumnName), Date)
                 End If
-                If (Not (lhsExpirationDate < rhsEffectiveDate Or lhsEffectiveDate > rhsExpirationDate)) Then
+                If (Not (lhsExpirationDate < rhsEffectiveDate OrElse lhsEffectiveDate > rhsExpirationDate)) Then
                     '' Check Guids
                     If (oGuidKeys.Length > 0) Then
                         Dim isMatch As Boolean = True

@@ -1,3 +1,4 @@
+Imports System.Diagnostics
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
@@ -37,11 +38,11 @@ Namespace Certificates
             MyBase.New(New MyState)
         End Sub
 
-        Protected Shadows ReadOnly Property State() As MyState
+        Protected Shadows ReadOnly Property State As MyState
             Get
-                If NavController.State Is Nothing Then
-                    NavController.State = New MyState
-                    Me.State.MyBO = New CertItem(CType(NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ITEM_ID), Guid))
+                If Me.NavController.State Is Nothing Then
+                    Me.NavController.State = New MyState
+                    Me.State.MyBO = New CertItem(CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ITEM_ID), Guid))
                     Me.State.CertItemId = Me.State.MyBO.Id
 
                     moCertificate = Me.State.MyBO.GetCertificate(Me.State.MyBO.CertId)
@@ -49,7 +50,7 @@ Namespace Certificates
                     Me.State.certificateCompanyId = moCertificate.CompanyId
                     InitializeFromFlowSession()
                 End If
-                Return CType(NavController.State, MyState)
+                Return CType(Me.NavController.State, MyState)
                 'Return CType(MyBase.State, MyState)
             End Get
         End Property
@@ -66,7 +67,7 @@ Namespace Certificates
 
 #Region "Properties"
 
-        Public ReadOnly Property UserCertificateCtr() As UserControlCertificateInfo_New
+        Public ReadOnly Property UserCertificateCtr As UserControlCertificateInfo_New
             Get
                 If moCertificateInfoController Is Nothing Then
                     moCertificateInfoController = CType(FindControl("moCertificateInfoController"), UserControlCertificateInfo_New)
@@ -75,21 +76,21 @@ Namespace Certificates
             End Get
         End Property
 
-        Public ReadOnly Property GetCompanyCode() As String
+        Public ReadOnly Property GetCompanyCode As String
             Get
-                Dim companyBO As Company = New Company(State.certificateCompanyId)
+                Dim companyBO As Company = New Company(Me.State.certificateCompanyId)
 
                 Return companyBO.Code
             End Get
 
         End Property
 
-        Public Property moCertificate() As Certificate
+        Public Property moCertificate As Certificate
             Get
-                Return State._moCertificate
+                Return Me.State._moCertificate
             End Get
-            Set(Value As Certificate)
-                State._moCertificate = Value
+            Set
+                Me.State._moCertificate = Value
 
             End Set
         End Property
@@ -100,15 +101,15 @@ Namespace Certificates
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough> Private Sub InitializeComponent()
 
         End Sub
 
         'NOTE: The following placeholder declaration is required by the Web Form Designer.
         'Do not delete or move it.
-        Private designerPlaceholderDeclaration As System.Object
+        Private designerPlaceholderDeclaration As Object
 
-        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -126,18 +127,18 @@ Namespace Certificates
             Public CallingObjName As String
             Public RiskTypeId As Guid
             Public Sub New(LastOp As DetailPageCommand, curEditingBo As CertItem, hasDataChanged As Boolean)
-                LastOperation = LastOp
-                EditingBo = curEditingBo
+                Me.LastOperation = LastOp
+                Me.EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
             End Sub
 
             Public Sub New(LastOp As DetailPageCommand, Equip_Id As Guid, Equip_SKU As String, hasDataChanged As Boolean, CallingObj_Name As String, RiskType_Id As Guid)
-                LastOperation = LastOp
+                Me.LastOperation = LastOp
                 Me.HasDataChanged = hasDataChanged
                 Me.Equip_SKU = Equip_SKU
-                EquipmentId = Equip_Id
-                RiskTypeId = RiskType_Id
-                CallingObjName = CallingObj_Name
+                Me.EquipmentId = Equip_Id
+                Me.RiskTypeId = RiskType_Id
+                Me.CallingObjName = CallingObj_Name
             End Sub
         End Class
 
@@ -147,7 +148,7 @@ Namespace Certificates
 
 #Region "Page Events"
 
-        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             If mbIsFirstPass = True Then
                 mbIsFirstPass = False
             Else
@@ -155,41 +156,41 @@ Namespace Certificates
                 Return
             End If
 
-            MasterPage.UsePageTabTitleInBreadCrum = False
-            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Certificates")
-            UpdateBreadCrum()
+            Me.MasterPage.UsePageTabTitleInBreadCrum = False
+            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Certificates")
+            Me.UpdateBreadCrum()
 
             Try
-                MasterPage.MessageController.Clear_Hide()
-                EnableDisableControls(EditPanel_WRITE, True)
+                Me.MasterPage.MessageController.Clear_Hide()
+                EnableDisableControls(Me.EditPanel_WRITE, True)
 
-                If Not IsPostBack Then
-                    MenuEnabled = False
-                    AddCalendar_New(ImageButtonReturnDate, ReplaceReturnDateText_WRITE)
-                    AddCalendar_New(ImageButtonFirstUseDate, FirstUseDateText)
-                    AddCalendar_New(ImageButtonLastUseDate, LastUseDateText)
-                    If State.MyBO Is Nothing Then
-                        State.MyBO = New CertItem
+                If Not Me.IsPostBack Then
+                    Me.MenuEnabled = False
+                    Me.AddCalendar_New(Me.ImageButtonReturnDate, Me.ReplaceReturnDateText_WRITE)
+                    Me.AddCalendar_New(Me.ImageButtonFirstUseDate, Me.FirstUseDateText)
+                    Me.AddCalendar_New(Me.ImageButtonLastUseDate, Me.LastUseDateText)
+                    If Me.State.MyBO Is Nothing Then
+                        Me.State.MyBO = New CertItem
                     End If
-                    Trace(Me, "CertItem Id=" & GuidControl.GuidToHexString(State.MyBO.Id))
-                    State.companyCode = GetCompanyCode
+                    Trace(Me, "CertItem Id=" & GuidControl.GuidToHexString(Me.State.MyBO.Id))
+                    Me.State.companyCode = GetCompanyCode
                     PopulateDropdowns()
-                    PopulateFormFromBOs()
-                    SetDealerFlags()
-                    EnableDisableFields()
+                    Me.PopulateFormFromBOs()
+                    Me.SetDealerFlags()
+                    Me.EnableDisableFields()
                 End If
                 BindBoPropertiesToLabels()
                 CheckIfComingFromSaveConfirm()
                 ChangeEquipment()             'REQ 1106 Price List
-                If Not IsPostBack Then
-                    AddLabelDecorations(State.MyBO)
+                If Not Me.IsPostBack Then
+                    Me.AddLabelDecorations(Me.State.MyBO)
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 CleanPopupInput()
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
-            ShowMissingTranslations(MasterPage.MessageController)
+            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
         End Sub
 #End Region
 
@@ -199,29 +200,29 @@ Namespace Certificates
 
 #Region "Handlers-Buttons"
 
-        Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs)
+        Private Sub btnBack_Click(sender As Object, e As EventArgs)
             Try
-                PopulateBOsFromForm()
-                If State.MyBO.IsDirty Then
-                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                Me.PopulateBOsFromForm()
+                If Me.State.MyBO.IsDirty Then
+                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                    Me.State.ActionInProgress = DetailPageCommand.Back
                 Else
-                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.boChanged)
+                    Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, Me.State.MyBO, Me.State.boChanged)
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
-                DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                State.LastErrMsg = MasterPage.MessageController.Text
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                Me.State.ActionInProgress = DetailPageCommand.BackOnErr
+                Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(sender As System.Object, e As System.EventArgs)
+        Private Sub btnUndo_WRITE_Click(sender As Object, e As EventArgs)
             Try
                 PopulateFormFromBOs()
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -229,77 +230,77 @@ Namespace Certificates
 
 #Region "Controlling Logic"
         Private Sub UpdateBreadCrum()
-            If (State IsNot Nothing) Then
-                If (State.MyBO IsNot Nothing) Then
-                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
+            If (Me.State IsNot Nothing) Then
+                If (Me.State.MyBO IsNot Nothing) Then
+                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
                         TranslationBase.TranslateLabelOrMessage("Item")
-                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Certificate") & " " & "Item"
+                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Certificate") & " " & "Item"
                 End If
             End If
         End Sub
 
         Private Sub BindBoPropertiesToLabels()
-            BindBOPropertyToLabel(State.MyBO, "ItemCode", ItemCodeLabel)
-            BindBOPropertyToLabel(State.MyBO, "ItemDescription", ItemDescLabel)
-            BindBOPropertyToLabel(State.MyBO, "RiskTypeId", RiskTypeLabel)
-            BindBOPropertyToLabel(State.MyBO, "ManufacturerId", ManufacturerLabel)
-            BindBOPropertyToLabel(State.MyBO, "MaxReplacementCost", MaxReplacementCostLabel)
-            BindBOPropertyToLabel(State.MyBO, "SerialNumber", SerialNumberIMEILabel)
-            BindBOPropertyToLabel(State.MyBO, "SerialNumber", SerialNumberLabel)
-            BindBOPropertyToLabel(State.MyBO, "IMEINumber", IMEINumberLabel)
-            BindBOPropertyToLabel(State.MyBO, "Model", ModelLabel)
-            BindBOPropertyToLabel(State.MyBO, "ItemRetailPrice", RetailPriceLabel)
-            BindBOPropertyToLabel(State.MyBO, "ItemReplaceReturnDate", ReplaceReturnDateLabel)
-            BindBOPropertyToLabel(State.MyBO, "ProductCode", ProductCodeLabel)
-            BindBOPropertyToLabel(State.MyBO, "MobileType", MobileTypeLabel)
-            BindBOPropertyToLabel(State.MyBO, "FirstUseDate", FirstUseDateLabel)
-            BindBOPropertyToLabel(State.MyBO, "LastUseDate", LastUseDateLabel)
-            BindBOPropertyToLabel(State.MyBO, "SimCardNumber", SimCardNumberLabel)
-            BindBOPropertyToLabel(State.MyBO, "SkuNumber", SKUNumberLabel)
-            BindBOPropertyToLabel(State.MyBO, "EffectiveDate", EffectiveDateLabel)
-            BindBOPropertyToLabel(State.MyBO, "ExpirationDate", ExpirationDateLabel)
-            BindBOPropertyToLabel(State.MyBO, "CertProductCode", CertProdCodeLabel)
-            BindBOPropertyToLabel(State.MyBO, "OriginalRetailPrice", OriginalRetailPriceLabel)
-            BindBOPropertyToLabel(State.MyBO, "AllowedEvents", AllowedEventsLabel)
-            BindBOPropertyToLabel(State.MyBO, "MaxInsuredAmount", MaxInsuredAmountLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "ItemCode", Me.ItemCodeLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "ItemDescription", Me.ItemDescLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "RiskTypeId", Me.RiskTypeLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "ManufacturerId", Me.ManufacturerLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "MaxReplacementCost", Me.MaxReplacementCostLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "SerialNumber", Me.SerialNumberIMEILabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "SerialNumber", Me.SerialNumberLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "IMEINumber", Me.IMEINumberLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "Model", Me.ModelLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "ItemRetailPrice", Me.RetailPriceLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "ItemReplaceReturnDate", Me.ReplaceReturnDateLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "ProductCode", Me.ProductCodeLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "MobileType", Me.MobileTypeLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "FirstUseDate", Me.FirstUseDateLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "LastUseDate", Me.LastUseDateLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "SimCardNumber", Me.SimCardNumberLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "SkuNumber", Me.SKUNumberLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "EffectiveDate", Me.EffectiveDateLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "ExpirationDate", Me.ExpirationDateLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "CertProductCode", Me.CertProdCodeLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "OriginalRetailPrice", Me.OriginalRetailPriceLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "AllowedEvents", Me.AllowedEventsLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "MaxInsuredAmount", Me.MaxInsuredAmountLabel)
 
         End Sub
 
         Protected Sub PopulateFormFromBOs()
             Try
-                moCertificateInfoController = UserCertificateCtr
-                moCertificateInfoController.InitController(State.MyBO.CertId, , State.companyCode)
-                With State.MyBO
-                    PopulateControlFromBOProperty(ItemCodeText, .ItemCode)
-                    PopulateControlFromBOProperty(ItemDescText, .ItemDescription)
-                    SetSelectedItem(cboRiskTypeId, .RiskTypeId)
-                    SetSelectedItem(cboManufacturerId, .ManufacturerId)
-                    PopulateControlFromBOProperty(SerialNumberText, .SerialNumber)
-                    PopulateControlFromBOProperty(IMEINumberText, .IMEINumber)
-                    PopulateControlFromBOProperty(ModelText, .Model)
-                    PopulateControlFromBOProperty(MaxReplacementCostText, .MaxReplacementCost, DECIMAL_FORMAT)
-                    PopulateControlFromBOProperty(RetailPriceText, .ItemRetailPrice, DECIMAL_FORMAT)
-                    PopulateControlFromBOProperty(ItemNumberText, .ItemNumber)
-                    PopulateControlFromBOProperty(ReplaceReturnDateText_WRITE, .ItemReplaceReturnDate)
-                    PopulateControlFromBOProperty(txtProductCode, .ProductCode)
-                    SetSelectedItem(cboMobileType, LookupListNew.GetIdFromCode("MOB_TYPE", .MobileType))
-                    PopulateControlFromBOProperty(FirstUseDateText, .FirstUseDate)
-                    PopulateControlFromBOProperty(LastUseDateText, .LastUseDate)
-                    PopulateControlFromBOProperty(SimCardNumberText, .SimCardNumber)
-                    PopulateControlFromBOProperty(SKUNumberText, .SkuNumber)
-                    PopulateControlFromBOProperty(EffectiveDateText, .EffectiveDate)
-                    PopulateControlFromBOProperty(ExpirationDateText, .ExpirationDate)
-                    PopulateControlFromBOProperty(CertProdCodeText, .CertProductCode)
-                    PopulateControlFromBOProperty(OriginalRetailPriceText, .OriginalRetailPrice, DECIMAL_FORMAT)
-                    PopulateControlFromBOProperty(AllowedEventsText, .AllowedEvents)
-                    PopulateControlFromBOProperty(MaxInsuredAmountText, .MaxInsuredAmount)
+                moCertificateInfoController = Me.UserCertificateCtr
+                moCertificateInfoController.InitController(Me.State.MyBO.CertId, , Me.State.companyCode)
+                With Me.State.MyBO
+                    Me.PopulateControlFromBOProperty(Me.ItemCodeText, .ItemCode)
+                    Me.PopulateControlFromBOProperty(Me.ItemDescText, .ItemDescription)
+                    SetSelectedItem(Me.cboRiskTypeId, .RiskTypeId)
+                    SetSelectedItem(Me.cboManufacturerId, .ManufacturerId)
+                    Me.PopulateControlFromBOProperty(Me.SerialNumberText, .SerialNumber)
+                    Me.PopulateControlFromBOProperty(Me.IMEINumberText, .IMEINumber)
+                    Me.PopulateControlFromBOProperty(Me.ModelText, .Model)
+                    Me.PopulateControlFromBOProperty(Me.MaxReplacementCostText, .MaxReplacementCost, DECIMAL_FORMAT)
+                    Me.PopulateControlFromBOProperty(Me.RetailPriceText, .ItemRetailPrice, DECIMAL_FORMAT)
+                    Me.PopulateControlFromBOProperty(Me.ItemNumberText, .ItemNumber)
+                    Me.PopulateControlFromBOProperty(Me.ReplaceReturnDateText_WRITE, .ItemReplaceReturnDate)
+                    Me.PopulateControlFromBOProperty(Me.txtProductCode, .ProductCode)
+                    Me.SetSelectedItem(Me.cboMobileType, LookupListNew.GetIdFromCode("MOB_TYPE", .MobileType))
+                    Me.PopulateControlFromBOProperty(Me.FirstUseDateText, .FirstUseDate)
+                    Me.PopulateControlFromBOProperty(Me.LastUseDateText, .LastUseDate)
+                    Me.PopulateControlFromBOProperty(Me.SimCardNumberText, .SimCardNumber)
+                    Me.PopulateControlFromBOProperty(Me.SKUNumberText, .SkuNumber)
+                    Me.PopulateControlFromBOProperty(Me.EffectiveDateText, .EffectiveDate)
+                    Me.PopulateControlFromBOProperty(Me.ExpirationDateText, .ExpirationDate)
+                    Me.PopulateControlFromBOProperty(Me.CertProdCodeText, .CertProductCode)
+                    Me.PopulateControlFromBOProperty(Me.OriginalRetailPriceText, .OriginalRetailPrice, DECIMAL_FORMAT)
+                    Me.PopulateControlFromBOProperty(Me.AllowedEventsText, .AllowedEvents)
+                    Me.PopulateControlFromBOProperty(Me.MaxInsuredAmountText, .MaxInsuredAmount)
 
-                    If (State.MyBO.Cert.Product.BenefitEligibleFlagXCD = Codes.EXT_YESNO_Y) Then
+                    If (Me.State.MyBO.Cert.Product.BenefitEligibleFlagXCD = Codes.EXT_YESNO_Y) Then
                         trBenefitCheck.Visible = True
-                        PopulateControlFromBOProperty(BenefitStatusCheckText, .BenefitStatus)
+                        Me.PopulateControlFromBOProperty(Me.BenefitStatusCheckText, .BenefitStatus)
                         If (.BenefitStatus IsNot Nothing) Then
                             If (.BenefitStatus.ToUpperInvariant() = Codes.BENEFIT_STATUS__INELIGIBLE.ToUpperInvariant()) Then
-                                PopulateControlFromBOProperty(IneligibleReasonText, .IneligibilityReason)
+                                Me.PopulateControlFromBOProperty(Me.IneligibleReasonText, .IneligibilityReason)
                                 lblIneligibleReason.Visible = True
                                 IneligibleReasonText.Visible = True
                             Else
@@ -315,7 +316,7 @@ Namespace Certificates
                     End If
                 End With
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -343,32 +344,32 @@ Namespace Certificates
         End Sub
 
         Private Sub PopulateBOsFromForm()
-            PopulateBOProperty(State.MyBO, "ItemCode", ItemCodeText)
-            PopulateBOProperty(State.MyBO, "ItemDescription", ItemDescText)
-            PopulateBOProperty(State.MyBO, "ItemNumber", ItemNumberText)
-            PopulateBOProperty(State.MyBO, "RiskTypeId", cboRiskTypeId)
-            PopulateBOProperty(State.MyBO, "ManufacturerId", cboManufacturerId)
-            PopulateBOProperty(State.MyBO, "MaxReplacementCost", MaxReplacementCostText)
-            PopulateBOProperty(State.MyBO, "SerialNumber", SerialNumberText)
-            PopulateBOProperty(State.MyBO, "IMEINumber", IMEINumberText)
-            If State.MyBO.Cert.Dealer.ImeiUseXcd IsNot Nothing AndAlso State.MyBO.Cert.Dealer.ImeiUseXcd.Equals("IMEI_USE_LST-NOTINUSE") Then
-                PopulateBOProperty(State.MyBO, "IMEINumber", SerialNumberText)
+            Me.PopulateBOProperty(Me.State.MyBO, "ItemCode", Me.ItemCodeText)
+            Me.PopulateBOProperty(Me.State.MyBO, "ItemDescription", Me.ItemDescText)
+            Me.PopulateBOProperty(Me.State.MyBO, "ItemNumber", Me.ItemNumberText)
+            Me.PopulateBOProperty(Me.State.MyBO, "RiskTypeId", Me.cboRiskTypeId)
+            Me.PopulateBOProperty(Me.State.MyBO, "ManufacturerId", Me.cboManufacturerId)
+            Me.PopulateBOProperty(Me.State.MyBO, "MaxReplacementCost", Me.MaxReplacementCostText)
+            Me.PopulateBOProperty(Me.State.MyBO, "SerialNumber", Me.SerialNumberText)
+            Me.PopulateBOProperty(Me.State.MyBO, "IMEINumber", Me.IMEINumberText)
+            If Me.State.MyBO.Cert.Dealer.ImeiUseXcd IsNot Nothing AndAlso Me.State.MyBO.Cert.Dealer.ImeiUseXcd.Equals("IMEI_USE_LST-NOTINUSE") Then
+                Me.PopulateBOProperty(Me.State.MyBO, "IMEINumber", Me.SerialNumberText)
             End If
-            PopulateBOProperty(State.MyBO, "Model", ModelText)
-            PopulateBOProperty(State.MyBO, "ItemRetailPrice", RetailPriceText)
-            PopulateBOProperty(State.MyBO, "ItemReplaceReturnDate", ReplaceReturnDateText_WRITE)
-            PopulateBOProperty(State.MyBO, "ProductCode", txtProductCode)
-            PopulateBOProperty(State.MyBO, "MobileType", LookupListNew.GetCodeFromId("MOB_TYPE", GetSelectedItem(cboMobileType)))  'Me.cboMobileType) 
-            PopulateBOProperty(State.MyBO, "FirstUseDate", FirstUseDateText)
-            PopulateBOProperty(State.MyBO, "LastUseDate", LastUseDateText)
-            PopulateBOProperty(State.MyBO, "SimCardNumber", SimCardNumberText)
-            PopulateBOProperty(State.MyBO, "SkuNumber", SKUNumberText)
-            PopulateBOProperty(State.MyBO, "EffectiveDate", EffectiveDateText)
-            PopulateBOProperty(State.MyBO, "ExpirationDate", ExpirationDateText)
-            PopulateBOProperty(State.MyBO, "CertProductCode", CertProdCodeText)
-            PopulateBOProperty(State.MyBO, "OriginalRetailPrice", OriginalRetailPriceText)
-            PopulateBOProperty(State.MyBO, "AllowedEvents", AllowedEventsText)
-            PopulateBOProperty(State.MyBO, "MaxInsuredAmount", MaxInsuredAmountText)
+            Me.PopulateBOProperty(Me.State.MyBO, "Model", Me.ModelText)
+            Me.PopulateBOProperty(Me.State.MyBO, "ItemRetailPrice", Me.RetailPriceText)
+            Me.PopulateBOProperty(Me.State.MyBO, "ItemReplaceReturnDate", Me.ReplaceReturnDateText_WRITE)
+            Me.PopulateBOProperty(Me.State.MyBO, "ProductCode", Me.txtProductCode)
+            Me.PopulateBOProperty(Me.State.MyBO, "MobileType", LookupListNew.GetCodeFromId("MOB_TYPE", GetSelectedItem(Me.cboMobileType)))  'Me.cboMobileType) 
+            Me.PopulateBOProperty(Me.State.MyBO, "FirstUseDate", Me.FirstUseDateText)
+            Me.PopulateBOProperty(Me.State.MyBO, "LastUseDate", Me.LastUseDateText)
+            Me.PopulateBOProperty(Me.State.MyBO, "SimCardNumber", Me.SimCardNumberText)
+            Me.PopulateBOProperty(Me.State.MyBO, "SkuNumber", Me.SKUNumberText)
+            Me.PopulateBOProperty(Me.State.MyBO, "EffectiveDate", Me.EffectiveDateText)
+            Me.PopulateBOProperty(Me.State.MyBO, "ExpirationDate", Me.ExpirationDateText)
+            Me.PopulateBOProperty(Me.State.MyBO, "CertProductCode", Me.CertProdCodeText)
+            Me.PopulateBOProperty(Me.State.MyBO, "OriginalRetailPrice", Me.OriginalRetailPriceText)
+            Me.PopulateBOProperty(Me.State.MyBO, "AllowedEvents", Me.AllowedEventsText)
+            Me.PopulateBOProperty(Me.State.MyBO, "MaxInsuredAmount", Me.MaxInsuredAmountText)
 
 
         End Sub
@@ -376,9 +377,9 @@ Namespace Certificates
         ' Clean Popup Input
         Private Sub CleanPopupInput()
             Try
-                If State IsNot Nothing Then
-                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                    HiddenSaveChangesPromptResponse.Value = ""
+                If Me.State IsNot Nothing Then
+                    Me.State.ActionInProgress = DetailPageCommand.Nothing_
+                    Me.HiddenSaveChangesPromptResponse.Value = ""
                 End If
             Catch ex As Exception
 
@@ -387,81 +388,81 @@ Namespace Certificates
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
-            Dim lastAction As ElitaPlusPage.DetailPageCommand = State.ActionInProgress
+            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim lastAction As DetailPageCommand = Me.State.ActionInProgress
             'Clean after consuming the action
             CleanPopupInput()
 
             Try
                 If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
-                    If lastAction <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                        State.MyBO.Save()
+                    If lastAction <> DetailPageCommand.BackOnErr Then
+                        Me.State.MyBO.Save()
                     End If
                     Select Case lastAction
-                        Case ElitaPlusPage.DetailPageCommand.Back
-                            State.boChanged = True
-                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.boChanged)
-                            NavController.Navigate(Me, "back", retObj)
-                        Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.boChanged)
-                            NavController.Navigate(Me, "back", retObj)
+                        Case DetailPageCommand.Back
+                            Me.State.boChanged = True
+                            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, Me.State.MyBO, Me.State.boChanged)
+                            Me.NavController.Navigate(Me, "back", retObj)
+                        Case DetailPageCommand.BackOnErr
+                            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, Me.State.MyBO, Me.State.boChanged)
+                            Me.NavController.Navigate(Me, "back", retObj)
                     End Select
                 ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
                     Select Case lastAction
-                        Case ElitaPlusPage.DetailPageCommand.Back
-                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.boChanged)
-                            NavController.Navigate(Me, "back", retObj)
-                        Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                            MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
+                        Case DetailPageCommand.Back
+                            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, Me.State.MyBO, Me.State.boChanged)
+                            Me.NavController.Navigate(Me, "back", retObj)
+                        Case DetailPageCommand.BackOnErr
+                            Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
                     End Select
                 End If
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub EnableDisableFields()
             Try
-                btnBack.Enabled = True
+                Me.btnBack.Enabled = True
 
-                If Not State.isEdit Then
-                    ControlMgr.SetEnableControl(Me, btnEdit_WRITE, True)
-                    ControlMgr.SetEnableControl(Me, btnHistory_WRITE, True)
+                If Not Me.State.isEdit Then
+                    ControlMgr.SetEnableControl(Me, Me.btnEdit_WRITE, True)
+                    ControlMgr.SetEnableControl(Me, Me.btnHistory_WRITE, True)
                     ControlMgr.SetEnableControl(Me, btnUndo_WRITE, False)
-                    ControlMgr.SetEnableControl(Me, btnApply_WRITE, False)
+                    ControlMgr.SetEnableControl(Me, Me.btnApply_WRITE, False)
                 Else 'Edit Mode
                     ControlMgr.SetEnableControl(Me, btnUndo_WRITE, True)
-                    ControlMgr.SetEnableControl(Me, btnApply_WRITE, True)
-                    ControlMgr.SetEnableControl(Me, btnEdit_WRITE, False)
-                    ItemCodeText.Enabled = True
+                    ControlMgr.SetEnableControl(Me, Me.btnApply_WRITE, True)
+                    ControlMgr.SetEnableControl(Me, Me.btnEdit_WRITE, False)
+                    Me.ItemCodeText.Enabled = True
                     'Me.ItemCodeText.ReadOnly = False
-                    cboManufacturerId.Enabled = True
-                    cboRiskTypeId.Enabled = True
-                    SerialNumberText.ReadOnly = False
-                    SerialNumberText.BackColor = Color.White
-                    IMEINumberText.ReadOnly = False
-                    RetailPriceText.ReadOnly = False
-                    ItemDescText.ReadOnly = False
-                    MaxReplacementCostText.ReadOnly = False
-                    ModelText.ReadOnly = False
-                    SKUNumberText.ReadOnly = False
-                    ReplaceReturnDateText_WRITE.ReadOnly = False
-                    ImageButtonReturnDate.Enabled = True
-                    txtProductCode.ReadOnly = False
-                    FirstUseDateText.ReadOnly = False
-                    LastUseDateText.ReadOnly = False
-                    SimCardNumberText.ReadOnly = False
-                    cboMobileType.Enabled = True
-                    ImageButtonFirstUseDate.Enabled = True
-                    ImageButtonLastUseDate.Enabled = True
-                    OriginalRetailPriceText.ReadOnly = False
-                    AllowedEventsText.ReadOnly = True
-                    MaxInsuredAmountText.ReadOnly = True
+                    Me.cboManufacturerId.Enabled = True
+                    Me.cboRiskTypeId.Enabled = True
+                    Me.SerialNumberText.ReadOnly = False
+                    Me.SerialNumberText.BackColor = Color.White
+                    Me.IMEINumberText.ReadOnly = False
+                    Me.RetailPriceText.ReadOnly = False
+                    Me.ItemDescText.ReadOnly = False
+                    Me.MaxReplacementCostText.ReadOnly = False
+                    Me.ModelText.ReadOnly = False
+                    Me.SKUNumberText.ReadOnly = False
+                    Me.ReplaceReturnDateText_WRITE.ReadOnly = False
+                    Me.ImageButtonReturnDate.Enabled = True
+                    Me.txtProductCode.ReadOnly = False
+                    Me.FirstUseDateText.ReadOnly = False
+                    Me.LastUseDateText.ReadOnly = False
+                    Me.SimCardNumberText.ReadOnly = False
+                    Me.cboMobileType.Enabled = True
+                    Me.ImageButtonFirstUseDate.Enabled = True
+                    Me.ImageButtonLastUseDate.Enabled = True
+                    Me.OriginalRetailPriceText.ReadOnly = False
+                    Me.AllowedEventsText.ReadOnly = True
+                    Me.MaxInsuredAmountText.ReadOnly = True
                 End If
-                If State.Dealer_UseEquipment = Codes.YESNO_Y Then
-                    ControlMgr.SetVisibleControl(Me, btnChangeEquipment_WRITE, Not State.isEdit)
+                If Me.State.Dealer_UseEquipment = Codes.YESNO_Y Then
+                    ControlMgr.SetVisibleControl(Me, Me.btnChangeEquipment_WRITE, Not Me.State.isEdit)
                 End If
-                If Not State.Dealer_Type_code = Codes.DEALER_TYPE_CODE_WEPP Then
+                If Not Me.State.Dealer_Type_code = Codes.DEALER_TYPE_CODE_WEPP Then
                     'if the dealer type is not wireless then some fields will be hidden
                     MobileTypeLabel.Visible = False
                     cboMobileType.Visible = False
@@ -474,51 +475,51 @@ Namespace Certificates
                     ImageButtonLastUseDate.Visible = False
                     SKUNumberLabel.Visible = False
                     SKUNumberText.Visible = False
-                    ImageButtonFirstUseDate.Visible = False
-                    ImageButtonLastUseDate.Visible = False
+                    Me.ImageButtonFirstUseDate.Visible = False
+                    Me.ImageButtonLastUseDate.Visible = False
                 End If
 
-                If Not State.MyBO.Cert.Dealer.ImeiUseXcd.Equals("IMEI_USE_LST-NOTINUSE") Then
-                    SerialNumberIMEILabel.Visible = False
-                    SerialNumberLabel.Visible = True
-                    IMEINumberLabel.Visible = True
-                    IMEINumberText.Visible = True
+                If Not Me.State.MyBO.Cert.Dealer.ImeiUseXcd.Equals("IMEI_USE_LST-NOTINUSE") Then
+                    Me.SerialNumberIMEILabel.Visible = False
+                    Me.SerialNumberLabel.Visible = True
+                    Me.IMEINumberLabel.Visible = True
+                    Me.IMEINumberText.Visible = True
                 Else
-                    SerialNumberLabel.Visible = False
-                    SerialNumberIMEILabel.Visible = True
-                    IMEINumberLabel.Visible = False
-                    IMEINumberText.Visible = False
+                    Me.SerialNumberLabel.Visible = False
+                    Me.SerialNumberIMEILabel.Visible = True
+                    Me.IMEINumberLabel.Visible = False
+                    Me.IMEINumberText.Visible = False
                 End If
-                If LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, State.MyBO.Cert.Dealer.DealerTypeId) = Codes.DEALER_TYPES__VSC Then
+                If LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, Me.State.MyBO.Cert.Dealer.DealerTypeId) = Codes.DEALER_TYPES__VSC Then
                     trVSCOnly.Visible = True
                 End If
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
 
         End Sub
 
         Protected Sub InitializeFromFlowSession()
-            State.inputParameters = CType(NavController.ParametersPassed, ReturnType)
+            Me.State.inputParameters = CType(Me.NavController.ParametersPassed, ReturnType)
         End Sub
 
         Protected Sub ChangeEquipment()
             Try
                 'check the input parameter and begin equipment change if a different equipment is selected
-                If State.inputParameters IsNot Nothing Then
-                    With State.inputParameters
+                If Me.State.inputParameters IsNot Nothing Then
+                    With Me.State.inputParameters
                         If .CallingObjName = "equipment_selected" Then
-                            If Not State.MyBO.EquipmentId = .EquipmentId Then
-                                State.MyBO.BeginEdit()
+                            If Not Me.State.MyBO.EquipmentId = .EquipmentId Then
+                                Me.State.MyBO.BeginEdit()
                                 Dim Equip As New Equipment(.EquipmentId)
-                                PopulateBOProperty(State.MyBO, "EquipmentId", Equip.Id)
-                                PopulateBOProperty(State.MyBO, "Model", Equip.Model)
-                                PopulateBOProperty(State.MyBO, "ManufacturerId", Equip.ManufacturerId)
-                                PopulateBOProperty(State.MyBO, "SkuNumber", .Equip_SKU)
-                                PopulateBOProperty(State.MyBO, "ItemDescription", Equip.Description)
+                                PopulateBOProperty(Me.State.MyBO, "EquipmentId", Equip.Id)
+                                Me.PopulateBOProperty(Me.State.MyBO, "Model", Equip.Model)
+                                PopulateBOProperty(Me.State.MyBO, "ManufacturerId", Equip.ManufacturerId)
+                                Me.PopulateBOProperty(Me.State.MyBO, "SkuNumber", .Equip_SKU)
+                                Me.PopulateBOProperty(Me.State.MyBO, "ItemDescription", Equip.Description)
 
                                 If Not .RiskTypeId = Guid.Empty Then
-                                    If Not State.MyBO.RiskTypeId = .RiskTypeId Then
+                                    If Not Me.State.MyBO.RiskTypeId = .RiskTypeId Then
                                         'Me.BindListControlToDataView(Me.cboRiskTypeId, _
                                         '                             Me.State.MyBO.GetRiskTypesByRiskGroup(.RiskTypeId, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id) _
                                         ''   , , , False)
@@ -528,23 +529,23 @@ Namespace Certificates
                                 End If
                                 'Now refresh the change done to BO and enable the buttons 
                                 'refresh frorm from bo
-                                State.MyBO.EndEdit()
+                                Me.State.MyBO.EndEdit()
                                 PopulateFormFromBOs()
                                 Change_equipment_toggle(False)
-                                State.inputParameters = Nothing
+                                Me.State.inputParameters = Nothing
                             End If
                         End If
                     End With
                 End If
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub Change_equipment_toggle(toggle As Boolean)
             'button 
-            If State.Dealer_UseEquipment = Codes.YESNO_Y Then
-                ControlMgr.SetVisibleControl(Me, btnChangeEquipment_WRITE, toggle)
+            If Me.State.Dealer_UseEquipment = Codes.YESNO_Y Then
+                ControlMgr.SetVisibleControl(Me, Me.btnChangeEquipment_WRITE, toggle)
             End If
             btnEdit_WRITE.Enabled = toggle
             btnHistory_WRITE.Enabled = toggle
@@ -552,117 +553,117 @@ Namespace Certificates
             btnUndo_WRITE.Enabled = Not toggle
 
             'when equipment change is in progress toggle comes as false thats why NOt toggle
-            State.ChangeEquipmentFlow = Not toggle
-            State.isEdit = Not toggle
+            Me.State.ChangeEquipmentFlow = Not toggle
+            Me.State.isEdit = Not toggle
         End Sub
 
         Private Sub SetDealerFlags()
             Try
                 Dim oDealer As Dealer
                 oDealer = New Dealer(moCertificate.DealerId)
-                State.Dealer_Type_code = LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, oDealer.DealerTypeId)
-                State.Dealer_UseEquipment = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oDealer.UseEquipmentId)
+                Me.State.Dealer_Type_code = LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, oDealer.DealerTypeId)
+                Me.State.Dealer_UseEquipment = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oDealer.UseEquipmentId)
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 #End Region
 
 #Region "Button Clicks"
-        Private Sub btnApply_WRITE_Click1(sender As Object, e As System.EventArgs) Handles btnApply_WRITE.Click
+        Private Sub btnApply_WRITE_Click1(sender As Object, e As EventArgs) Handles btnApply_WRITE.Click
             Try
-                PopulateBOsFromForm()
-                If State.MyBO.IsDirty Then
-                    If SerialNumberText.Text <> "" OrElse IMEINumberText.Text <> "" Then
+                Me.PopulateBOsFromForm()
+                If Me.State.MyBO.IsDirty Then
+                    If Me.SerialNumberText.Text <> "" OrElse Me.IMEINumberText.Text <> "" Then
                         Dim dv As DataView ', oCertItem As CertItem 
                         Dim compGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                        If SerialNumberText.Text <> String.Empty Then
-                            dv = CertItem.ValidateSerialNumber(SerialNumberText.Text, moCertificate.CertNumber, compGroupId)
+                        If Me.SerialNumberText.Text <> String.Empty Then
+                            dv = CertItem.ValidateSerialNumber(Me.SerialNumberText.Text, moCertificate.CertNumber, compGroupId)
                             If dv.Count > 0 Then
-                                If SerialNumberLabel.Visible Then
-                                    ElitaPlusPage.SetLabelError(SerialNumberLabel)
-                                ElseIf SerialNumberIMEILabel.Visible Then
-                                    ElitaPlusPage.SetLabelError(SerialNumberIMEILabel)
+                                If Me.SerialNumberLabel.Visible Then
+                                    SetLabelError(Me.SerialNumberLabel)
+                                ElseIf Me.SerialNumberIMEILabel.Visible Then
+                                    SetLabelError(Me.SerialNumberIMEILabel)
                                 End If
                                 Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_VIN_NUMBER_ERR)
                             End If
-                        ElseIf IMEINumberText.Text <> String.Empty Then
-                            dv = CertItem.ValidateSerialNumber(IMEINumberText.Text, moCertificate.CertNumber, compGroupId)
+                        ElseIf Me.IMEINumberText.Text <> String.Empty Then
+                            dv = CertItem.ValidateSerialNumber(Me.IMEINumberText.Text, moCertificate.CertNumber, compGroupId)
                             If dv.Count > 0 Then
-                                ElitaPlusPage.SetLabelError(IMEINumberLabel)
+                                SetLabelError(Me.IMEINumberLabel)
                                 Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_VIN_NUMBER_ERR)
                             End If
                         End If
 
-                        If (moCertificate.Source.ToUpper() = "VSC") Then
-                            If (SerialNumberText.Text.Length > 8) Then
-                                moCertificate.VinLocator = SerialNumberText.Text.Substring(SerialNumberText.Text.Length - 8)
+                        If (Me.moCertificate.Source.ToUpper() = "VSC") Then
+                            If (Me.SerialNumberText.Text.Length > 8) Then
+                                Me.moCertificate.VinLocator = Me.SerialNumberText.Text.Substring(Me.SerialNumberText.Text.Length - 8)
                             Else
-                                If SerialNumberText.Text <> String.Empty Then
-                                    moCertificate.VinLocator = SerialNumberText.Text
-                                ElseIf IMEINumberText.Text <> String.Empty Then
-                                    moCertificate.VinLocator = IMEINumberText.Text
+                                If Me.SerialNumberText.Text <> String.Empty Then
+                                    Me.moCertificate.VinLocator = Me.SerialNumberText.Text
+                                ElseIf Me.IMEINumberText.Text <> String.Empty Then
+                                    Me.moCertificate.VinLocator = Me.IMEINumberText.Text
                                 End If
                             End If
                         End If
                     End If
 
-                    SetLabelColor(SerialNumberLabel)
-                    SetLabelColor(IMEINumberLabel)
-                    SetLabelColor(SerialNumberIMEILabel)
-                    State.MyBO.Save()
-                    State.HasDataChanged = True
-                    PopulateFormFromBOs()
-                    State.boChanged = True
-                    State.isEdit = False
-                    EnableDisableFields()
+                    SetLabelColor(Me.SerialNumberLabel)
+                    SetLabelColor(Me.IMEINumberLabel)
+                    SetLabelColor(Me.SerialNumberIMEILabel)
+                    Me.State.MyBO.Save()
+                    Me.State.HasDataChanged = True
+                    Me.PopulateFormFromBOs()
+                    Me.State.boChanged = True
+                    Me.State.isEdit = False
+                    Me.EnableDisableFields()
                     'DEF-22768-START
                     'Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                     'DEF-22768-END
-                    If State.ChangeEquipmentFlow Then Change_equipment_toggle(True)
+                    If Me.State.ChangeEquipmentFlow Then Change_equipment_toggle(True)
                 Else
                     'DEF-22768-START
                     'Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
-                    MasterPage.MessageController.AddSuccess(Message.MSG_RECORD_NOT_SAVED, True)
+                    Me.MasterPage.MessageController.AddSuccess(Message.MSG_RECORD_NOT_SAVED, True)
                     'DEF-22768-END
                 End If
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
-                State.isEdit = True
-                EnableDisableFields()
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                Me.State.isEdit = True
+                Me.EnableDisableFields()
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click1(sender As Object, e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click1(sender As Object, e As EventArgs) Handles btnUndo_WRITE.Click
             Try
-                If State.ChangeEquipmentFlow Then Change_equipment_toggle(True)
-                State.MyBO = New CertItem(State.MyBO.Id)
-                PopulateFormFromBOs()
-                State.isEdit = False
-                EnableDisableFields()
+                If Me.State.ChangeEquipmentFlow Then Change_equipment_toggle(True)
+                Me.State.MyBO = New CertItem(Me.State.MyBO.Id)
+                Me.PopulateFormFromBOs()
+                Me.State.isEdit = False
+                Me.EnableDisableFields()
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnBack_Click1(sender As Object, e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click1(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
-                moCertificate = State.MyBO.GetCertificate(State.MyBO.CertId)
-                PopulateBOsFromForm()
-                If State.MyBO.IsFamilyDirty Then
-                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                moCertificate = Me.State.MyBO.GetCertificate(Me.State.MyBO.CertId)
+                Me.PopulateBOsFromForm()
+                If Me.State.MyBO.IsFamilyDirty Then
+                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                    Me.State.ActionInProgress = DetailPageCommand.Back
                 Else
-                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.boChanged)
-                    NavController.Navigate(Me, "back", retObj) 'arf 12-20-04  
+                    Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, Me.State.MyBO, Me.State.boChanged)
+                    Me.NavController.Navigate(Me, "back", retObj) 'arf 12-20-04  
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
-                DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                State.LastErrMsg = MasterPage.MessageController.Text
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                Me.State.ActionInProgress = DetailPageCommand.BackOnErr
+                Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
             End Try
 
         End Sub
@@ -671,32 +672,32 @@ Namespace Certificates
             lbl.ForeColor = Color.Black
         End Sub
 
-        Private Sub btnEdit_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnEdit_WRITE.Click
+        Private Sub btnEdit_WRITE_Click(sender As Object, e As EventArgs) Handles btnEdit_WRITE.Click
             Try
-                State.isEdit = True
-                EnableDisableFields()
+                Me.State.isEdit = True
+                Me.EnableDisableFields()
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnHistory_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnHistory_WRITE.Click
+        Private Sub btnHistory_WRITE_Click(sender As Object, e As EventArgs) Handles btnHistory_WRITE.Click
             Try
-                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State._moCertificate
-                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ITEM_ID) = State.CertItemId
-                NavController.Navigate(Me, "item_history_selected")
+                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State._moCertificate
+                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ITEM_ID) = Me.State.CertItemId
+                Me.NavController.Navigate(Me, "item_history_selected")
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnChangeEquipment_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnChangeEquipment_WRITE.Click
+        Private Sub btnChangeEquipment_WRITE_Click(sender As Object, e As EventArgs) Handles btnChangeEquipment_WRITE.Click
             Try
-                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = State._moCertificate
-                NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ITEM_ID) = State.CertItemId
-                NavController.Navigate(Me, "Change_equipment_selected")
+                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State._moCertificate
+                Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE_ITEM_ID) = Me.State.CertItemId
+                Me.NavController.Navigate(Me, "Change_equipment_selected")
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 

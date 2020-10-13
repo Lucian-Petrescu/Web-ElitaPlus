@@ -243,7 +243,7 @@ Public Class MiscUtil
     Public Shared Function IsCriteriaSelected(oList As ArrayList) As Boolean
         Dim bIsSelected As Boolean = False
 
-        If ((Not oList Is Nothing) AndAlso (oList.Count > 0) AndAlso _
+        If ((oList IsNot Nothing) AndAlso (oList.Count > 0) AndAlso _
              Not (CType(oList(0), Guid).Equals(Guid.Empty))) Then
             bIsSelected = True
         End If
@@ -376,7 +376,7 @@ Public Class MiscUtil
     Public Shared Function ConvertToUpper(source As String) As String
         Dim target As String = source
 
-        If ((Not source Is Nothing) AndAlso (source <> String.Empty)) Then
+        If ((source IsNot Nothing) AndAlso (source <> String.Empty)) Then
             target = source.ToUpper
         End If
         Return target

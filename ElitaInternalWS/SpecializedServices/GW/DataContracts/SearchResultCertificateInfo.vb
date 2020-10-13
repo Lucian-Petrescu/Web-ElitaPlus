@@ -164,11 +164,11 @@ Namespace SpecializedServices.GW
                     pAddress = pAddressManager.GetAddress(pCertificate.AddressId)
                     pCountry = pCountryManager.GetCountry(pAddress.CountryId)
 
-                    If Not pAddress Is Nothing Then
+                    If pAddress IsNot Nothing Then
                         .CustomerAddressStreet1 = pAddress.Address1
                         .CustomerAddressStreet2 = pAddress.Address2
                         .CustomerAddressCity = pAddress.City
-                        .CustomerAddressStateCode = If(Not pAddress.RegionId Is Nothing,
+                        .CustomerAddressStateCode = If(pAddress.RegionId IsNot Nothing,
                                             pCountry.Regions.Where(Function(r) r.RegionId = pAddress.RegionId.GetValueOrDefault).FirstOrDefault.Description, String.Empty)
                         .CustomerAddressPostalCode1 = pAddress.PostalCode
                     End If
@@ -180,14 +180,14 @@ Namespace SpecializedServices.GW
                 .CustomerWorkPhoneNumber = pCertificate.WorkPhone
 
 
-                .SuspendedReasonCode = If(Not pCertificate.SuspendedReasonId Is Nothing, dealer.SuspendedReasons.Where(Function(s) s.SuspendedReasonId = pCertificate.SuspendedReasonId).FirstOrDefault.Code, String.Empty)
-                .SuspendedReasonDesc = If(Not pCertificate.SuspendedReasonId Is Nothing, dealer.SuspendedReasons.Where(Function(s) s.SuspendedReasonId = pCertificate.SuspendedReasonId).FirstOrDefault.Description, String.Empty)
+                .SuspendedReasonCode = If(pCertificate.SuspendedReasonId IsNot Nothing, dealer.SuspendedReasons.Where(Function(s) s.SuspendedReasonId = pCertificate.SuspendedReasonId).FirstOrDefault.Code, String.Empty)
+                .SuspendedReasonDesc = If(pCertificate.SuspendedReasonId IsNot Nothing, dealer.SuspendedReasons.Where(Function(s) s.SuspendedReasonId = pCertificate.SuspendedReasonId).FirstOrDefault.Description, String.Empty)
 
-                If Not pCertificate.PreviousCertId Is Nothing Then
+                If pCertificate.PreviousCertId IsNot Nothing Then
                     .LastPolicyNumber = pCertManager.GetCertNumber(pCertificate.PreviousCertId)
                 End If
 
-                If Not pCertificate.OriginalCertId Is Nothing Then
+                If pCertificate.OriginalCertId IsNot Nothing Then
                     .OriginalPolicyNumber = pCertManager.GetCertNumber(pCertificate.OriginalCertId)
                 End If
 
@@ -206,7 +206,7 @@ Namespace SpecializedServices.GW
             Dim producerAddress As Address
             Dim contractProducer As BO.Producer
 
-            If Not certContract.ProducerId Is Nothing Then
+            If certContract.ProducerId IsNot Nothing Then
                 contractProducer = New BO.Producer(certContract.ProducerId)
                 If Not contractProducer.AddressId.Equals(Guid.Empty) Then
                     producerAddress = pAddressManager.GetAddress(contractProducer.AddressId)

@@ -1,11 +1,12 @@
 ﻿Imports System.Collections.Generic
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 
 Public Class UserControlContactInfo
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
 
 #Region "Constants"
@@ -63,7 +64,7 @@ Public Class UserControlContactInfo
 
 #Region "Page Events"
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         EnableDisableFields()
     End Sub
 
@@ -103,7 +104,7 @@ Public Class UserControlContactInfo
             'Dim oAddressTypeList As DataView = LookupListNew.DropdownLookupList("ATYPE", Authentication.LangId, True)
             'CType(Me.Page, ElitaPlusPage).BindListControlToDataView(Me.moAddressTypeDrop_WRITE, oAddressTypeList)
 
-            Dim SalutationList As DataElements.ListItem() =
+            Dim SalutationList As ListItem() =
                 CommonConfigManager.Current.ListManager.GetList(listCode:="SLTN",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
@@ -113,7 +114,7 @@ Public Class UserControlContactInfo
                                                 .AddBlankItem = True
                                             })
 
-            Dim AddressTypeList As DataElements.ListItem() =
+            Dim AddressTypeList As ListItem() =
                     CommonConfigManager.Current.ListManager.GetList(listCode:="ATYPE",
                                                                     languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 

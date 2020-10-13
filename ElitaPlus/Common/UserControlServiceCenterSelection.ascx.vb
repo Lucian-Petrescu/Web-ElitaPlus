@@ -13,7 +13,7 @@ Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService
 Imports Assurant.ElitaPlus.Security
 
 Public Class UserControlServiceCenterSelection
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
     Public Class SearchByCodes
         Public Const City As String = "CITY"
@@ -56,7 +56,7 @@ Public Class UserControlServiceCenterSelection
 
     End Class
 #End Region
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Dim parentControl = Parent
 
         Debug.WriteLine($"Loading UserControlQuestion ID: {ID}")
@@ -71,10 +71,10 @@ Public Class UserControlServiceCenterSelection
 #Region "Properties"
     Public Property HostMessageController As IMessageController
     Public Property ServiceCenterSelectedFunc As Action(Of ServiceCenterSelected)
-    Public Property TranslateGridHeaderFunc As Action(Of System.Web.UI.WebControls.GridView)
+    Public Property TranslateGridHeaderFunc As Action(Of GridView)
     Public Property TranslationFunc As Func(Of String, String)
-    Public Property HighLightSortColumnFunc As Action(Of System.Web.UI.WebControls.GridView, String)
-    Public Property NewCurrentPageIndexFunc As Func(Of System.Web.UI.WebControls.GridView, Integer, Integer, Integer)
+    Public Property HighLightSortColumnFunc As Action(Of GridView, String)
+    Public Property NewCurrentPageIndexFunc As Func(Of GridView, Integer, Integer, Integer)
     Public Property ElitaHostPage As ElitaPlusPage
     Public Property ShowControl As Boolean = False
 
@@ -246,7 +246,7 @@ Public Class UserControlServiceCenterSelection
     Sub PopulateSearchFilterDropdown()
         Try
             REM Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
-            Dim serviceCenterSearchByList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("SERVICE_CENTER_SEARCH_BY", Thread.CurrentPrincipal.GetLanguageCode())
+            Dim serviceCenterSearchByList As ListItem() = CommonConfigManager.Current.ListManager.GetList("SERVICE_CENTER_SEARCH_BY", Thread.CurrentPrincipal.GetLanguageCode())
             moSearchByDrop.Populate(serviceCenterSearchByList, New PopulateOptions() With {.AddBlankItem = True, .BlankItemValue = String.Empty, .ValueFunc = AddressOf PopulateOptions.GetCode})
 
         Catch ex As Exception
@@ -256,7 +256,7 @@ Public Class UserControlServiceCenterSelection
     Sub PopulateCountryDropdown()
         Try
             If Not CountryId.Equals(Guid.Empty) Then
-                Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+                Dim oListContext As New ListContext
                 oListContext.CountryId = CountryId
                 oListContext.UserId = ElitaPlusIdentity.Current.ActiveUser.Id
                 Dim countriesList As ListItem() = CommonConfigManager.Current.ListManager.GetList("UserCountryWithSelectedCountry", Thread.CurrentPrincipal.GetLanguageCode(), oListContext)
@@ -322,7 +322,7 @@ Public Class UserControlServiceCenterSelection
 #End Region
 
 #Region "Control Events"
-    Private Sub GridServiceCenter_SortCommand(source As Object, e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GridServiceCenter.Sorting
+    Private Sub GridServiceCenter_SortCommand(source As Object, e As GridViewSortEventArgs) Handles GridServiceCenter.Sorting
         Try
             If SortExpression.StartsWith(e.SortExpression) Then
                 If SortExpression.EndsWith(" DESC") Then
@@ -341,7 +341,7 @@ Public Class UserControlServiceCenterSelection
 
     End Sub
 
-    Private Sub GridServiceCenter_PageIndexChanged(sender As Object, e As System.EventArgs) Handles GridServiceCenter.PageIndexChanged
+    Private Sub GridServiceCenter_PageIndexChanged(sender As Object, e As EventArgs) Handles GridServiceCenter.PageIndexChanged
         Try
             PageIndex = GridServiceCenter.PageIndex
             PopulateGrid()
@@ -349,7 +349,7 @@ Public Class UserControlServiceCenterSelection
             HandleLocalException(ex)
         End Try
     End Sub
-    Private Sub GridServiceCenter_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles GridServiceCenter.PageIndexChanging
+    Private Sub GridServiceCenter_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridServiceCenter.PageIndexChanging
         Try
             GridServiceCenter.PageIndex = e.NewPageIndex
             PageIndex = GridServiceCenter.PageIndex
@@ -362,13 +362,13 @@ Public Class UserControlServiceCenterSelection
         SelectedServiceCenter = Nothing
         DeselectRadioButtonGridview(GridServiceCenter, "rdoServiceCenter")
         'check the radiobutton which is checked
-        Dim senderRb As System.Web.UI.WebControls.RadioButton = sender
+        Dim senderRb As RadioButton = sender
         senderRb.Checked = True
 
         ' get the selected device into the state
         EnableControlinGridview(GridServiceCenter)
     End Sub
-    Private Sub moSearchByDrop_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles moSearchByDrop.SelectedIndexChanged
+    Private Sub moSearchByDrop_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moSearchByDrop.SelectedIndexChanged
         Try
             Debug.WriteLine("Index Changed")
             EnableDisableFields()
@@ -402,7 +402,7 @@ Public Class UserControlServiceCenterSelection
         End If
     End Sub
 
-    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Dim list As IList = GridServiceCenter.DataSource
 
@@ -530,19 +530,19 @@ Public Class UserControlServiceCenterSelection
     Private Sub DeselectRadioButtonGridview(gridViewTarget As GridView, rdobuttonName As String)
         'deselect all radiobutton in gridview
         For i As Integer = 0 To gridViewTarget.Rows.Count - 1
-            Dim rb As System.Web.UI.WebControls.RadioButton
-            rb = CType(gridViewTarget.Rows(i).FindControl(rdobuttonName), System.Web.UI.WebControls.RadioButton)
+            Dim rb As RadioButton
+            rb = CType(gridViewTarget.Rows(i).FindControl(rdobuttonName), RadioButton)
             rb.Checked = False
         Next
     End Sub
     Private Sub EnableControlinGridview(gridViewTarget As GridView)
         For i As Integer = 0 To gridViewTarget.Rows.Count - 1
-            Dim rdo As System.Web.UI.WebControls.RadioButton
-            rdo = CType(gridViewTarget.Rows(i).FindControl("rdoServiceCenter"), System.Web.UI.WebControls.RadioButton)
+            Dim rdo As RadioButton
+            rdo = CType(gridViewTarget.Rows(i).FindControl("rdoServiceCenter"), RadioButton)
 
             If rdo.Checked Then
-                Dim lb As System.Web.UI.WebControls.Label
-                lb = CType(gridViewTarget.Rows(i).FindControl("lblServiceCenterId"), System.Web.UI.WebControls.Label)
+                Dim lb As Label
+                lb = CType(gridViewTarget.Rows(i).FindControl("lblServiceCenterId"), Label)
                 Dim serviceCenterId As Guid = Guid.Parse(lb.Text)
                 Dim oServiceCenter As FulfillmentServicesCenter = ServiceCenters.FirstOrDefault(Function(q) q.ServiceCenterId = serviceCenterId)
                 If oServiceCenter IsNot Nothing Then

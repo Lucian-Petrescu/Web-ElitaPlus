@@ -99,7 +99,7 @@ Public Class IssueTypeDAL
         Try
             listCodeParam = New DBHelper.DBHelperParameter(COL_NAME_CODE, listCode)
             id = DBHelper.Fetch(ds, selectStmt, TABLE_LIST, New DBHelper.DBHelperParameter() {listCodeParam}).Tables(TABLE_LIST).Rows(0)(COL_NAME_LIST_ID)
-            If Not id Is Nothing Then
+            If id IsNot Nothing Then
                 Return New Guid(id)
             Else
                 Return Guid.Empty
@@ -200,7 +200,7 @@ Public Class IssueTypeDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

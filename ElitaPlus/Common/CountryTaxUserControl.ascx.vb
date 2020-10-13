@@ -1,12 +1,14 @@
+Imports System.Diagnostics
 Imports System.Globalization
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 
 
 Partial Class CountryTaxUserControl
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
 #Region "Member Variables"
 
@@ -23,15 +25,15 @@ Partial Class CountryTaxUserControl
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
     Private mPercentCode As String
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -60,7 +62,7 @@ Partial Class CountryTaxUserControl
 
 #End Region
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
 
     End Sub
@@ -73,7 +75,7 @@ Partial Class CountryTaxUserControl
         'Dim oPercentFlagList As DataView = LookupListNew.DropdownLookupList(TAX_PERCENT_FLAG, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
         'CType(Me.Page, ElitaPlusPage).BindListControlToDataView(Me.dlstTaxPercentFlag, oPercentFlagList)
 
-        Dim ComputeMethodList As DataElements.ListItem() =
+        Dim ComputeMethodList As ListItem() =
                 CommonConfigManager.Current.ListManager.GetList(listCode:="TCOMP",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
@@ -85,14 +87,14 @@ Partial Class CountryTaxUserControl
         If Not strComputeMethodCodeToFilter.Equals(String.Empty) Then
             Dim oComputeMethodToFilterId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_COMPUTE_METHOD, strComputeMethodCodeToFilter)
             For x As Integer = dlstTaxComputeMethod.Items.Count - 1 To 0 Step -1
-                Dim item As ListItem = dlstTaxComputeMethod.Items(x)
+                Dim item As WebControls.ListItem = dlstTaxComputeMethod.Items(x)
                 If item.Value.Equals(oComputeMethodToFilterId.ToString) = True Then
                     dlstTaxComputeMethod.Items.RemoveAt(x)
                 End If
             Next
         End If
 
-        Dim PercentList As DataElements.ListItem() =
+        Dim PercentList As ListItem() =
                 CommonConfigManager.Current.ListManager.GetList(listCode:="PERCT",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
@@ -138,7 +140,7 @@ Partial Class CountryTaxUserControl
     End Sub
 
 
-    Private Sub dlstTaxComputeMethod_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles dlstTaxComputeMethod.SelectedIndexChanged
+    Private Sub dlstTaxComputeMethod_SelectedIndexChanged(sender As Object, e As EventArgs) Handles dlstTaxComputeMethod.SelectedIndexChanged
         Dim dlbZeroes As Double = 0.0
 
         If UseManually() Then
@@ -148,7 +150,7 @@ Partial Class CountryTaxUserControl
 
     End Sub
 
-    Private Sub dlstTaxPercentFlag_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles dlstTaxPercentFlag.SelectedIndexChanged
+    Private Sub dlstTaxPercentFlag_SelectedIndexChanged(sender As Object, e As EventArgs) Handles dlstTaxPercentFlag.SelectedIndexChanged
 
         Dim dlbZeroes As Double = 0.0
         Percent = txtTaxPercent.Text

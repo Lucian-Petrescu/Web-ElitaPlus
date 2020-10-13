@@ -2,7 +2,7 @@
 Imports Assurant.ElitaPlus.DALObjects
 
 Partial Class UserControlClaimCloseRules
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
     Public Class RequestDataEventArgs
         Inherits EventArgs
@@ -136,7 +136,7 @@ Partial Class UserControlClaimCloseRules
     End Property
 #End Region
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         'AddHandler Me.PropertyChanged, AddressOf MyPropertyChanged
         If IsPostBack Then
             CheckIfComingFromDeleteConfirm()
@@ -429,7 +429,7 @@ Partial Class UserControlClaimCloseRules
             TheState.IsGridVisible = False
             lblRecordCount.Text = "0 " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             If blnShowErr Then
-                ThePage.MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
+                ThePage.MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
             End If
         Else
             TheState.bnoRow = False
@@ -457,7 +457,7 @@ Partial Class UserControlClaimCloseRules
 
     End Sub
 
-    Private Sub Grid_PageIndexChanged(sender As Object, e As System.EventArgs) Handles CloseRulesGrid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(sender As Object, e As EventArgs) Handles CloseRulesGrid.PageIndexChanged
         Try
             If (Not (TheState.IsEditMode)) Then
                 TheState.PageIndex = CloseRulesGrid.PageIndex
@@ -469,7 +469,7 @@ Partial Class UserControlClaimCloseRules
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles CloseRulesGrid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles CloseRulesGrid.PageIndexChanging
         Try
             CloseRulesGrid.PageIndex = e.NewPageIndex
             TheState.PageIndex = CloseRulesGrid.PageIndex
@@ -478,7 +478,7 @@ Partial Class UserControlClaimCloseRules
         End Try
     End Sub
 
-    Private Sub Grid_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles CloseRulesGrid.RowDataBound
+    Private Sub Grid_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles CloseRulesGrid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
@@ -566,7 +566,7 @@ Partial Class UserControlClaimCloseRules
 
     End Sub
 
-    Public Sub RowCommand(source As System.Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles CloseRulesGrid.RowCommand
+    Public Sub RowCommand(source As Object, e As GridViewCommandEventArgs) Handles CloseRulesGrid.RowCommand
 
         Try
             Dim index As Integer
@@ -607,7 +607,7 @@ Partial Class UserControlClaimCloseRules
 
     End Sub
 
-    Public Sub RowCreated(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles CloseRulesGrid.RowCreated
+    Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs) Handles CloseRulesGrid.RowCreated
         Try
             ThePage.BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -732,7 +732,7 @@ Partial Class UserControlClaimCloseRules
         End Try
     End Sub
 
-    Private Sub Grid_PageSizeChanged(source As Object, e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
 
             CloseRulesGrid.PageIndex = NewCurrentPageIndex(CloseRulesGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))

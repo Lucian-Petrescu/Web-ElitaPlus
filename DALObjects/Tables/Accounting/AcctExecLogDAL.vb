@@ -59,7 +59,7 @@ Public Class AcctExecLogDAL
 
             ret = DBHelper.ExecuteScalar(selectStmt)
 
-            If Not ret Is Nothing Then
+            If ret IsNot Nothing Then
                 Return GuidControl.ByteArrayToGuid(ret)
             Else
                 Return Guid.Empty
@@ -80,7 +80,7 @@ Public Class AcctExecLogDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

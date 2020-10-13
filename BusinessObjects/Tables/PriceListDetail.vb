@@ -969,7 +969,7 @@ Public Class PriceListDetail
             ''''to check if the new record is the very first record
             'If dsTemp.Tables(0).Rows(0)(1).ToString() <> "" Then
             '''''check if dv count is > 1 as the first record should be saved without check
-            If dv IsNot Nothing And dv.Count > 1 Then
+            If dv IsNot Nothing AndAlso dv.Count > 1 Then
 
                 maxExpDate = CType(dv.ToTable().Compute("Max(Expiration)", String.Empty), DateTime) 'dsTemp.Tables(0).Rows(0)(1)
                 minEffDate = CType(dv.ToTable().Compute("Min(Effective)", String.Empty), DateTime) 'dsTemp.Tables(0).Rows(0)(0)
@@ -986,7 +986,7 @@ Public Class PriceListDetail
                     For Each dr As DataRow In dv.Table.Rows
                         If dr("Vendor_sku").ToString() = VendorSku.ToString() Then
                             If GuidControl.ByteArrayToGuid(dr("price_list_Detail_id")) <> Id Then
-                                If ((DateTime.Compare(Effective, DateTime.Parse(dr("Expiration").ToString())) <= 0) And (DateTime.Compare(DateTime.Parse(dr("Effective").ToString()), Expiration) <= 0)) Then
+                                If ((DateTime.Compare(Effective, DateTime.Parse(dr("Expiration").ToString())) <= 0) AndAlso (DateTime.Compare(DateTime.Parse(dr("Effective").ToString()), Expiration) <= 0)) Then
                                     Return True
                                 End If
                             End If
@@ -1003,7 +1003,7 @@ Public Class PriceListDetail
                     For Each dr As DataRow In dv.Table.Rows
                         If dr("vendor_sku").ToString().ToUpper() = VendorSku.ToString().ToUpper() Then
                             If GuidControl.ByteArrayToGuid(dr("price_list_Detail_id")) <> Id Then
-                                If ((DateTime.Compare(Effective, DateTime.Parse(dr("Expiration").ToString())) <= 0) And (DateTime.Compare(DateTime.Parse(dr("Effective").ToString()), Expiration) <= 0)) Then
+                                If ((DateTime.Compare(Effective, DateTime.Parse(dr("Expiration").ToString())) <= 0) AndAlso (DateTime.Compare(DateTime.Parse(dr("Effective").ToString()), Expiration) <= 0)) Then
                                     Return True
 
                                 End If
@@ -1077,20 +1077,20 @@ Public Class PriceListDetail
     Public Function CheckForRiskTypeEquipClassEquipment() As Boolean
         Try
             '''Either Risk Type, Equipment Class and Make or model should be selected
-            If (RiskTypeId = Guid.Empty AndAlso EquipmentClassId = Guid.Empty AndAlso (MakeId = Guid.Empty Or EquipmentId = Guid.Empty)) Then
+            If (RiskTypeId = Guid.Empty AndAlso EquipmentClassId = Guid.Empty AndAlso (MakeId = Guid.Empty OrElse EquipmentId = Guid.Empty)) Then
                 Return False
             End If
             '''All the three: Risk Type, Equipment Class and Make or model should not be selected; Either one should be selected.
-            If (RiskTypeId <> Guid.Empty AndAlso EquipmentClassId <> Guid.Empty AndAlso (MakeId <> Guid.Empty Or EquipmentId <> Guid.Empty)) Then
+            If (RiskTypeId <> Guid.Empty AndAlso EquipmentClassId <> Guid.Empty AndAlso (MakeId <> Guid.Empty OrElse EquipmentId <> Guid.Empty)) Then
                 Return False
             End If
             If (RiskTypeId <> Guid.Empty AndAlso EquipmentClassId <> Guid.Empty) Then
                 Return False
             End If
-            If (RiskTypeId <> Guid.Empty AndAlso (MakeId <> Guid.Empty Or EquipmentId <> Guid.Empty)) Then
+            If (RiskTypeId <> Guid.Empty AndAlso (MakeId <> Guid.Empty OrElse EquipmentId <> Guid.Empty)) Then
                 Return False
             End If
-            If (EquipmentClassId <> Guid.Empty AndAlso (MakeId <> Guid.Empty Or EquipmentId <> Guid.Empty)) Then
+            If (EquipmentClassId <> Guid.Empty AndAlso (MakeId <> Guid.Empty OrElse EquipmentId <> Guid.Empty)) Then
                 Return False
             End If
             '''''
@@ -1102,13 +1102,13 @@ Public Class PriceListDetail
 
     Public Function CheckForConditionType() As Boolean
         Try
-            If EquipmentClassId <> Guid.Empty Or RiskTypeId <> Guid.Empty Then
+            If EquipmentClassId <> Guid.Empty OrElse RiskTypeId <> Guid.Empty Then
                 If ConditionId <> Guid.Empty Then
                     Return False
                 End If
                 '''''if "Condition" is selected then Make and Model (Equipment) should not be empty 
             ElseIf (ConditionId <> Guid.Empty) Then
-                If (MakeId = Guid.Empty Or EquipmentId = Guid.Empty) Then
+                If (MakeId = Guid.Empty OrElse EquipmentId = Guid.Empty) Then
                     Return False
                 End If
             End If
@@ -1156,7 +1156,7 @@ Public Class PriceListDetail
 
             '''''if "Condition" is selected then Make and Model (Equipment) should be selected 
             If (obj.ConditionId <> Guid.Empty) AndAlso
-               (obj.MakeId = Guid.Empty Or obj.EquipmentId = Guid.Empty) Then
+               (obj.MakeId = Guid.Empty OrElse obj.EquipmentId = Guid.Empty) Then
                 Return False
             End If
 
@@ -1312,7 +1312,7 @@ Public Class PriceListDetail
         End Sub
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PriceListDetail = CType(objectToValidate, PriceListDetail)
-            Dim retVal As Boolean = obj.PriceList.PriceListDetailChildren.Where(Function(i) (i.VendorSku.ToUpper() = obj.VendorSku.ToUpper() And ((i.Effective.Value >= obj.Effective.Value And i.Effective.Value <= obj.Expiration.Value) Or (i.Expiration.Value >= obj.Effective.Value And i.Expiration.Value <= obj.Expiration.Value)))).Count > 1
+            Dim retVal As Boolean = obj.PriceList.PriceListDetailChildren.Where(Function(i) (i.VendorSku.ToUpper() = obj.VendorSku.ToUpper() AndAlso ((i.Effective.Value >= obj.Effective.Value AndAlso i.Effective.Value <= obj.Expiration.Value) OrElse (i.Expiration.Value >= obj.Effective.Value AndAlso i.Expiration.Value <= obj.Expiration.Value)))).Count > 1
             Return Not retVal
         End Function
     End Class
@@ -1325,8 +1325,7 @@ Public Class PriceListDetail
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As PriceListDetail = CType(objectToValidate, PriceListDetail)
             If Not obj.PartId.Equals(Guid.Empty) Then
-                Dim retVal As Boolean = LookupListNew.GetCodeFromId(Codes.SERVICE_CLASS, obj.ServiceClassId) <> Codes.SERVICE_CLASS__REPAIR Or
-                    LookupListNew.GetCodeFromId(Codes.SERVICE_CLASS_TYPE, obj.ServiceTypeId) <> Codes.SERVICE_TYPE__PARTS_AMOUNT
+                Dim retVal As Boolean = LookupListNew.GetCodeFromId(Codes.SERVICE_CLASS, obj.ServiceClassId) <> Codes.SERVICE_CLASS__REPAIR OrElse LookupListNew.GetCodeFromId(Codes.SERVICE_CLASS_TYPE, obj.ServiceTypeId) <> Codes.SERVICE_TYPE__PARTS_AMOUNT
                 Return Not retVal
             End If
             Return True
@@ -1603,17 +1602,17 @@ Public Class PriceListDetail
                             ' Updating only one record
                             bValid = True
                             Exit For
-                        ElseIf oRows.Count = oCount And prevHigh + THRESHOLD = oNewLow Then
+                        ElseIf oRows.Count = oCount AndAlso prevHigh + THRESHOLD = oNewLow Then
                             ' Updating the last record
                             bValid = True
                             Exit For
-                        ElseIf prevHigh < MIN_DOUBLE And oNewHigh + THRESHOLD = oLow Then
+                        ElseIf prevHigh < MIN_DOUBLE AndAlso oNewHigh + THRESHOLD = oLow Then
                             bValid = True
                             Exit For
-                        ElseIf oCount = oRows.Count And oHigh + THRESHOLD = oNewLow Then
+                        ElseIf oCount = oRows.Count AndAlso oHigh + THRESHOLD = oNewLow Then
                             bValid = True
                             Exit For
-                        ElseIf prevHigh + THRESHOLD = oNewLow And oNewHigh + THRESHOLD = oLow Then
+                        ElseIf prevHigh + THRESHOLD = oNewLow AndAlso oNewHigh + THRESHOLD = oLow Then
                             bValid = True
                             Exit For
                             'ElseIf oNewLow = oLow And oNewHigh = oHigh Then
@@ -1626,13 +1625,13 @@ Public Class PriceListDetail
                         prevHigh = oHigh
 
                     Else
-                        If prevHigh < MIN_DOUBLE And oNewHigh + THRESHOLD = oLow Then
+                        If prevHigh < MIN_DOUBLE AndAlso oNewHigh + THRESHOLD = oLow Then
                             bValid = True
                             Exit For
-                        ElseIf oCount = oRows.Count And oHigh + THRESHOLD = oNewLow Then
+                        ElseIf oCount = oRows.Count AndAlso oHigh + THRESHOLD = oNewLow Then
                             bValid = True
                             Exit For
-                        ElseIf prevHigh + THRESHOLD = oNewLow And oNewHigh + THRESHOLD = oLow Then
+                        ElseIf prevHigh + THRESHOLD = oNewLow AndAlso oNewHigh + THRESHOLD = oLow Then
                             bValid = True
                             Exit For
                         End If

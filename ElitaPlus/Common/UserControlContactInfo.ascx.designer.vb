@@ -20,7 +20,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label1 As Label
 
     '''<summary>
     '''moAddressTypeText control.
@@ -29,7 +29,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAddressTypeText As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moAddressTypeText As TextBox
 
     '''<summary>
     '''moAddressTypeDrop_WRITE control.
@@ -38,7 +38,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAddressTypeDrop_WRITE As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents moAddressTypeDrop_WRITE As DropDownList
 
     '''<summary>
     '''moSalutationLabel control.
@@ -47,7 +47,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSalutationLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moSalutationLabel As Label
 
     '''<summary>
     '''moSalutationText control.
@@ -56,7 +56,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moSalutationText As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moSalutationText As TextBox
 
     '''<summary>
     '''cboSalutationId control.
@@ -65,7 +65,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboSalutationId As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboSalutationId As DropDownList
 
     '''<summary>
     '''moHomePhoneLabel control.
@@ -74,7 +74,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moHomePhoneLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moHomePhoneLabel As Label
 
     '''<summary>
     '''moHomePhoneText control.
@@ -83,7 +83,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moHomePhoneText As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moHomePhoneText As TextBox
 
     '''<summary>
     '''moContactNameLabel control.
@@ -92,7 +92,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moContactNameLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moContactNameLabel As Label
 
     '''<summary>
     '''moContactNameText control.
@@ -101,7 +101,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moContactNameText As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moContactNameText As TextBox
 
     '''<summary>
     '''moWorkPhoneLabel control.
@@ -110,7 +110,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moWorkPhoneLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moWorkPhoneLabel As Label
 
     '''<summary>
     '''moWorkPhoneText control.
@@ -119,7 +119,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moWorkPhoneText As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moWorkPhoneText As TextBox
 
     '''<summary>
     '''moEmailAddressLabel control.
@@ -128,7 +128,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moEmailAddressLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moEmailAddressLabel As Label
 
     '''<summary>
     '''moEmailAddressText control.
@@ -137,7 +137,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moEmailAddressText As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moEmailAddressText As TextBox
 
     '''<summary>
     '''moCellPhoneLabel control.
@@ -146,7 +146,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCellPhoneLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents moCellPhoneLabel As Label
 
     '''<summary>
     '''moCellPhoneText control.
@@ -155,7 +155,7 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moCellPhoneText As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents moCellPhoneText As TextBox
 
     '''<summary>
     '''moAddressController control.
@@ -164,5 +164,5 @@ Partial Public Class UserControlContactInfo
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moAddressController As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlAddress
+    Protected WithEvents moAddressController As UserControlAddress
 End Class

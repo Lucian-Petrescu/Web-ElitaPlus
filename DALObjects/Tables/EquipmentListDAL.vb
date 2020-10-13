@@ -117,7 +117,7 @@ Public Class EquipmentListDAL
             whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_CODE & ")" & code.ToUpper
             bIsWhereClause = True
         End If
-        If (Not String.IsNullOrEmpty(effective) And Not String.IsNullOrEmpty(expiration)) Then
+        If (Not String.IsNullOrEmpty(effective) AndAlso Not String.IsNullOrEmpty(expiration)) Then
             whereClauseConditions &= " AND " & Environment.NewLine & "TO_DATE('" & DateHelper.GetDateValue(expiration).ToString("MM/dd/yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss') BETWEEN " & COL_NAME_EFFECTIVE & " AND " & COL_NAME_EXPIRATION
             bIsWhereClause = True
         End If
@@ -166,7 +166,7 @@ Public Class EquipmentListDAL
                 whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(" & COL_NAME_CODE & ")" & code.ToUpper
                 bIsWhereClause = True
             End If
-            If (Not String.IsNullOrEmpty(effective) And Not String.IsNullOrEmpty(expiration)) Then
+            If (Not String.IsNullOrEmpty(effective) AndAlso Not String.IsNullOrEmpty(expiration)) Then
                 whereClauseConditions &= " AND " & Environment.NewLine & "TO_DATE('" & DateTime.Parse(expiration).ToString("MM/dd/yyyy HH:mm:ss") & "', 'mm-dd-yyyy hh24:mi:ss') BETWEEN " & COL_NAME_EFFECTIVE & " AND " & COL_NAME_EXPIRATION
                 bIsWhereClause = True
             End If

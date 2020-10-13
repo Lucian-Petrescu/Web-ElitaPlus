@@ -60,10 +60,8 @@ Public Class InvoiceGroup
     Protected Sub Load(id As Guid)
         Try
             Dim dal As New InvoiceGroupDAL
-            If _isDSCreator Then
-                If Row IsNot Nothing Then
-                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
-                End If
+            If _isDSCreator AndAlso Row IsNot Nothing Then
+                Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
             End If
             Row = Nothing
             If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then

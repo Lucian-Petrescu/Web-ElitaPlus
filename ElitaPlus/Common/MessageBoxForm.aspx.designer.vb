@@ -28,7 +28,7 @@ Partial Public Class MessageBoxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents Form1 As HtmlForm
 
     '''<summary>
     '''imgMsgIcon control.
@@ -37,7 +37,7 @@ Partial Public Class MessageBoxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents imgMsgIcon As Global.System.Web.UI.HtmlControls.HtmlImage
+    Protected WithEvents imgMsgIcon As HtmlImage
 
     '''<summary>
     '''tdBody control.
@@ -46,7 +46,7 @@ Partial Public Class MessageBoxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdBody As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdBody As HtmlTableCell
 
     '''<summary>
     '''txtErrorMessage control.
@@ -55,7 +55,7 @@ Partial Public Class MessageBoxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtErrorMessage As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtErrorMessage As TextBox
 
     '''<summary>
     '''tdButtons control.
@@ -64,5 +64,5 @@ Partial Public Class MessageBoxForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tdButtons As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents tdButtons As HtmlTableCell
 End Class

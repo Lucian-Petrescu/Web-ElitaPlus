@@ -126,7 +126,7 @@ Namespace Claims
 
             returnValue.Claims = New List(Of ClaimInfo)()
 
-            If Not ClaimsInfo Is Nothing AndAlso ClaimsInfo.Tables.Count > 0 Then
+            If ClaimsInfo IsNot Nothing AndAlso ClaimsInfo.Tables.Count > 0 Then
                 Dim returnClaim = New List(Of ClaimInfo)()
 
                 Dim dtClaimsInfo As List(Of DataTable) = ClaimsInfo.Tables(0).AsEnumerable().GroupBy(Function(i) i.Field(Of System.String)("claim_number")).Select(Function(g) g.CopyToDataTable()).ToList()
@@ -139,7 +139,7 @@ Namespace Claims
 
                     For Each row As DataRow In dtClaimInfo.Rows
                         extendedStatusCount = extendedStatusCount + 1
-                        If Not row.Field(Of String)("EXTENDED_STATUS") Is Nothing And (Not extendedStatusList.Contains(row.Field(Of String)("EXTENDED_STATUS"))) Then
+                        If row.Field(Of String)("EXTENDED_STATUS") IsNot Nothing AndAlso (Not extendedStatusList.Contains(row.Field(Of String)("EXTENDED_STATUS"))) Then
                             returnClaimStatuses.Add(New ExtendedStatus() With
                                 {
                                   .Code = row.Field(Of String)("EXTENDED_STATUS"),

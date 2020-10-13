@@ -564,7 +564,7 @@ Public Class CustItem
 
             If (LookupListNew.GetCodeFromId(LookupListCache.LK_YESNO, custItemBO.IsDeletedId) = Codes.YESNO_N) Then
 
-                If (custItemBO.RegistrationStatusId = regStatusActiveId Or custItemBO.RegistrationStatusId = regStatusPendingId) Then
+                If (custItemBO.RegistrationStatusId = regStatusActiveId OrElse custItemBO.RegistrationStatusId = regStatusPendingId) Then
                     'Raise Activate and Reactive events based on the status, product key
                     If (custItemBO.ProductKey <> String.Empty) Then
                         'if No product key available and status is Active or Pending then Activate the item

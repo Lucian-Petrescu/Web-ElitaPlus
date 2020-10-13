@@ -299,7 +299,7 @@ Public Class EarningPattern
 
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As EarningPattern = CType(objectToValidate, EarningPattern)
-            If Not (obj.Effective Is Nothing Or obj.Expiration Is Nothing) Then
+            If Not (obj.Effective Is Nothing OrElse obj.Expiration Is Nothing) Then
                 If obj.Effective.Value > obj.Expiration.Value Then
                     Return False
                 End If
@@ -324,7 +324,7 @@ Public Class EarningPattern
             Dim ds As New Dataset
             Dim currRow, prevRow, nextRow As DataRow
 
-            If obj.Effective Is Nothing Or obj.Expiration Is Nothing Then
+            If obj.Effective Is Nothing OrElse obj.Expiration Is Nothing Then
                 Return True  ' Skip validation. Rely on mandatory field validation to report exception
             End If
             If Not (obj.EarningCodeId.Equals(Guid.Empty)) Then

@@ -661,7 +661,7 @@ Public Class SpecialService
 
             If LookupListNew.GetCodeFromId(LookupListNew.GetPriceGroupDPLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), _
                    obj.PriceGroupFieldId) = Codes.PRICEGROUP_SPL_SVC_PRICE_LIST Then
-                If Equals(obj.ServiceClassId, Guid.Empty) Or Equals(obj.ServiceTypeId, Guid.Empty) Then Return False
+                If Equals(obj.ServiceClassId, Guid.Empty) OrElse Equals(obj.ServiceTypeId, Guid.Empty) Then Return False
 
             End If
             Return True

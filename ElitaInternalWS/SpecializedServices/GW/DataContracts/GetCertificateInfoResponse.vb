@@ -350,25 +350,25 @@ Namespace SpecializedServices.GW
                 .InsuranceActivationDate = pCertificate.InsuranceActivationDate
                 .DatePaidFor = pCertificate.DatePaidFor
                 .LinkedCertNumber = pCertificate.LinkedCertNumber
-                .PaymentTypeCode = If(Not pCertificate.PaymentTypeId Is Nothing,
+                .PaymentTypeCode = If(pCertificate.PaymentTypeId IsNot Nothing,
                                     pCompanyGroup.PaymentTypes.Where(Function(p) p.PaymentTypeId = pCertificate.PaymentTypeId).FirstOrDefault.Code, Nothing)
-                .PaymentTypeDesc = If(Not pCertificate.PaymentTypeId Is Nothing,
+                .PaymentTypeDesc = If(pCertificate.PaymentTypeId IsNot Nothing,
                                     pCompanyGroup.PaymentTypes.Where(Function(p) p.PaymentTypeId = pCertificate.PaymentTypeId).FirstOrDefault.Description, Nothing)
-                .CurrencyCode = If(Not pCurrency Is Nothing, pCurrency.Code, String.Empty)
-                .FinanceCurrencyCode = If(Not pCurrency Is Nothing, pCurrency.Code, String.Empty)
-                .ExchangeRate = If(Not pCertificate.ExchangeRate Is Nothing, pCertificate.ExchangeRate, 1) 'default to 1 if no exchange rate
-                .UseDepreciation = If(Not pCertificate.UseDepreciation Is Nothing, pCertificate.UseDepreciation.ToDescription(pCommonManager, ListCodes.YesNo, pLanguage), Nothing)
-                If (Not pCertificate.PostPrePaidId Is Nothing) Then
-                    .PostPrePaid = pCertificate.PostPrePaidId.ToCode(pCommonManager, ListCodes.PostPrePaid, pLanguage) + "-" + pCertificate.PostPrePaidId.ToDescription(pCommonManager, ListCodes.PostPrePaid, pLanguage)
+                .CurrencyCode = If(pCurrency IsNot Nothing, pCurrency.Code, String.Empty)
+                .FinanceCurrencyCode = If(pCurrency IsNot Nothing, pCurrency.Code, String.Empty)
+                .ExchangeRate = If(pCertificate.ExchangeRate IsNot Nothing, pCertificate.ExchangeRate, 1) 'default to 1 if no exchange rate
+                .UseDepreciation = If(pCertificate.UseDepreciation IsNot Nothing, pCertificate.UseDepreciation.ToDescription(pCommonManager, ListCodes.YesNo, pLanguage), Nothing)
+                If (pCertificate.PostPrePaidId IsNot Nothing) Then
+                    .PostPrePaid = pCertificate.PostPrePaidId.ToCode(pCommonManager, ListCodes.PostPrePaid, pLanguage) & "-" & pCertificate.PostPrePaidId.ToDescription(pCommonManager, ListCodes.PostPrePaid, pLanguage)
                 End If
-                .SubscriberStatus = If(Not pCertificate.SubscriberStatus Is Nothing, pCertificate.SubscriberStatus.ToDescription(pCommonManager, ListCodes.SubscriberStatus, pLanguage), Nothing)
+                .SubscriberStatus = If(pCertificate.SubscriberStatus IsNot Nothing, pCertificate.SubscriberStatus.ToDescription(pCommonManager, ListCodes.SubscriberStatus, pLanguage), Nothing)
                 .ServiceLineNumber = pCertificate.ServiceLineNumber
                 .SubscriberStatusChangeDate = pCertificate.SubscriberStatusChangeDate
                 .ProdLiabilityLimit = pProduct.PROD_LIABILITY_LIMIT
                 .UpgradeTerm = pCertificate.UpgradeFixedTerm
                 .DownPayment = pCertificate.DownPayment
                 .AdvancePayment = pCertificate.AdvancePayment
-                .Salutation = If(Not pCertificate.SalutationId Is Nothing, pCertificate.SalutationId.ToDescription(pCommonManager, ListCodes.Salutation, pLanguage), Nothing)
+                .Salutation = If(pCertificate.SalutationId IsNot Nothing, pCertificate.SalutationId.ToDescription(pCommonManager, ListCodes.Salutation, pLanguage), Nothing)
                 If Not (pCertificate.CustomerName Is Nothing) AndAlso pCertificate.CustomerName.Trim <> String.Empty Then
                     .CustomerFullName = pCertificate.CustomerName
                 End If
@@ -377,12 +377,12 @@ Namespace SpecializedServices.GW
                 .CustomerIdentificationNumber = pCertificate.IdentificationNumber
                 .CustomerDOB = pCertificate.BirthDate
                 .PrimaryMemberName = pCertificate.PrimaryMemberName
-                .MembershipType = If(Not pCertificate.MembershipTypeId Is Nothing, pCertificate.MembershipTypeId.ToDescription(pCommonManager, ListCodes.MembershipType, pLanguage), Nothing)
-                .PoliticallyExposed = If(Not pCertificate.PoliticallyExposedId Is Nothing, pCertificate.PoliticallyExposedId.ToDescription(pCommonManager, ListCodes.YesNo, pLanguage), Nothing)
-                .Nationality = If(Not pCertificate.NationalityId Is Nothing, pCertificate.NationalityId.ToDescription(pCommonManager, ListCodes.Nationality, pLanguage), Nothing)
-                .PlaceOfBirth = If(Not pCertificate.PlaceOfBirthId Is Nothing, pCertificate.PlaceOfBirthId.ToDescription(pCommonManager, ListCodes.PlaceOfBirth, pLanguage), Nothing)
-                .Gender = If(Not pCertificate.GenderId Is Nothing, pCertificate.GenderId.ToDescription(pCommonManager, ListCodes.Gender, pLanguage), Nothing)
-                .MaritalStatus = If(Not pCertificate.MaritalStatusId Is Nothing, pCertificate.MaritalStatusId.ToDescription(pCommonManager, ListCodes.MaritalStatus, pLanguage), Nothing)
+                .MembershipType = If(pCertificate.MembershipTypeId IsNot Nothing, pCertificate.MembershipTypeId.ToDescription(pCommonManager, ListCodes.MembershipType, pLanguage), Nothing)
+                .PoliticallyExposed = If(pCertificate.PoliticallyExposedId IsNot Nothing, pCertificate.PoliticallyExposedId.ToDescription(pCommonManager, ListCodes.YesNo, pLanguage), Nothing)
+                .Nationality = If(pCertificate.NationalityId IsNot Nothing, pCertificate.NationalityId.ToDescription(pCommonManager, ListCodes.Nationality, pLanguage), Nothing)
+                .PlaceOfBirth = If(pCertificate.PlaceOfBirthId IsNot Nothing, pCertificate.PlaceOfBirthId.ToDescription(pCommonManager, ListCodes.PlaceOfBirth, pLanguage), Nothing)
+                .Gender = If(pCertificate.GenderId IsNot Nothing, pCertificate.GenderId.ToDescription(pCommonManager, ListCodes.Gender, pLanguage), Nothing)
+                .MaritalStatus = If(pCertificate.MaritalStatusId IsNot Nothing, pCertificate.MaritalStatusId.ToDescription(pCommonManager, ListCodes.MaritalStatus, pLanguage), Nothing)
                 .MonthlyPayments = pCertificate.MonthlyPayments
                 .FinancedAmount = pCertificate.FinancedAmount
                 .FinancedTabAmount = pCertificate.FinancedTabAmount
@@ -390,33 +390,33 @@ Namespace SpecializedServices.GW
                 .FinancedTabFrequency = pCertificate.FinancedTabFrequency
                 .FinancedTabInstAmount = pCertificate.FinancedTabInstAmount
                 .FinanceDate = pCertificate.FinanceDate
-                If Not pAddress Is Nothing Then
+                If pAddress IsNot Nothing Then
                     .CustomerAddress = New AddressInfo(pAddress, pCountryManager)
                 End If
                 .CustomerHomePhoneNumber = pCertificate.HomePhone
                 .CustomerWorkPhoneNumber = pCertificate.WorkPhone
                 '''''''check the below line for certificate cancellation
-                If (Not pCertificate.Cancellations.LastOrDefault Is Nothing) Then
+                If (pCertificate.Cancellations.LastOrDefault IsNot Nothing) Then
                     .CancellationDate = pCertificate.Cancellations.LastOrDefault.CancellationDate
                     .CancellationReasonCode = pcompany.CancellationReasons.Where(Function(cc) cc.CancellationId = pCertificate.Cancellations.LastOrDefault.CancellationReasonId).FirstOrDefault.Code
                     .CancellationReasonDesc = pcompany.CancellationReasons.Where(Function(cc) cc.CancellationId = pCertificate.Cancellations.LastOrDefault.CancellationReasonId).FirstOrDefault.Description
                 End If
 
                 .CountryPurchase = pCountry.Code
-                .SuspendedReasonCode = If(Not pCertificate.SuspendedReasonId Is Nothing, pDealer.SuspendedReasons.Where(Function(s) s.SuspendedReasonId = pCertificate.SuspendedReasonId).FirstOrDefault.Code, Nothing)
-                .SuspendedReasonDesc = If(Not pCertificate.SuspendedReasonId Is Nothing, pDealer.SuspendedReasons.Where(Function(s) s.SuspendedReasonId = pCertificate.SuspendedReasonId).FirstOrDefault.Description, Nothing)
+                .SuspendedReasonCode = If(pCertificate.SuspendedReasonId IsNot Nothing, pDealer.SuspendedReasons.Where(Function(s) s.SuspendedReasonId = pCertificate.SuspendedReasonId).FirstOrDefault.Code, Nothing)
+                .SuspendedReasonDesc = If(pCertificate.SuspendedReasonId IsNot Nothing, pDealer.SuspendedReasons.Where(Function(s) s.SuspendedReasonId = pCertificate.SuspendedReasonId).FirstOrDefault.Description, Nothing)
                 .TerroristFlag = IIf(pCertificate.TerroristFlag = "1", "Yes", "No")
                 .NewUsed = pCertificate.NewUsed
-                .CollectionMethodCode = If(Not pCertificate.PaymentTypeId Is Nothing,
+                .CollectionMethodCode = If(pCertificate.PaymentTypeId IsNot Nothing,
                                         pCompanyGroup.PaymentTypes.Where(Function(p) p.PaymentTypeId = pCertificate.PaymentTypeId).FirstOrDefault.CollectionMethodId.ToCode(pCommonManager, ListCodes.CollectionMethod, pLanguage), Nothing)
-                .CollectionMethodDesc = If(Not pCertificate.PaymentTypeId Is Nothing,
+                .CollectionMethodDesc = If(pCertificate.PaymentTypeId IsNot Nothing,
                                         pCompanyGroup.PaymentTypes.Where(Function(p) p.PaymentTypeId = pCertificate.PaymentTypeId).FirstOrDefault.CollectionMethodId.ToDescription(pCommonManager, ListCodes.CollectionMethod, pLanguage), Nothing)
-                .PaymentInstrumentCode = If(Not pCertificate.PaymentTypeId Is Nothing,
+                .PaymentInstrumentCode = If(pCertificate.PaymentTypeId IsNot Nothing,
                                         pCompanyGroup.PaymentTypes.Where(Function(p) p.PaymentTypeId = pCertificate.PaymentTypeId).FirstOrDefault.PaymentInstrumentId.ToCode(pCommonManager, ListCodes.PaymentInstrumentType, pLanguage), Nothing)
-                .PaymentInstrumentDesc = If(Not pCertificate.PaymentTypeId Is Nothing,
+                .PaymentInstrumentDesc = If(pCertificate.PaymentTypeId IsNot Nothing,
                                         pCompanyGroup.PaymentTypes.Where(Function(p) p.PaymentTypeId = pCertificate.PaymentTypeId).FirstOrDefault.PaymentInstrumentId.ToDescription(pCommonManager, ListCodes.PaymentInstrumentType, pLanguage), Nothing)
-                .TypeOfEquipmentCode = If(Not pCertificate.TypeOfEquipmentId Is Nothing, pCertificate.TypeOfEquipmentId.ToCode(pCommonManager, ListCodes.EquipmentType, pLanguage), Nothing)
-                .TypeOfEquipmentDesc = If(Not pCertificate.TypeOfEquipmentId Is Nothing, pCertificate.TypeOfEquipmentId.ToDescription(pCommonManager, ListCodes.EquipmentType, pLanguage), Nothing)
+                .TypeOfEquipmentCode = If(pCertificate.TypeOfEquipmentId IsNot Nothing, pCertificate.TypeOfEquipmentId.ToCode(pCommonManager, ListCodes.EquipmentType, pLanguage), Nothing)
+                .TypeOfEquipmentDesc = If(pCertificate.TypeOfEquipmentId IsNot Nothing, pCertificate.TypeOfEquipmentId.ToDescription(pCommonManager, ListCodes.EquipmentType, pLanguage), Nothing)
                 .TotalPremium = pCertificate.ItemCoverages.Sum(Function(ic) ic.GrossAmtReceived)
 
                 .CuitCuil = pCertificate.CuitCuil
@@ -426,18 +426,18 @@ Namespace SpecializedServices.GW
                 .ControlNumber = pCertificate.CampaignNumber
                 .PaidOn = pCertificate.DatePaid
                 .LinesOnAccount = pCertificate.LinesOnAccount
-                .PersonType = If(Not pCertificate.PersonTypeId Is Nothing, pCertificate.PersonTypeId.ToDescription(pCommonManager, ListCodes.PersonType, pLanguage), Nothing)
+                .PersonType = If(pCertificate.PersonTypeId IsNot Nothing, pCertificate.PersonTypeId.ToDescription(pCommonManager, ListCodes.PersonType, pLanguage), Nothing)
                 .DateAdded = pCertificate.CreatedDate
                 .LastMaintained = pCertificate.ModifiedDate
                 .Source = pCertificate.Source
                 .Region = pCertificate.REGION
                 .Retailer = pCertificate.Retailer
-                If Not pDealer.DealerGroup Is Nothing Then
+                If pDealer.DealerGroup IsNot Nothing Then
                     .DealerGroupName = pDealer.DealerGroup.Description
                 End If
 
                 'REQ-5843 start
-                .CurrencyISOCode = If(Not pCurrency Is Nothing, pCurrency.ISO_CODE, String.Empty)
+                .CurrencyISOCode = If(pCurrency IsNot Nothing, pCurrency.ISO_CODE, String.Empty)
 
                 Dim dEffectiveDate As String, dExpirationDate As String
                 pCertificateManager.GetFirstCertEndorseDates(pCertificate.CertificateId, dEffectiveDate, dExpirationDate)
@@ -448,11 +448,11 @@ Namespace SpecializedServices.GW
                     .EndorsementExpirationDate = CDate(dExpirationDate)
                 End If
 
-                If Not pCertificate.PreviousCertId Is Nothing Then
+                If pCertificate.PreviousCertId IsNot Nothing Then
                     .LastPolicyNumber = pCertificateManager.GetCertNumber(pCertificate.PreviousCertId)
                 End If
 
-                If Not pCertificate.OriginalCertId Is Nothing Then
+                If pCertificate.OriginalCertId IsNot Nothing Then
                     .OriginalPolicyNumber = pCertificateManager.GetCertNumber(pCertificate.OriginalCertId)
                 End If
 

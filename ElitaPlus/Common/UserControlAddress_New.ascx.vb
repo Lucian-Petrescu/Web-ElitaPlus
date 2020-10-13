@@ -1,10 +1,14 @@
 ﻿Imports System.Collections.Generic
+Imports System.Diagnostics
 Imports System.Threading
+Imports AddressValidationProvider.AddressValidation
+Imports AddressValidationProvider.BusinessObjects
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 
 Partial Class UserControlAddress_New
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
     
 
 #Region "Constants"
@@ -38,11 +42,11 @@ Partial Class UserControlAddress_New
         End Set
     End Property
 
-    Public Property MyBO() As Address
+    Public Property MyBO() As BusinessObjectsNew.Address
         Get
-            Return CType(MyGenBO, Address)
+            Return CType(MyGenBO, BusinessObjectsNew.Address)
         End Get
-        Set(Value As Address)
+        Set(Value As BusinessObjectsNew.Address)
             MyGenBO = Value
         End Set
     End Property
@@ -90,15 +94,15 @@ Partial Class UserControlAddress_New
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
     'NOTE: The following placeholder declaration is required by the Web Form Designer.
     'Do not delete or move it.
-    Private designerPlaceholderDeclaration As System.Object
+    Private designerPlaceholderDeclaration As Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -106,7 +110,7 @@ Partial Class UserControlAddress_New
 
 #End Region
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load, Me.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load, Me.Load
         'If Not (IsPostBack) Then
         SetValidatedAddressSectionVisibility(False)
         'End If
@@ -138,7 +142,7 @@ Partial Class UserControlAddress_New
         End If
     End Sub
 
-    Private Sub Page_PreRender(sender As Object, e As System.EventArgs) Handles Me.PreRender
+    Private Sub Page_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
         moPostalLabel.Visible = True
         moPostalText.Visible = True
         moRegionLabel.Visible = True
@@ -182,10 +186,10 @@ Partial Class UserControlAddress_New
         'Set required zip and region labels
         If IsAddressRequired Then
             Dim strAddFmt As String = countryBO.MailAddrFormat.ToUpper
-            If Address.IsAddressComponentRequired(strAddFmt, "ZIP") AndAlso (Not moPostalLabel.Text.Replace(SpanString, "").StartsWith("*")) Then
+            If BusinessObjectsNew.Address.IsAddressComponentRequired(strAddFmt, "ZIP") AndAlso (Not moPostalLabel.Text.Replace(SpanString, "").StartsWith("*")) Then
                 moPostalLabel.Text = "<span class=""mandatory"">*</span> " & moPostalLabel.Text
             End If
-            If (Address.IsAddressComponentRequired(strAddFmt, "RGCODE") OrElse Address.IsAddressComponentRequired(strAddFmt, "RGNAME")) AndAlso (Not moRegionLabel.Text.Replace(SpanString, "").StartsWith("*")) Then
+            If (BusinessObjectsNew.Address.IsAddressComponentRequired(strAddFmt, "RGCODE") OrElse BusinessObjectsNew.Address.IsAddressComponentRequired(strAddFmt, "RGNAME")) AndAlso (Not moRegionLabel.Text.Replace(SpanString, "").StartsWith("*")) Then
                 moRegionLabel.Text = "<span class=""mandatory"">*</span> " & moRegionLabel.Text
             End If
 
@@ -313,11 +317,11 @@ Partial Class UserControlAddress_New
         'moCountryText.BorderColor = Color.FromArgb(198, 198, 198)
     End Sub
 
-    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As Object, e As System.EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
+    Private Sub moCountryDrop_WRITE_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moCountryDrop_WRITE.SelectedIndexChanged
         oCountryID = New Guid(moCountryDrop_WRITE.SelectedItem.Value)
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
         oListContext.CountryId = oCountryID
-        Dim oRegionList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
+        Dim oRegionList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
         moRegionDrop_WRITE.Populate(oRegionList, New PopulateOptions() With
                                        {
                                        .AddBlankItem = True,
@@ -332,19 +336,19 @@ Partial Class UserControlAddress_New
             Return CType(MyBase.Page, ElitaPlusPage)
         End Get
     End Property
-    Private Sub btnValidate_Address_Click(sender As System.Object, e As System.EventArgs) Handles btnValidate_Address.Click
+    Private Sub btnValidate_Address_Click(sender As Object, e As EventArgs) Handles btnValidate_Address.Click
         Try
 
             If (Validate()) Then
-                Dim originalAddress As Address
-                originalAddress = New Address
+                Dim originalAddress As BusinessObjectsNew.Address
+                originalAddress = New BusinessObjectsNew.Address
                 originalAddress.Address1 = moAddress1Text.Text
                 originalAddress.Address2 = moAddress2Text.Text
                 originalAddress.Address3 = moAddress3Text.Text
                 originalAddress.City = moCityText.Text
                 originalAddress.PostalCode = moPostalText.Text
 
-                Dim response As AddressValidationProvider.BusinessObjects.ValidateAddressResponse = AddressService(originalAddress.Address1, originalAddress.PostalCode)
+                Dim response As ValidateAddressResponse = AddressService(originalAddress.Address1, originalAddress.PostalCode)
                 If (response.IsOriginalAddressValid) Then
                     validateAddressButton.Visible = True
                     LabelPopupHeader.Text = TranslationBase.TranslateLabelOrMessage("IS_ADDRESS_VALIDATED") & ": " & TranslationBase.TranslateLabelOrMessage("Yes")
@@ -369,7 +373,7 @@ Partial Class UserControlAddress_New
                 SetValidatedAddressSectionVisibility(True)
 
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
 
         End Try
@@ -395,9 +399,9 @@ Partial Class UserControlAddress_New
 
     End Sub
 
-    Private Function AddressService(keiyakusha_address As String, keiyakusha_post_no As String) As AddressValidationProvider.BusinessObjects.ValidateAddressResponse
-        Dim response As AddressValidationProvider.BusinessObjects.ValidateAddressResponse = Nothing
-        Dim provider = New AddressValidationProvider.AddressValidation.SpectrumAddressValidationProvider()
+    Private Function AddressService(keiyakusha_address As String, keiyakusha_post_no As String) As ValidateAddressResponse
+        Dim response As ValidateAddressResponse = Nothing
+        Dim provider = New SpectrumAddressValidationProvider()
 
         If moCountryText.Text = "" Then
             moCountryText.Text = moCountryDrop_WRITE.SelectedItem.Text
@@ -406,7 +410,7 @@ Partial Class UserControlAddress_New
         Try
 
             If Not String.IsNullOrWhiteSpace(keiyakusha_address) AndAlso Not String.IsNullOrWhiteSpace(keiyakusha_post_no) Then
-                Dim address = New AddressValidationProvider.BusinessObjects.Address With {
+                Dim address = New Address With {
                     .Address1 = keiyakusha_address,
                     .PostalCode = keiyakusha_post_no,
                     .Country = moCountryText.Text
@@ -421,7 +425,7 @@ Partial Class UserControlAddress_New
         Return response
     End Function
 
-    Private Sub btnAccept_Address_Click(sender As System.Object, e As System.EventArgs) Handles btnAccept.Click
+    Private Sub btnAccept_Address_Click(sender As Object, e As EventArgs) Handles btnAccept.Click
         moAddress1Text.Text = LabelAddress1Text.Text
         moAddress2Text.Text = LabelAddress2Text.Text
         moAddress3Text.Text = LabelAddress3Text.Text
@@ -435,7 +439,7 @@ Partial Class UserControlAddress_New
         Dim regionExists As Boolean = False
         Try
             ' Check if Region text Exists in Dropdown list
-            For Each item As ListItem In moRegionDrop_WRITE.Items
+            For Each item As WebControls.ListItem In moRegionDrop_WRITE.Items
                 If item.Text = moRegionText.Text Then
                     regionExists = True
                     Exit For
@@ -444,9 +448,9 @@ Partial Class UserControlAddress_New
 
             ' If Region text Not Exists in Dropdown list then take description based on Code
             If Not regionExists Then
-                Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+                Dim oListContext As New ListContext
                 oListContext.CountryId = New Guid(moCountryDrop_WRITE.SelectedItem.Value)
-                Dim oRegionList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
+                Dim oRegionList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
 
                 Dim strRegionDesc As String = String.Empty
                 ' Check if Code Exists
@@ -460,14 +464,14 @@ Partial Class UserControlAddress_New
                 End If
             End If
             Page.SetSelectedItemByText(moRegionDrop_WRITE, moRegionText.Text)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
             ParentPage.DisplayMessage(Message.MSG_PROMPT_STATE_NOT_CONFIGURED, "", ParentPage.MSG_BTN_OK, ParentPage.MSG_TYPE_INFO)
         Catch ex As Exception
             ParentPage.DisplayMessage(Message.MSG_PROMPT_STATE_NOT_CONFIGURED, "", ParentPage.MSG_BTN_OK, ParentPage.MSG_TYPE_INFO)
         End Try
         SetValidatedAddressSectionVisibility(False)
     End Sub
-    Private Sub btnDecline_Address_Click(sender As System.Object, e As System.EventArgs) Handles btnDecline.Click
+    Private Sub btnDecline_Address_Click(sender As Object, e As EventArgs) Handles btnDecline.Click
         Try
             If MyGenBO IsNot Nothing Then
                 BindBoPropertiesToLabels()
@@ -475,7 +479,7 @@ Partial Class UserControlAddress_New
             End If
             PopulateControlFromBO()
             SetValidatedAddressSectionVisibility(False)
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
 
         End Try
@@ -523,9 +527,9 @@ Partial Class UserControlAddress_New
     End Sub
 
     Private Sub LoadRegionList()
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
         oListContext.CountryId = Page.GetGuidValueFromPropertyName(MyGenBO, "CountryId")
-        Dim oRegionList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
+        Dim oRegionList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
         moRegionDrop_WRITE.Populate(oRegionList, New PopulateOptions() With
                                            {
                                            .AddBlankItem = True,
@@ -534,9 +538,9 @@ Partial Class UserControlAddress_New
     End Sub
 
     Private Sub LoadCountryList(Optional ByVal nothingSelcted As Boolean = True)
-        Dim oListContext As New Assurant.Elita.CommonConfiguration.ListContext
+        Dim oListContext As New ListContext
         oListContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-        Dim oCountryList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CountryByCompanyGroup", context:=oListContext)
+        Dim oCountryList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CountryByCompanyGroup", context:=oListContext)
         moCountryDrop_WRITE.Populate(oCountryList, New PopulateOptions() With
                                         {
                                         .AddBlankItem = nothingSelcted
@@ -691,14 +695,14 @@ Partial Class UserControlAddress_New
                 SetLabelColor(moCityLabel)
                 SetLabelColor(moRegionLabel)
                 SetLabelColor(moCountryLabel)
-                If TypeOf MyGenBO Is Address Then
+                If TypeOf MyGenBO Is BusinessObjectsNew.Address Then
                     .Save()
                 End If
             End With
         End If
     End Sub
     '' REQ-784
-    Public Function PopulateBOFromAddressControl(MyAddressBO As Address) As Address
+    Public Function PopulateBOFromAddressControl(MyAddressBO As BusinessObjectsNew.Address) As BusinessObjectsNew.Address
         If MyAddressBO IsNot Nothing AndAlso Not MyAddressBO.IsDeleted Then
             With MyAddressBO
                 Page.PopulateBOProperty(MyAddressBO, "City", moCityText)
@@ -742,7 +746,7 @@ Partial Class UserControlAddress_New
     End Sub
 
 
-    Private Sub moPostalText_TextChanged(sender As Object, e As System.EventArgs) Handles moPostalText.TextChanged
+    Private Sub moPostalText_TextChanged(sender As Object, e As EventArgs) Handles moPostalText.TextChanged
         moPostalText.Text = moPostalText.Text.Trim
     End Sub
 

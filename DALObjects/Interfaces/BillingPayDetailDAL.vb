@@ -245,7 +245,7 @@
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(BILLPAY_TABLE_NAME) Is Nothing Then
+        If ds.Tables(BILLPAY_TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(BILLPAY_TABLE_NAME), Transaction, ChangesFilter)
         End If
     End Sub

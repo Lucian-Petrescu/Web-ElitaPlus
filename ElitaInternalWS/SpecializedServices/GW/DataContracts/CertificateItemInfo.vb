@@ -91,7 +91,7 @@ Namespace SpecializedServices.GW
                     pcompanyGroup.RiskTypes.Where(Function(r) r.RiskTypeId = pCertificateItem.RiskTypeId).FirstOrDefault.RiskTypeEnglish)
                 .SerialNumber = pCertificateItem.SerialNumber
                 '.Manufacturer = pcompanyGroup.Manufacturers.Where(Function(m) m.ManufacturerId = pCertificateItem.ManufacturerId).FirstOrDefault.Description
-                .Manufacturer = If(Not pCertificateItem.ManufacturerId Is Nothing,
+                .Manufacturer = If(pCertificateItem.ManufacturerId IsNot Nothing,
                                     pcompanyGroup.Manufacturers.Where(Function(m) m.ManufacturerId = pCertificateItem.ManufacturerId).FirstOrDefault.Description, Nothing)
                 .MaxReplacementCost = pCertificateItem.MaxReplacementCost
                 .Model = pCertificateItem.Model
@@ -99,17 +99,17 @@ Namespace SpecializedServices.GW
                 .ItemCode = pCertificateItem.ItemCode
                 .ItemRetailPrice = pCertificateItem.ItemRetailPrice
                 .ItemReplaceReturnDate = pCertificateItem.ItemReplaceReturnDate
-                .EquipmentId = If(Not pCertificateItem.EquipmentId Is Nothing, pEquipmentManager.GetEquipment(pCertificateItem.EquipmentId).Description, Nothing)
+                .EquipmentId = If(pCertificateItem.EquipmentId IsNot Nothing, pEquipmentManager.GetEquipment(pCertificateItem.EquipmentId).Description, Nothing)
                 .MobileType = pCertificateItem.MobileType
                 .SimCardNumber = pCertificateItem.SimCardNumber
                 .SkuNumber = pCertificateItem.SkuNumber
                 .EffectiveDate = pCertificateItem.EffectiveDate
                 .ExpirationDate = pCertificateItem.ExpirationDate
                 .ImeiNumber = pCertificateItem.ImeiNumber
-                .TypeOfEquipmentCode = If(Not pCertificateItem.EquipmentId Is Nothing,
+                .TypeOfEquipmentCode = If(pCertificateItem.EquipmentId IsNot Nothing,
                                         pEquipmentManager.GetEquipment(pCertificateItem.EquipmentId).EquipmentTypeId.ToCode(pCommonManager, ListCodes.TypeOfEquipment, pLanguage), Nothing)
                 'pCertificateItem.TypeOfEquipmentId.ToCode(pCommonManager, ListCodes.EquipmentType, LanguageCodes.USEnglish)
-                .TypeOfEquipmentDesc = If(Not pCertificateItem.EquipmentId Is Nothing,
+                .TypeOfEquipmentDesc = If(pCertificateItem.EquipmentId IsNot Nothing,
                                         pEquipmentManager.GetEquipment(pCertificateItem.EquipmentId).EquipmentTypeId.ToDescription(pCommonManager, ListCodes.TypeOfEquipment, pLanguage), Nothing)
 
                 .FirstUseDate = pCertificateItem.FirstUseDate

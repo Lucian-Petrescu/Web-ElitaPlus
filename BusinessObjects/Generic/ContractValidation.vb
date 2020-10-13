@@ -203,7 +203,7 @@ Public Class ContractValidation
         Dim userInfo As String
         userInfo = "User:" & ElitaPlusIdentity.Current.ActiveUser.NetworkId & "; Date:" & Date.Now.ToString("s") & TimeZoneInfo.Local.ToString.Substring(4, 6)
 
-        If errorCode Is Nothing Or errorCode = "" Then
+        If errorCode Is Nothing OrElse errorCode = "" Then
             result = "OK"
         Else
             If propertyName IsNot Nothing AndAlso propertyName <> "" Then

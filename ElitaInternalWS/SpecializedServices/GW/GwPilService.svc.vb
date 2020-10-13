@@ -118,7 +118,7 @@ Namespace SpecializedServices.GW
             End If
 
             Dim currency As Currency = Nothing
-            If Not cert.CURRENCY_CERT_ID Is Nothing Then
+            If cert.CURRENCY_CERT_ID IsNot Nothing Then
                 currency = CurrencyManager.GetCurrency(cert.CURRENCY_CERT_ID)
             End If
             Dim companyGroup As CompanyGroup = CompanyGroupManager.GetCompanyGroup(company.CompanyGroupId)
@@ -144,7 +144,7 @@ Namespace SpecializedServices.GW
             Dim producerAddress As Address
             Dim contractProducer As BO.Producer
 
-            If Not certContract.ProducerId Is Nothing Then
+            If certContract.ProducerId IsNot Nothing Then
                 contractProducer = New BO.Producer(certContract.ProducerId)
                 If Not contractProducer.AddressId.Equals(Guid.Empty) Then
                     producerAddress = AddressManager.GetAddress(contractProducer.AddressId)
@@ -167,7 +167,7 @@ Namespace SpecializedServices.GW
             Dim intNumOfRecord As Integer = IIf(request.NumberOfRecords.HasValue AndAlso request.NumberOfRecords > 0 AndAlso request.NumberOfRecords < 100, request.NumberOfRecords, 100)
             'Dim languageCode As String = IIf(Not request.Culture Is Nothing AndAlso Not String.IsNullOrEmpty(request.Culture), request.Culture.Trim, LanguageCodes.USEnglish)
             Dim languageCode As String
-            If Not request.Culture Is Nothing AndAlso Not String.IsNullOrEmpty(request.Culture) Then
+            If request.Culture IsNot Nothing AndAlso Not String.IsNullOrEmpty(request.Culture) Then
                 languageCode = request.Culture.Trim
             Else
                 languageCode = LanguageCodes.USEnglish
@@ -175,7 +175,7 @@ Namespace SpecializedServices.GW
 
             'validate language code
             Dim oLookUpList As DataView = BO.LookupListNew.GetLanguageLookupList()
-            oLookUpList.RowFilter = "CODE='" + languageCode + "'"
+            oLookUpList.RowFilter = "CODE='" & languageCode & "'"
 
             If oLookUpList.Count = 0 Then
                 languageCode = LanguageCodes.USEnglish
@@ -208,13 +208,13 @@ Namespace SpecializedServices.GW
             Next
 
             'valiate wildcard search of Serial number and IMEI number
-            If Not request.SerialNumber Is Nothing AndAlso request.SerialNumber.Contains("*") Then
+            If request.SerialNumber IsNot Nothing AndAlso request.SerialNumber.Contains("*") Then
                 If request.SerialNumber.Replace("*", "").Trim.Length < 7 Then
                     Throw New FaultException(Of InvalidWildCardSearch)(New InvalidWildCardSearch(request.SerialNumber), "Invalid Serial Number wildcard search, a minimum of seven contiguous alpha-numeric characters required")
                 End If
             End If
 
-            If Not request.IMEINumber Is Nothing AndAlso request.IMEINumber.Contains("*") Then
+            If request.IMEINumber IsNot Nothing AndAlso request.IMEINumber.Contains("*") Then
                 If request.IMEINumber.Replace("*", "").Trim.Length < 7 Then
                     Throw New FaultException(Of InvalidWildCardSearch)(New InvalidWildCardSearch(request.IMEINumber), "Invalid IMEI wildcard search, a minimum of seven contiguous alpha-numeric characters required")
                 End If
@@ -252,21 +252,21 @@ Namespace SpecializedServices.GW
 
             'validate Country, if invalid, return invalid country fault
             Dim dvCountry As DataView = BO.LookupListNew.GetCountryLookupList()
-            dvCountry.RowFilter = "CODE='" + request.CountryCodes + "'"
+            dvCountry.RowFilter = "CODE='" & request.CountryCodes & "'"
             If dvCountry.Count = 0 Then
-                Throw New FaultException(Of InvalidCountryFault)(New InvalidCountryFault(), "Invalid Country Code - " + request.CountryCodes)
+                Throw New FaultException(Of InvalidCountryFault)(New InvalidCountryFault(), "Invalid Country Code - " & request.CountryCodes)
             End If
 
             'validate language code, if invalid, set to default of US
             Dim languageCode As String
-            If Not request.Language Is Nothing AndAlso Not String.IsNullOrEmpty(request.Language) Then
+            If request.Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(request.Language) Then
                 languageCode = request.Language.Trim
             Else
                 languageCode = LanguageCodes.USEnglish
             End If
             'Dim languageCode As String = IIf(Not String.IsNullOrEmpty(request.Language), request.Language.Trim, LanguageCodes.USEnglish)
             Dim oLookUpList As DataView = BO.LookupListNew.GetLanguageLookupList()
-            oLookUpList.RowFilter = "CODE='" + languageCode + "'"
+            oLookUpList.RowFilter = "CODE='" & languageCode & "'"
             If oLookUpList.Count = 0 Then
                 languageCode = LanguageCodes.USEnglish
             End If
@@ -292,7 +292,7 @@ Namespace SpecializedServices.GW
             End If
 
             'populate the counts by filters
-            If Not request.Filters Is Nothing AndAlso request.Filters.Count > 0 Then
+            If request.Filters IsNot Nothing AndAlso request.Filters.Count > 0 Then
                 Dim cntByFilter As Integer, intCnt As Integer
                 Dim FilterResults As New Collections.Generic.List(Of SearchFilterResult)
                 Dim filteredList As New Collections.Generic.List(Of DBSearchResultCertRecord)

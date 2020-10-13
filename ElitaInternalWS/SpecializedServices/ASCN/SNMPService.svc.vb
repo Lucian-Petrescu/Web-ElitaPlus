@@ -97,7 +97,7 @@ Namespace SpecializedServices.Ascn
             Try
                 For i = 0 To objCompaniesAL.Count - 1
                     Dim objCompany As New Company(CType(objCompaniesAL.Item(i), Guid))
-                    If Not objCompany Is Nothing AndAlso objCompany.Code.Equals(request.CompanyCode.ToUpper) Then
+                    If objCompany IsNot Nothing AndAlso objCompany.Code.Equals(request.CompanyCode.ToUpper) Then
                         CompanyId = objCompany.Id
                     End If
                 Next
@@ -311,7 +311,7 @@ Namespace SpecializedServices.Ascn
 
             Dim dvRiskGroups As DataView = LookupListNew.GetRiskGroupsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
-            If Not dvRiskGroups Is Nothing AndAlso dvRiskGroups.Count > 0 Then
+            If dvRiskGroups IsNot Nothing AndAlso dvRiskGroups.Count > 0 Then
                 _Risk_Group_id = LookupListNew.GetIdFromCode(dvRiskGroups, request.RiskGroupCode)
                 If _Risk_Group_id.Equals(Guid.Empty) Then
                     Throw New FaultException(Of PartInfoNotFoundFault)(New PartInfoNotFoundFault(), TranslationBase.TranslateLabelOrMessage(ERR_RISK_GROUP,
@@ -358,7 +358,7 @@ Namespace SpecializedServices.Ascn
             Try
                 For i = 0 To objCompaniesAL.Count - 1
                     Dim objCompany As New Company(CType(objCompaniesAL.Item(i), Guid))
-                    If Not objCompany Is Nothing AndAlso objCompany.Code.Equals(request.CompanyCode.ToUpper) Then
+                    If objCompany IsNot Nothing AndAlso objCompany.Code.Equals(request.CompanyCode.ToUpper) Then
                         CompanyId = objCompany.Id
                     End If
                 Next
@@ -375,7 +375,7 @@ Namespace SpecializedServices.Ascn
 
             Try
                 dsClaim = Claim.ClaimDetailForWS(request.ClaimNumber, CompanyId, request.ForServiceCenterUse, request.IncludePartDescriptions)
-                If dsClaim Is Nothing Or dsClaim.Tables.Count <= 0 Or dsClaim.Tables(0).Rows.Count = 0 Then
+                If dsClaim Is Nothing OrElse dsClaim.Tables.Count <= 0 OrElse dsClaim.Tables(0).Rows.Count = 0 Then
                     Throw New FaultException(Of ClaimNotFoundFault)(New ClaimNotFoundFault(), TranslationBase.TranslateLabelOrMessage(ERR_CLAIM_NOT_FOUND,
                                                                                                           ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " : " & request.ClaimNumber)
                 Else
@@ -566,7 +566,7 @@ Namespace SpecializedServices.Ascn
             Try
                 For i = 0 To objCompaniesAL.Count - 1
                     Dim objCompany As New Company(CType(objCompaniesAL.Item(i), Guid))
-                    If Not objCompany Is Nothing AndAlso objCompany.Code.Equals(request.CompanyCode.ToUpper) Then
+                    If objCompany IsNot Nothing AndAlso objCompany.Code.Equals(request.CompanyCode.ToUpper) Then
                         CompanyId = objCompany.Id
                     End If
                 Next
@@ -707,7 +707,7 @@ Namespace SpecializedServices.Ascn
                 End If
             End If
 
-            If request.PartAmount = 0.0 And request.ShipmentAmount = 0.0 And request.LabourAmount = 0.0 And request.ServiceChargeAmount = 0.0 And request.TripAmount = 0.0 And request.OtherAmount = 0.0 And ClaimBO.ClaimNumber.EndsWith("S") Then
+            If request.PartAmount = 0.0 AndAlso request.ShipmentAmount = 0.0 AndAlso request.LabourAmount = 0.0 AndAlso request.ServiceChargeAmount = 0.0 AndAlso request.TripAmount = 0.0 AndAlso request.OtherAmount = 0.0 AndAlso ClaimBO.ClaimNumber.EndsWith("S") Then
                 ByPassClaimAuthValidation = True
             End If
 
@@ -772,7 +772,7 @@ Namespace SpecializedServices.Ascn
                 ClaimBO.Save()
 
             Catch boEx As BOValidationException 'Req 6292 / US 214283 - Adding Validation from BO to catch exception when PickUp date has invalid values as per PickUp date's validation rules
-                Dim msg As String = If(Not boEx.ValidationErrorList Is Nothing AndAlso boEx.ValidationErrorList.Count > 0, boEx.ValidationErrorList(0).Message, boEx.Message)
+                Dim msg As String = If(boEx.ValidationErrorList IsNot Nothing AndAlso boEx.ValidationErrorList.Count > 0, boEx.ValidationErrorList(0).Message, boEx.Message)
                 Throw New FaultException(Of UpdateClaimErrorFault)(New UpdateClaimErrorFault(), TranslationBase.TranslateLabelOrMessage(msg, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
             Catch ex As Exception
                 Throw New FaultException(Of UpdateClaimErrorFault)(New UpdateClaimErrorFault(), TranslationBase.TranslateLabelOrMessage(ERR_UPDATE_CLAIM_ERROR,
@@ -889,12 +889,12 @@ Namespace SpecializedServices.Ascn
 
         Private Function GetAuthDetailTotal(clmAuthDetail As ClaimAuthDetail) As Decimal
             Dim amount As Decimal = 0
-            If Not clmAuthDetail.LaborAmount Is Nothing Then amount += clmAuthDetail.LaborAmount.Value
-            If Not clmAuthDetail.PartAmount Is Nothing Then amount += clmAuthDetail.PartAmount.Value
-            If Not clmAuthDetail.ServiceCharge Is Nothing Then amount += clmAuthDetail.ServiceCharge.Value
-            If Not clmAuthDetail.TripAmount Is Nothing Then amount += clmAuthDetail.TripAmount.Value
-            If Not clmAuthDetail.ShippingAmount Is Nothing Then amount += clmAuthDetail.ShippingAmount.Value
-            If Not clmAuthDetail.OtherAmount Is Nothing Then amount += clmAuthDetail.OtherAmount.Value
+            If clmAuthDetail.LaborAmount IsNot Nothing Then amount += clmAuthDetail.LaborAmount.Value
+            If clmAuthDetail.PartAmount IsNot Nothing Then amount += clmAuthDetail.PartAmount.Value
+            If clmAuthDetail.ServiceCharge IsNot Nothing Then amount += clmAuthDetail.ServiceCharge.Value
+            If clmAuthDetail.TripAmount IsNot Nothing Then amount += clmAuthDetail.TripAmount.Value
+            If clmAuthDetail.ShippingAmount IsNot Nothing Then amount += clmAuthDetail.ShippingAmount.Value
+            If clmAuthDetail.OtherAmount IsNot Nothing Then amount += clmAuthDetail.OtherAmount.Value
 
 
             Return amount

@@ -127,7 +127,7 @@ Partial Public Class WorkQueue
 
             resultList = (From wq In resultList _
                          Where nameSearch.IsMatch(wq.Name) AndAlso _
-                         (Not activeOn.HasValue OrElse (activeOn.Value >= wq.ActiveOn And activeOn.Value <= (wq.InActiveOn.GetValueOrDefault(DateTime.MaxValue)))) AndAlso _
+                         (Not activeOn.HasValue OrElse (activeOn.Value >= wq.ActiveOn AndAlso activeOn.Value <= (wq.InActiveOn.GetValueOrDefault(DateTime.MaxValue)))) AndAlso _
                          (companyCode Is Nothing OrElse companyCode.Length = 0 OrElse wq.CompanyCode = companyCode) AndAlso _
                          (actionCode Is Nothing OrElse actionCode.Length = 0 OrElse wq.ActionCode = actionCode) AndAlso _
                          (Not requireAdminRole OrElse oUser.isInRole(wq.AdminRole)) _
@@ -372,13 +372,13 @@ Partial Public Class WorkQueue
         Get
             Dim returnValue(-1) As WorkQueueItemStatusReason
             If (StatusReasons Is Nothing) Then Return returnValue
-            Return (From wqisr In StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Completed And wqisr.ItemStatusReason.IsActive = True And wqisr.ItemStatusReason.Reason <> ServiceHelper.WQISR_DEFAULT_COMPLETED Select wqisr).ToArray()
+            Return (From wqisr In StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Completed AndAlso wqisr.ItemStatusReason.IsActive = True AndAlso wqisr.ItemStatusReason.Reason <> ServiceHelper.WQISR_DEFAULT_COMPLETED Select wqisr).ToArray()
         End Get
     End Property
 
     Public ReadOnly Property DefaultCompletedReason As WorkQueueItemStatusReason
         Get
-            Return (From wqisr In StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Completed And wqisr.ItemStatusReason.IsActive = True And wqisr.ItemStatusReason.Reason = ServiceHelper.WQISR_DEFAULT_COMPLETED Select wqisr).FirstOrDefault()
+            Return (From wqisr In StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Completed AndAlso wqisr.ItemStatusReason.IsActive = True AndAlso wqisr.ItemStatusReason.Reason = ServiceHelper.WQISR_DEFAULT_COMPLETED Select wqisr).FirstOrDefault()
         End Get
     End Property
 
@@ -386,13 +386,13 @@ Partial Public Class WorkQueue
         Get
             Dim returnValue(-1) As WorkQueueItemStatusReason
             If (StatusReasons Is Nothing) Then Return returnValue
-            Return (From wqisr In StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Requeue And wqisr.ItemStatusReason.IsActive = True And wqisr.ItemStatusReason.Reason <> ServiceHelper.WQISR_DEFAULT_REQUEUE Select wqisr).ToArray()
+            Return (From wqisr In StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Requeue AndAlso wqisr.ItemStatusReason.IsActive = True AndAlso wqisr.ItemStatusReason.Reason <> ServiceHelper.WQISR_DEFAULT_REQUEUE Select wqisr).ToArray()
         End Get
     End Property
 
     Public ReadOnly Property DefaultReQueueReason As WorkQueueItemStatusReason
         Get
-            Return (From wqisr In StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Requeue And wqisr.ItemStatusReason.IsActive = True And wqisr.ItemStatusReason.Reason = ServiceHelper.WQISR_DEFAULT_REQUEUE Select wqisr).FirstOrDefault()
+            Return (From wqisr In StatusReasons Where wqisr.ItemStatusReason.Status = WrkQueue.StatusType.Requeue AndAlso wqisr.ItemStatusReason.IsActive = True AndAlso wqisr.ItemStatusReason.Reason = ServiceHelper.WQISR_DEFAULT_REQUEUE Select wqisr).FirstOrDefault()
         End Get
     End Property
 
@@ -700,7 +700,7 @@ Partial Public Class WorkQueue
             Dim defaultCompletedReasonId As Guid = If(defaultCompletedReason Is Nothing, Guid.Empty, defaultCompletedReason.Id)
             Dim defaultReQueueReasonId As Guid = If(defaultReQueueReason Is Nothing, Guid.Empty, defaultReQueueReason.Id)
             For Each oWqisr As WorkQueueItemStatusReason In target.StatusReasons
-                If (oWqisr.Id <> defaultCompletedReasonId And oWqisr.Id <> defaultReQueueReasonId) Then
+                If (oWqisr.Id <> defaultCompletedReasonId AndAlso oWqisr.Id <> defaultReQueueReasonId) Then
                     Select Case oWqisr.ItemStatusReason.Status
                         Case WrkQueue.StatusType.Completed
                             newWqisr = AddReDirectReason()

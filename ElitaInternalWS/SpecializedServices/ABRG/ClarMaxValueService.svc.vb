@@ -69,7 +69,7 @@ Public Class ClarMaxValueService
 
         '''check whether serial number is valid in Elita
         Dim count As Integer = (From ci As CertItem In
-                                      oCertificate.Items.Where(Function(i) i.ItemNumber = 1 And i.SerialNumber = req.SerialNumber)).Count
+                                      oCertificate.Items.Where(Function(i) i.ItemNumber = 1 AndAlso i.SerialNumber = req.SerialNumber)).Count
 
 
         If (count = 0) Then
@@ -117,9 +117,9 @@ Public Class ClarMaxValueService
                     'update serial number with imei number found on apple webservice and locate certificate again
                     'DirectCast(request.CertificateSearch, CertficateDealerSerialLookUp).SerialNumber = oRequest.ImeiNumber
 
-                Loop Until (oCounter = 10 Or oResponse.ImeiNumber Is Nothing Or oResponse.ImeiNumber = req.SerialNumber)
+                Loop Until (oCounter = 10 OrElse oResponse.ImeiNumber Is Nothing OrElse oResponse.ImeiNumber = req.SerialNumber)
 
-                If (oCounter = 10 Or oResponse.ImeiNumber Is Nothing) Then
+                If (oCounter = 10 OrElse oResponse.ImeiNumber Is Nothing) Then
                     Throw New FaultException(Of InvalidSerialnumber)(New InvalidSerialnumber() With {.CertificateSearch = request.CertificateSearch}, "Invalid Serial Number")
                 End If
 

@@ -390,7 +390,7 @@ Public Class InstallmentFactor
             Dim obj As InstallmentFactor = CType(objectToValidate, InstallmentFactor)
             Dim bValid As Boolean = True
 
-            If obj.LowNumberOfPayments IsNot Nothing And obj.HighNumberOfPayments IsNot Nothing Then
+            If obj.LowNumberOfPayments IsNot Nothing AndAlso obj.HighNumberOfPayments IsNot Nothing Then
                 If obj.LowNumberOfPayments.Value > obj.HighNumberOfPayments.Value Then
                     Message = ERR_LOW_PAYMENT_MORE_THAN_HIGH_PAYMENT
                     bValid = False
@@ -430,19 +430,19 @@ Public Class InstallmentFactor
                             ' Updating only one record
                             bValid = True
                             Exit For
-                        ElseIf oRows.Count = oCount And prevHigh + THRESHOLD = oNewLow Then
+                        ElseIf oRows.Count = oCount AndAlso prevHigh + THRESHOLD = oNewLow Then
                             ' Updating the last record
                             bValid = True
                             Exit For
                         End If
                     Else
-                        If prevHigh < MIN_PAYMENT And oNewHigh + THRESHOLD = oLow Then
+                        If prevHigh < MIN_PAYMENT AndAlso oNewHigh + THRESHOLD = oLow Then
                             bValid = True
                             Exit For
-                        ElseIf oCount = oRows.Count And oHigh + THRESHOLD = oNewLow Then
+                        ElseIf oCount = oRows.Count AndAlso oHigh + THRESHOLD = oNewLow Then
                             bValid = True
                             Exit For
-                        ElseIf prevHigh + THRESHOLD = oNewLow And oNewHigh + THRESHOLD = oLow Then
+                        ElseIf prevHigh + THRESHOLD = oNewLow AndAlso oNewHigh + THRESHOLD = oLow Then
                             bValid = True
                             Exit For
                         End If
@@ -473,7 +473,7 @@ Public NotInheritable Class ValidInstallmentFactorPeriod
             Dim ds As New DataSet
             Dim currRow, prevRow, nextRow As DataRow
 
-            If obj.EffectiveDate Is Nothing Or obj.EffectiveDate Is Nothing Then
+            If obj.EffectiveDate Is Nothing OrElse obj.EffectiveDate Is Nothing Then
                 Return True  ' Skip validation. Rely on mandatory field validation to report exception
             End If
 
@@ -540,14 +540,14 @@ Public NotInheritable Class ValidInstallmentFactorPeriod
             Dim obj As InstallmentFactor = CType(objectToValidate, InstallmentFactor)
             Dim bValid As Boolean = True
 
-            If obj.LowNumberOfPayments IsNot Nothing And obj.HighNumberOfPayments IsNot Nothing Then
+            If obj.LowNumberOfPayments IsNot Nothing AndAlso obj.HighNumberOfPayments IsNot Nothing Then
                 If (obj.Factor Is Nothing) Then
                     Message = ERR_INSTALLMENT_FACTOR_REQUIRED
                     bValid = False
                 Else
                     bValid = ValidateRange(obj)
                     If bValidFactor = True Then
-                        If ar IsNot Nothing And ar.Count > 0 Then
+                        If ar IsNot Nothing AndAlso ar.Count > 0 Then
                             Message = CType(ar(0), String)
                         End If
                     Else
@@ -595,22 +595,22 @@ Public NotInheritable Class ValidInstallmentFactorPeriod
                             bValid = True
                             bValidFactor = True
                             Exit For
-                        ElseIf oRows.Count = oCount And prevHigh + THRESHOLD = oNewLow Then
+                        ElseIf oRows.Count = oCount AndAlso prevHigh + THRESHOLD = oNewLow Then
                             ' Updating the last record
                             bValidFactor = True
                             bValid = ValidateInstallmentFactorSequence(oInstallmentFactor.Factor, preFactor)
                             Exit For
                         End If
                     Else
-                        If prevHigh < MIN_PAYMENT And oNewHigh + THRESHOLD = oLow Then
+                        If prevHigh < MIN_PAYMENT AndAlso oNewHigh + THRESHOLD = oLow Then
                             bValidFactor = True
                             bValid = ValidateInstallmentFactorSequence(oFactor, oInstallmentFactor.Factor)
                             Exit For
-                        ElseIf oCount = oRows.Count And oHigh + THRESHOLD = oNewLow Then
+                        ElseIf oCount = oRows.Count AndAlso oHigh + THRESHOLD = oNewLow Then
                             bValidFactor = True
                             bValid = ValidateInstallmentFactorSequence(oInstallmentFactor.Factor, oFactor)
                             Exit For
-                        ElseIf prevHigh + THRESHOLD = oNewLow And oNewHigh + THRESHOLD = oLow Then
+                        ElseIf prevHigh + THRESHOLD = oNewLow AndAlso oNewHigh + THRESHOLD = oLow Then
                             bValidFactor = True
                             bValid = ValidateInstallmentFactorSequence(oFactor, oInstallmentFactor.Factor)
                             Exit For

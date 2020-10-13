@@ -171,14 +171,14 @@ Public Class TabFormDAL
 
             DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, outParameters)
 
-            If Not outParameters(0).Value Is Nothing Then
+            If outParameters(0).Value IsNot Nothing Then
                 Try
                     intErrCode = CType(outParameters(0).Value, Integer)
                 Catch ex As Exception
                     intErrCode = 0
                 End Try
             End If
-            If Not outParameters(1).Value Is Nothing Then
+            If outParameters(1).Value IsNot Nothing Then
                 strErrMsg = outParameters(1).Value.ToString().Trim
             End If
 
@@ -202,14 +202,14 @@ Public Class TabFormDAL
 
             DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters, outParameters)
 
-            If Not outParameters(0).Value Is Nothing Then
+            If outParameters(0).Value IsNot Nothing Then
                 Try
                     intErrCode = CType(outParameters(0).Value, Integer)
                 Catch ex As Exception
                     intErrCode = 0
                 End Try
             End If
-            If Not outParameters(1).Value Is Nothing Then
+            If outParameters(1).Value IsNot Nothing Then
                 strErrMsg = outParameters(1).Value.ToString().Trim
             End If
         Catch ex As Exception

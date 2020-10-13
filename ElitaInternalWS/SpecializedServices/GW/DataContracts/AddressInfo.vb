@@ -38,11 +38,11 @@ Namespace SpecializedServices.GW
             PostalCode = pAddress.PostalCode
 
             Dim cty As Country = pCountryManager.GetCountry(pAddress.CountryId)
-            If Not cty Is Nothing Then
+            If cty IsNot Nothing Then
                 CountryCode = cty.Code
-                If Not pAddress.RegionId Is Nothing Then
+                If pAddress.RegionId IsNot Nothing Then
                     Dim reg As Region = cty.Regions.Where(Function(r) r.RegionId = pAddress.RegionId.GetValueOrDefault).FirstOrDefault
-                    If Not reg Is Nothing Then
+                    If reg IsNot Nothing Then
                         StateRegion = reg.Description
                     End If
                 End If

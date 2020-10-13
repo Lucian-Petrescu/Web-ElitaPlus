@@ -12,8 +12,8 @@ End Interface
 
 Public Interface IMessageController
     Inherits IErrorController
-    Sub AddMessage(message As String, Optional ByVal translate As Boolean = True, Optional ByVal messageType As IMessageController.MessageType = IMessageController.MessageType.None)
-    Sub AddMessage(message() As String, Optional ByVal translate As Boolean = True, Optional ByVal messageType As IMessageController.MessageType = IMessageController.MessageType.None)
+    Sub AddMessage(message As String, Optional ByVal translate As Boolean = True, Optional ByVal messageType As MessageType = MessageType.None)
+    Sub AddMessage(message() As String, Optional ByVal translate As Boolean = True, Optional ByVal messageType As MessageType = MessageType.None)
     Overloads Sub AddError(errorMessage As String, Optional ByVal translate As Boolean = True)
     Overloads Sub AddError(errorMessages() As String, Optional ByVal translate As Boolean = True)
     Sub AddInformation(informationMessage As String, Optional ByVal translate As Boolean = True)

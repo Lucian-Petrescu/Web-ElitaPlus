@@ -28,7 +28,7 @@ Partial Public Class NonBusinessCalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Literal1 As Global.System.Web.UI.WebControls.Literal
+    Protected WithEvents Literal1 As Literal
 
     '''<summary>
     '''Form1 control.
@@ -37,7 +37,7 @@ Partial Public Class NonBusinessCalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents Form1 As HtmlForm
 
     '''<summary>
     '''LabelTables control.
@@ -46,7 +46,7 @@ Partial Public Class NonBusinessCalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelTables As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelTables As Label
 
     '''<summary>
     '''Label40 control.
@@ -55,7 +55,7 @@ Partial Public Class NonBusinessCalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label40 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label40 As Label
 
     '''<summary>
     '''WorkingPanel control.
@@ -64,7 +64,7 @@ Partial Public Class NonBusinessCalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents WorkingPanel As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents WorkingPanel As Panel
 
     '''<summary>
     '''EditPanel_WRITE control.
@@ -73,7 +73,7 @@ Partial Public Class NonBusinessCalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents EditPanel_WRITE As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents EditPanel_WRITE As Panel
 
     '''<summary>
     '''LabelMonth control.
@@ -82,7 +82,7 @@ Partial Public Class NonBusinessCalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelMonth As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelMonth As Label
 
     '''<summary>
     '''cboMonthList control.
@@ -91,7 +91,7 @@ Partial Public Class NonBusinessCalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboMonthList As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboMonthList As DropDownList
 
     '''<summary>
     '''LabelYear control.
@@ -100,7 +100,7 @@ Partial Public Class NonBusinessCalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelYear As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelYear As Label
 
     '''<summary>
     '''cboYearList control.
@@ -109,7 +109,7 @@ Partial Public Class NonBusinessCalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboYearList As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboYearList As DropDownList
 
     '''<summary>
     '''MyCalendar control.
@@ -118,7 +118,7 @@ Partial Public Class NonBusinessCalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents MyCalendar As Global.System.Web.UI.WebControls.Calendar
+    Protected WithEvents MyCalendar As Calendar
 
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.
@@ -127,7 +127,7 @@ Partial Public Class NonBusinessCalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenSaveChangesPromptResponse As HtmlInputHidden
 
     '''<summary>
     '''btnSave_WRITE control.
@@ -136,5 +136,5 @@ Partial Public Class NonBusinessCalendarForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnSave_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSave_WRITE As Button
 End Class

@@ -337,7 +337,7 @@ Public Class ClaimValidation
                     myClaimBO.ProblemDescription = problemDescription
 
                     ' claim authorized detail
-                    If laborAmount <> 0 Or tripAmount <> 0 Or shipping <> 0 Then
+                    If laborAmount <> 0 OrElse tripAmount <> 0 OrElse shipping <> 0 Then
                         Dim authDetailBO As ClaimAuthDetail
                         Try
                             authDetailBO = myClaimBO.AddClaimAuthDetail(myClaimBO.Id, True, True)

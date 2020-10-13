@@ -1,3 +1,5 @@
+Imports AjaxControlToolkit
+
 Public Class AjaxController
 
 
@@ -7,11 +9,11 @@ Public Class AjaxController
             Optional ByVal TextColumnName As String = "DESCRIPTION", _
             Optional ByVal GuidValueColumnName As String = "ID", _
             Optional ByVal AddNothingSelected As Boolean = True _
-            ) As AjaxControlToolkit.CascadingDropDownNameValue()
+            ) As CascadingDropDownNameValue()
         Dim i As Integer
         Dim values As New ArrayList
-        Dim ajaxItem As AjaxControlToolkit.CascadingDropDownNameValue
-        Dim res As AjaxControlToolkit.CascadingDropDownNameValue()
+        Dim ajaxItem As CascadingDropDownNameValue
+        Dim res As CascadingDropDownNameValue()
         Dim isDefault As Boolean
         Dim id As String
 
@@ -21,7 +23,7 @@ Public Class AjaxController
             If SelectItem.ToString = id Then
                 isDefault = True
             End If
-            ajaxItem = New AjaxControlToolkit.CascadingDropDownNameValue("", id, isDefault)
+            ajaxItem = New CascadingDropDownNameValue("", id, isDefault)
             values.Add(ajaxItem)
         End If
         If Data IsNot Nothing Then
@@ -31,12 +33,12 @@ Public Class AjaxController
                 If SelectItem.ToString = id Then
                     isDefault = True
                 End If
-                ajaxItem = New AjaxControlToolkit.CascadingDropDownNameValue( _
+                ajaxItem = New CascadingDropDownNameValue( _
                     Data(i)(TextColumnName).ToString, id, isDefault)
                 values.Add(ajaxItem)
             Next
         End If
-        res = CType(values.ToArray(GetType(AjaxControlToolkit.CascadingDropDownNameValue)), AjaxControlToolkit.CascadingDropDownNameValue())
+        res = CType(values.ToArray(GetType(CascadingDropDownNameValue)), CascadingDropDownNameValue())
         Return res
     End Function
 
@@ -54,15 +56,15 @@ Public Class AjaxController
         If prefixText = "*" Then
             ' All 
             For i As Integer = 0 To dv.Count - 1
-                arrDealers.Add(AjaxControlToolkit.AutoCompleteExtender.CreateAutoCompleteItem(dv(i).Item("DESCRIPTION").ToString, GuidControl.ByteArrayToGuid(dv(i).Item("Id")).ToString))
+                arrDealers.Add(AutoCompleteExtender.CreateAutoCompleteItem(dv(i).Item("DESCRIPTION").ToString, GuidControl.ByteArrayToGuid(dv(i).Item("Id")).ToString))
             Next
         Else
             For i As Integer = 0 To dv.Count - 1
                 If dv(i).Item("DESCRIPTION").ToString.ToUpper.StartsWith(prefixText.ToUpper) Then
-                    arrDealers.Add(AjaxControlToolkit.AutoCompleteExtender.CreateAutoCompleteItem(dv(i).Item("DESCRIPTION").ToString, GuidControl.ByteArrayToGuid(dv(i).Item("Id")).ToString))
+                    arrDealers.Add(AutoCompleteExtender.CreateAutoCompleteItem(dv(i).Item("DESCRIPTION").ToString, GuidControl.ByteArrayToGuid(dv(i).Item("Id")).ToString))
                 End If
             Next
-            arrDealers.Add(AjaxControlToolkit.AutoCompleteExtender.CreateAutoCompleteItem(TranslationBase.TranslateLabelOrMessage(Message.MSG_NO_RECORDS_FOUND), Guid.Empty.ToString))
+            arrDealers.Add(AutoCompleteExtender.CreateAutoCompleteItem(TranslationBase.TranslateLabelOrMessage(Message.MSG_NO_RECORDS_FOUND), Guid.Empty.ToString))
         End If
 
 
@@ -76,12 +78,12 @@ Public Class AjaxController
         If prefixText = "*" Then
             ' All 
             For i As Integer = 0 To dv.Count - 1
-                arrReports.Add(AjaxControlToolkit.AutoCompleteExtender.CreateAutoCompleteItem(dv(i).Item("REP_NAME").ToString, dv(i).Item("REP_ID").ToString))
+                arrReports.Add(AutoCompleteExtender.CreateAutoCompleteItem(dv(i).Item("REP_NAME").ToString, dv(i).Item("REP_ID").ToString))
             Next
         Else
             For i As Integer = 0 To dv.Count - 1
                 If dv(i).Item("REP_NAME").ToString.ToUpper.StartsWith(prefixText.ToUpper) Then
-                    arrReports.Add(AjaxControlToolkit.AutoCompleteExtender.CreateAutoCompleteItem(dv(i).Item("REP_NAME").ToString, dv(i).Item("REP_ID").ToString))
+                    arrReports.Add(AutoCompleteExtender.CreateAutoCompleteItem(dv(i).Item("REP_NAME").ToString, dv(i).Item("REP_ID").ToString))
                 End If
             Next
         End If

@@ -76,11 +76,11 @@ Public Class ServersDAL
                     Optional ByVal webServiceFunctionName As String = Nothing)
         Dim selectStmt As String = Config("/SQL/LOAD_BY_CODE")
         Dim objWebServiceParam As String
-        If Not webServiceName Is Nothing Then
+        If webServiceName IsNot Nothing Then
             objWebServiceParam = webServiceName.ToUpper()
         End If
         Dim objWebServiceFunctionParam As String
-        If Not webServiceFunctionName Is Nothing Then
+        If webServiceFunctionName IsNot Nothing Then
             objWebServiceFunctionParam = webServiceFunctionName.ToUpper()
         End If
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
@@ -142,7 +142,7 @@ Public Class ServersDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

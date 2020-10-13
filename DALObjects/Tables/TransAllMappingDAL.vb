@@ -73,7 +73,7 @@ Public Class TransAllMappingDAL
             whereClauseConditions &= String.Format(" AND tm.dealer_id = HEXTORAW('{0}')", GuidControl.GuidToHexString(DealerId))
         End If
 
-        If Not CompanyIds Is Nothing Then
+        If CompanyIds IsNot Nothing Then
             whereClauseConditions &= MiscUtil.BuildListForSql(" AND d." & PAR_COMPANY_ID, CompanyIds, True)
         End If
 
@@ -100,7 +100,7 @@ Public Class TransAllMappingDAL
         parameters = New DBHelper.DBHelperParameter() { _
                        New DBHelper.DBHelperParameter(PAR_FILE_NAME, FileName)}
 
-        If Not CompanyIds Is Nothing Then
+        If CompanyIds IsNot Nothing Then
             whereClauseConditions &= MiscUtil.BuildListForSql("elp_dealer." & PAR_COMPANY_ID, CompanyIds, True)
         End If
 
@@ -129,7 +129,7 @@ Public Class TransAllMappingDAL
         parameters = New DBHelper.DBHelperParameter() { _
                        New DBHelper.DBHelperParameter(PAR_OUTPUT_PATH, DirectoryName)}
 
-        If Not CompanyIds Is Nothing Then
+        If CompanyIds IsNot Nothing Then
             whereClauseConditions &= MiscUtil.BuildListForSql("elp_dealer." & PAR_COMPANY_ID, CompanyIds, True)
         End If
 
@@ -158,7 +158,7 @@ Public Class TransAllMappingDAL
                        New DBHelper.DBHelperParameter(PAR_OUTPUT_PATH, DirectoryName), _
                        New DBHelper.DBHelperParameter("inbound_filename", partialFileName.ToUpper().ToString())}
 
-        If Not CompanyIds Is Nothing Then
+        If CompanyIds IsNot Nothing Then
             whereClauseConditions &= MiscUtil.BuildListForSql("elp_dealer." & PAR_COMPANY_ID, CompanyIds, True)
         End If
 
@@ -188,7 +188,7 @@ Public Class TransAllMappingDAL
                        New DBHelper.DBHelperParameter(PAR_OUTPUT_PATH, DirectoryName), _
                        New DBHelper.DBHelperParameter("inbound_filename", FileName.ToUpper().ToString())}
 
-        If Not CompanyIds Is Nothing Then
+        If CompanyIds IsNot Nothing Then
             whereClauseConditions &= MiscUtil.BuildListForSql("elp_dealer." & PAR_COMPANY_ID, CompanyIds, True)
         End If
 
@@ -217,7 +217,7 @@ Public Class TransAllMappingDAL
         parameters = New DBHelper.DBHelperParameter() { _
                        New DBHelper.DBHelperParameter(PAR_OUTPUT_PATH, DirectoryName)}
 
-        If Not CompanyIds Is Nothing Then
+        If CompanyIds IsNot Nothing Then
             whereClauseConditions &= MiscUtil.BuildListForSql("elp_dealer." & PAR_COMPANY_ID, CompanyIds, True)
         End If
 
@@ -263,7 +263,7 @@ Public Class TransAllMappingDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

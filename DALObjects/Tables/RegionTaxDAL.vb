@@ -130,10 +130,10 @@ Public Class RegionTaxDAL
             row = ds.Tables(0).Rows(0)
             RcdCount = row.Item(COL_NAME_RECORDCOUNT)
             If RcdCount > 0 Then
-                If Not row.Item(COL_NAME_EFFECTIVE_DATE) Is System.DBNull.Value Then
+                If row.Item(COL_NAME_EFFECTIVE_DATE) IsNot System.DBNull.Value Then
                     MinEffDate = CType(row.Item(COL_NAME_EFFECTIVE_DATE), Date)
                 End If
-                If Not row.Item(COL_NAME_EXPIRATION_DATE) Is System.DBNull.Value Then
+                If row.Item(COL_NAME_EXPIRATION_DATE) IsNot System.DBNull.Value Then
                     MaxExpDate = CType(row.Item(COL_NAME_EXPIRATION_DATE), Date)
                 End If
             Else 'no existing record
@@ -150,7 +150,7 @@ Public Class RegionTaxDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

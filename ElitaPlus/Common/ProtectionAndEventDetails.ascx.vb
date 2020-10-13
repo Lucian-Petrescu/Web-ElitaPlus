@@ -7,13 +7,13 @@
 
 
 Public Class ProtectionAndEventDetails
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
     Private NO_DATA As String = " - "
 
 #Region "Page Events"
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
     End Sub
 

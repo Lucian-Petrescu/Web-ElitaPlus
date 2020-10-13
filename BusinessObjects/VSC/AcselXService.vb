@@ -113,7 +113,7 @@ Public Class AcselXService
 
             If AcselXToken Is Nothing Then
                 errMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_ERR_NO_TOKEN_RETURNED)
-                If Not (ElitaPlusIdentity.Current Is Nothing Or ElitaPlusIdentity.Current.ActiveUser Is Nothing Or ElitaPlusIdentity.Current.ActiveUser.NetworkId Is Nothing) Then
+                If Not (ElitaPlusIdentity.Current Is Nothing OrElse ElitaPlusIdentity.Current.ActiveUser Is Nothing OrElse ElitaPlusIdentity.Current.ActiveUser.NetworkId Is Nothing) Then
                     userNetworkId = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                 End If
                 xmlOutput = XMLHelper.FromErrorCodeToXML(PROCESS_REQUEST_ERROR_CODE, errMsg, userNetworkId, PROCESS_REQUEST_DEFAULT_VALUE, PROCESS_REQUEST_DEFAULT_VALUE)

@@ -198,7 +198,7 @@ Public NotInheritable Class LookupListNew
         Dim dv As DataView = RetrieveList(listName, displayNothingSelected, orderByColumn)
 
         Dim rowFilter As String
-        If ((filterField1 IsNot Nothing) And (filterField1.Length > 0) And (filterField2 IsNot Nothing) AndAlso (filterField2.Length > 0)) Then
+        If ((filterField1 IsNot Nothing) AndAlso (filterField1.Length > 0) AndAlso (filterField2 IsNot Nothing) AndAlso (filterField2.Length > 0)) Then
             'standardize the wild card char
             If (filterValue1.IndexOf("%") > 0) Then filterValue1 = filterValue1.Replace("%", "*")
             If (filterValue2.IndexOf("%") > 0) Then filterValue2 = filterValue2.Replace("%", "*")
@@ -223,7 +223,7 @@ Public NotInheritable Class LookupListNew
 
     Public Shared Function FilteredView(listName As String, filterField As String, filterValue As String, Optional ByVal displayNothingSelected As Boolean = True, Optional ByVal orderByColumn As String = COL_DESCRIPTION_NAME) As DataView
         Dim dv As DataView = RetrieveList(listName, displayNothingSelected, orderByColumn)
-        If ((filterField IsNot Nothing) And (filterField.Length > 0)) Then
+        If ((filterField IsNot Nothing) AndAlso (filterField.Length > 0)) Then
 
             'standardize the wild card char
             If (filterValue.IndexOf("%") > 0) Then filterValue = filterValue.Replace("%", "*")
@@ -279,7 +279,7 @@ Public NotInheritable Class LookupListNew
 
         Dim dv As DataView = LookupListDALNew.Load(listName, inClauseConditions)
 
-        If filterField IsNot Nothing And filterValue IsNot Nothing Then
+        If filterField IsNot Nothing AndAlso filterValue IsNot Nothing Then
             dv.RowFilter = filterField & " LIKE '" & filterValue & "'"
         End If
 
@@ -623,13 +623,13 @@ Public NotInheritable Class LookupListNew
         Dim dv As DataView
 
         If companyIds.Count > 1 Then
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
+            If (sDistinictColumnName = Nothing OrElse Trim(sDistinictColumnName) = "") Then
                 dv = FilteredView(sListName, sFilterCondition)
             Else
                 dv = FilteredDistinctView(sListName, companyIds, sDistinictColumnName, "")
             End If
         Else
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
+            If (sDistinictColumnName = Nothing OrElse Trim(sDistinictColumnName) = "") Then
                 dv = FilteredView(sListName, sFilterCondition)
             Else
                 dv = FilteredDistinctView(sListName, companyIds, sDistinictColumnName, "")
@@ -809,7 +809,7 @@ Public NotInheritable Class LookupListNew
         Dim sFilterCondition As String = MiscUtil.BuildListForNetSql(COL_COMPANY_ID_NAME, companyIds)
         Dim sListName As String
 
-        If bAddCompanyCodeToDescription And (companyIds.Count > 1 Or bIgnoreCompanyCount) Then
+        If bAddCompanyCodeToDescription AndAlso (companyIds.Count > 1 OrElse bIgnoreCompanyCount) Then
             If withEditBranch Then
                 sListName = LK_DEALERS_DUAL_COLUMNS_WITH_EDIT_BRANCH_ONLY
             Else
@@ -826,13 +826,13 @@ Public NotInheritable Class LookupListNew
         Dim dv As DataView
 
         If companyIds.Count > 1 Then
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
+            If (sDistinictColumnName = Nothing OrElse Trim(sDistinictColumnName) = "") Then
                 dv = FilteredView(sListName, sFilterCondition)
             Else
                 dv = FilteredDistinctView(sListName, companyIds, sDistinictColumnName, dynamicOrderBYClause)
             End If
         Else
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
+            If (sDistinictColumnName = Nothing OrElse Trim(sDistinictColumnName) = "") Then
                 dv = FilteredView(sListName, sFilterCondition)
             Else
                 dv = FilteredDistinctView(sListName, companyIds, sDistinictColumnName, dynamicOrderBYClause)
@@ -939,7 +939,7 @@ Public NotInheritable Class LookupListNew
     Public Shared Function GetDealerForProductCodeConvLookupList(companyIds As ArrayList, Optional ByVal bAddCompanyCodeToDescription As Boolean = True, Optional ByVal sDistinictColumnName As String = Nothing, Optional ByVal dynamicOrderBYClause As String = "description") As DataView
         Dim sFilterCondition As String = MiscUtil.BuildListForNetSql(COL_COMPANY_ID_NAME, companyIds)
         Dim sListName As String
-        If bAddCompanyCodeToDescription And companyIds.Count > 1 Then
+        If bAddCompanyCodeToDescription AndAlso companyIds.Count > 1 Then
             sListName = LK_DEALERS_PROD_CONV_DUAL_COLUMNS
         Else
             sListName = LK_DEALERS_PROD_CONV
@@ -948,13 +948,13 @@ Public NotInheritable Class LookupListNew
         Dim dv As DataView
 
         If companyIds.Count > 1 Then
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
+            If (sDistinictColumnName = Nothing OrElse Trim(sDistinictColumnName) = "") Then
                 dv = FilteredView(sListName, sFilterCondition)
             Else
                 dv = FilteredDistinctView(sListName, companyIds, sDistinictColumnName, dynamicOrderBYClause)
             End If
         Else
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
+            If (sDistinictColumnName = Nothing OrElse Trim(sDistinictColumnName) = "") Then
                 dv = FilteredView(sListName, sFilterCondition)
             Else
                 dv = FilteredDistinctView(sListName, companyIds, sDistinictColumnName, dynamicOrderBYClause)
@@ -1923,13 +1923,13 @@ Public NotInheritable Class LookupListNew
         Dim dv As DataView
 
         If countryIds.Count > 1 Then
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
+            If (sDistinictColumnName = Nothing OrElse Trim(sDistinictColumnName) = "") Then
                 dv = FilteredView(sListName, sFilterCondition)
             Else
                 dv = FilteredDistinctView(sListName, countryIds, sDistinictColumnName, dynamicOrderBYClause)
             End If
         Else
-            If (sDistinictColumnName = Nothing Or Trim(sDistinictColumnName) = "") Then
+            If (sDistinictColumnName = Nothing OrElse Trim(sDistinictColumnName) = "") Then
                 dv = FilteredView(sListName, sFilterCondition)
             Else
                 dv = FilteredDistinctView(sListName, countryIds, sDistinictColumnName, dynamicOrderBYClause)

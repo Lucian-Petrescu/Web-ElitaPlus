@@ -112,11 +112,11 @@ Namespace SpecializedServices.GW
                 .InsuranceActivationDate = IIf(wCert.InsuranceActivationDate.HasValue, wCert.InsuranceActivationDate, wCert.WarrantySalesDate)
                 .MaxCoverageEndDate = pCertResult.MaxCoverageEndDate
                 .WorkPhone = wCert.WorkPhone
-                If Not wCert.PreviousCertId Is Nothing Then
+                If wCert.PreviousCertId IsNot Nothing Then
                     .LastPolicyNumber = pCertManager.GetCertNumber(wCert.PreviousCertId)
                 End If
 
-                If Not wCert.OriginalCertId Is Nothing Then
+                If wCert.OriginalCertId IsNot Nothing Then
                     .OriginalPolicyNumber = pCertManager.GetCertNumber(wCert.OriginalCertId)
                 End If
 
@@ -134,7 +134,7 @@ Namespace SpecializedServices.GW
             Dim producerAddress As Address
             Dim contractProducer As BO.Producer
 
-            If Not certContract.ProducerId Is Nothing Then
+            If certContract.ProducerId IsNot Nothing Then
                 contractProducer = New BO.Producer(certContract.ProducerId)
                 If Not contractProducer.AddressId.Equals(Guid.Empty) Then
                     producerAddress = paddressManager.GetAddress(contractProducer.AddressId)
@@ -193,7 +193,7 @@ Namespace SpecializedServices.GW
                 .ItemDescription = pCertificateItem.ItemDescription
                 .RiskType = If(pLanguage.ToString().ToUpperInvariant() <> "EN", pcompanyGroup.RiskTypes.Where(Function(r) r.RiskTypeId = pCertificateItem.RiskTypeId).FirstOrDefault.Description,
                     pcompanyGroup.RiskTypes.Where(Function(r) r.RiskTypeId = pCertificateItem.RiskTypeId).FirstOrDefault.RiskTypeEnglish)
-                .Manufacturer = If(Not pCertificateItem.ManufacturerId Is Nothing,
+                .Manufacturer = If(pCertificateItem.ManufacturerId IsNot Nothing,
                                     pcompanyGroup.Manufacturers.Where(Function(m) m.ManufacturerId = pCertificateItem.ManufacturerId).FirstOrDefault.Description, Nothing)
                 .Model = pCertificateItem.Model
                 .EffectiveDate = pCertificateItem.EffectiveDate

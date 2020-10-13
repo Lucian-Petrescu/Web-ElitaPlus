@@ -30,7 +30,7 @@ Public Class CertAfterUpgradeService
 
         Catch ex As CertificateNotFoundException
 
-            If (Not request.CertificateSearch.GetType() Is GetType(CertAfterUpgradeLookup)) Then
+            If (request.CertificateSearch.GetType() IsNot GetType(CertAfterUpgradeLookup)) Then
                 Throw New FaultException(Of CertificateNotFound)(New CertificateNotFound() With {.CertificateSearch = ex.CertificateSearch}, "Certificate Not Found")
             End If
 

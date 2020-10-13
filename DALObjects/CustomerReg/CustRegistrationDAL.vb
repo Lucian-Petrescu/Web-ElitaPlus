@@ -70,7 +70,7 @@ Public Class CustRegistrationDAL
         Try
             Dim obj As Object
             obj = DBHelper.ExecuteScalar(selectStmt, parameters)
-            If (Not obj Is Nothing) Then
+            If (obj IsNot Nothing) Then
                 Return New Guid(CType(obj, Byte()))
             End If
 
@@ -88,7 +88,7 @@ Public Class CustRegistrationDAL
 		If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

@@ -28,7 +28,7 @@ Partial Public Class MakeModel
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents UpdatePanel1 As Global.System.Web.UI.UpdatePanel
+    Protected WithEvents UpdatePanel1 As UpdatePanel
 
     '''<summary>
     '''MakeLabel control.
@@ -37,7 +37,7 @@ Partial Public Class MakeModel
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents MakeLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents MakeLabel As Label
 
     '''<summary>
     '''ModelLabel control.
@@ -46,7 +46,7 @@ Partial Public Class MakeModel
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ModelLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents ModelLabel As Label
 
     '''<summary>
     '''TrimLabel control.
@@ -55,7 +55,7 @@ Partial Public Class MakeModel
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TrimLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents TrimLabel As Label
 
     '''<summary>
     '''YearLabel control.
@@ -64,7 +64,7 @@ Partial Public Class MakeModel
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents YearLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents YearLabel As Label
 
     '''<summary>
     '''MakeDrop control.
@@ -73,7 +73,7 @@ Partial Public Class MakeModel
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents MakeDrop As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents MakeDrop As DropDownList
 
     '''<summary>
     '''ModelDrop control.
@@ -82,7 +82,7 @@ Partial Public Class MakeModel
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ModelDrop As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ModelDrop As DropDownList
 
     '''<summary>
     '''TrimDrop control.
@@ -91,7 +91,7 @@ Partial Public Class MakeModel
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TrimDrop As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents TrimDrop As DropDownList
 
     '''<summary>
     '''YearDrop control.
@@ -100,5 +100,5 @@ Partial Public Class MakeModel
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents YearDrop As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents YearDrop As DropDownList
 End Class

@@ -20,7 +20,7 @@ Partial Public Class UserControlDeliverySlot
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trCourierProduct As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trCourierProduct As HtmlTableRow
     
     '''<summary>
     '''lblCourierProduct control.
@@ -29,7 +29,7 @@ Partial Public Class UserControlDeliverySlot
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblCourierProduct As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCourierProduct As Label
     
     '''<summary>
     '''ddlCourierProduct control.
@@ -38,7 +38,7 @@ Partial Public Class UserControlDeliverySlot
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlCourierProduct As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlCourierProduct As DropDownList
     
     '''<summary>
     '''chkNotSpecify control.
@@ -47,7 +47,7 @@ Partial Public Class UserControlDeliverySlot
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents chkNotSpecify As Global.System.Web.UI.WebControls.CheckBox
+    Protected WithEvents chkNotSpecify As CheckBox
     
     '''<summary>
     '''lblAvailableDeliveryTiming control.
@@ -56,7 +56,7 @@ Partial Public Class UserControlDeliverySlot
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAvailableDeliveryTiming As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblAvailableDeliveryTiming As Label
     
     '''<summary>
     '''lblAvailableDeliveryTimingData control.
@@ -65,7 +65,7 @@ Partial Public Class UserControlDeliverySlot
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblAvailableDeliveryTimingData As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblAvailableDeliveryTimingData As Label
     
     '''<summary>
     '''lblDesiredDate control.
@@ -74,7 +74,7 @@ Partial Public Class UserControlDeliverySlot
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDesiredDate As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDesiredDate As Label
     
     '''<summary>
     '''txtDeliveryDate control.
@@ -83,7 +83,7 @@ Partial Public Class UserControlDeliverySlot
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtDeliveryDate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtDeliveryDate As TextBox
     
     '''<summary>
     '''imageBtnDeliveryDate control.
@@ -92,7 +92,7 @@ Partial Public Class UserControlDeliverySlot
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents imageBtnDeliveryDate As Global.System.Web.UI.WebControls.ImageButton
+    Protected WithEvents imageBtnDeliveryDate As ImageButton
     
     '''<summary>
     '''trDeliverySlot control.
@@ -101,7 +101,7 @@ Partial Public Class UserControlDeliverySlot
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trDeliverySlot As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trDeliverySlot As HtmlTableRow
     
     '''<summary>
     '''lblDeliverySlot control.
@@ -110,7 +110,7 @@ Partial Public Class UserControlDeliverySlot
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblDeliverySlot As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDeliverySlot As Label
     
     '''<summary>
     '''ddlDeliverySlots control.
@@ -119,5 +119,5 @@ Partial Public Class UserControlDeliverySlot
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlDeliverySlots As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlDeliverySlots As DropDownList
 End Class

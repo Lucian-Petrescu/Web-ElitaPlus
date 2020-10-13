@@ -20,7 +20,7 @@ Namespace Claims
             Dim oClaim As ClaimBase = ClaimServiceHelper.GetClaim(request.ClaimsSearch)
 
             Dim documentTypeId As Nullable(Of Guid) = Nothing
-            If ((Not request.DocumentType Is Nothing) AndAlso (request.DocumentType.Trim.Length > 0)) Then
+            If ((request.DocumentType IsNot Nothing) AndAlso (request.DocumentType.Trim.Length > 0)) Then
                 documentTypeId = LookupListNew.GetIdFromCode(LookupListNew.GetDocumentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), request.DocumentType.Trim.ToUpperInvariant())
             End If
 
@@ -66,7 +66,7 @@ Namespace Claims
             Dim oClaim As ClaimBase = GetClaim(request.ClaimsSearch)
 
             Dim pDocumentTypeId As Guid? = Nothing
-            If ((Not request.DocumentType Is Nothing) AndAlso (request.DocumentType.Trim.Length > 0)) Then
+            If ((request.DocumentType IsNot Nothing) AndAlso (request.DocumentType.Trim.Length > 0)) Then
                 pDocumentTypeId = LookupListNew.GetIdFromCode(LookupListNew.GetDocumentTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), request.DocumentType.Trim.ToUpperInvariant())
             End If
 

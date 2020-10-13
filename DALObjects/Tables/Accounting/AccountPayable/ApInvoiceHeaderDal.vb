@@ -112,7 +112,7 @@ Public Class ApInvoiceHeaderDAL
         If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
             Throw New NotSupportedException()
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -401,7 +401,7 @@ Public Class ApInvoiceHeaderDAL
                 End Using
             End Using
         Catch ex As Exception
-            If Not tr Is Nothing Then
+            If tr IsNot Nothing Then
                 tr.Rollback
             End If
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

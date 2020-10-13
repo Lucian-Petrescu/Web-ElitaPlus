@@ -635,7 +635,7 @@ Public Class PriceListDetailDAL
                                          selectStmt,
                                          parameters)
 
-        If Not ds Is Nothing Then
+        If ds IsNot Nothing Then
             Return ds.Tables(0).DefaultView
         End If
 
@@ -754,7 +754,7 @@ Public Class PriceListDetailDAL
         FetchStoredProcedure("GetCurrentDateTime",
                                         selectStmt,
                                         parameters)
-        If Not parameters(0).Value Is Nothing Then
+        If parameters(0).Value IsNot Nothing Then
             Return DateTime.Parse(CType(CType(parameters(0), OracleParameter).Value, Oracle.ManagedDataAccess.Types.OracleDate))
         End If
 
@@ -806,7 +806,7 @@ Public Class PriceListDetailDAL
 
         name = name.Trim
         If value Is Nothing Then value = DBNull.Value
-        If Not value Is Nothing AndAlso value.GetType Is GetType(String) Then value = DirectCast(value, String).Trim
+        If value IsNot Nothing AndAlso value.GetType Is GetType(String) Then value = DirectCast(value, String).Trim
 
         Return New DBHelper.DBHelperParameter(name, value, value.GetType)
 
@@ -1043,7 +1043,7 @@ Public Class PriceListDetailDAL
                 End Using
             End Using
             Dim par = parameters.FirstOrDefault(Function(p As OracleParameter) p.ParameterName.Equals(PAR_OUT_NAME_RETURN_CODE))
-            If (Not par Is Nothing And par.Value = 200) Then
+            If (par IsNot Nothing And par.Value = 200) Then
                 Throw New ElitaPlusException("PriceListDetail - " + methodName, Common.ErrorCodes.DB_READ_ERROR)
             End If
         Catch ex As Exception

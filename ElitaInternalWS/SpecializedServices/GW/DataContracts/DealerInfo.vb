@@ -23,7 +23,7 @@ Namespace SpecializedServices.GW
             ClaimLimitBasedOnCode = oContract.ClaimLimitBasedOnId.ToCode(pCommonManager, ListCodes.ClaimLimitBasedOn, LanguageCodes.USEnglish)
             ClaimLimitBasedOnDesc = oContract.ClaimLimitBasedOnId.ToDescription(pCommonManager, ListCodes.ClaimLimitBasedOn, LanguageCodes.USEnglish)
             DealerTaxId = pDealer.TAX_ID_NUMBER
-            If Not pAddress Is Nothing Then
+            If pAddress IsNot Nothing Then
                 DealerAddress = New AddressInfo(pAddress, pCountryManager)
             End If
         End Sub

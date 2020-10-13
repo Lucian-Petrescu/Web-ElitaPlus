@@ -57,7 +57,7 @@
         Dim whereClauseConditions As String = String.Empty
         Dim dealerWhereClauseConditions As String = String.Empty
 
-        If (Not String.IsNullOrEmpty(searchBy)) And (Not String.IsNullOrEmpty(conditionMask)) Then
+        If (Not String.IsNullOrEmpty(searchBy)) AndAlso (Not String.IsNullOrEmpty(conditionMask)) Then
             conditionMask = conditionMask.Trim()
             If FormatSearchMask(conditionMask) Then
                 whereClauseConditions &= Environment.NewLine & "and UPPER(" & searchBy & ") " & conditionMask.ToUpper

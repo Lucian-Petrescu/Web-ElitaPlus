@@ -98,7 +98,7 @@ Public Class PartsDescriptionDAL
 
             DBHelper.Fetch(ds, selectStmt, TABLE_NAME, parameters)
 
-            If ds.Tables(TABLE_NAME).Rows.Count = 1 AndAlso Not ds.Tables(TABLE_NAME).Rows(0)(0) Is DBNull.Value Then
+            If ds.Tables(TABLE_NAME).Rows.Count = 1 AndAlso ds.Tables(TABLE_NAME).Rows(0)(0) IsNot DBNull.Value Then
                 retVal = CType(CType(ds.Tables(TABLE_NAME).Rows(0)(0), Integer) + 1, String)
             Else
                 retVal = Nothing
@@ -233,7 +233,7 @@ Public Class PartsDescriptionDAL
 
 #Region "Overloaded Methods"
     Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

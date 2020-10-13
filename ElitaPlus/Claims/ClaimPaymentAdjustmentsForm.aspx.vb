@@ -8,7 +8,7 @@ Partial Class ClaimPaymentAdjustmentsForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough> Private Sub InitializeComponent()
 
     End Sub
 
@@ -67,8 +67,8 @@ Partial Class ClaimPaymentAdjustmentsForm
         Public EditingBo As ClaimInvoice
         Public BoChanged As Boolean = False
         Public Sub New(LastOp As DetailPageCommand, curEditingBo As ClaimInvoice, Optional ByVal boChanged As Boolean = False)
-            LastOperation = LastOp
-            EditingBo = curEditingBo
+            Me.LastOperation = LastOp
+            Me.EditingBo = curEditingBo
             Me.BoChanged = boChanged
         End Sub
     End Class
@@ -81,13 +81,13 @@ Partial Class ClaimPaymentAdjustmentsForm
         Public ViewOnly As Boolean = False
         Public Sub New(claimBO As Claim)
             Me.ClaimBO = claimBO
-            PayClaimID = Guid.Empty
-            ViewOnly = False
+            Me.PayClaimID = Guid.Empty
+            Me.ViewOnly = False
         End Sub
         Public Sub New(claimInvoiceID As Guid)
-            ClaimBO = Nothing
-            PayClaimID = claimInvoiceID
-            ViewOnly = True
+            Me.ClaimBO = Nothing
+            Me.PayClaimID = claimInvoiceID
+            Me.ViewOnly = True
         End Sub
 
     End Class
@@ -147,47 +147,47 @@ Partial Class ClaimPaymentAdjustmentsForm
     '    End Get
     'End Property
 
-    Protected Shadows ReadOnly Property State() As MyState
+    Protected Shadows ReadOnly Property State As MyState
         Get
             'Return CType(MyBase.State, MyState)
-            If NavController.State Is Nothing Then
-                NavController.State = New MyState
-                Me.State.inputParameters = CType(NavController.ParametersPassed, Parameters)
+            If Me.NavController.State Is Nothing Then
+                Me.NavController.State = New MyState
+                Me.State.inputParameters = CType(Me.NavController.ParametersPassed, Parameters)
             Else
-                If NavController.IsFlowEnded Then
+                If Me.NavController.IsFlowEnded Then
                     'restart flow
-                    Dim s As MyState = CType(NavController.State, MyState)
-                    StartNavControl()
-                    NavController.State = s
+                    Dim s As MyState = CType(Me.NavController.State, MyState)
+                    Me.StartNavControl()
+                    Me.NavController.State = s
                 End If
             End If
-            Return CType(NavController.State, MyState)
+            Return CType(Me.NavController.State, MyState)
         End Get
     End Property
 
     Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If CallingParameters IsNot Nothing Then
+            If Me.CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                StartNavControl()
-                State.ForwardedParameters = CType(CallingParameters, ClaimPaymentAdjustmentsListForm.ForwardedParameters)
-                State.selectedClaimNumber = State.ForwardedParameters.claimNumber ' CType(Me.CallingParameters, String)
-                State.selectedClaimID = State.ForwardedParameters.ClaimId ' CType(Me.CallingParameters, String)
-                State.customerName = State.ForwardedParameters.customerName
-                State.serviceCenter = State.ForwardedParameters.serviceCenter
+                Me.StartNavControl()
+                Me.State.ForwardedParameters = CType(Me.CallingParameters, ClaimPaymentAdjustmentsListForm.ForwardedParameters)
+                Me.State.selectedClaimNumber = Me.State.ForwardedParameters.claimNumber ' CType(Me.CallingParameters, String)
+                Me.State.selectedClaimID = Me.State.ForwardedParameters.ClaimId ' CType(Me.CallingParameters, String)
+                Me.State.customerName = Me.State.ForwardedParameters.customerName
+                Me.State.serviceCenter = Me.State.ForwardedParameters.serviceCenter
             End If
         Catch ex As Exception
-            HandleErrors(ex, ErrorCtrl)
+            Me.HandleErrors(ex, Me.ErrorCtrl)
         End Try
 
     End Sub
 
     Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles MyBase.PageReturn
         Try
-            MenuEnabled = True
-            IsReturningFromChild = True
+            Me.MenuEnabled = True
+            Me.IsReturningFromChild = True
         Catch ex As Exception
-            HandleErrors(ex, ErrorCtrl)
+            Me.HandleErrors(ex, Me.ErrorCtrl)
         End Try
     End Sub
 
@@ -196,67 +196,67 @@ Partial Class ClaimPaymentAdjustmentsForm
 #Region "Page_Events"
     Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        ErrorCtrl.Clear_Hide()
+        Me.ErrorCtrl.Clear_Hide()
         Try
-            If Not IsPostBack Then
-                InitializePage()
-                AddCalendar(ImageButtonInvoiceDate, txtInvoiceDate)
+            If Not Me.IsPostBack Then
+                Me.InitializePage()
+                Me.AddCalendar(Me.ImageButtonInvoiceDate, Me.txtInvoiceDate)
             Else
-                State.decTotalPaid = CType(Session("TotalAmountPaid"), Decimal)
-                blnNewPaymentButtonEnabledState = CType(Session("NewPaymentButtonEnabledState"), Boolean)
-                blnReversePaymentButtonEnabledState = CType(Session("ReversePaymentButtonEnabledState"), Boolean)
-                blnAdjustPaymentButtonEnabledState = CType(Session("AdjustPaymentButtonEnabledState"), Boolean)
-                ButtonClicked = CType(Session("ButtonClicked"), String)
+                Me.State.decTotalPaid = CType(Session("TotalAmountPaid"), Decimal)
+                Me.blnNewPaymentButtonEnabledState = CType(Session("NewPaymentButtonEnabledState"), Boolean)
+                Me.blnReversePaymentButtonEnabledState = CType(Session("ReversePaymentButtonEnabledState"), Boolean)
+                Me.blnAdjustPaymentButtonEnabledState = CType(Session("AdjustPaymentButtonEnabledState"), Boolean)
+                Me.ButtonClicked = CType(Session("ButtonClicked"), String)
                 ClearErrLabels()
             End If
-            cboPageSize.Enabled = True
+            Me.cboPageSize.Enabled = True
         Catch ex As Exception
-            HandleErrors(ex, ErrorCtrl)
+            Me.HandleErrors(ex, Me.ErrorCtrl)
         End Try
-        ShowMissingTranslations(ErrorCtrl)
+        Me.ShowMissingTranslations(Me.ErrorCtrl)
     End Sub
 
     Private Sub InitializePage()
-        SetGridItemStyleColor(Grid)
+        Me.SetGridItemStyleColor(Me.Grid)
 
-        txtClaimNumber.Text = State.selectedClaimNumber
-        txtCustomerName.Text = State.customerName
-        txtServiceCenter.Text = State.serviceCenter
+        Me.txtClaimNumber.Text = Me.State.selectedClaimNumber
+        Me.txtCustomerName.Text = Me.State.customerName
+        Me.txtServiceCenter.Text = Me.State.serviceCenter
 
-        LoadClaimPayments()
+        Me.LoadClaimPayments()
 
-        ControlMgr.SetVisibleControl(Me, trTotalPaid, State.IsGridVisible)
-        ControlMgr.SetVisibleControl(Me, trPageSize, State.IsGridVisible)
-        ControlMgr.SetVisibleControl(Me, tblButtons, State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, trTotalPaid, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, tblButtons, Me.State.IsGridVisible)
         ControlMgr.SetVisibleControl(Me, tblPaymentDetails, False)
         ControlMgr.SetVisibleControl(Me, tblHR, False)
 
-        If State.IsGridVisible AndAlso Not (State.PageSize = 10) Then
-            cboPageSize.SelectedValue = CType(State.PageSize, String)
-            Grid.PageSize = State.PageSize
+        If Me.State.IsGridVisible AndAlso Not (Me.State.PageSize = 10) Then
+            cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
+            Grid.PageSize = Me.State.PageSize
         End If
 
-        SetGridItemStyleColor(Grid)
-        MenuEnabled = True
-        lblADJUSTMENT_AMOUNT.Text = lblADJUSTMENT_AMOUNT.Text & ":"
-        lblInvoiceDate.Text = lblInvoiceDate.Text & ":"
+        Me.SetGridItemStyleColor(Me.Grid)
+        Me.MenuEnabled = True
+        Me.lblADJUSTMENT_AMOUNT.Text = Me.lblADJUSTMENT_AMOUNT.Text & ":"
+        Me.lblInvoiceDate.Text = Me.lblInvoiceDate.Text & ":"
     End Sub
 #End Region
 
 #Region "Controlling Logic"
     Public Sub GetClaimStatusCode()
         Try
-            State.ClaimStatusCode = ClaimFacade.Instance.GetClaim(Of Claim)(State.selectedClaimID).StatusCode
+            Me.State.ClaimStatusCode = ClaimFacade.Instance.GetClaim(Of Claim)(Me.State.selectedClaimID).StatusCode
 
             'NEW_PAYMENT option will be enabled only if the claim status is Closed
-            If State.ClaimStatusCode = CLAIM_CLOSED_STATUS Then
-                btnNEW_PAYMENT.Enabled = True
-                blnNewPaymentButtonEnabledState = True
+            If Me.State.ClaimStatusCode = CLAIM_CLOSED_STATUS Then
+                Me.btnNEW_PAYMENT.Enabled = True
+                Me.blnNewPaymentButtonEnabledState = True
             Else
-                blnNewPaymentButtonEnabledState = False
-                btnNEW_PAYMENT.Enabled = False
+                Me.blnNewPaymentButtonEnabledState = False
+                Me.btnNEW_PAYMENT.Enabled = False
             End If
-            Session("NewPaymentButtonEnabledState") = blnNewPaymentButtonEnabledState
+            Session("NewPaymentButtonEnabledState") = Me.blnNewPaymentButtonEnabledState
         Catch ex As Exception
 
         End Try
@@ -266,77 +266,77 @@ Partial Class ClaimPaymentAdjustmentsForm
         Dim foundLabel As String
         Dim errors() As ValidationError = {New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.GUI_SEARCH_FIELD_NOT_SUPPLIED_ERR, GetType(Claim), Nothing, "Search", Nothing)}
 
-        State.decTotalPaid = 0
-        ToggleButtons(blnNewPaymentButtonEnabledState, False, False)
+        Me.State.decTotalPaid = 0
+        Me.ToggleButtons(blnNewPaymentButtonEnabledState, False, False)
 
-        If (State.ClaimInvoiceDV Is Nothing) Then
+        If (Me.State.ClaimInvoiceDV Is Nothing) Then
             Dim searchFollowUpDate As String = Nothing
             Dim sortBy As String
-            Dim x As Boolean = State.NavigateToComment
-            Dim oCompanyId As Guid = ClaimFacade.Instance.GetClaim(Of Claim)(State.selectedClaimID).CompanyId
-            State.ClaimInvoiceDV = ClaimInvoice.getPaymentsList(oCompanyId, State.selectedClaimNumber)
-            ValidSearchResultCount(State.ClaimInvoiceDV.Count, True)
+            Dim x As Boolean = Me.State.NavigateToComment
+            Dim oCompanyId As Guid = ClaimFacade.Instance.GetClaim(Of Claim)(Me.State.selectedClaimID).CompanyId
+            Me.State.ClaimInvoiceDV = ClaimInvoice.getPaymentsList(oCompanyId, Me.State.selectedClaimNumber)
+            Me.ValidSearchResultCount(Me.State.ClaimInvoiceDV.Count, True)
         End If
 
-        State.ClaimInvoiceDV.Sort = Grid.DataMember
-        Grid.AutoGenerateColumns = False
+        Me.State.ClaimInvoiceDV.Sort = Grid.DataMember
+        Me.Grid.AutoGenerateColumns = False
 
-        SetPageAndSelectedIndexFromGuid(State.ClaimInvoiceDV, State.selectedClaimInvoiceId, Grid, State.PageIndex)
-        State.PageIndex = Grid.CurrentPageIndex
-        Grid.DataSource = State.ClaimInvoiceDV
-        Grid.AllowSorting = False
-        Grid.DataBind()
+        SetPageAndSelectedIndexFromGuid(Me.State.ClaimInvoiceDV, Me.State.selectedClaimInvoiceId, Me.Grid, Me.State.PageIndex)
+        Me.State.PageIndex = Me.Grid.CurrentPageIndex
+        Me.Grid.DataSource = Me.State.ClaimInvoiceDV
+        Me.Grid.AllowSorting = False
+        Me.Grid.DataBind()
 
-        ControlMgr.SetVisibleControl(Me, Grid, State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
 
-        ControlMgr.SetVisibleControl(Me, trPageSize, Grid.Visible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
 
-        ControlMgr.SetVisibleControl(Me, trTotalPaid, Grid.Visible)
+        ControlMgr.SetVisibleControl(Me, trTotalPaid, Me.Grid.Visible)
 
-        ControlMgr.SetVisibleControl(Me, tblButtons, State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, tblButtons, Me.State.IsGridVisible)
 
-        Session("recCount") = State.ClaimInvoiceDV.Count
+        Session("recCount") = Me.State.ClaimInvoiceDV.Count
 
-        Session("TotalAmountPaid") = State.decTotalPaid
+        Session("TotalAmountPaid") = Me.State.decTotalPaid
 
-        foundLabel = State.ClaimInvoiceDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
-        If State.ClaimInvoiceDV.Count > 0 Then
-            If Grid.Visible Then
-                lblRecordCount.Text = foundLabel
-                txtTotalPaid.Text = GetAmountFormattedDoubleString(State.decTotalPaid.ToString)
+        foundLabel = Me.State.ClaimInvoiceDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        If Me.State.ClaimInvoiceDV.Count > 0 Then
+            If Me.Grid.Visible Then
+                Me.lblRecordCount.Text = foundLabel
+                Me.txtTotalPaid.Text = GetAmountFormattedDoubleString(Me.State.decTotalPaid.ToString)
             End If
         Else
-            If Grid.Visible Then
-                lblRecordCount.Text = foundLabel
-                txtTotalPaid.Text = ""
+            If Me.Grid.Visible Then
+                Me.lblRecordCount.Text = foundLabel
+                Me.txtTotalPaid.Text = ""
             End If
         End If
 
     End Sub
 
     Private Sub ToggleButtons(blnNewPaymentEnabled As Boolean, blnReversePaymentEnabled As Boolean, blnAdjustPaymentEnabled As Boolean)
-        btnNEW_PAYMENT.Enabled = blnNewPaymentEnabled
-        btnREVERSE_PAYMENT.Enabled = blnReversePaymentEnabled
-        btnADJUST_PAYMENT.Enabled = blnAdjustPaymentEnabled
+        Me.btnNEW_PAYMENT.Enabled = blnNewPaymentEnabled
+        Me.btnREVERSE_PAYMENT.Enabled = blnReversePaymentEnabled
+        Me.btnADJUST_PAYMENT.Enabled = blnAdjustPaymentEnabled
         DisableButtonsForClaimSystem()
     End Sub
     Protected Sub DisableButtonsForClaimSystem()
-        If Not State.selectedClaimID.Equals(Guid.Empty) Then
-            Dim ClaimBO As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(State.selectedClaimID)
+        If Not Me.State.selectedClaimID.Equals(Guid.Empty) Then
+            Dim ClaimBO As Claim = ClaimFacade.Instance.GetClaim(Of Claim)(Me.State.selectedClaimID)
             If Not ClaimBO.CertificateId.Equals(Guid.Empty) Then
                 Dim oCert As New Certificate(ClaimBO.CertificateId)
                 Dim oDealer As New Dealer(oCert.DealerId)
                 Dim oClmSystem As New ClaimSystem(oDealer.ClaimSystemId)
                 Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
                 If oClmSystem.PayClaimId.Equals(noId) Then
-                    If btnNEW_PAYMENT.Visible AndAlso btnNEW_PAYMENT.Enabled Then
-                        ControlMgr.SetEnableControl(Me, btnNEW_PAYMENT, False)
+                    If Me.btnNEW_PAYMENT.Visible AndAlso Me.btnNEW_PAYMENT.Enabled Then
+                        ControlMgr.SetEnableControl(Me, Me.btnNEW_PAYMENT, False)
                     End If
-                    If btnREVERSE_PAYMENT.Visible AndAlso btnREVERSE_PAYMENT.Enabled Then
-                        ControlMgr.SetEnableControl(Me, btnREVERSE_PAYMENT, False)
+                    If Me.btnREVERSE_PAYMENT.Visible AndAlso Me.btnREVERSE_PAYMENT.Enabled Then
+                        ControlMgr.SetEnableControl(Me, Me.btnREVERSE_PAYMENT, False)
                     End If
-                    If btnADJUST_PAYMENT.Visible AndAlso btnADJUST_PAYMENT.Enabled Then
-                        ControlMgr.SetEnableControl(Me, btnADJUST_PAYMENT, False)
+                    If Me.btnADJUST_PAYMENT.Visible AndAlso Me.btnADJUST_PAYMENT.Enabled Then
+                        ControlMgr.SetEnableControl(Me, Me.btnADJUST_PAYMENT, False)
                     End If
                 End If
             End If
@@ -344,39 +344,39 @@ Partial Class ClaimPaymentAdjustmentsForm
     End Sub
     Private Sub LoadClaimPayments()
         Try
-            State.PageIndex = 0
-            State.selectedClaimInvoiceId = Guid.Empty
-            State.IsGridVisible = True
-            State.ClaimInvoiceDV = Nothing
-            GetClaimStatusCode()
-            PopulateGrid()
+            Me.State.PageIndex = 0
+            Me.State.selectedClaimInvoiceId = Guid.Empty
+            Me.State.IsGridVisible = True
+            Me.State.ClaimInvoiceDV = Nothing
+            Me.GetClaimStatusCode()
+            Me.PopulateGrid()
             'check remaining amount to decide whether the new payment button should be enabled
             If (State.ClaimInvoiceDV IsNot Nothing) AndAlso State.ClaimInvoiceDV.Count > 0 Then
                 Dim guidCI As Guid = New Guid(CType(State.ClaimInvoiceDV.Item(0)(ClaimInvoice.ClaimInvoicesDV.COL_CLAIM_INVOICE_ID), Byte()))
                 Dim dRemainingAMT As Decimal = (New ClaimInvoice(guidCI)).RemainingAmount.Value
                 If dRemainingAMT <= 0 Then
-                    btnNEW_PAYMENT.Enabled = False
-                    blnNewPaymentButtonEnabledState = False
-                    Session("NewPaymentButtonEnabledState") = blnNewPaymentButtonEnabledState
+                    Me.btnNEW_PAYMENT.Enabled = False
+                    Me.blnNewPaymentButtonEnabledState = False
+                    Session("NewPaymentButtonEnabledState") = Me.blnNewPaymentButtonEnabledState
                 End If
             End If
 
         Catch ex As Exception
-            HandleErrors(ex, ErrorCtrl)
+            Me.HandleErrors(ex, Me.ErrorCtrl)
         End Try
     End Sub
 
     Protected Sub PopulateBOsFromForm()
-        PopulateBOProperty(State.ClaimInvoiceBO, "AdjustmentAmount", txtADJUSTMENT_AMOUNT)
-        PopulateBOProperty(State.ClaimInvoiceBO, "InvoiceDate", txtInvoiceDate)
-        PopulateBOProperty(State.ClaimInvoiceBO, "SvcControlNumber", txtInvoiceNumber)
-        PopulateBOProperty(State.ClaimInvoiceBO, "TotalAmount", txtTotalPaid)
+        Me.PopulateBOProperty(Me.State.ClaimInvoiceBO, "AdjustmentAmount", Me.txtADJUSTMENT_AMOUNT)
+        Me.PopulateBOProperty(Me.State.ClaimInvoiceBO, "InvoiceDate", Me.txtInvoiceDate)
+        Me.PopulateBOProperty(Me.State.ClaimInvoiceBO, "SvcControlNumber", Me.txtInvoiceNumber)
+        Me.PopulateBOProperty(Me.State.ClaimInvoiceBO, "TotalAmount", Me.txtTotalPaid)
 
-        PopulateBOProperty(State.SecondClaimInvoiceBO, "AdjustmentAmount", txtADJUSTMENT_AMOUNT)
-        PopulateBOProperty(State.SecondClaimInvoiceBO, "InvoiceDate", txtInvoiceDate)
-        PopulateBOProperty(State.SecondClaimInvoiceBO, "SvcControlNumber", txtInvoiceNumber)
-        PopulateBOProperty(State.SecondClaimInvoiceBO, "TotalAmount", txtTotalPaid)
-        If ErrCollection.Count > 0 Then
+        Me.PopulateBOProperty(Me.State.SecondClaimInvoiceBO, "AdjustmentAmount", Me.txtADJUSTMENT_AMOUNT)
+        Me.PopulateBOProperty(Me.State.SecondClaimInvoiceBO, "InvoiceDate", Me.txtInvoiceDate)
+        Me.PopulateBOProperty(Me.State.SecondClaimInvoiceBO, "SvcControlNumber", Me.txtInvoiceNumber)
+        Me.PopulateBOProperty(Me.State.SecondClaimInvoiceBO, "TotalAmount", Me.txtTotalPaid)
+        If Me.ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
@@ -384,34 +384,34 @@ Partial Class ClaimPaymentAdjustmentsForm
     Private Sub ReversePayment(blnReversal As Boolean)
 
         'create new objects
-        State.ClaimInvoiceBO = New ClaimInvoice
-        State.ClaimInvoiceBO.IsPaymentAdjustment = False
-        State.ClaimInvoiceBO.IsPaymentReversal = True
-        State.DisbursementBO = State.ClaimInvoiceBO.AddNewDisbursement()
+        Me.State.ClaimInvoiceBO = New ClaimInvoice
+        Me.State.ClaimInvoiceBO.IsPaymentAdjustment = False
+        Me.State.ClaimInvoiceBO.IsPaymentReversal = True
+        Me.State.DisbursementBO = Me.State.ClaimInvoiceBO.AddNewDisbursement()
 
         'create Old objects
-        State.OldClaimInvoiceBO = New ClaimInvoice(State.selectedClaimInvoiceId)
+        Me.State.OldClaimInvoiceBO = New ClaimInvoice(Me.State.selectedClaimInvoiceId)
         'Me.State.ClaimInvoiceBO.ClaimTax = Me.State.OldClaimInvoiceBO.GetClaimTax
-        State.OldDisbursementBO = New Disbursement(State.OldClaimInvoiceBO.DisbursementId)
+        Me.State.OldDisbursementBO = New Disbursement(Me.State.OldClaimInvoiceBO.DisbursementId)
 
         'Populate new ClaimInvoice BO using the existing BO
-        State.ClaimInvoiceBO.PopulateClaimInvoice(State.OldClaimInvoiceBO)
-        State.ClaimInvoiceBO.SvcControlNumber = txtInvoiceNumber.Text
-        PopulateBOProperty(State.ClaimInvoiceBO, "InvoiceDate", txtInvoiceDate)
+        Me.State.ClaimInvoiceBO.PopulateClaimInvoice(Me.State.OldClaimInvoiceBO)
+        Me.State.ClaimInvoiceBO.SvcControlNumber = Me.txtInvoiceNumber.Text
+        Me.PopulateBOProperty(Me.State.ClaimInvoiceBO, "InvoiceDate", Me.txtInvoiceDate)
 
         'Reverse new ClaimInvoice
-        State.ClaimInvoiceBO.ReverseClaimInvoice()
+        Me.State.ClaimInvoiceBO.ReverseClaimInvoice()
 
         'create comment Only after ClaimInvoiceBO is populated
         If blnReversal Then
-            State.CommentBO = State.ClaimInvoiceBO.AddNewComment
+            Me.State.CommentBO = Me.State.ClaimInvoiceBO.AddNewComment
         End If
 
         'Populate new Disbursement BO using the existing BO
-        State.DisbursementBO.PopulateDisbursement(State.OldDisbursementBO)
-        State.DisbursementBO.SvcControlNumber = txtInvoiceNumber.Text
-        State.DisbursementBO.PaymentDate = New DateType(Date.Today())
-        PopulateBOProperty(State.DisbursementBO, "InvoiceDate", txtInvoiceDate)
+        Me.State.DisbursementBO.PopulateDisbursement(Me.State.OldDisbursementBO)
+        Me.State.DisbursementBO.SvcControlNumber = Me.txtInvoiceNumber.Text
+        Me.State.DisbursementBO.PaymentDate = New DateType(Date.Today())
+        Me.PopulateBOProperty(Me.State.DisbursementBO, "InvoiceDate", Me.txtInvoiceDate)
 
         Dim RemainingPymt, InvoiceIVA, InvoiceIIBB As Decimal
         Dim blnReverseInvoiceTax As Boolean = False
@@ -427,7 +427,7 @@ Partial Class ClaimPaymentAdjustmentsForm
             End If
         End With
         'Reverse new Disbursement
-        State.DisbursementBO.ReverseDisbursement(blnReverseInvoiceTax, InvoiceIVA, InvoiceIIBB)
+        Me.State.DisbursementBO.ReverseDisbursement(blnReverseInvoiceTax, InvoiceIVA, InvoiceIIBB)
 
     End Sub
 
@@ -435,38 +435,38 @@ Partial Class ClaimPaymentAdjustmentsForm
         'The reversal part has been done.
 
         'Create New ClaimInvoice
-        State.SecondClaimInvoiceBO = State.ClaimInvoiceBO.CreateSecondClaimInvoice()
+        Me.State.SecondClaimInvoiceBO = Me.State.ClaimInvoiceBO.CreateSecondClaimInvoice()
 
         'Set the payment type
-        State.SecondClaimInvoiceBO.IsPaymentAdjustment = True
-        State.SecondClaimInvoiceBO.IsPaymentReversal = False
-        State.ClaimInvoiceBO.IsPaymentAdjustment = True
-        State.ClaimInvoiceBO.IsPaymentReversal = False
+        Me.State.SecondClaimInvoiceBO.IsPaymentAdjustment = True
+        Me.State.SecondClaimInvoiceBO.IsPaymentReversal = False
+        Me.State.ClaimInvoiceBO.IsPaymentAdjustment = True
+        Me.State.ClaimInvoiceBO.IsPaymentReversal = False
 
         'Me.State.DisbursementBO.LoadAgain()
-        State.SecondDisbursementBO = State.SecondClaimInvoiceBO.AddNewDisbursement()
+        Me.State.SecondDisbursementBO = Me.State.SecondClaimInvoiceBO.AddNewDisbursement()
 
         'Populate new ClaimInvoice BO using the existing BO
-        State.SecondClaimInvoiceBO.PopulateClaimInvoice(State.OldClaimInvoiceBO)
+        Me.State.SecondClaimInvoiceBO.PopulateClaimInvoice(Me.State.OldClaimInvoiceBO)
         PopulateBOsFromForm()
 
         'Memorize AdjustmentPercentage
-        State.AdjustmentPercentage = State.SecondClaimInvoiceBO.AdjustmentPercentage
+        Me.State.AdjustmentPercentage = Me.State.SecondClaimInvoiceBO.AdjustmentPercentage
 
         'Adjust Amounts in SecondClaimInvoiceBO
-        State.SecondClaimInvoiceBO.AdjustClaimInvoiceAmounts(State.AdjustmentPercentage)
+        Me.State.SecondClaimInvoiceBO.AdjustClaimInvoiceAmounts(Me.State.AdjustmentPercentage)
 
         'create comment Only after ClaimInvoiceBO is populated
-        State.CommentBO = State.ClaimInvoiceBO.AddNewComment
+        Me.State.CommentBO = Me.State.ClaimInvoiceBO.AddNewComment
 
         'Populate new Disbursement BO using the existing BO
-        State.SecondDisbursementBO.PopulateDisbursement(State.OldDisbursementBO)
-        State.SecondDisbursementBO.SvcControlNumber = txtInvoiceNumber.Text
-        PopulateBOProperty(State.SecondDisbursementBO, "InvoiceDate", txtInvoiceDate)
-        State.SecondDisbursementBO.PaymentDate = New DateType(Date.Today())
+        Me.State.SecondDisbursementBO.PopulateDisbursement(Me.State.OldDisbursementBO)
+        Me.State.SecondDisbursementBO.SvcControlNumber = Me.txtInvoiceNumber.Text
+        Me.PopulateBOProperty(Me.State.SecondDisbursementBO, "InvoiceDate", Me.txtInvoiceDate)
+        Me.State.SecondDisbursementBO.PaymentDate = New DateType(Date.Today())
 
         'Adjust Amounts in SecondDisbursementBO
-        State.SecondDisbursementBO.AdjustDisbursementAmounts(State.AdjustmentPercentage)
+        Me.State.SecondDisbursementBO.AdjustDisbursementAmounts(Me.State.AdjustmentPercentage)
 
     End Sub
 
@@ -480,21 +480,21 @@ Partial Class ClaimPaymentAdjustmentsForm
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
         If itemType = ListItemType.Item OrElse itemType = ListItemType.AlternatingItem OrElse itemType = ListItemType.SelectedItem Then
-            PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_CLAIM_INVOICE_ID_IDX), dvRow(ClaimInvoice.ClaimInvoicesDV.COL_CLAIM_INVOICE_ID))
-            PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_INVOICE_NUMBER_IDX), dvRow(ClaimInvoice.ClaimInvoicesDV.COL_INVOICE_NUMBER))
-            PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_PAYEE_IDX), dvRow(ClaimInvoice.ClaimInvoicesDV.COL_PAYEE))
-            PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_CREATED_DATE_IDX), dvRow(ClaimInvoice.ClaimInvoicesDV.COL_CREATED_DATE))
-            PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_INVOICE_AMOUNT_IDX), dvRow(ClaimInvoice.ClaimInvoicesDV.COL_INVOICE_AMOUNT))
-            PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_PAID_BY_IDX), dvRow(ClaimInvoice.ClaimInvoicesDV.COL_PAID_BY))
-            State.decTotalPaid += CType(dvRow(ClaimInvoice.ClaimInvoicesDV.COL_INVOICE_AMOUNT), Decimal)
+            Me.PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_CLAIM_INVOICE_ID_IDX), dvRow(ClaimInvoice.ClaimInvoicesDV.COL_CLAIM_INVOICE_ID))
+            Me.PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_INVOICE_NUMBER_IDX), dvRow(ClaimInvoice.ClaimInvoicesDV.COL_INVOICE_NUMBER))
+            Me.PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_PAYEE_IDX), dvRow(ClaimInvoice.ClaimInvoicesDV.COL_PAYEE))
+            Me.PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_CREATED_DATE_IDX), dvRow(ClaimInvoice.ClaimInvoicesDV.COL_CREATED_DATE))
+            Me.PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_INVOICE_AMOUNT_IDX), dvRow(ClaimInvoice.ClaimInvoicesDV.COL_INVOICE_AMOUNT))
+            Me.PopulateControlFromBOProperty(e.Item.Cells(GRID_COL_PAID_BY_IDX), dvRow(ClaimInvoice.ClaimInvoicesDV.COL_PAID_BY))
+            Me.State.decTotalPaid += CType(dvRow(ClaimInvoice.ClaimInvoicesDV.COL_INVOICE_AMOUNT), Decimal)
         End If
     End Sub
 
     Public Sub ItemCommand(source As Object, e As DataGridCommandEventArgs)
         Try
             If e.CommandName = "SelectAction" AndAlso Grid.Enabled Then
-                Grid.SelectedIndex = e.Item.ItemIndex
-                State.selectedClaimInvoiceId = New Guid(e.Item.Cells(GRID_COL_CLAIM_INVOICE_ID_IDX).Text)
+                Me.Grid.SelectedIndex = e.Item.ItemIndex
+                Me.State.selectedClaimInvoiceId = New Guid(e.Item.Cells(GRID_COL_CLAIM_INVOICE_ID_IDX).Text)
                 Dim decPaymentAmount As Decimal = CType(e.Item.Cells(GRID_COL_INVOICE_AMOUNT_IDX).Text, Decimal)
 
                 'REVERSE_PAYMENT option is enabled only if the selected record has a positive payment amount and the amount of the 
@@ -504,32 +504,32 @@ Partial Class ClaimPaymentAdjustmentsForm
 
                 'the reverse payment shud be allowed selected record has a non-zero payment amount(+ve or -ve)
                 ' per ofer - since a recovery claim ( which is -ve amt) shud be alloed to be reversed
-                If (decPaymentAmount <> 0) AndAlso (State.decTotalPaid - decPaymentAmount >= 0) Then
+                If (decPaymentAmount <> 0) AndAlso (Me.State.decTotalPaid - decPaymentAmount >= 0) Then
                     If (decPaymentAmount < 0) Then
-                        blnReversePaymentButtonEnabledState = False
+                        Me.blnReversePaymentButtonEnabledState = False
                     Else
-                        blnReversePaymentButtonEnabledState = True
+                        Me.blnReversePaymentButtonEnabledState = True
                     End If
                 Else
-                    blnReversePaymentButtonEnabledState = False
+                    Me.blnReversePaymentButtonEnabledState = False
                 End If
 
                 'ADJUST_PAYMENT option will be presented only if the claim status is Closed and the selected
                 ' record has a positive payment amount
-                If State.ClaimStatusCode = CLAIM_CLOSED_STATUS AndAlso decPaymentAmount > 0 Then
-                    blnAdjustPaymentButtonEnabledState = True
+                If Me.State.ClaimStatusCode = CLAIM_CLOSED_STATUS AndAlso decPaymentAmount > 0 Then
+                    Me.blnAdjustPaymentButtonEnabledState = True
                 Else
-                    blnAdjustPaymentButtonEnabledState = False
+                    Me.blnAdjustPaymentButtonEnabledState = False
                 End If
 
-                ToggleButtons(blnNewPaymentButtonEnabledState, blnReversePaymentButtonEnabledState, blnAdjustPaymentButtonEnabledState)
-                Session("ReversePaymentButtonEnabledState") = blnReversePaymentButtonEnabledState
-                Session("AdjustPaymentButtonEnabledState") = blnAdjustPaymentButtonEnabledState
+                Me.ToggleButtons(blnNewPaymentButtonEnabledState, blnReversePaymentButtonEnabledState, blnAdjustPaymentButtonEnabledState)
+                Session("ReversePaymentButtonEnabledState") = Me.blnReversePaymentButtonEnabledState
+                Session("AdjustPaymentButtonEnabledState") = Me.blnAdjustPaymentButtonEnabledState
 
             End If
         Catch ex As ThreadAbortException
         Catch ex As Exception
-            HandleErrors(ex, ErrorCtrl)
+            Me.HandleErrors(ex, Me.ErrorCtrl)
         End Try
 
     End Sub
@@ -540,21 +540,21 @@ Partial Class ClaimPaymentAdjustmentsForm
 
     Private Sub Grid_PageIndexChanged(source As Object, e As DataGridPageChangedEventArgs) Handles Grid.PageIndexChanged
         Try
-            State.PageIndex = e.NewPageIndex
-            State.selectedClaimInvoiceId = Guid.Empty
-            PopulateGrid()
+            Me.State.PageIndex = e.NewPageIndex
+            Me.State.selectedClaimInvoiceId = Guid.Empty
+            Me.PopulateGrid()
         Catch ex As Exception
-            HandleErrors(ex, ErrorCtrl)
+            Me.HandleErrors(ex, Me.ErrorCtrl)
         End Try
     End Sub
 
     Private Sub Grid_PageSizeChanged(source As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             Grid.CurrentPageIndex = NewCurrentPageIndex(Grid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            State.PageSize = Grid.PageSize
-            PopulateGrid()
+            Me.State.PageSize = Grid.PageSize
+            Me.PopulateGrid()
         Catch ex As Exception
-            HandleErrors(ex, ErrorCtrl)
+            Me.HandleErrors(ex, Me.ErrorCtrl)
         End Try
     End Sub
 
@@ -563,27 +563,27 @@ Partial Class ClaimPaymentAdjustmentsForm
 #Region " Buttons Clicks "
     Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
-            ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.ClaimInvoiceBO, State.ChangesMade))
+            Me.ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, Me.State.ClaimInvoiceBO, Me.State.ChangesMade))
         Catch ex As ThreadAbortException
         Catch ex As Exception
-            HandleErrors(ex, ErrorCtrl)
-            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = DetailPageCommand.BackOnErr
-            State.LastErrMsg = ErrorCtrl.Text
+            Me.HandleErrors(ex, Me.ErrorCtrl)
+            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+            Me.State.ActionInProgress = DetailPageCommand.BackOnErr
+            Me.State.LastErrMsg = Me.ErrorCtrl.Text
         End Try
 
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Try
-            If ButtonClicked = REVERSE_PAYMENT Then
+            If Me.ButtonClicked = REVERSE_PAYMENT Then
                 '**************************************REVERSE PAYMENT********************************
                 'The process of Reversing a payment consist of creating three records:
                 '1- ClaimInvoice record (Old record reversed)
                 '2- Disbursment record  (Old record reversed)
                 '3- Comment record      (New)
                 '****************************************************************************
-                If txtInvoiceNumber.Text = "" Then
+                If Me.txtInvoiceNumber.Text = "" Then
                     SetLabelError(lblINVOICE_NUMBER)
                     Throw New GUIException(Message.MSG_INVOICE_NUMBER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVOICE_NUMBER_MUST_BE_ENTERED_ERR)
                 End If
@@ -592,18 +592,18 @@ Partial Class ClaimPaymentAdjustmentsForm
                 oCompaniesDv = oUser.GetUserCompanies(ElitaPlusIdentity.Current.ActiveUser.Id)
                 oCompaniesDv.RowFilter = "code in ('ABA','VBA','SBA')"
                 If oCompaniesDv.Count > 0 Then
-                    If txtInvoiceDate.Text.Trim = "" Then
+                    If Me.txtInvoiceDate.Text.Trim = "" Then
                         SetLabelError(lblInvoiceDate)
                         Throw New GUIException(Message.MSG_ADJUSTMENT_AMOUNT_MUST_BE_ENTERED, Assurant.ElitaPlus.Common.ErrorCodes.INVOICE_DATE_REQUIRED_ERR)
                     Else
-                        If Not Microsoft.VisualBasic.IsDate(txtInvoiceDate.Text) Then
+                        If Not Microsoft.VisualBasic.IsDate(Me.txtInvoiceDate.Text) Then
                             Throw New GUIException(Message.MSG_ADJUSTMENT_AMOUNT_MUST_BE_ENTERED, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_INVOICE_DATE_ENTERED_ERR)
                         End If
                     End If
                 End If
 
-                ReversePayment(True)
-            ElseIf ButtonClicked = ADJUST_PAYMENT Then
+                Me.ReversePayment(True)
+            ElseIf Me.ButtonClicked = ADJUST_PAYMENT Then
                 '*************************************ADJUST PAYMENT***********************************
                 'The process of Adjusting a payment consist of creating five records:
                 '1- ClaimInvoice record (Old record reversed)
@@ -612,7 +612,7 @@ Partial Class ClaimPaymentAdjustmentsForm
                 '4- Disbursment record  (New record adjusted)
                 '5- Comment record      (New)
                 '****************************************************************************
-                If txtInvoiceNumber.Text = "" Then
+                If Me.txtInvoiceNumber.Text = "" Then
                     SetLabelError(lblINVOICE_NUMBER)
                     Throw New GUIException(Message.MSG_INVOICE_NUMBER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVOICE_NUMBER_MUST_BE_ENTERED_ERR)
                 End If
@@ -621,11 +621,11 @@ Partial Class ClaimPaymentAdjustmentsForm
                 oCompaniesDv = oUser.GetUserCompanies(ElitaPlusIdentity.Current.ActiveUser.Id)
                 oCompaniesDv.RowFilter = "code in ('ABA','VBA','SBA')"
                 If oCompaniesDv.Count > 0 Then
-                    If txtInvoiceDate.Text.Trim = "" Then
+                    If Me.txtInvoiceDate.Text.Trim = "" Then
                         SetLabelError(lblInvoiceDate)
                         Throw New GUIException(Message.MSG_ADJUSTMENT_AMOUNT_MUST_BE_ENTERED, Assurant.ElitaPlus.Common.ErrorCodes.INVOICE_DATE_REQUIRED_ERR)
                     Else
-                        If Not Microsoft.VisualBasic.IsDate(txtInvoiceDate.Text) Then
+                        If Not Microsoft.VisualBasic.IsDate(Me.txtInvoiceDate.Text) Then
                             Throw New GUIException(Message.MSG_ADJUSTMENT_AMOUNT_MUST_BE_ENTERED, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_INVOICE_DATE_ENTERED_ERR)
                         End If
                     End If
@@ -633,7 +633,7 @@ Partial Class ClaimPaymentAdjustmentsForm
 
                 Dim blnInvalidTtl As Boolean = False, dAdjAmt As Decimal = 0
 
-                If txtADJUSTMENT_AMOUNT.Text = "" Then
+                If Me.txtADJUSTMENT_AMOUNT.Text = "" Then
                     SetLabelError(lblADJUSTMENT_AMOUNT)
                     Throw New GUIException(Message.MSG_ADJUSTMENT_AMOUNT_MUST_BE_ENTERED, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ADJUSTMENT_AMOUNT_MUST_BE_ENTERED_ERR)
                 Else
@@ -642,7 +642,7 @@ Partial Class ClaimPaymentAdjustmentsForm
                         'Me.PopulateBOProperty(CIBO, "AdjustmentAmount", Me.txtADJUSTMENT_AMOUNT.Text)
                         'CIBO = Nothing
                         'YX: instead of create a dummy new BO, using parse function to test amount in correct format
-                        dAdjAmt = Decimal.Parse(txtADJUSTMENT_AMOUNT.Text.Trim())
+                        dAdjAmt = Decimal.Parse(Me.txtADJUSTMENT_AMOUNT.Text.Trim())
                     Catch ex As Exception
                         SetLabelError(lblADJUSTMENT_AMOUNT)
                         Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.MSG_INVALID_AMOUNT_ENTERED, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)
@@ -653,34 +653,34 @@ Partial Class ClaimPaymentAdjustmentsForm
                         Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.MSG_INVALID_AMOUNT_ENTERED, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_TOTAL_PAYMENTS_MINUS_ADJUSTMENT_AMOUNT_ERR)
                     End If
                 End If
-                ReversePayment(False)
-                AdjustPayment()
+                Me.ReversePayment(False)
+                Me.AdjustPayment()
             Else
                 Exit Sub
             End If
 
             'Save ClaimInvoice Containing the family: Disbursment and Comment
-            State.ClaimInvoiceBO.Save()
+            Me.State.ClaimInvoiceBO.Save()
 
             'Navigate to Comment Screen
-            State.NavigateToComment = True
-            NavController.Navigate(Me, FlowEvents.EVENT_COMMENT_ADDED, New CommentForm.Parameters(State.CommentBO.Id))
+            Me.State.NavigateToComment = True
+            Me.NavController.Navigate(Me, FlowEvents.EVENT_COMMENT_ADDED, New CommentForm.Parameters(Me.State.CommentBO.Id))
         Catch ex As ThreadAbortException
         Catch ex As Exception
             If (TypeOf ex Is TargetInvocationException) AndAlso
                 (TypeOf ex.InnerException Is ThreadAbortException) Then Return
-            HandleErrors(ex, ErrorCtrl)
+            Me.HandleErrors(ex, Me.ErrorCtrl)
         End Try
 
     End Sub
 
     Private Sub btnNEW_PAYMENT_Click(sender As Object, e As EventArgs) Handles btnNEW_PAYMENT.Click
-        ToggleButtons(False, False, False)
-        ButtonClicked = NEW_PAYMENT
-        Session("ButtonClicked") = ButtonClicked
+        Me.ToggleButtons(False, False, False)
+        Me.ButtonClicked = NEW_PAYMENT
+        Session("ButtonClicked") = Me.ButtonClicked
         'ControlMgr.SetEnableControl(Me, Grid, False)
         SetGridControls(Grid, False)
-        NavController.Navigate(Me, "new_payment", New PayClaimForm.Parameters(ClaimFacade.Instance.GetClaim(Of Claim)(State.selectedClaimID), True))
+        Me.NavController.Navigate(Me, "new_payment", New PayClaimForm.Parameters(ClaimFacade.Instance.GetClaim(Of Claim)(Me.State.selectedClaimID), True))
         'Me.callPage(PayClaimForm.URL, New PayClaimForm.Parameters(New Claim(Me.State.selectedClaimID), True))
     End Sub
 
@@ -695,22 +695,22 @@ Partial Class ClaimPaymentAdjustmentsForm
         oCompaniesDv = oUser.GetUserCompanies(ElitaPlusIdentity.Current.ActiveUser.Id)
         oCompaniesDv.RowFilter = "code in ('ABA','VBA','SBA')"
         If oCompaniesDv.Count > 0 Then
-            ControlMgr.SetVisibleControl(Me, lblInvDateAsterisk, True)
+            ControlMgr.SetVisibleControl(Me, Me.lblInvDateAsterisk, True)
         Else
-            ControlMgr.SetVisibleControl(Me, lblInvDateAsterisk, False)
+            ControlMgr.SetVisibleControl(Me, Me.lblInvDateAsterisk, False)
         End If
 
         ControlMgr.SetVisibleControl(Me, lblInvoiceDate, True)
         ControlMgr.SetVisibleControl(Me, txtInvoiceDate, True)
         ControlMgr.SetVisibleControl(Me, ImageButtonInvoiceDate, True)
 
-        ToggleButtons(False, False, False)
-        ButtonClicked = ADJUST_PAYMENT
-        Session("ButtonClicked") = ButtonClicked
+        Me.ToggleButtons(False, False, False)
+        Me.ButtonClicked = ADJUST_PAYMENT
+        Session("ButtonClicked") = Me.ButtonClicked
         SetGridControls(Grid, False)
-        SetFocus(txtInvoiceNumber)
-        MenuEnabled = False
-        cboPageSize.Enabled = False
+        SetFocus(Me.txtInvoiceNumber)
+        Me.MenuEnabled = False
+        Me.cboPageSize.Enabled = False
     End Sub
 
     Private Sub btnREVERSE_PAYMENT_Click(sender As Object, e As EventArgs) Handles btnREVERSE_PAYMENT.Click
@@ -724,44 +724,44 @@ Partial Class ClaimPaymentAdjustmentsForm
         oCompaniesDv = oUser.GetUserCompanies(ElitaPlusIdentity.Current.ActiveUser.Id)
         oCompaniesDv.RowFilter = "code in ('ABA','VBA','SBA')"
         If oCompaniesDv.Count > 0 Then
-            ControlMgr.SetVisibleControl(Me, lblInvDateAsterisk, True)
+            ControlMgr.SetVisibleControl(Me, Me.lblInvDateAsterisk, True)
         Else
-            ControlMgr.SetVisibleControl(Me, lblInvDateAsterisk, False)
+            ControlMgr.SetVisibleControl(Me, Me.lblInvDateAsterisk, False)
         End If
 
         ControlMgr.SetVisibleControl(Me, lblInvoiceDate, True)
         ControlMgr.SetVisibleControl(Me, txtInvoiceDate, True)
         ControlMgr.SetVisibleControl(Me, ImageButtonInvoiceDate, True)
 
-        ToggleButtons(False, False, False)
-        ButtonClicked = REVERSE_PAYMENT
-        Session("ButtonClicked") = ButtonClicked
+        Me.ToggleButtons(False, False, False)
+        Me.ButtonClicked = REVERSE_PAYMENT
+        Session("ButtonClicked") = Me.ButtonClicked
         SetGridControls(Grid, False)
-        SetFocus(txtInvoiceNumber)
-        MenuEnabled = False
-        cboPageSize.Enabled = False
+        SetFocus(Me.txtInvoiceNumber)
+        Me.MenuEnabled = False
+        Me.cboPageSize.Enabled = False
     End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         ControlMgr.SetVisibleControl(Me, tblPaymentDetails, False)
         ControlMgr.SetVisibleControl(Me, tblHR, False)
         ControlMgr.SetVisibleControl(Me, ImageButtonInvoiceDate, False)
-        ToggleButtons(blnNewPaymentButtonEnabledState, blnReversePaymentButtonEnabledState, blnAdjustPaymentButtonEnabledState)
+        Me.ToggleButtons(blnNewPaymentButtonEnabledState, blnReversePaymentButtonEnabledState, blnAdjustPaymentButtonEnabledState)
         ControlMgr.SetEnableControl(Me, Grid, True)
         SetGridControls(Grid, True)
-        MenuEnabled = True
-        txtADJUSTMENT_AMOUNT.Text = ""
-        txtInvoiceDate.Text = ""
-        txtInvoiceNumber.Text = ""
+        Me.MenuEnabled = True
+        Me.txtADJUSTMENT_AMOUNT.Text = ""
+        Me.txtInvoiceDate.Text = ""
+        Me.txtInvoiceNumber.Text = ""
     End Sub
 #End Region
 
 #Region "Clear"
 
     Private Sub ClearErrLabels()
-        ClearLabelErrSign(lblINVOICE_NUMBER)
-        ClearLabelErrSign(lblADJUSTMENT_AMOUNT)
-        ClearLabelErrSign(lblInvoiceDate)
+        Me.ClearLabelErrSign(lblINVOICE_NUMBER)
+        Me.ClearLabelErrSign(lblADJUSTMENT_AMOUNT)
+        Me.ClearLabelErrSign(lblInvoiceDate)
         'Me.ClearLabelErrSign(lblColon)
     End Sub
 
@@ -770,7 +770,7 @@ Partial Class ClaimPaymentAdjustmentsForm
 #Region "Navigation Control"
     Sub StartNavControl()
         Dim nav As New ElitaPlusNavigation
-        NavController = New NavControllerBase(nav.Flow("PAY_CLAIM_ADJUSTMENT"))
+        Me.NavController = New NavControllerBase(nav.Flow("PAY_CLAIM_ADJUSTMENT"))
     End Sub
 
 #End Region

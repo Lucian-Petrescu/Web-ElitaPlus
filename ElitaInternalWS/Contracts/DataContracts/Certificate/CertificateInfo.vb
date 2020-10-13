@@ -79,15 +79,15 @@ Public Class CertificateInfo
             End If
         End If
         WarrantySalesDate = pCertificate.WarrantySalesDate
-        If Not pCertificate.UpgradeFixedTerm Is Nothing Then
+        If pCertificate.UpgradeFixedTerm IsNot Nothing Then
             UpgradeFixedTerm = pCertificate.UpgradeFixedTerm.Value
         End If
         UpgradeProduct = pCertificate.getProdUpgradeProgramCode
         UpgradeTermUOM = pCertificate.getUpgradeTermUOMCode
-        If Not pCertificate.UpgradeTermFrom Is Nothing Then
+        If pCertificate.UpgradeTermFrom IsNot Nothing Then
             UpgradeTermFrom = pCertificate.UpgradeTermFrom.Value
         End If
-        If Not pCertificate.UpgradeTermTo Is Nothing Then
+        If pCertificate.UpgradeTermTo IsNot Nothing Then
             UpgradeTermTo = pCertificate.UpgradeTermTo.Value
         End If
         LoanCode = pCertificate.LoanCode

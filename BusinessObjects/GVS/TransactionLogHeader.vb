@@ -907,7 +907,7 @@ Public Property TransactionStatusID As Guid
 
         Try
             'Check status values and act as necessary.
-            If Not bValidElita Or Not bValidGVS Then
+            If Not bValidElita OrElse Not bValidGVS Then
                 Dim msg As System.Net.Mail.MailMessage
                 Dim mail As System.Net.Mail.SmtpClient
 

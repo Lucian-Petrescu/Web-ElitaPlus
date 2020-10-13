@@ -20,7 +20,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents CustomerNameLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents CustomerNameLabel As Label
     
     '''<summary>
     '''CustomerNameText control.
@@ -29,7 +29,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents CustomerNameText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents CustomerNameText As Label
     
     '''<summary>
     '''custAddress control.
@@ -38,7 +38,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents custAddress As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents custAddress As HtmlTableRow
     
     '''<summary>
     '''CustomerAddressLabel control.
@@ -47,7 +47,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents CustomerAddressLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents CustomerAddressLabel As Label
     
     '''<summary>
     '''CustomerAddressText control.
@@ -56,7 +56,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents CustomerAddressText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents CustomerAddressText As Label
     
     '''<summary>
     '''CallerNameLabel control.
@@ -65,7 +65,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents CallerNameLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents CallerNameLabel As Label
     
     '''<summary>
     '''CallerNameText control.
@@ -74,7 +74,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents CallerNameText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents CallerNameText As Label
     
     '''<summary>
     '''DealerNameLabel control.
@@ -83,7 +83,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents DealerNameLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents DealerNameLabel As Label
     
     '''<summary>
     '''DealerNameText control.
@@ -92,7 +92,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents DealerNameText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents DealerNameText As Label
     
     '''<summary>
     '''EnrolledMakeLabel control.
@@ -101,7 +101,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents EnrolledMakeLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents EnrolledMakeLabel As Label
     
     '''<summary>
     '''EnrolledMakeText control.
@@ -110,7 +110,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents EnrolledMakeText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents EnrolledMakeText As Label
     
     '''<summary>
     '''ClaimNumberLabel control.
@@ -119,7 +119,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ClaimNumberLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents ClaimNumberLabel As Label
     
     '''<summary>
     '''ClaimNumberText control.
@@ -128,7 +128,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ClaimNumberText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents ClaimNumberText As Label
     
     '''<summary>
     '''ProtectionStatusLabel control.
@@ -137,7 +137,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ProtectionStatusLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents ProtectionStatusLabel As Label
     
     '''<summary>
     '''ProtectionStatusTD control.
@@ -146,7 +146,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ProtectionStatusTD As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents ProtectionStatusTD As HtmlTableCell
     
     '''<summary>
     '''ProtectionStatusText control.
@@ -155,7 +155,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ProtectionStatusText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents ProtectionStatusText As Label
     
     '''<summary>
     '''EnrolledModeLabel control.
@@ -164,7 +164,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents EnrolledModeLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents EnrolledModeLabel As Label
     
     '''<summary>
     '''EnrolledModeText control.
@@ -173,7 +173,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents EnrolledModeText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents EnrolledModeText As Label
     
     '''<summary>
     '''ClaimStatusLabel control.
@@ -182,7 +182,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ClaimStatusLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents ClaimStatusLabel As Label
     
     '''<summary>
     '''ClaimStatusTD control.
@@ -191,7 +191,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ClaimStatusTD As Global.System.Web.UI.HtmlControls.HtmlTableCell
+    Protected WithEvents ClaimStatusTD As HtmlTableCell
     
     '''<summary>
     '''ClaimStatusText control.
@@ -200,7 +200,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ClaimStatusText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents ClaimStatusText As Label
     
     '''<summary>
     '''ClaimedMakeLabel control.
@@ -209,7 +209,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ClaimedMakeLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents ClaimedMakeLabel As Label
     
     '''<summary>
     '''ClaimedMakeText control.
@@ -218,7 +218,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ClaimedMakeText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents ClaimedMakeText As Label
     
     '''<summary>
     '''TypeOfLossLabel control.
@@ -227,7 +227,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TypeOfLossLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents TypeOfLossLabel As Label
     
     '''<summary>
     '''TypeOfLossText control.
@@ -236,7 +236,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TypeOfLossText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents TypeOfLossText As Label
     
     '''<summary>
     '''ClaimedModelLabel control.
@@ -245,7 +245,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ClaimedModelLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents ClaimedModelLabel As Label
     
     '''<summary>
     '''ClaimedModelText control.
@@ -254,7 +254,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ClaimedModelText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents ClaimedModelText As Label
     
     '''<summary>
     '''DateOfLossLabel control.
@@ -263,7 +263,7 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents DateOfLossLabel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents DateOfLossLabel As Label
     
     '''<summary>
     '''DateOfLossText control.
@@ -272,5 +272,5 @@ Partial Public Class ProtectionAndEventDetails
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents DateOfLossText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents DateOfLossText As Label
 End Class

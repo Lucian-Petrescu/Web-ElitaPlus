@@ -1,5 +1,5 @@
 ﻿Public Class MessageController
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
     Implements IErrorController, IMessageController
 
     Private m_MessageType As IMessageController.MessageType
@@ -11,7 +11,7 @@
     Public Const ERROR_CSS As String = "errorMsg"
 #End Region
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
     End Sub
 

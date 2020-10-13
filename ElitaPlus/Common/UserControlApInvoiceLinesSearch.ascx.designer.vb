@@ -21,7 +21,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents divSearchError As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+        Protected WithEvents divSearchError As HtmlGenericControl
 
         '''<summary>
         '''lblSearchError control.
@@ -30,7 +30,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblSearchError As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblSearchError As Label
 
         '''<summary>
         '''divAddLinesStatus control.
@@ -39,7 +39,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents divAddLinesStatus As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+        Protected WithEvents divAddLinesStatus As HtmlGenericControl
 
         '''<summary>
         '''lblAddLinesStatus control.
@@ -48,7 +48,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblAddLinesStatus As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblAddLinesStatus As Label
 
         '''<summary>
         '''moServiceCenterLabel control.
@@ -57,7 +57,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moServiceCenterLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moServiceCenterLabel As Label
 
         '''<summary>
         '''txtServiceCenter control.
@@ -66,7 +66,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents txtServiceCenter As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents txtServiceCenter As TextBox
 
         '''<summary>
         '''lblClaimNumber control.
@@ -75,7 +75,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblClaimNumber As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblClaimNumber As Label
 
         '''<summary>
         '''txtClaimNumber control.
@@ -84,7 +84,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents txtClaimNumber As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents txtClaimNumber As TextBox
 
         '''<summary>
         '''lblAuthorizationNUmber control.
@@ -93,7 +93,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblAuthorizationNUmber As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblAuthorizationNUmber As Label
 
         '''<summary>
         '''txtAuthorizationNumber control.
@@ -102,7 +102,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents txtAuthorizationNumber As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents txtAuthorizationNumber As TextBox
 
         '''<summary>
         '''tdSearchButton control.
@@ -111,7 +111,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents tdSearchButton As Global.System.Web.UI.HtmlControls.HtmlTableCell
+        Protected WithEvents tdSearchButton As HtmlTableCell
 
         '''<summary>
         '''btnClearSearch control.
@@ -120,7 +120,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnClearSearch As Button
 
         '''<summary>
         '''btnSearch control.
@@ -129,7 +129,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnSearch As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnSearch As Button
 
         '''<summary>
         '''authGridTitle control.
@@ -138,7 +138,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents authGridTitle As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+        Protected WithEvents authGridTitle As HtmlGenericControl
 
         '''<summary>
         '''AuthGridPageSize control.
@@ -147,7 +147,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents AuthGridPageSize As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+        Protected WithEvents AuthGridPageSize As HtmlGenericControl
 
         '''<summary>
         '''trPageSize control.
@@ -156,7 +156,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents trPageSize As HtmlTableRow
 
         '''<summary>
         '''lblPageSize control.
@@ -165,7 +165,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblPageSize As Label
 
         '''<summary>
         '''colonSepertor control.
@@ -174,7 +174,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents colonSepertor As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents colonSepertor As Label
 
         '''<summary>
         '''cboPageSize control.
@@ -183,7 +183,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents cboPageSize As DropDownList
 
         '''<summary>
         '''lblRecordCount control.
@@ -192,7 +192,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblRecordCount As Label
 
         '''<summary>
         '''GridAuth control.
@@ -201,7 +201,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents GridAuth As Global.System.Web.UI.WebControls.GridView
+        Protected WithEvents GridAuth As GridView
 
         '''<summary>
         '''btnSearchLines control.
@@ -210,7 +210,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnSearchLines As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnSearchLines As Button
 
         '''<summary>
         '''poLineGridTitle control.
@@ -219,7 +219,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents poLineGridTitle As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+        Protected WithEvents poLineGridTitle As HtmlGenericControl
 
         '''<summary>
         '''linesGridHeader control.
@@ -228,7 +228,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents linesGridHeader As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+        Protected WithEvents linesGridHeader As HtmlGenericControl
 
         '''<summary>
         '''PoLineGridPageSize control.
@@ -237,7 +237,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents PoLineGridPageSize As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+        Protected WithEvents PoLineGridPageSize As HtmlGenericControl
 
         '''<summary>
         '''tr1 control.
@@ -246,7 +246,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents tr1 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents tr1 As HtmlTableRow
 
         '''<summary>
         '''lblPoLinePageSize control.
@@ -255,7 +255,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblPoLinePageSize As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblPoLinePageSize As Label
 
         '''<summary>
         '''Label2 control.
@@ -264,7 +264,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents Label2 As Label
 
         '''<summary>
         '''PoLineCboPageSize control.
@@ -273,7 +273,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents PoLineCboPageSize As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents PoLineCboPageSize As DropDownList
 
         '''<summary>
         '''lblPoLinesRecords control.
@@ -282,7 +282,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblPoLinesRecords As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblPoLinesRecords As Label
 
         '''<summary>
         '''GridPoLines control.
@@ -291,7 +291,7 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents GridPoLines As Global.System.Web.UI.WebControls.GridView
+        Protected WithEvents GridPoLines As GridView
 
         '''<summary>
         '''btnAddSelectedPoLines control.
@@ -300,6 +300,6 @@ Namespace Common
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents btnAddSelectedPoLines As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents btnAddSelectedPoLines As Button
     End Class
 End Namespace

@@ -1630,7 +1630,7 @@ Public Class Disbursement
         Public Overrides Function IsValid(valueToCheck As Object, objectToValidate As Object) As Boolean
             Dim obj As Disbursement = CType(objectToValidate, Disbursement)
 
-            If (obj.perceptionIIBB IsNot Nothing AndAlso obj.perceptionIIBB.Value > 0) And obj.VendorRegionDesc = Nothing Then Return False
+            If (obj.perceptionIIBB IsNot Nothing AndAlso obj.perceptionIIBB.Value > 0) AndAlso obj.VendorRegionDesc = Nothing Then Return False
 
             Return True
 

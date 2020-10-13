@@ -4,7 +4,11 @@ Imports System.Reflection
 Imports System.ComponentModel
 Imports System.Collections.Generic
 Imports System.Globalization
+Imports System.Threading
+Imports System.Web.Services
+Imports AjaxControlToolkit
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Reports
 
 
 Public Class ElitaPlusPage
@@ -12,10 +16,10 @@ Public Class ElitaPlusPage
 
 #Region "Page Return Type"
     Public Class PageReturnType(Of T)
-        Public LastOperation As ElitaPlusPage.DetailPageCommand
+        Public LastOperation As DetailPageCommand
         Public EditingBo As T
         Public HasDataChanged As Boolean
-        Public Sub New(LastOp As ElitaPlusPage.DetailPageCommand, currentEditingBo As T, hasDataChanged As Boolean)
+        Public Sub New(LastOp As DetailPageCommand, currentEditingBo As T, hasDataChanged As Boolean)
             LastOperation = LastOp
             EditingBo = currentEditingBo
             Me.HasDataChanged = hasDataChanged
@@ -597,7 +601,7 @@ Public Class ElitaPlusPage
                     Case "V"
                         oWebcontrol.Visible = True
                         'Logic added for AJAX Tab panel to disable child controls.
-                        If oWebcontrol.GetType.Equals(GetType(AjaxControlToolkit.TabPanel)) Then
+                        If oWebcontrol.GetType.Equals(GetType(TabPanel)) Then
                             If oWebcontrol.HasControls Then
                                 EnableDisableControlGroup(oWebcontrol, False)
                             End If
@@ -745,7 +749,7 @@ Public Class ElitaPlusPage
 
 #Region "Page Events: Page_load"
 
-    Private Sub Page_Load(sender As Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         'Added check to see if a scriptmanager exists on the page.  If it does, do not render the WAIT
         '   script as it disables ajax scripting
@@ -1337,7 +1341,7 @@ Public Class ElitaPlusPage
     ' *************************************************************************** '
     Protected Function GetSelectedList(control As ListControl) As String()
 
-        Dim strItems As New System.Collections.ArrayList
+        Dim strItems As New ArrayList
 
         If control IsNot Nothing Then
 
@@ -1365,7 +1369,7 @@ Public Class ElitaPlusPage
     ' *************************************************************************** '
     Protected Function GetListValues(control As ListControl) As String()
 
-        Dim strItems As New System.Collections.ArrayList
+        Dim strItems As New ArrayList
 
         If control IsNot Nothing Then
 
@@ -1393,7 +1397,7 @@ Public Class ElitaPlusPage
     ' *************************************************************************** '
     '   Sub AddCalendar: Add a calendar popup to a control's onclick event
     ' *************************************************************************** '
-    Public Sub AddCalendar(control As System.Web.UI.WebControls.WebControl, textbox As System.Web.UI.WebControls.WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N", Optional ByVal disablePreviousDates As String = "N")
+    Public Sub AddCalendar(control As WebControl, textbox As WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N", Optional ByVal disablePreviousDates As String = "N")
         Dim AppPath As String = Request.ApplicationPath
         Dim ServerName As String = Request.ServerVariables("SERVER_NAME")
         'Dim url As String = "http://" & ServerName & AppPath & "/Common/CalendarForm.aspx"
@@ -1413,7 +1417,7 @@ Public Class ElitaPlusPage
     '    control.Attributes.Add("onclick", "javascript:return openCalendar('" & textId & "', '" & caller & "', '" & url & "', '" & setDateTime & "')")
     'End Sub
 
-    Public Sub AddCalendarwithTime(control As System.Web.UI.WebControls.WebControl, textbox As System.Web.UI.WebControls.WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N")
+    Public Sub AddCalendarwithTime(control As WebControl, textbox As WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N")
         Dim AppPath As String = Request.ApplicationPath
         Dim ServerName As String = Request.ServerVariables("SERVER_NAME")
         Dim url As String = ELPWebConstants.APPLICATION_PATH & "/Common/CalendarWithtimeForm.aspx"
@@ -1422,7 +1426,7 @@ Public Class ElitaPlusPage
         control.Attributes.Add("onclick", "javascript:return openCalendarwithtime('" & textId & "', '" & caller & "', '" & url & "', '" & setDateTime & "')")
     End Sub
 
-    Public Sub AddCalendar_New(control As System.Web.UI.WebControls.WebControl, textbox As System.Web.UI.WebControls.WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N",
+    Public Sub AddCalendar_New(control As WebControl, textbox As WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N",
                                Optional ByVal disablePreviousDates As String = "N")
         Dim AppPath As String = Request.ApplicationPath
         Dim ServerName As String = Request.ServerVariables("SERVER_NAME")
@@ -1433,8 +1437,8 @@ Public Class ElitaPlusPage
         control.Attributes.Add("onclick", "javascript:return openCalendar_New('" & textId & "', '" & caller & "', '" & url & "', '" & setDateTime & "', '" & disablePreviousDates & "')")
     End Sub
 
-    Public Shared Sub SharedAddCalendarNew(control As System.Web.UI.WebControls.WebControl,
-                                           textBox As System.Web.UI.WebControls.WebControl,
+    Public Shared Sub SharedAddCalendarNew(control As WebControl,
+                                           textBox As WebControl,
                                            Optional ByVal caller As String = "",
                                            Optional ByVal setDateTime As String = "N",
                                            Optional ByVal disablePreviousDates As String = "N")
@@ -1444,8 +1448,8 @@ Public Class ElitaPlusPage
         control.Attributes.Add("onclick", $"javascript:return openCalendar_New('{textId}', '{caller}', '{url}', '{setDateTime}', '{disablePreviousDates}')")
     End Sub
 
-    Public Shared Sub AddCalendarNewWithEnableDates(control As System.Web.UI.WebControls.WebControl,
-                                                    textBox As System.Web.UI.WebControls.WebControl,
+    Public Shared Sub AddCalendarNewWithEnableDates(control As WebControl,
+                                                    textBox As WebControl,
                                                     Optional ByVal caller As String = "",
                                                     Optional ByVal setDateTime As String = "N",
                                                     Optional ByVal enabledDates As List(Of Date) = Nothing)
@@ -1458,8 +1462,8 @@ Public Class ElitaPlusPage
         control.Attributes.Add("onclick", $"javascript:return openCalendar_New_enableDates('{textId}', '{caller}', '{url}', '{setDateTime}', '{strEnabledDates}')")
     End Sub
 
-    Public Shared Sub AddCalendarNewWithDisableBeforeDate(control As System.Web.UI.WebControls.WebControl,
-                                                          textBox As System.Web.UI.WebControls.WebControl,
+    Public Shared Sub AddCalendarNewWithDisableBeforeDate(control As WebControl,
+                                                          textBox As WebControl,
                                                           Optional ByVal caller As String = "",
                                                           Optional ByVal setDateTime As String = "N",
                                                           Optional ByVal disableBeforeDate As Date = Nothing)
@@ -1474,7 +1478,7 @@ Public Class ElitaPlusPage
         control.Attributes.Add("onclick", $"javascript:return openCalendar_New_disableBeforeDate('{textId}', '{caller}', '{url}', '{setDateTime}', '{strDisabledBeforeDate}')")
     End Sub
 
-    Public Sub AddCalendarwithTime_New(control As System.Web.UI.WebControls.WebControl, textbox As System.Web.UI.WebControls.WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N")
+    Public Sub AddCalendarwithTime_New(control As WebControl, textbox As WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N")
         Dim AppPath As String = Request.ApplicationPath
         Dim ServerName As String = Request.ServerVariables("SERVER_NAME")
         Dim url As String = ELPWebConstants.APPLICATION_PATH & "/Common/CalendarWithtimeForm_New.aspx"
@@ -1483,7 +1487,7 @@ Public Class ElitaPlusPage
         control.Attributes.Add("onclick", "javascript:return openCalendarwithtime_New('" & textId & "', '" & caller & "', '" & url & "', '" & setDateTime & "')")
     End Sub
 
-    Public Sub AddConfirmation(control As System.Web.UI.WebControls.WebControl, strMsg As String, Optional ByVal Translate As Boolean = True)
+    Public Sub AddConfirmation(control As WebControl, strMsg As String, Optional ByVal Translate As Boolean = True)
         Dim translatedMsg As String = strMsg
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
 
@@ -1492,7 +1496,7 @@ Public Class ElitaPlusPage
         control.Attributes.Add("onclick", sJavaScript)
     End Sub
 
-    Public Sub AddConfirmationAndDisplayProgressBar(control As System.Web.UI.WebControls.WebControl, strConfirmationMsg As String, strProgressMsg As String, Optional ByVal translate As Boolean = True)
+    Public Sub AddConfirmationAndDisplayProgressBar(control As WebControl, strConfirmationMsg As String, strProgressMsg As String, Optional ByVal translate As Boolean = True)
 
         DisplayProgressBarOnClick(CType(control, Button), strProgressMsg, translate)
 
@@ -1505,7 +1509,7 @@ Public Class ElitaPlusPage
 
     End Sub
 
-    Public Sub AddConfirmationAndDisplayNewProgressBar(control As System.Web.UI.WebControls.WebControl, strConfirmationMsg As String, strProgressMsg As String, Optional ByVal translate As Boolean = True)
+    Public Sub AddConfirmationAndDisplayNewProgressBar(control As WebControl, strConfirmationMsg As String, strProgressMsg As String, Optional ByVal translate As Boolean = True)
 
         DisplayNewProgressBarOnClick(CType(control, Button), strProgressMsg, translate)
 
@@ -1577,7 +1581,7 @@ Public Class ElitaPlusPage
         RegisterStartupScript("ShowConfirmation", sJavaScript)
     End Sub
 
-    Public Sub AddControlMsg(control As System.Web.UI.WebControls.WebControl, strMsg As String, title As String, buttons As String, type As String, Optional ByVal Translate As Boolean = True)
+    Public Sub AddControlMsg(control As WebControl, strMsg As String, title As String, buttons As String, type As String, Optional ByVal Translate As Boolean = True)
         Dim translatedMsg As String = strMsg
         If Translate Then translatedMsg = TranslationBase.TranslateLabelOrMessage(strMsg)
         control.Attributes.Add("onclick", "javascript:return showMessage('" & translatedMsg & "', '" & title & "', '" & buttons & "', '" & type & "', 'null');")
@@ -1713,7 +1717,7 @@ Public Class ElitaPlusPage
     End Sub
 
     Public Sub InstallDisplayProgressBar()
-        Dim lit As New System.Web.UI.WebControls.Literal
+        Dim lit As New Literal
         'lit.Text = "<IFRAME id=""progressFrame"" style=""DISPLAY: none; Z-INDEX: 300; LEFT: 170px; OVERFLOW: hidden; WIDTH: 300px; PADDING-TOP: 0px; POSITION: absolute; TOP: 300px; HEIGHT: 117px"" name=""progressFrame"" marginWidth=""0"" src=""../Common/MessageProgressForm.aspx"" frameBorder=""no"" scrolling=""no""></IFRAME>"
         lit.Text = "<IFRAME id=""progressFrame"" style=""DISPLAY: none; Z-INDEX: 300; LEFT: 170px; OVERFLOW: hidden; WIDTH: 300px; PADDING-TOP: 0px; POSITION: absolute; TOP: 300px; HEIGHT: 142px"" name=""progressFrame"" marginWidth=""0"" src=""../Common/MessageProgressForm.aspx"" frameBorder=""no"" scrolling=""no""></IFRAME>"
         lit.ID = "__ProgressBarInternalFrame__"
@@ -1723,7 +1727,7 @@ Public Class ElitaPlusPage
     End Sub
 
     Public Sub InstallDisplayNewProgressBar()
-        Dim lit As New System.Web.UI.WebControls.Literal
+        Dim lit As New Literal
         lit.Text = "<IFRAME id=""progressFrame"" style=""DISPLAY: none; Z-INDEX: 300; LEFT: 170px; OVERFLOW: hidden; WIDTH: 400px; PADDING-TOP: 0px; POSITION: absolute; TOP: 300px; HEIGHT: 142px"" name=""progressFrame"" marginWidth=""0"" src=""../Common/MessageProgressForm_New.aspx"" frameBorder=""0"" scrolling=""no""></IFRAME>"
         lit.ID = "__ProgressBarInternalFrame__"
         If PageForm IsNot Nothing AndAlso PageForm.FindControl(lit.ID) Is Nothing Then
@@ -1732,7 +1736,7 @@ Public Class ElitaPlusPage
     End Sub
 
     Public Sub InstallReportViewer()
-        Dim lit As New System.Web.UI.WebControls.Literal
+        Dim lit As New Literal
         lit.Text = "<IFRAME id=""reportViewerFrame"" style=""DISPLAY: none; Z-INDEX: 300; LEFT: 170px; OVERFLOW: hidden; WIDTH: 0px; PADDING-TOP: 0px; POSITION: absolute; TOP: 300px; HEIGHT: 0px"" name=""reportViewerFrame"" marginWidth=""0"" src="""" frameBorder=""no"" scrolling=""no""></IFRAME>"
         'lit.Text = "<IFRAME id=""reportViewerFrame"" style=""DISPLAY: none; Z-INDEX: 300; LEFT: 170px; OVERFLOW: hidden; WIDTH: 100%; PADDING-TOP: 0px; POSITION: absolute; TOP: 300px; HEIGHT: 100%"" name=""progressFrame"" marginWidth=""0"" src="""" frameBorder=""no"" scrolling=""no""></IFRAME>"
         lit.ID = "__ReportViewerFrame__"
@@ -1743,7 +1747,7 @@ Public Class ElitaPlusPage
 
     End Sub
     Public Sub InstallProgressBar()
-        Dim lit As New System.Web.UI.WebControls.Literal
+        Dim lit As New Literal
         lit.Text = "<IFRAME id=""progressFrame"" style=""DISPLAY: none; Z-INDEX: 300; LEFT: 170px; OVERFLOW: hidden; WIDTH: 450px; PADDING-TOP: 0px; POSITION: absolute; TOP: 300px; HEIGHT: 168px"" name=""progressFrame"" marginWidth=""0"" src=""../Common/MessageProgressForm.aspx"" frameBorder=""no"" scrolling=""no""></IFRAME>"
         ' lit.Text = "<IFRAME id=""progressFrame"" style=""DISPLAY: none; Z-INDEX: 300; LEFT: 170px; OVERFLOW: hidden; WIDTH: 100%; PADDING-TOP: 0px; POSITION: absolute; TOP: 300px; HEIGHT: 100%"" name=""progressFrame"" marginWidth=""0"" src=""../Common/MessageProgressForm.aspx"" frameBorder=""no"" scrolling=""no""></IFRAME>"
         lit.ID = "__ProgressBarInternalFrame__"
@@ -1755,7 +1759,7 @@ Public Class ElitaPlusPage
     End Sub
 
     Public Sub InstallDisplayNewReportProgressBar()
-        Dim lit As New System.Web.UI.WebControls.Literal
+        Dim lit As New Literal
         lit.Text = "<IFRAME id=""progressFrame"" style=""DISPLAY: none; Z-INDEX: 300; LEFT: 170px; OVERFLOW: hidden; WIDTH: 450px; PADDING-TOP: 0px; POSITION: absolute; TOP: 300px; HEIGHT: 162px"" name=""progressFrame"" marginWidth=""0"" src=""../Common/MessageProgressForm_New.aspx"" frameBorder=""0"" scrolling=""no""></IFRAME>"
         lit.ID = "__ProgressBarInternalFrame__"
         If PageForm IsNot Nothing AndAlso PageForm.FindControl(lit.ID) Is Nothing Then
@@ -1810,7 +1814,7 @@ Public Class ElitaPlusPage
     Sub AddResubmitBlock()
         If PageForm IsNot Nothing Then
             PageForm.Attributes.Add("onsubmit", "return(! IsSubmitting());")
-            Dim lit As New System.Web.UI.WebControls.Literal, strbuilder As New System.Text.StringBuilder
+            Dim lit As New Literal, strbuilder As New StringBuilder
             strbuilder.Append("<script>")
             strbuilder.Append(Environment.NewLine)
             strbuilder.Append("var _isSubmitting = false;")
@@ -1959,7 +1963,7 @@ Public Class ElitaPlusPage
 
         sJavaScript = "<SCRIPT>" & Environment.NewLine
         sJavaScript &= "parent.parent.CloseProgressBarParent('" & transMsg & "','" & viewerName & "','" & errorMsg & "','" & rptAction & "','" & rptFtp & "');" & Environment.NewLine
-        If viewerName = Reports.ReportCeBase.RptViewer.GetName(GetType(Reports.ReportCeBase.RptViewer), Reports.ReportCeBase.RptViewer.WINDOWOPEN) Then
+        If viewerName = ReportCeBase.RptViewer.GetName(GetType(ReportCeBase.RptViewer), ReportCeBase.RptViewer.WINDOWOPEN) Then
             ' Window Open
             sJavaScript &= "buttonClick();" & Environment.NewLine
         End If
@@ -2027,7 +2031,7 @@ Public Class ElitaPlusPage
 
     Public Shared Function GetLongDateFormattedStringWithFormat(value As Date, Format As String) As String
         'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
-        Return value.ToString(Format, System.Threading.Thread.CurrentThread.CurrentCulture)
+        Return value.ToString(Format, Thread.CurrentThread.CurrentCulture)
     End Function
 
     Public Shared Function GetLongDateFormattedStringWithFormat(value As Date?, format As String) As String
@@ -2049,25 +2053,25 @@ Public Class ElitaPlusPage
 
     Public Shared Function GetAmountFormattedString(value As Decimal, Optional ByVal format As String = Nothing) As String
         If format Is Nothing Then format = DECIMAL_FORMAT
-        Return value.ToString(format, System.Threading.Thread.CurrentThread.CurrentCulture)
+        Return value.ToString(format, Thread.CurrentThread.CurrentCulture)
     End Function
 
     Public Shared Function GetAmountFormattedDoubleString(value As String, Optional ByVal format As String = Nothing) As String
 
         If format Is Nothing Then format = DECIMAL_FORMAT
 
-        Return Convert.ToDouble(value).ToString(format, System.Threading.Thread.CurrentThread.CurrentCulture)
+        Return Convert.ToDouble(value).ToString(format, Thread.CurrentThread.CurrentCulture)
 
     End Function
     Public Shared Function GetAmountFormattedToString(value As String) As String
-        Return Convert.ToString(value, System.Threading.Thread.CurrentThread.CurrentCulture)
+        Return Convert.ToString(value, Thread.CurrentThread.CurrentCulture)
     End Function
 
     'REQ-5773
     Public Shared Function GetAmountFormattedPercentString(value As Decimal, Optional ByVal format As String = Nothing) As String
 
         If format Is Nothing Then format = PERCENT_FORMAT
-        Return value.ToString(format, System.Threading.Thread.CurrentThread.CurrentCulture)
+        Return value.ToString(format, Thread.CurrentThread.CurrentCulture)
     End Function
 
 
@@ -2085,7 +2089,7 @@ Public Class ElitaPlusPage
             format = "N02"
         End If
         If format Is Nothing Then format = "N05"
-        Return Convert.ToDecimal(value).ToString(format, System.Threading.Thread.CurrentThread.CurrentCulture)
+        Return Convert.ToDecimal(value).ToString(format, Thread.CurrentThread.CurrentCulture)
 
     End Function
     Public Function IsPointFormat() As Byte
@@ -2094,7 +2098,7 @@ Public Class ElitaPlusPage
         Dim sValue As String = "8.8"
         Dim dValue As String
 
-        dValue = sValue.Replace(".", System.Threading.Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+        dValue = sValue.Replace(".", Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator)
         sFormat = GetAmountFormattedDoubleString(dValue)
         If sFormat.IndexOf(".") = -1 Then
             isPoint = 0
@@ -2138,7 +2142,7 @@ Public Class ElitaPlusPage
                                   Optional ByVal isGuidValue As Boolean = True, Optional ByVal isStringValue As Boolean = False)
 
         Try
-            Dim piPropertyInfo As System.Reflection.PropertyInfo = bo.GetType.GetProperty(propertyName)
+            Dim piPropertyInfo As PropertyInfo = bo.GetType.GetProperty(propertyName)
 
             If (isGuidValue = True) Then
                 Dim value As Guid = GetSelectedItem(comboBox)
@@ -2165,7 +2169,7 @@ Public Class ElitaPlusPage
     Protected Sub PopulateBOProperty(bo As Object, propertyName As String, chkBox As CheckBox)
 
         Try
-            Dim piPropertyInfo As System.Reflection.PropertyInfo = bo.GetType.GetProperty(propertyName)
+            Dim piPropertyInfo As PropertyInfo = bo.GetType.GetProperty(propertyName)
 
             Dim value As Boolean = chkBox.Checked
 
@@ -2256,7 +2260,7 @@ Public Class ElitaPlusPage
     Public Function GetValueFromPropertyName(bo As Object, propertyName As String) As String
         Dim sPropertyValue As String
         Try
-            Dim piPropertyInfo As System.Reflection.PropertyInfo = bo.GetType.GetProperty(propertyName)
+            Dim piPropertyInfo As PropertyInfo = bo.GetType.GetProperty(propertyName)
             sPropertyValue = CType(piPropertyInfo.GetValue(bo, Nothing), String)
             Return sPropertyValue
         Catch ex As Exception
@@ -2267,7 +2271,7 @@ Public Class ElitaPlusPage
     Public Function GetGuidValueFromPropertyName(bo As Object, propertyName As String) As Guid
         Dim oPropertyValue As Guid
         Try
-            Dim piPropertyInfo As System.Reflection.PropertyInfo = bo.GetType.GetProperty(propertyName)
+            Dim piPropertyInfo As PropertyInfo = bo.GetType.GetProperty(propertyName)
             oPropertyValue = CType(piPropertyInfo.GetValue(bo, Nothing), Guid)
             Return oPropertyValue
         Catch ex As Exception
@@ -2322,11 +2326,11 @@ Public Class ElitaPlusPage
     Protected Sub PopulateBOProperty(bo As Object, propertyName As String, value As String)
 
         Try
-            Dim piPropertyInfo As System.Reflection.PropertyInfo = bo.GetType.GetProperty(propertyName)
+            Dim piPropertyInfo As PropertyInfo = bo.GetType.GetProperty(propertyName)
             'an array of types with 1 entry, the String Type
             Dim types() As Type = {GetType(String)}
             'set miMethodInfo to the 'Parse' method which takes a string as a parameter
-            Dim miMethodInfo As System.Reflection.MethodInfo
+            Dim miMethodInfo As MethodInfo
             If (piPropertyInfo.PropertyType.IsGenericType) Then
                 miMethodInfo = piPropertyInfo.PropertyType.GetGenericArguments()(0).GetMethod("Parse", types)
             Else
@@ -2343,8 +2347,8 @@ Public Class ElitaPlusPage
                 Dim strChkDateFormat As String = String.Empty
                 Dim dt As DateTime
 
-                If (miMethodInfo.ReturnType Is GetType(Assurant.Common.Types.DateType) OrElse miMethodInfo.ReturnType Is GetType(Date) _
-                    OrElse miMethodInfo.ReturnType Is GetType(Assurant.Common.Types.DateTimeType) OrElse miMethodInfo.ReturnType Is GetType(DateTime)) Then
+                If (miMethodInfo.ReturnType Is GetType(DateType) OrElse miMethodInfo.ReturnType Is GetType(Date) _
+                    OrElse miMethodInfo.ReturnType Is GetType(DateTimeType) OrElse miMethodInfo.ReturnType Is GetType(DateTime)) Then
                     If (value.Length > DATE_TIME_FORMAT.Length) Then ' There are some places where value is set as DateType but page passes value as dd-MMM-yyyy 00:00:00.
                         strChkDateFormat = DATE_TIME_FORMAT_12
                     ElseIf (value.Length > DATE_FORMAT.Length) Then
@@ -2355,7 +2359,7 @@ Public Class ElitaPlusPage
                 End If
 
                 If (strChkDateFormat.Length > 0) Then
-                    DateTime.TryParseExact(value, strChkDateFormat, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt)
+                    DateTime.TryParseExact(value, strChkDateFormat, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt)
                     If (dt <> DateTime.MinValue) Then
                         value = dt.ToString()
                     End If
@@ -2375,11 +2379,11 @@ Public Class ElitaPlusPage
     Protected Sub PopulateBOProperty(bo As Object, propertyName As String, value As Boolean)
 
         Try
-            Dim piPropertyInfo As System.Reflection.PropertyInfo = bo.GetType.GetProperty(propertyName)
+            Dim piPropertyInfo As PropertyInfo = bo.GetType.GetProperty(propertyName)
             'an array of types with 1 entry, the boolean Type
             Dim types() As Type = {GetType(Boolean)}
             'set miMethodInfo to the 'Parse' method which takes a boolean as a parameter
-            Dim miMethodInfo As System.Reflection.MethodInfo = piPropertyInfo.PropertyType.GetMethod("Parse", types)
+            Dim miMethodInfo As MethodInfo = piPropertyInfo.PropertyType.GetMethod("Parse", types)
 
             If piPropertyInfo.PropertyType Is GetType(Boolean) Then
                 piPropertyInfo.SetValue(bo, value, Nothing)
@@ -2399,11 +2403,11 @@ Public Class ElitaPlusPage
     Public Shared Sub PopulateBOProperty(bo As Object, propertyName As String, value As Guid)
 
         Try
-            Dim piPropertyInfo As System.Reflection.PropertyInfo = bo.GetType.GetProperty(propertyName)
+            Dim piPropertyInfo As PropertyInfo = bo.GetType.GetProperty(propertyName)
             'an array of types with 1 entry, the guid Type
             Dim types() As Type = {GetType(Guid)}
             'set miMethodInfo to the 'Parse' method which takes a guid as a parameter
-            Dim miMethodInfo As System.Reflection.MethodInfo = piPropertyInfo.PropertyType.GetMethod("Parse", types)
+            Dim miMethodInfo As MethodInfo = piPropertyInfo.PropertyType.GetMethod("Parse", types)
 
             If (CType(value, Guid).Equals(Guid.Empty)) Then
                 piPropertyInfo.SetValue(bo, Nothing, Nothing)
@@ -2641,7 +2645,7 @@ Public Class ElitaPlusPage
 
     Public Sub TranslateControl(Control As WebControl, LangId As Guid)
         Dim ControlType As Type = Control.GetType
-        Dim fInfo As System.Reflection.FieldInfo = ControlType.GetField("Text", Reflection.BindingFlags.Instance Or Reflection.BindingFlags.Public)
+        Dim fInfo As FieldInfo = ControlType.GetField("Text", BindingFlags.Instance Or BindingFlags.Public)
         If fInfo IsNot Nothing Then
             Dim originalValue As String = CType(fInfo.GetValue(Control), String)
             If originalValue IsNot Nothing Then
@@ -2651,22 +2655,22 @@ Public Class ElitaPlusPage
         End If
     End Sub
 
-    Public Overloads Sub TranslateGridHeader(oGrid As System.Web.UI.WebControls.DataGrid)
+    Public Overloads Sub TranslateGridHeader(oGrid As DataGrid)
         Dim TransProcObj As TranslationProcess = GetTranslationProcessReference()
         TransProcObj.TranslateGridHeader(oGrid)
     End Sub
 
-    Public Overloads Sub TranslateGridHeader(oGrid As System.Web.UI.WebControls.GridView)
+    Public Overloads Sub TranslateGridHeader(oGrid As GridView)
         Dim TransProcObj As TranslationProcess = GetTranslationProcessReference()
         TransProcObj.TranslateGridHeader(oGrid)
     End Sub
 
-    Public Overloads Sub TranslateGridControls(oGrid As System.Web.UI.WebControls.DataGrid)
+    Public Overloads Sub TranslateGridControls(oGrid As DataGrid)
         Dim TransProcObj As TranslationProcess = GetTranslationProcessReference()
         TransProcObj.TranslateControlsInGrid(oGrid)
     End Sub
 
-    Public Overloads Sub TranslateGridControls(oGrid As System.Web.UI.WebControls.GridView)
+    Public Overloads Sub TranslateGridControls(oGrid As GridView)
         Dim TransProcObj As TranslationProcess = GetTranslationProcessReference()
         TransProcObj.TranslateControlsInGrid(oGrid)
     End Sub
@@ -2687,7 +2691,7 @@ Public Class ElitaPlusPage
         Return TranslateBrokenRules(BrokenRules, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
     End Function
 
-    Public Sub TranslateControlsUnder(rootControl As System.Web.UI.Control)
+    Public Sub TranslateControlsUnder(rootControl As Control)
         'pass the form which is the main container control and the language id.
         GetTranslationProcessReference.TranslateThePage(rootControl, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
     End Sub
@@ -2768,7 +2772,7 @@ Public Class ElitaPlusPage
     End Function
 
     Protected Function GetFormattedAndTranslatedErrorsFromBOValidationExc(validationExc As BOValidationException) As String()
-        Dim err As Assurant.Common.Validation.ValidationError
+        Dim err As ValidationError
         Dim errStrList(validationExc.ValidationErrorList.Length - 1) As String
         Dim i As Integer = 0
         Dim preText As String = ""
@@ -3009,8 +3013,8 @@ Public Class ElitaPlusPage
     End Sub
 
     Private Sub HandleErrors(exc As Exception, ErrorCtrl As IErrorController, Optional ByVal Translate As Boolean = True)
-        If exc.GetType Is GetType(Threading.ThreadAbortException) OrElse
-           (exc.InnerException IsNot Nothing AndAlso exc.InnerException.GetType Is GetType(Threading.ThreadAbortException)) Then
+        If exc.GetType Is GetType(ThreadAbortException) OrElse
+           (exc.InnerException IsNot Nothing AndAlso exc.InnerException.GetType Is GetType(ThreadAbortException)) Then
             Return
         End If
 
@@ -3414,15 +3418,15 @@ Public Class ElitaPlusPage
                     If controlCurrent.GetType.ToString = "System.Web.UI.WebControls.Image" OrElse controlCurrent.GetType.ToString = "System.Web.UI.WebControls.Label" OrElse controlCurrent.GetType.ToString = "System.Web.UI.WebControls.Button" Then
                         ' do nothing
                     ElseIf controlCurrent.GetType.ToString = "System.Web.UI.WebControls.TextBox" Then
-                        Dim txtBox As TextBox = CType(controlCurrent, System.Web.UI.WebControls.TextBox)
+                        Dim txtBox As TextBox = CType(controlCurrent, TextBox)
                         txtBox.ReadOnly = bDisable
                         SetTextBackColor(txtBox, bDisable)
                     End If
 
                 Case "System.Web.UI.WebControls.ListControl"
-                    CType(controlCurrent, System.Web.UI.WebControls.ListControl).Enabled = Not bDisable
+                    CType(controlCurrent, ListControl).Enabled = Not bDisable
                 Case "System.Web.UI.WebControls.Image"
-                    CType(controlCurrent, System.Web.UI.WebControls.Image).Enabled = Not bDisable
+                    CType(controlCurrent, WebControls.Image).Enabled = Not bDisable
             End Select
 
         Next
@@ -3442,15 +3446,15 @@ Public Class ElitaPlusPage
                 If oParentControl.GetType.ToString = "System.Web.UI.WebControls.Image" OrElse oParentControl.GetType.ToString = "System.Web.UI.WebControls.Label" OrElse oParentControl.GetType.ToString = "System.Web.UI.WebControls.Button" Then
                     ' do nothing
                 ElseIf oParentControl.GetType.ToString = "System.Web.UI.WebControls.TextBox" Then
-                    Dim txtBox As TextBox = CType(oParentControl, System.Web.UI.WebControls.TextBox)
+                    Dim txtBox As TextBox = CType(oParentControl, TextBox)
                     txtBox.ReadOnly = bDisable
                     SetTextBackColor(txtBox, bDisable, IsNewUI)
                 End If
 
             Case "System.Web.UI.WebControls.ListControl"
-                ControlMgr.SetEnableControl(Me, CType(oParentControl, System.Web.UI.WebControls.ListControl), Not bDisable)
+                ControlMgr.SetEnableControl(Me, CType(oParentControl, ListControl), Not bDisable)
             Case "System.Web.UI.WebControls.Image"
-                ControlMgr.SetEnableControl(Me, CType(oParentControl, System.Web.UI.WebControls.Image), Not bDisable)
+                ControlMgr.SetEnableControl(Me, CType(oParentControl, WebControls.Image), Not bDisable)
         End Select
         For Each controlCurrent In oParentControl.Controls
             EnableDisableControls(controlCurrent, bDisable)
@@ -3478,21 +3482,21 @@ Public Class ElitaPlusPage
 
     Protected Sub ChangeEnabledProperty(ctrl As Control, enabled As Boolean)
         Try
-            If ((ctrl.GetType) Is GetType(WebControls.TextBox)) Then
+            If ((ctrl.GetType) Is GetType(TextBox)) Then
                 If enabled = False Then 'change to readonly always allowed
-                    CType(ctrl, WebControls.TextBox).ReadOnly = Not (enabled)
+                    CType(ctrl, TextBox).ReadOnly = Not (enabled)
                     If Not IsNewUI Then
-                        CType(ctrl, WebControls.TextBox).CssClass = "FLATTEXTBOX"
+                        CType(ctrl, TextBox).CssClass = "FLATTEXTBOX"
                     End If
                 Else
                     If CanEnableControl(CType(ctrl, WebControl)) Then ' check whether change is allowed
-                        CType(ctrl, WebControls.TextBox).ReadOnly = Not (enabled)
+                        CType(ctrl, TextBox).ReadOnly = Not (enabled)
                         If Not IsNewUI Then
-                            CType(ctrl, WebControls.TextBox).CssClass = ""
+                            CType(ctrl, TextBox).CssClass = ""
                         End If
                     End If
                 End If
-            ElseIf ((ctrl.GetType) Is GetType(WebControls.Label)) Then
+            ElseIf ((ctrl.GetType) Is GetType(Label)) Then
                 'NOTHING TO DO FOR NOW. MAYBE CHANGE THE COLOR LATER
             Else
                 Dim pinfo As PropertyInfo = ctrl.GetType.GetProperty("Enabled", BindingFlags.IgnoreCase Or BindingFlags.Public Or BindingFlags.Instance)
@@ -3507,14 +3511,14 @@ Public Class ElitaPlusPage
                 End If
                 'Change the color for a DropdownList control
                 If Not IsNewUI Then
-                    If ((ctrl.GetType) Is GetType(WebControls.DropDownList)) Then
+                    If ((ctrl.GetType) Is GetType(DropDownList)) Then
 
                         If (enabled) Then
                             'Replaced with correct cast line to prevent exception
-                            CType(ctrl, WebControls.DropDownList).CssClass = "FLATTEXTBOX"
+                            CType(ctrl, DropDownList).CssClass = "FLATTEXTBOX"
                         Else
                             'Replaced with correct cast line to prevent exception
-                            CType(ctrl, WebControls.DropDownList).CssClass = ""
+                            CType(ctrl, DropDownList).CssClass = ""
                         End If
 
                     End If
@@ -3525,7 +3529,7 @@ Public Class ElitaPlusPage
 
     End Sub
 
-    Public Sub AddControlWatcher(controlToWatch As System.Web.UI.WebControls.WebControl, controlToWatchOnValue As String, controlToChange As System.Web.UI.WebControls.WebControl, controlToChangeNewValue As String, Optional ByVal conditional As Boolean = False)
+    Public Sub AddControlWatcher(controlToWatch As WebControl, controlToWatchOnValue As String, controlToChange As WebControl, controlToChangeNewValue As String, Optional ByVal conditional As Boolean = False)
         If conditional Then
             controlToWatch.Attributes.Add("onchange", "(if document.all('" & controlToChange.UniqueID & "').value == '" & controlToWatchOnValue & "'){document.all('" & controlToChange.UniqueID & "').value=" & controlToChangeNewValue & "};")
         Else
@@ -3533,7 +3537,7 @@ Public Class ElitaPlusPage
         End If
     End Sub
 
-    Public Sub AddControlWatcher(controlToWatch As System.Web.UI.WebControls.WebControl, controlToWatchOnValue As String, controlToChange As System.Web.UI.WebControls.WebControl, controlToChangeIsDisabled As Boolean, controlToChangeIsVisible As Boolean, Optional ByVal conditional As Boolean = False)
+    Public Sub AddControlWatcher(controlToWatch As WebControl, controlToWatchOnValue As String, controlToChange As WebControl, controlToChangeIsDisabled As Boolean, controlToChangeIsVisible As Boolean, Optional ByVal conditional As Boolean = False)
 
         If conditional Then
             controlToWatch.Attributes.Add("onchange", "debugger; (if document.all('" & controlToChange.UniqueID & "').value == '" & controlToWatchOnValue & "'){document.all('" & controlToChange.UniqueID & "').disabled=" & controlToChangeIsDisabled & ";document.all('" & controlToChange.UniqueID & "').style.visibility=" & controlToChangeIsVisible & ";")
@@ -3612,9 +3616,9 @@ Public Class ElitaPlusPage
             End Try
         End Get
     End Property
-    Public ReadOnly Property TheReportCeInputControl() As Reports.ReportCeInputControl
+    Public ReadOnly Property TheReportCeInputControl() As ReportCeInputControl
         Get
-            Dim rptCtl As Reports.ReportCeInputControl
+            Dim rptCtl As ReportCeInputControl
             Try
                 If Page.Master IsNot Nothing Then
                     rptCtl = CType(Master, MasterBase).ReportCeInputControl
@@ -3626,9 +3630,9 @@ Public Class ElitaPlusPage
         End Get
     End Property
 
-    Public ReadOnly Property TheReportExtractInputControl() As Reports.ReportExtractInputControl
+    Public ReadOnly Property TheReportExtractInputControl() As ReportExtractInputControl
         Get
-            Dim rptCtl As Reports.ReportExtractInputControl
+            Dim rptCtl As ReportExtractInputControl
             Try
                 If Page.Master IsNot Nothing Then
                     rptCtl = CType(Master, MasterBase).ReportExtractInputControl
@@ -3693,7 +3697,7 @@ Public Class ElitaPlusPage
     End Property
 
 #End Region
-    <System.Web.Services.WebMethod()>
+    <WebMethod()>
     Public Shared Function GetListOfComunas(regionID As Guid) As List(Of String)
 
         Dim arrItems As List(Of String) = New List(Of String)

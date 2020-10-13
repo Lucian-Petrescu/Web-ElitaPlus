@@ -149,13 +149,13 @@ Namespace SpecializedServices.Goow
                                                          request.CauseOfLoss.ToString())
             Catch ex As PriceListNotConfiguredException
                     'Throw New FaultException(Of ElitaFault)(New ElitaFault(ElitaFault.EnumFaultType.PriceListNotConfigured), "Price List not configured for service center " + request.ServiceCenterCode)
-                    Throw New FaultException(Of PriceListNotConfiguredFault)(New PriceListNotConfiguredFault, "Price List not configured for service center " + request.ServiceCenterCode)
+                    Throw New FaultException(Of PriceListNotConfiguredFault)(New PriceListNotConfiguredFault, "Price List not configured for service center " & request.ServiceCenterCode)
                 Catch mnf As CertificateItemNotFoundException
                     'Throw New FaultException(Of ElitaFault)(New ElitaFault(ElitaFault.EnumFaultType.MakeAndModelNotFound), "Make is required")
                     Throw New FaultException(Of MakeAndModelNotFoundFault)(New MakeAndModelNotFoundFault(), "Make is required")
                 Catch mnf As ManufacturerNotFoundException
                     'Throw New FaultException(Of ElitaFault)(New ElitaFault(ElitaFault.EnumFaultType.InvalidManufacturer), "Invalid Manufacturer:" + request.Make)
-                    Throw New FaultException(Of ManufacturerNotFoundFault)(New ManufacturerNotFoundFault(), "Invalid Manufacturer :" + request.Make)
+                    Throw New FaultException(Of ManufacturerNotFoundFault)(New ManufacturerNotFoundFault(), "Invalid Manufacturer :" & request.Make)
                 End Try
 
                 oClaim = ClaimManager.SaveClaim(oClaim)
@@ -278,7 +278,7 @@ Namespace SpecializedServices.Goow
 
             End If
 
-            If (Not oClaim.RepairDate Is Nothing AndAlso (request.RepairDate < oClaim.LossDate OrElse request.RepairDate > DateTime.Today)) Then
+            If (oClaim.RepairDate IsNot Nothing AndAlso (request.RepairDate < oClaim.LossDate OrElse request.RepairDate > DateTime.Today)) Then
                 Throw New FaultException(Of InvalidRepairDateFault)(New InvalidRepairDateFault(), "Invalid Repair Date")
             End If
 
@@ -530,7 +530,7 @@ Namespace SpecializedServices.Goow
             response.ShippingInfo.Address2 = shippingAddress.Address2
             response.ShippingInfo.City = shippingAddress.City
 
-            If Not shippingAddress.RegionId Is Nothing Then
+            If shippingAddress.RegionId IsNot Nothing Then
                 response.ShippingInfo.State = CountryManager.GetRegion(shippingAddress.CountryId, shippingAddress.RegionId).Description
             Else
                 response.ShippingInfo.State = String.Empty

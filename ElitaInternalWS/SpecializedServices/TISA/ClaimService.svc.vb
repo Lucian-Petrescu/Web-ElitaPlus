@@ -159,7 +159,7 @@ Namespace SpecializedServices.Tisa
 
             End Try
 
-            If (Not oClaim.RepairDate Is Nothing AndAlso (request.RepairDate < oClaim.LossDate OrElse request.RepairDate > DateTime.Today)) Then
+            If (oClaim.RepairDate IsNot Nothing AndAlso (request.RepairDate < oClaim.LossDate OrElse request.RepairDate > DateTime.Today)) Then
                 Throw New FaultException(Of InvalidRepairDateFault)(New InvalidRepairDateFault(),
                                                                     businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_INVALID_REPAIR_DATE,
                                                                      businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId))
@@ -167,7 +167,7 @@ Namespace SpecializedServices.Tisa
             End If
 
             ''Repair claim should be active
-            If Not oClaim.ClaimNumber.ToUpper.EndsWith("S") Or Not oClaim.ClaimNumber.ToUpper.EndsWith("R") Then
+            If Not oClaim.ClaimNumber.ToUpper.EndsWith("S") OrElse Not oClaim.ClaimNumber.ToUpper.EndsWith("R") Then
                 If (oClaim.StatusCode <> "A") Then
                     Throw New FaultException(Of ClaimNotFoundFault)(New ClaimNotFoundFault(),
                                                                     businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_REPAIR_CLAIM_SHOULD_BE_ACTIVE,
@@ -262,7 +262,7 @@ Namespace SpecializedServices.Tisa
             End Try
 
             ''c.Repair Claim Is Not active
-            If Not pRepairClaim.ClaimNumber.ToUpper.EndsWith("S") Or Not pRepairClaim.ClaimNumber.ToUpper.EndsWith("R") Then
+            If Not pRepairClaim.ClaimNumber.ToUpper.EndsWith("S") OrElse Not pRepairClaim.ClaimNumber.ToUpper.EndsWith("R") Then
                 If pRepairClaim.StatusCode <> "A" Then
                     Throw New FaultException(Of ClaimNotFoundFault)(New ClaimNotFoundFault(),
                                                                     businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_REPAIR_CLAIM_SHOULD_BE_ACTIVE,
@@ -276,7 +276,7 @@ Namespace SpecializedServices.Tisa
 
             pCert = CertificateManager.GetCertifcateByItemCoverage(pRepairClaim.CertItemCoverageId)
             '''''if Coveragetypecode is supplied , check it otherwise default to false "coverage has not changed"
-            If Not pRequest.CoverageTypeCode Is Nothing Then
+            If pRequest.CoverageTypeCode IsNot Nothing Then
                 pHasCoverageChanged = HasCoverageChanged(pRepairClaim, pCert, pRequest.CoverageTypeCode)
             Else
                 pHasCoverageChanged = False
@@ -284,7 +284,7 @@ Namespace SpecializedServices.Tisa
             'Change the Service Center if there is a Valid Change! 
             Dim oClaimSvcCenter As ServiceCenter = CountryManager.GetServiceCenterById(pCompany.BusinessCountryId, pRepairClaim.ServiceCenterId)
             'validate service center code if sent in request.
-            If (Not pRequest.ServiceCenterCode Is Nothing) Then
+            If (pRequest.ServiceCenterCode IsNot Nothing) Then
                 If pRequest.ServiceCenterCode <> oClaimSvcCenter.CODE Then
                     pHasSvcCenterChanged = True
 
@@ -345,7 +345,7 @@ Namespace SpecializedServices.Tisa
             ''''''System shall Not update the claim And shall Return an Error message As response To the portal "Refurbished cost is required for Refurbished device";
             'Otherwise, System shall calculate it based on the claims method of repair
             If (request.Condition = DeviceConditionEnum.Refurbished) Then
-                If (request.AuthorizedAmount Is Nothing Or (Not request.AuthorizedAmount Is Nothing AndAlso request.AuthorizedAmount = 0)) Then
+                If (request.AuthorizedAmount Is Nothing Or (request.AuthorizedAmount IsNot Nothing AndAlso request.AuthorizedAmount = 0)) Then
                     Throw New FaultException(Of RefurbishedCostRequiredFault)(New RefurbishedCostRequiredFault(),
                                                                               businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_REFURBISHED_COST_IS_REQUIRED_FOR_REFURBISHED_DEVICE,
                                                                                 businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId))
@@ -356,7 +356,7 @@ Namespace SpecializedServices.Tisa
                                      bHasCoverageChanged, bHasSvcCenterChanged, isSvcWarrantyClaim,
                                      claimExtendedStatuses, oBasicUpdateFields)
 
-            If (Not oRepairClaim.RepairDate Is Nothing AndAlso (request.RepairDate < oRepairClaim.LossDate OrElse request.RepairDate > DateTime.Today)) Then
+            If (oRepairClaim.RepairDate IsNot Nothing AndAlso (request.RepairDate < oRepairClaim.LossDate OrElse request.RepairDate > DateTime.Today)) Then
                 Throw New FaultException(Of InvalidRepairDateFault)(New InvalidRepairDateFault(),
                                                                         businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_INVALID_REPAIR_DATE,
                                                                                 businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId))
@@ -384,7 +384,7 @@ Namespace SpecializedServices.Tisa
             Catch plnc As PriceListNotConfiguredException
                 Throw New FaultException(Of PriceListNotConfiguredFault)(New PriceListNotConfiguredFault, If(plnc.Message Is Nothing,
                                                                          businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_PRICE_LIST_NOT_CONFIGURED_FOR_SERVICE_CENTER,
-                                                                                businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " : " + request.ServiceCenterCode, plnc.Message))
+                                                                                businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " : " & request.ServiceCenterCode, plnc.Message))
             End Try
 
         End Sub
@@ -438,7 +438,7 @@ Namespace SpecializedServices.Tisa
             Dim oCompanyGroup As CompanyGroup
             oCompanyGroup = CompanyGroupManager.GetCompanyGroup(pCompany.CompanyGroupId)
 
-            If Not pReqExtStatuses Is Nothing Then
+            If pReqExtStatuses IsNot Nothing Then
                 For Each extStatus In pReqExtStatuses
 
                     If CommonManager.GetListItems(ListCodes.ClaimExtendedStatusCode).Where(Function(li) li.Code = extStatus.Code).Count > 0 Then
@@ -492,7 +492,7 @@ Namespace SpecializedServices.Tisa
             ''''Get the Repair claim information
             Dim oRepairClaim As Claim
             Try
-                If (request.ClaimNumber.ToUpperInvariant.EndsWith("R") Or request.ClaimNumber.ToUpperInvariant.EndsWith("S")) Then
+                If (request.ClaimNumber.ToUpperInvariant.EndsWith("R") OrElse request.ClaimNumber.ToUpperInvariant.EndsWith("S")) Then
                     request.ClaimNumber = request.ClaimNumber.Substring(0, request.ClaimNumber.Length - 1)
                 End If
                 oRepairClaim = ClaimManager.GetClaim(request.ClaimNumber, oCompany.CompanyId)
@@ -516,7 +516,7 @@ Namespace SpecializedServices.Tisa
 
             oReplacementClaim = ClaimManager.CreateRepairReplacmentClaim(oCert, oRepairClaim)
 
-            If (Not request.ExtendedStatuses Is Nothing AndAlso request.ExtendedStatuses.Count > 0) Then
+            If (request.ExtendedStatuses IsNot Nothing AndAlso request.ExtendedStatuses.Count > 0) Then
                 For Each es As ExtendedStatus In request.ExtendedStatuses
                     ClaimManager.InsertClaimExtendedStatus(CertificateManager.GetCertifcateByItemCoverage(oRepairClaim.CertItemCoverageId).GetDealer(DealerManager),
                                                            es.Code, es.StatusDate, oReplacementClaim)
@@ -546,7 +546,7 @@ Namespace SpecializedServices.Tisa
             ''''Get the Repair claim information
             Dim oRepairClaim As Claim
             Try
-                If (request.ClaimNumber.ToUpperInvariant.EndsWith("R") Or request.ClaimNumber.ToUpperInvariant.EndsWith("S")) Then
+                If (request.ClaimNumber.ToUpperInvariant.EndsWith("R") OrElse request.ClaimNumber.ToUpperInvariant.EndsWith("S")) Then
                     request.ClaimNumber = request.ClaimNumber.Substring(0, request.ClaimNumber.Length - 1)
                 End If
                 oRepairClaim = ClaimManager.GetClaim(request.ClaimNumber, oCompany.CompanyId)
@@ -638,7 +638,7 @@ Namespace SpecializedServices.Tisa
             '''''if thef/loss coverage found and claim type in request is Repair
             If ((request.CoverageTypeCode = CoverageTypeCodes.Theft OrElse
             request.CoverageTypeCode = CoverageTypeCodes.TheftLoss OrElse
-                    request.CoverageTypeCode = CoverageTypeCodes.Loss) And request.ClaimType = ClaimTypeCodes.Repair) Then
+                    request.CoverageTypeCode = CoverageTypeCodes.Loss) AndAlso request.ClaimType = ClaimTypeCodes.Repair) Then
                 Throw New FaultException(Of CoverageNotFoundFault)(New CoverageNotFoundFault(),
                                                                    businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_INVALID_COVERAGE_CODE,
                                                                                         businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId))
@@ -646,7 +646,7 @@ Namespace SpecializedServices.Tisa
             '''''if thef/loss coverage found and claim type in request is Repair
             If ((request.CoverageTypeCode = CoverageTypeCodes.Theft OrElse
             request.CoverageTypeCode = CoverageTypeCodes.TheftLoss OrElse
-                    request.CoverageTypeCode = CoverageTypeCodes.Loss) And request.ClaimType = ClaimTypeCodes.ServiceWarranty) Then
+                    request.CoverageTypeCode = CoverageTypeCodes.Loss) AndAlso request.ClaimType = ClaimTypeCodes.ServiceWarranty) Then
                 Throw New FaultException(Of CoverageNotFoundFault)(New CoverageNotFoundFault(),
                                                                    businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_INVALID_COVERAGE_CODE,
                                                                                         businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId))
@@ -709,7 +709,7 @@ Namespace SpecializedServices.Tisa
             Catch ex As PriceListNotConfiguredException
                 Throw New FaultException(Of PriceListNotConfiguredFault)(New PriceListNotConfiguredFault,
                                                                          businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_PRICE_LIST_NOT_CONFIGURED_FOR_SERVICE_CENTER,
-                                                                                        businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " : " + request.ServiceCenterCode)
+                                                                                        businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " : " & request.ServiceCenterCode)
 
             Catch mnf As CertificateItemNotFoundException
                 Throw New FaultException(Of MakeAndModelNotFoundFault)(New MakeAndModelNotFoundFault(),
@@ -718,7 +718,7 @@ Namespace SpecializedServices.Tisa
             Catch mnf As ManufacturerNotFoundException
                 Throw New FaultException(Of ManufacturerNotFoundFault)(New ManufacturerNotFoundFault(),
                                                                       businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_INVALID_MANUFACTURER,
-                                                                                        businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " : " + request.Make)
+                                                                                        businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " : " & request.Make)
             End Try
 
             If (oClaimExtendedStatuses.Count > 0) Then
@@ -793,7 +793,7 @@ Namespace SpecializedServices.Tisa
             If request.DealerCode = falabellaCode Then
 
                 '''logic to sepparate the work order number from the problem description in Falabella 
-                If (request.WorkOrderNumber Is Nothing Or String.IsNullOrEmpty(request.WorkOrderNumber)) AndAlso
+                If (request.WorkOrderNumber Is Nothing OrElse String.IsNullOrEmpty(request.WorkOrderNumber)) AndAlso
                    request.ProblemDescription.Contains(sepparator) Then
                     Dim workOrderAndProblem = request.ProblemDescription.Split(sepparator)
                     request.WorkOrderNumber = workOrderAndProblem(0)
@@ -826,14 +826,14 @@ Namespace SpecializedServices.Tisa
 
                 '''''For refurbished Device, Authorization amount is not mandatory
                 If (request.Condition = DeviceConditionEnum.Refurbished) Then
-                    If (request.AuthorizedAmount Is Nothing Or (Not request.AuthorizedAmount Is Nothing AndAlso request.AuthorizedAmount = 0)) Then
+                    If (request.AuthorizedAmount Is Nothing Or (request.AuthorizedAmount IsNot Nothing AndAlso request.AuthorizedAmount = 0)) Then
                         Throw New FaultException(Of RefurbishedCostRequiredFault)(New RefurbishedCostRequiredFault(),
                                                                                   businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_REFURBISHED_COST_IS_REQUIRED_FOR_REFURBISHED_DEVICE,
                                                                                         businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId))
                     End If
                 End If
 
-                If (Not oReplacementClaim.RepairDate Is Nothing AndAlso (request.RepairDate < oReplacementClaim.LossDate OrElse request.RepairDate > DateTime.Today)) Then
+                If (oReplacementClaim.RepairDate IsNot Nothing AndAlso (request.RepairDate < oReplacementClaim.LossDate OrElse request.RepairDate > DateTime.Today)) Then
                     Throw New FaultException(Of InvalidRepairDateFault)(New InvalidRepairDateFault(),
                                                                         businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_INVALID_REPAIR_DATE,
                                                                                         businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId))
@@ -858,7 +858,7 @@ Namespace SpecializedServices.Tisa
             Catch plnc As PriceListNotConfiguredException
                 Throw New FaultException(Of PriceListNotConfiguredFault)(New PriceListNotConfiguredFault, If(plnc.Message Is Nothing,
                                                                          businessObj.TranslationBase.TranslateLabelOrMessage(ErrorCodes.ERR_PRICE_LIST_NOT_CONFIGURED_FOR_SERVICE_CENTER,
-                                                                                        businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " : " + request.ServiceCenterCode, plnc.Message))
+                                                                                        businessObj.ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " : " & request.ServiceCenterCode, plnc.Message))
             End Try
         End Sub
 
@@ -889,7 +889,7 @@ Namespace SpecializedServices.Tisa
 
             pCert = CertificateManager.GetCertifcateByItemCoverage(pReplacementClaim.CertItemCoverageId)
             '''''if Coveragetypecode is supplied , check it otherwise default to false "coverage has not changed"
-            If Not pRequest.CoverageTypeCode Is Nothing Then
+            If pRequest.CoverageTypeCode IsNot Nothing Then
                 pHasCoverageChanged = HasCoverageChanged(pReplacementClaim, pCert, pRequest.CoverageTypeCode)
             Else
                 pHasCoverageChanged = False
@@ -897,7 +897,7 @@ Namespace SpecializedServices.Tisa
             'Change the Service Center if there is a Valid Change! 
             Dim oClaimSvcCenter As ServiceCenter = CountryManager.GetServiceCenterById(pCompany.BusinessCountryId, pReplacementClaim.ServiceCenterId)
             'validate service center code if sent in request.
-            If (Not pRequest.ServiceCenterCode Is Nothing) Then
+            If (pRequest.ServiceCenterCode IsNot Nothing) Then
                 If pRequest.ServiceCenterCode <> oClaimSvcCenter.CODE Then
                     pHasSvcCenterChanged = True
 

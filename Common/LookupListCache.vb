@@ -56,7 +56,7 @@ Public Class LookupListCache
         Dim oLookupList As ArrayList = oDalTable.GetLookupList(DALName)
         Dim oLookupName As String
 
-        If Not oLookupList Is Nothing Then
+        If oLookupList IsNot Nothing Then
             For Each oLookupName In oLookupList
                 key = DetermineCacheItemName(oLookupName & "-True")
                 AppConfig.CommonCache.InvalidateEntry(key)

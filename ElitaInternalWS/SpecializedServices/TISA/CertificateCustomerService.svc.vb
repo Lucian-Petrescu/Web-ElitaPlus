@@ -83,7 +83,7 @@ Namespace SpecializedServices.Tisa
             '''''if the certificate number is provided then only one certificate object with multiple items can be expected
             response.CustomerInfo = New List(Of CustomerInfoResponse)
 
-            If Not CertList Is Nothing AndAlso CertList.Tables.Count > 0 Then
+            If CertList IsNot Nothing AndAlso CertList.Tables.Count > 0 Then
                 Dim dtCustomers As List(Of DataTable) = CertList.Tables(0).AsEnumerable().GroupBy(Function(i) i.Field(Of String)("customer_name")).Select(Function(g) g.CopyToDataTable()).ToList()
                 For Each dt As DataTable In dtCustomers
                     Dim customer As CustomerInfoResponse = New CustomerInfoResponse(dt)
@@ -110,7 +110,7 @@ Namespace SpecializedServices.Tisa
             End If
 
 
-            If (response.CustomerInfo.Count = 0 Or response Is Nothing) Then
+            If (response.CustomerInfo.Count = 0 OrElse response Is Nothing) Then
                 Throw New FaultException(Of CertificateNotFoundFault)(New CertificateNotFoundFault(), "Certificate not found")
             End If
 

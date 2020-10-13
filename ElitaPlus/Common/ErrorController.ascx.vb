@@ -1,7 +1,9 @@
+Imports System.Diagnostics
+
 Partial  Class ErrorController
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
     Implements IErrorController
-    Protected WithEvents BtnClose As System.Web.UI.WebControls.Button
+    Protected WithEvents BtnClose As Button
 
 #Region "Properties"
 
@@ -16,11 +18,11 @@ Partial  Class ErrorController
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -28,7 +30,7 @@ Partial  Class ErrorController
 
 #End Region
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
     End Sub
 
@@ -50,7 +52,7 @@ Partial  Class ErrorController
             TranslatedError = err
         End If
         If Not txtErrorMsg.Text.Trim.Length = 0 Then
-            txtErrorMsg.Text &= System.Environment.NewLine
+            txtErrorMsg.Text &= Environment.NewLine
         End If
         txtErrorMsg.Text &= TranslatedError
     End Sub
@@ -65,7 +67,7 @@ Partial  Class ErrorController
                 TranslatedError = Err(i)
             End If
             If Not txtErrorMsg.Text.Trim.Length = 0 Then
-                txtErrorMsg.Text &= System.Environment.NewLine
+                txtErrorMsg.Text &= Environment.NewLine
             End If
             txtErrorMsg.Text &= TranslatedError
         Next
@@ -110,7 +112,7 @@ Partial  Class ErrorController
         Hide()
     End Sub
 
-    Private Sub btnShowHide_Click(sender As System.Object, e As System.Web.UI.ImageClickEventArgs) Handles btnShowHide.Click
+    Private Sub btnShowHide_Click(sender As Object, e As ImageClickEventArgs) Handles btnShowHide.Click
         If txtErrorMsg.Visible Then
             Hide()
         Else

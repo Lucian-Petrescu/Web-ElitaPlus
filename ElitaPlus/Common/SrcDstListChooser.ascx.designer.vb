@@ -29,7 +29,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moOutTable As Global.System.Web.UI.HtmlControls.HtmlTable
+        Protected WithEvents moOutTable As HtmlTable
 
         '''<summary>
         '''moTitle control.
@@ -38,7 +38,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moTitle As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moTitle As Label
 
         '''<summary>
         '''moAvailableTitle control.
@@ -47,7 +47,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moAvailableTitle As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moAvailableTitle As Label
 
         '''<summary>
         '''moSelectedTitle control.
@@ -56,7 +56,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moSelectedTitle As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moSelectedTitle As Label
 
         '''<summary>
         '''moAvailableList control.
@@ -65,7 +65,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moAvailableList As Global.System.Web.UI.WebControls.ListBox
+        Protected WithEvents moAvailableList As ListBox
 
         '''<summary>
         '''moButtonsTable control.
@@ -74,7 +74,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moButtonsTable As Global.System.Web.UI.HtmlControls.HtmlTable
+        Protected WithEvents moButtonsTable As HtmlTable
 
         '''<summary>
         '''BtnAdd control.
@@ -83,7 +83,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents BtnAdd As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents BtnAdd As Button
 
         '''<summary>
         '''BtnRemove control.
@@ -92,7 +92,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents BtnRemove As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents BtnRemove As Button
 
         '''<summary>
         '''BtnRemoveAll control.
@@ -101,7 +101,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents BtnRemoveAll As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents BtnRemoveAll As Button
 
         '''<summary>
         '''BtnAddAll control.
@@ -110,7 +110,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents BtnAddAll As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents BtnAddAll As Button
 
         '''<summary>
         '''moSelectedList control.
@@ -119,6 +119,6 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moSelectedList As Global.System.Web.UI.WebControls.ListBox
+        Protected WithEvents moSelectedList As ListBox
     End Class
 End Namespace

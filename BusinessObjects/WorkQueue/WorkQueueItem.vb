@@ -292,8 +292,8 @@ Public Class WorkQueueItem
         If (claim.StatusCode = Codes.CLAIM_STATUS__PENDING) Then
             If (Not wkQItem.WorkQueueItem.ClaimIssueId = Nothing) Then
                 claimIssue = New ClaimIssue(wkQItem.WorkQueueItem.ClaimIssueId)
-                If (claimIssue.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Or claimIssue.StatusCode = Codes.CLAIMISSUE_STATUS__PENDING _
-                        Or claimIssue.StatusCode = Codes.CLAIMISSUE_STATUS__REOPEN) Then
+                If (claimIssue.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN OrElse claimIssue.StatusCode = Codes.CLAIMISSUE_STATUS__PENDING _
+                        OrElse claimIssue.StatusCode = Codes.CLAIMISSUE_STATUS__REOPEN) Then
                     flag = True
                 End If
             Else

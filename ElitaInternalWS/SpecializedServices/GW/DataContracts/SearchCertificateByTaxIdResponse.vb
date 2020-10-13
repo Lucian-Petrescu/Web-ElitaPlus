@@ -91,7 +91,7 @@ Namespace SpecializedServices.GW
                     .MaxCoverageEndDate = DateHelper.GetDateValue(dr("MaxCoverageEndDate"))
                     .ActiveClaimCnt = CType(dr("ActiveClaimCnt"), Integer)
                     .ActiveCovCount = CType(dr("ActiveCovCount"), Integer)
-                    If (Not dr("branch_name") Is DBNull.Value) Then
+                    If (dr("branch_name") IsNot DBNull.Value) Then
                         .BranchName = CType(dr("branch_name"), String)
                     End If
                 End With

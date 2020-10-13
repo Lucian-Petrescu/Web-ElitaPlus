@@ -1,3 +1,4 @@
+Imports System.Collections.Generic
 Imports System.Reflection
 Imports Microsoft.VisualBasic
 
@@ -32,14 +33,14 @@ Namespace Generic
 
         End Function
 
-        Public Shared Function GetControlsByFormName(formName As String) As System.Collections.Generic.List(Of String)
-            Dim oControlNames As New System.Collections.Generic.List(Of String)
+        Public Shared Function GetControlsByFormName(formName As String) As List(Of String)
+            Dim oControlNames As New List(Of String)
             Dim oControlType As Type, blnIsWebControl As Boolean
 
             oControlType = FromNameToType(formName)
             If oControlType Is Nothing Then Return Nothing
             oControlType = CType(moAllTypes.Item(formName), Type)
-            Dim oControls As FieldInfo() = oControlType.GetFields(Reflection.BindingFlags.DeclaredOnly Or Reflection.BindingFlags.NonPublic Or Reflection.BindingFlags.Instance)
+            Dim oControls As FieldInfo() = oControlType.GetFields(BindingFlags.DeclaredOnly Or BindingFlags.NonPublic Or BindingFlags.Instance)
             Dim oControlField As FieldInfo
 
             For Each oControlField In oControls
@@ -54,14 +55,14 @@ Namespace Generic
             Return oControlNames
         End Function
 
-        Private Shared Sub GetChildrenControls(userControlName As String, userControlType As Type, controlNames As System.Collections.Generic.List(Of String))
+        Private Shared Sub GetChildrenControls(userControlName As String, userControlType As Type, controlNames As List(Of String))
             Dim oControlType As Type = userControlType
-            Dim oControls As FieldInfo() = oControlType.GetFields(Reflection.BindingFlags.DeclaredOnly Or Reflection.BindingFlags.NonPublic Or Reflection.BindingFlags.Instance)
+            Dim oControls As FieldInfo() = oControlType.GetFields(BindingFlags.DeclaredOnly Or BindingFlags.NonPublic Or BindingFlags.Instance)
             Dim oControlField As FieldInfo
 
             For Each oControlField In oControls
                 If oControlField.Name.Chars(0) = "_" Then  ' Private Control Variable
-                    If oControlField.FieldType.IsSubclassOf(GetType(System.Web.UI.WebControls.WebControl)) OrElse oControlField.FieldType.IsSubclassOf(GetType(System.Web.UI.UserControl)) Then
+                    If oControlField.FieldType.IsSubclassOf(GetType(WebControl)) OrElse oControlField.FieldType.IsSubclassOf(GetType(UserControl)) Then
                         Dim sName As String = userControlName & "." & oControlField.Name
                         controlNames.Add(sName)
                     End If

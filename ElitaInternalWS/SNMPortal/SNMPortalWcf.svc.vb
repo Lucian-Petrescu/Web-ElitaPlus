@@ -62,7 +62,7 @@ Namespace SNMPortal
                 Dim oSearch As New PriceListSearch
 
                 If Not priceListDetailsSearch.Claim_Number = Nothing AndAlso Not priceListDetailsSearch.Company_Code = Nothing _
-                    AndAlso Not priceListDetailsSearch.Service_Center_Code = Nothing And (Not priceListDetailsSearch.Equipment_Class_Code = Nothing Or Not priceListDetailsSearch.Risk_Type_Code = Nothing) Then
+                    AndAlso Not priceListDetailsSearch.Service_Center_Code = Nothing AndAlso (Not priceListDetailsSearch.Equipment_Class_Code = Nothing OrElse Not priceListDetailsSearch.Risk_Type_Code = Nothing) Then
 
                     Throw New BOValidationException("GetPriceList Error: Search must be based on Claim or Service Center", ErrorCodes.WS_PRICELIST_INVALID_INPUT)
                 End If
@@ -74,7 +74,7 @@ Namespace SNMPortal
                     dsPriceList = oSearch.GetPriceList(priceListDetailsSearch)
 
                 ElseIf (Not priceListDetailsSearch.Service_Center_Code = Nothing AndAlso Not priceListDetailsSearch.Risk_Type_Code = Nothing) _
-                    Or (Not priceListDetailsSearch.Service_Center_Code = Nothing AndAlso Not priceListDetailsSearch.Equipment_Class_Code = Nothing) Then
+                    OrElse (Not priceListDetailsSearch.Service_Center_Code = Nothing AndAlso Not priceListDetailsSearch.Equipment_Class_Code = Nothing) Then
 
                     Dim oSearchByServiceCenter As New PriceListSearchByServiceCenter(priceListDetailsSearch)
                     oSearch.action = oSearchByServiceCenter

@@ -6,7 +6,7 @@ Imports System.Web
 Imports System.Web.UI
 
 Public Class ScrollPage
-    Inherits System.Web.UI.Page
+    Inherits Page
 
     Public Sub ScrollPage()
 

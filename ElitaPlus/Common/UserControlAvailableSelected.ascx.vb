@@ -1,6 +1,8 @@
+Imports System.Diagnostics
+
 Namespace Generic
     Partial Class UserControlAvailableSelected
-        Inherits System.Web.UI.UserControl
+        Inherits UserControl
 
 #Region "Constants"
         Public Const FIELD_SEPARATOR As Char = "¦"c
@@ -179,11 +181,11 @@ Namespace Generic
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
 
-        Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -191,7 +193,7 @@ Namespace Generic
 
 #End Region
 
-        Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             If IsPostBack Then
                 ReadValuesFromClient()
@@ -225,7 +227,7 @@ Namespace Generic
         '    RemoveSelection(moAvailableList)
         'End Sub
 
-        Private Sub btnMoveUp_Click(sender As System.Object, e As System.EventArgs) Handles btnMoveUp.Click
+        Private Sub btnMoveUp_Click(sender As Object, e As EventArgs) Handles btnMoveUp.Click
             If AreMultipleRowsSelected(moSelectedList) Then
                 Dim iSelectedIndex As Integer = moSelectedList.SelectedIndex
                 If iSelectedIndex > 0 Then 'not the first one
@@ -236,7 +238,7 @@ Namespace Generic
             End If
         End Sub
 
-        Private Sub btnMoveDown_Click(sender As System.Object, e As System.EventArgs) Handles btnMoveDown.Click
+        Private Sub btnMoveDown_Click(sender As Object, e As EventArgs) Handles btnMoveDown.Click
             If AreMultipleRowsSelected(moSelectedList) Then
                 Dim iSelectedIndex As Integer = moSelectedList.SelectedIndex
                 If iSelectedIndex <> moSelectedList.Items.Count - 1 Then 'Not the last one
@@ -415,10 +417,10 @@ Namespace Generic
 
 #Region "Sort"
         Private Class TheComparer
-            Implements System.Collections.IComparer
+            Implements IComparer
 
             Function Compare(x As Object, y As Object) As Integer _
-                  Implements System.Collections.IComparer.Compare
+                  Implements IComparer.Compare
                 Dim oXItem As ListItem = CType(x, ListItem)
                 Dim oYItem As ListItem = CType(y, ListItem)
 

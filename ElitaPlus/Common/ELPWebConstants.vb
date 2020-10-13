@@ -51,7 +51,7 @@ Public Class ELPWebConstants
 
     Public Shared Sub ShowTranslatedMessageAsPopup(sUI_Prog_Code As String,
                                                     nLanguageID As Guid,
-                                                    oPage As System.Web.UI.Page,
+                                                    oPage As Page,
                                                     oUnhandledException As Exception)
 
         'This function is used when the error is known 
@@ -73,7 +73,7 @@ Public Class ELPWebConstants
 
     Public Shared Sub ShowTranslatedMessageAsPopup(sUI_Prog_Code As String,
                                                    nLanguageID As Guid,
-                                                   oPage As System.Web.UI.Page)
+                                                   oPage As Page)
         'This function is used when the error is known but we 
         ' do NOT want to show the original exception message to the user.
         Try
@@ -96,7 +96,7 @@ Public Class ELPWebConstants
     'Input Values:sMessageContent and the page object that is used to display the popup.
     'Uses:
     '-------------------------------------
-    Public Shared Sub ShowPopup(messageContent As String, messageName As String, page As System.Web.UI.Page)
+    Public Shared Sub ShowPopup(messageContent As String, messageName As String, page As Page)
 
         messageContent = ("<script language=JavaScript>alert('" & messageContent & "')</script>")
         If Not page.IsStartupScriptRegistered(messageName) Then
@@ -140,7 +140,7 @@ Public Class ELPWebConstants
         Else
             'this executes only the first page load so set the menu state to view mode.
             'also,set the session variable for the menu state.
-            HttpContext.Current.Session(MENUSTATE) = ELPWebConstants.enumMenu_State.View_Page_Mode
+            HttpContext.Current.Session(MENUSTATE) = enumMenu_State.View_Page_Mode
             Return enumMenu_State.View_Page_Mode
         End If
 
@@ -155,7 +155,7 @@ Public Class ELPWebConstants
     'Input Values:sMessageContent and the page object that is used to display the popup.
     'Uses:
     '-------------------------------------
-    Public Shared Sub ShowPopup(messageContent As String, page As System.Web.UI.Page)
+    Public Shared Sub ShowPopup(messageContent As String, page As Page)
 
         Dim nRandomNumber As New Random
         Dim sTempName As String = nRandomNumber.Next.ToString
@@ -180,14 +180,14 @@ Public Class ELPWebConstants
     'Input Values:messageContent  and page object.
     'Uses:
     '-------------------------------------
-    Public Shared Sub ExecuteJavascript(messageContent As String, page As System.Web.UI.Page)
+    Public Shared Sub ExecuteJavascript(messageContent As String, page As Page)
         messageContent = ("<script language=JavaScript>" & messageContent & "</script>")
         page.RegisterStartupScript("somescript", messageContent)
     End Sub
 
 
 
-    Public Shared Sub ExecuteJavascript(sScriptName As String, messageContent As String, page As System.Web.UI.Page)
+    Public Shared Sub ExecuteJavascript(sScriptName As String, messageContent As String, page As Page)
         messageContent = ("<script language=JavaScript>" & messageContent & "</script>")
         page.RegisterStartupScript(sScriptName, messageContent)
     End Sub

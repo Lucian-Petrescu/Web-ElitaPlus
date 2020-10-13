@@ -80,7 +80,7 @@ Public NotInheritable Class DBHelper
                         End If
                         .Connection = conn
                         .CommandType = CommandType.Text
-                        If Not parms Is Nothing Then
+                        If parms IsNot Nothing Then
                             For currParm As Int32 = 0 To (parms.GetLength(0) - 1)
                                 .Parameters.Add(parms(currParm))
                             Next currParm
@@ -204,7 +204,7 @@ Public NotInheritable Class DBHelper
         Dim oraParms As OracleParameter()
 
         Dim i As Integer
-        If Not parms Is Nothing Then
+        If parms IsNot Nothing Then
             ReDim oraParms(parms.Length - 1)
             For i = 0 To parms.Length - 1
                 cmd.Parameters.Add(New OracleParameter(parms(i).Name, parms(i).Value))
@@ -233,7 +233,7 @@ Public NotInheritable Class DBHelper
             command.Parameters.Add("result", OracleDbType.Int32).Direction = ParameterDirection.ReturnValue
 
             ' Input Parameters
-            If Not inputParameters Is Nothing Then
+            If inputParameters IsNot Nothing Then
                 For Each oParameter In inputParameters
                     If Not oParameter.DBType = Nothing Then
                         command.Parameters.Add(oParameter.Name, oParameter.DBType).Value = oParameter.Value
@@ -600,11 +600,11 @@ Public NotInheritable Class DBHelper
                     stmtToExecute = updSQLStmt
                 End If
         End Select
-        If Not stmtToExecute Is Nothing Then
+        If stmtToExecute IsNot Nothing Then
             stmtToExecute = ReplaceParameterValues(stmtToExecute, row)
             stmtToExecute = ReplaceParameterValues(stmtToExecute, additionalParamters)
         End If
-        If Not stmtToExecute Is Nothing Then
+        If stmtToExecute IsNot Nothing Then
             ExecuteCommand(stmtToExecute, transaction)
             row.AcceptChanges()
         End If
@@ -642,7 +642,7 @@ Public NotInheritable Class DBHelper
         '    stmtToExecute = ReplaceParameterValues(stmtToExecute, row)
         '    stmtToExecute = ReplaceParameterValues(stmtToExecute, additionalParamters)
         'End If
-        If Not stmtToExecute Is Nothing Then
+        If stmtToExecute IsNot Nothing Then
             ExecuteCommandWithParam(row, stmtToExecute, additionalParamters, transaction)
             row.AcceptChanges()
         End If
@@ -669,7 +669,7 @@ Public NotInheritable Class DBHelper
             Throw New DALInvalidParameterValueException("execSQLStmt is required to execute this operation")
         End If
         stmtToExecute = ReplaceParameterValues(stmtToExecute, additionalParamters)
-        If Not stmtToExecute Is Nothing Then
+        If stmtToExecute IsNot Nothing Then
             ExecuteCommand(stmtToExecute, transaction, IgnoreZeroRowsAffected)
         End If
     End Sub
@@ -678,7 +678,7 @@ Public NotInheritable Class DBHelper
             Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal isStoreProc As Boolean = False, Optional ByVal IgnoreZeroRowsAffected As Boolean = False)
         Dim conn As IDbConnection
         Try
-            If Not transaction Is Nothing Then
+            If transaction IsNot Nothing Then
                 conn = transaction.Connection
             Else
                 conn = New OracleConnection(ConnectString)
@@ -715,7 +715,7 @@ Public NotInheritable Class DBHelper
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         Finally
             Try
-                If transaction Is Nothing AndAlso (Not conn Is Nothing) AndAlso conn.State <> ConnectionState.Closed Then
+                If transaction Is Nothing AndAlso (conn IsNot Nothing) AndAlso conn.State <> ConnectionState.Closed Then
                     conn.Close()
                 End If
             Catch ex As Exception
@@ -732,7 +732,7 @@ Public NotInheritable Class DBHelper
         command.CommandType = CommandType.StoredProcedure
 
         ' Input Parameters
-        If Not inputParameters Is Nothing Then
+        If inputParameters IsNot Nothing Then
             For Each oParameter In inputParameters
                 If Not oParameter.DBType = Nothing Then
                     command.Parameters.Add(oParameter.Name, oParameter.DBType).Value = oParameter.Value
@@ -742,7 +742,7 @@ Public NotInheritable Class DBHelper
             Next
         End If
         ' Output Parameters
-        If Not outputParameters Is Nothing Then
+        If outputParameters IsNot Nothing Then
             For Each oParameter In outputParameters
                 'command.Parameters.Add(oParameter.Name, oParameter.DBType).Direction = _
                 '                        System.Data.ParameterDirection.Output
@@ -823,7 +823,7 @@ Public NotInheritable Class DBHelper
             GenericExecute(sqlStmt, command, transaction, True, IgnoreZeroRowsAffected)
 
             ' Obtains Return Value
-            If Not outputParameters Is Nothing Then
+            If outputParameters IsNot Nothing Then
                 For Each oParameter In outputParameters
                     oParameter.Value = command.Parameters(oParameter.Name).Value
                     oParameter.Value = GetVBValueFromOracleType(oParameter)
@@ -848,7 +848,7 @@ Public NotInheritable Class DBHelper
             GenericExecute(sqlStmt, command, transaction, True, IgnoreZeroRowsAffected)
 
             ' Obtains Return Value
-            If Not outputParameters Is Nothing Then
+            If outputParameters IsNot Nothing Then
                 For Each oParameter In outputParameters
                     oParameter.Value = command.Parameters(oParameter.Name).Value
                     oParameter.Value = GetVBValueFromOracleType(oParameter)
@@ -946,7 +946,7 @@ Public NotInheritable Class DBHelper
     Private Shared Function ReplaceParameterValues(stmt As String, parameters() As DBHelperParameter) As String
         Dim resultStmt As String = stmt
 
-        If Not parameters Is Nothing Then
+        If parameters IsNot Nothing Then
             Dim p As DBHelperParameter
             For Each p In parameters
                 resultStmt = ReplaceOneParameter(resultStmt, p)
@@ -991,7 +991,7 @@ Public NotInheritable Class DBHelper
         Dim nextCharPos As Integer = parPosition + (":" & paramName).Trim().Length
         If nextCharPos < stmt.ToCharArray.Length - 1 Then
             Dim nextChar As Char = stmt.ToCharArray.GetValue(nextCharPos)
-            Dim tempRegEx As Regex = New Regex("^(_{1})|([0-9A-Za-z]{1})$", RegexOptions.None, new TimeSpan(0,0,0,0, 100))
+            Dim tempRegEx As Regex = New Regex("^(_{1})|([0-9A-Za-z]{1})$", RegexOptions.None, Timespan.FromMilliseconds(100))
             Dim M As Match = tempRegEx.Match(nextChar)
 
             If M.Success Then ' if it is letter, number or '_' 
@@ -1058,7 +1058,7 @@ Public NotInheritable Class DBHelper
 
         Dim conn As IDbConnection
         Try
-            If Not transaction Is Nothing Then
+            If transaction IsNot Nothing Then
                 conn = transaction.Connection
             Else
                 conn = New OracleConnection(ConnectString)
@@ -1098,7 +1098,7 @@ Public NotInheritable Class DBHelper
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         Finally
             Try
-                If transaction Is Nothing AndAlso (Not conn Is Nothing) AndAlso conn.State <> ConnectionState.Closed Then
+                If transaction Is Nothing AndAlso (conn IsNot Nothing) AndAlso conn.State <> ConnectionState.Closed Then
                     conn.Close()
                 End If
             Catch ex As Exception
@@ -1112,7 +1112,7 @@ Public NotInheritable Class DBHelper
 
         Dim conn As IDbConnection
         Try
-            If Not transaction Is Nothing Then
+            If transaction IsNot Nothing Then
                 conn = transaction.Connection
             Else
                 conn = New OracleConnection(ConnectString)
@@ -1151,7 +1151,7 @@ Public NotInheritable Class DBHelper
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         Finally
             Try
-                If transaction Is Nothing AndAlso (Not conn Is Nothing) AndAlso conn.State <> ConnectionState.Closed Then
+                If transaction Is Nothing AndAlso (conn IsNot Nothing) AndAlso conn.State <> ConnectionState.Closed Then
                     conn.Close()
                 End If
             Catch ex As Exception
@@ -1182,7 +1182,7 @@ Public NotInheritable Class DBHelper
     Private Shared Sub GetCommandParameters(ByRef commandList As SortedList, stmt As String, parameters() As DBHelperParameter)
         Dim resultStmt As String = stmt
 
-        If Not parameters Is Nothing Then
+        If parameters IsNot Nothing Then
             Dim p As DBHelperParameter
             For Each p In parameters
                 ReplaceCommandParameter(commandList, resultStmt, p)
@@ -1239,13 +1239,13 @@ Public NotInheritable Class DBHelper
         col = row.Table.Columns(colName)
 
         'null checks
-        If row.IsNull(col, DataRowVersion.Current) And row.IsNull(col, DataRowVersion.Original) Then
+        If row.IsNull(col, DataRowVersion.Current) AndAlso row.IsNull(col, DataRowVersion.Original) Then
             Return False
         End If
-        If row.IsNull(col, DataRowVersion.Current) And Not (row.IsNull(col, DataRowVersion.Original)) Then
+        If row.IsNull(col, DataRowVersion.Current) AndAlso Not (row.IsNull(col, DataRowVersion.Original)) Then
             Return True
         End If
-        If Not (row.IsNull(col, DataRowVersion.Current)) And row.IsNull(col, DataRowVersion.Original) Then
+        If Not (row.IsNull(col, DataRowVersion.Current)) AndAlso row.IsNull(col, DataRowVersion.Original) Then
             Return True
         End If
 
@@ -1373,13 +1373,13 @@ Public NotInheritable Class DBHelper
         ' Input Parameter
         Public Sub New(name As String, value As Object, Optional ByVal vbType As Type = Nothing)
             Dim valueLength As Integer
-            If (Not value Is Nothing) AndAlso value.GetType Is GetType(Guid) Then
+            If (value IsNot Nothing) AndAlso value.GetType Is GetType(Guid) Then
                 value = CType(value, Guid).ToByteArray
             End If
             Me.Name = name
             Me.Value = value
 
-            If (Not value Is Nothing) AndAlso (Not value.GetType Is GetType(DBNull)) Then
+            If (value IsNot Nothing) AndAlso (value.GetType IsNot GetType(DBNull)) Then
 
                 valueLength = GetValueLength(value)
 
@@ -1414,7 +1414,7 @@ Public NotInheritable Class DBHelper
             Value = Nothing
             ' Me.Length = len
             Length = 0
-            If (Not vbType Is Nothing) AndAlso (Not vbType Is GetType(DBNull)) Then
+            If (vbType IsNot Nothing) AndAlso (vbType IsNot GetType(DBNull)) Then
                 DBType = GetOracleTypeFromVBType(vbType, len, Me)
             Else
                 DBType = Nothing
@@ -1525,7 +1525,7 @@ Public NotInheritable Class DBHelper
         ElseIf oParameter.Value.GetType() Is GetType(System.DBNull) Then
             ' In order to obtain information from the RefCursor. We need to call fetchSp
             oValue = Nothing
-        ElseIf Not CType(oParameter.Value, INullable) Is Nothing AndAlso CType(oParameter.Value, INullable).IsNull Then
+        ElseIf CType(oParameter.Value, INullable) IsNot Nothing AndAlso CType(oParameter.Value, INullable).IsNull Then
             oValue = Nothing
         Else
             Throw New ArgumentException

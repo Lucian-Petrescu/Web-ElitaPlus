@@ -190,7 +190,7 @@ Public Class DSHelper
                 End If
             Next
             If dt.Columns(COL_ROW_NUM) Is Nothing Then dt.Columns.Add(COL_ROW_NUM, GetType(String))
-            If Not ds Is Nothing Then ds.Tables.Add(dt)
+            If ds IsNot Nothing Then ds.Tables.Add(dt)
             Return dt
         End If
     End Function
@@ -338,7 +338,7 @@ Public Class DSHelper
             Next J
 
             For I = 0 To DestTable.Rows.Count - 1
-                If Not DestTable.Columns(COL_ROW_NUM) Is Nothing Then
+                If DestTable.Columns(COL_ROW_NUM) IsNot Nothing Then
                     DestTable.Rows(I)(COL_ROW_NUM) = (I + 1).ToString
                 End If
             Next
@@ -425,7 +425,7 @@ Public Class DSHelper
 
             For Each dc As DataColumn In Dt.Columns
 
-                If Not OmitTags Is Nothing AndAlso OmitTags.Length > 0 AndAlso Not OmitTags.Contains(dc.ColumnName) Then
+                If OmitTags IsNot Nothing AndAlso OmitTags.Length > 0 AndAlso Not OmitTags.Contains(dc.ColumnName) Then
 
                     If Not loopRows Then
                         strTag = String.Format("{0}/a:{1}", GetTablePath(Dt, includeFullPath), dc.ColumnName)
@@ -488,8 +488,8 @@ Public Class DSHelper
         ' NOTE: If your DataTable contains object fields, you must extend this
         ' function to handle them in a meaningful way if you intend to group on them.
         '
-        If A Is DBNull.Value And B Is DBNull.Value Then Return True ' Both are DBNull.Value.
-        If A Is DBNull.Value Or B Is DBNull.Value Then Return False ' Only one is DbNull.Value.
+        If A Is DBNull.Value AndAlso B Is DBNull.Value Then Return True ' Both are DBNull.Value.
+        If A Is DBNull.Value OrElse B Is DBNull.Value Then Return False ' Only one is DbNull.Value.
         Return A = B                                                ' Value type standard comparison
     End Function
 
@@ -497,7 +497,7 @@ Public Class DSHelper
         '
         ' Returns MIN of two values. DBNull is less than all others.
         '
-        If A Is DBNull.Value Or B Is DBNull.Value Then Return DBNull.Value
+        If A Is DBNull.Value OrElse B Is DBNull.Value Then Return DBNull.Value
         If A < B Then Return A Else Return B
     End Function
 
@@ -540,7 +540,7 @@ Public Class DSHelper
             End If
         Next
 
-        If (Not ds Is Nothing) Then
+        If (ds IsNot Nothing) Then
             ds.Tables.Add(dt)
         End If
 

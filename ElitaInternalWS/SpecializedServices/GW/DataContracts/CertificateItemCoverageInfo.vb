@@ -109,7 +109,7 @@ Namespace SpecializedServices.GW
                        pLangauge As String)
             ' Copy properties from Certificate Item to current instance
             Dim oCoverage As Coverage
-            If pProduct.Items.Count >= 0 And Not pProduct.Items.Where(Function(i) i.ItemNumber = pCertficateItemCoverage.Item.ItemNumber).FirstOrDefault Is Nothing Then
+            If pProduct.Items.Count >= 0 AndAlso pProduct.Items.Where(Function(i) i.ItemNumber = pCertficateItemCoverage.Item.ItemNumber).FirstOrDefault IsNot Nothing Then
                 oCoverage = pProduct.Items.Where(Function(i) i.ItemNumber = pCertficateItemCoverage.Item.ItemNumber).FirstOrDefault.Coverages.Where(Function(c) c.CoverageTypeId = pCertficateItemCoverage.CoverageTypeId).FirstOrDefault
             End If
 
@@ -124,9 +124,9 @@ Namespace SpecializedServices.GW
                     .LossCost = pCertficateItemCoverage.LossCost
                     .DealerDiscountAmount = pCertficateItemCoverage.DealerDiscountAmt
                     .DealerDiscountPercent = pCertficateItemCoverage.DealerDiscountPercent
-                    .IsClaimAllowed = If(Not pCertficateItemCoverage.IsClaimAllowed Is Nothing,
+                    .IsClaimAllowed = If(pCertficateItemCoverage.IsClaimAllowed IsNot Nothing,
                                 pCertficateItemCoverage.IsClaimAllowed.ToDescription(pCommonManager, ListCodes.YesNo, pLangauge), Nothing)
-                    .IsDiscount = If(Not pCertficateItemCoverage.IsDiscount Is Nothing,
+                    .IsDiscount = If(pCertficateItemCoverage.IsDiscount IsNot Nothing,
                             pCertficateItemCoverage.IsDiscount.ToDescription(pCommonManager, ListCodes.YesNo, pLangauge), Nothing)
                     .SalesTax = pCertficateItemCoverage.SalesTax
                     .Tax1 = pCertficateItemCoverage.Tax1
@@ -140,18 +140,18 @@ Namespace SpecializedServices.GW
                     .TaxesPaidByCustomer = pCertficateItemCoverage.TaxesPaidByCustomer
                     .DeductibleBasedOn = pCertficateItemCoverage.DeductibleBasedOnId.ToDescription(pCommonManager, ListCodes.DeductibleBasedOn, pLangauge)
                     '''''from Elp_Coverage table
-                    .LiabilityLimitPercent = If(Not oCoverage Is Nothing, oCoverage.LiabilityLimitPercent, Nothing)
-                    .CoverageLiabilityLimit = If(Not oCoverage Is Nothing, oCoverage.CovLiabilityLimit, Nothing)
-                    .CoverageLiabilityLimitPercent = If(Not oCoverage Is Nothing, oCoverage.CovLiaibilityLimitPercent, Nothing)
+                    .LiabilityLimitPercent = If(oCoverage IsNot Nothing, oCoverage.LiabilityLimitPercent, Nothing)
+                    .CoverageLiabilityLimit = If(oCoverage IsNot Nothing, oCoverage.CovLiabilityLimit, Nothing)
+                    .CoverageLiabilityLimitPercent = If(oCoverage IsNot Nothing, oCoverage.CovLiaibilityLimitPercent, Nothing)
                     '.LiabilityLimitPercent = pCertficateItemCoverage.LiabilityLimits
                     '.CoverageLiabilityLimit = pCertficateItemCoverage.CoverageLiabilityLimit
                     '''.CoverageLiabilityLimitPercent = pCertficateItemCoverage.cov 
                     .NoOfRenewals = pCertficateItemCoverage.NoOfRenewals
                     .RenewalDate = pCertficateItemCoverage.RenewalDate
-                    .MethodOfRepairCode = If(Not pCertficateItemCoverage.MethodOfRepairId Is Nothing,
+                    .MethodOfRepairCode = If(pCertficateItemCoverage.MethodOfRepairId IsNot Nothing,
                                     pCertficateItemCoverage.MethodOfRepairId.ToCode(pCommonManager, ListCodes.MethodOfRepair, pLangauge),
                                     pCertficateItemCoverage.Certificate.MethodOfRepairId.ToCode(pCommonManager, ListCodes.MethodOfRepair, pLangauge))
-                    .MethodOfRepairDesc = If(Not pCertficateItemCoverage.MethodOfRepairId Is Nothing,
+                    .MethodOfRepairDesc = If(pCertficateItemCoverage.MethodOfRepairId IsNot Nothing,
                                     pCertficateItemCoverage.MethodOfRepairId.ToDescription(pCommonManager, ListCodes.MethodOfRepair, pLangauge),
                                     pCertficateItemCoverage.Certificate.MethodOfRepairId.ToDescription(pCommonManager, ListCodes.MethodOfRepair, pLangauge))
 

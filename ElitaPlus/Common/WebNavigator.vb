@@ -36,7 +36,7 @@ Public Class WebNavigator
 
     Protected MaxStackLevel As Integer = 10
 
-    Protected mobjNavStack As System.Collections.Stack = New System.Collections.Stack(10)  'stack of CallerPage
+    Protected mobjNavStack As Stack = New Stack(10)  'stack of CallerPage
 
     Protected mobjReturnedValues As Object
 
@@ -57,7 +57,7 @@ Public Class WebNavigator
         MaxStackLevel = CallingStackMaxLevel
     End Sub
 
-    Public ReadOnly Property NavStackCount() As Integer
+    Public ReadOnly Property NavStackCount As Integer
         Get
             Return mobjNavStack.Count
         End Get
@@ -65,7 +65,7 @@ Public Class WebNavigator
 
     'ReturnPointMethodName is the name of a method that wil be called on return from the page
     'The method must have the following signature: Public Sub <ReturnPointMethodName>(ReturnFromUrl as String, ReturnValues as Object)
-    Public Sub callPage(navPage As System.Web.UI.Page, url As String, Optional ByVal currentState As Object = Nothing, Optional ByVal parameters As Object = Nothing, Optional ByVal ReturnPointMethodName As String = Nothing)
+    Public Sub callPage(navPage As Page, url As String, Optional ByVal currentState As Object = Nothing, Optional ByVal parameters As Object = Nothing, Optional ByVal ReturnPointMethodName As String = Nothing)
         'Dim caller As New CallerPage()
         Dim caller As CallerPage = mobjCurPage
         Dim prevCaller As CallerPage
@@ -97,7 +97,7 @@ Public Class WebNavigator
         '  System.Threading.Thread.Sleep(500)
     End Sub
 
-    Public Sub ReturnToCallingPage(navPage As System.Web.UI.Page, Optional ByVal returnValues As Object = Nothing, Optional ByVal returnStep As Integer = 1)
+    Public Sub ReturnToCallingPage(navPage As Page, Optional ByVal returnValues As Object = Nothing, Optional ByVal returnStep As Integer = 1)
         Dim stackLevel As Integer
         For stackLevel = 1 To returnStep
             mobjCurPage = CType(mobjNavStack.Pop(), CallerPage)
@@ -111,7 +111,7 @@ Public Class WebNavigator
         navPage.Response.Redirect(mobjCurPage.url)
     End Sub
 
-    Public Sub ReturnToMaxCallingPage(navPage As System.Web.UI.Page, Optional ByVal returnValues As Object = Nothing)
+    Public Sub ReturnToMaxCallingPage(navPage As Page, Optional ByVal returnValues As Object = Nothing)
         Dim stackLevel As Integer
         For stackLevel = 1 To mobjNavStack.Count
                 mobjCurPage = CType(mobjNavStack.Pop(), CallerPage)
@@ -130,7 +130,7 @@ Public Class WebNavigator
         mobjNavStack.Pop()
     End Sub
 
-    Public Sub Redirect(navPage As System.Web.UI.Page, url As String, Optional ByVal parameters As Object = Nothing)
+    Public Sub Redirect(navPage As Page, url As String, Optional ByVal parameters As Object = Nothing)
         mobjCurPage = Nothing
         mobjNavStack.Clear()
         mobjReturnedValues = Nothing
@@ -141,7 +141,7 @@ Public Class WebNavigator
         navPage.Response.Redirect(url)
     End Sub
 
-    Public Sub Flow(navPage As System.Web.UI.Page, url As String)
+    Public Sub Flow(navPage As Page, url As String)
         msNavOriginURL = navPage.Request.Url.AbsolutePath
         mePreviousInvokedAction = meLastInvokedAction
         meLastInvokedAction = NAVIGATION_ACTION.NAV_FLOW
@@ -162,50 +162,50 @@ Public Class WebNavigator
         meLastInvokedAction = NAVIGATION_ACTION.NAV_NOTHING
     End Sub
 
-    Public ReadOnly Property CallingParameters() As Object
+    Public ReadOnly Property CallingParameters As Object
         Get
             Return mobjCallingParameters
         End Get
     End Property
 
-    Public ReadOnly Property CalledUrl() As String
+    Public ReadOnly Property CalledUrl As String
         Get
             Return mobjCurPage.calledUrl
         End Get
     End Property
 
-    Public ReadOnly Property ReturnedValues() As Object
+    Public ReadOnly Property ReturnedValues As Object
         Get
             Return mobjReturnedValues
         End Get
     End Property
 
 
-    Public ReadOnly Property NavAction() As NAVIGATION_ACTION
+    Public ReadOnly Property NavAction As NAVIGATION_ACTION
         Get
             Return meLastInvokedAction
         End Get
     End Property
 
-    Public ReadOnly Property PrevNavAction() As NAVIGATION_ACTION
+    Public ReadOnly Property PrevNavAction As NAVIGATION_ACTION
         Get
             Return mePreviousInvokedAction
         End Get
     End Property
 
-    Public ReadOnly Property RetStep() As Integer
+    Public ReadOnly Property RetStep As Integer
         Get
             Return Me.RetStep
         End Get
     End Property
 
-    Public ReadOnly Property NavOriginURL() As String
+    Public ReadOnly Property NavOriginURL As String
         Get
             Return msNavOriginURL
         End Get
     End Property
 
-    Public ReadOnly Property PageState() As Object
+    Public ReadOnly Property PageState As Object
         Get
             If mobjCurPage IsNot Nothing Then
                 Return mobjCurPage.state
@@ -215,7 +215,7 @@ Public Class WebNavigator
         End Get
     End Property
 
-    Public ReadOnly Property PageReturnPointMethodName() As String
+    Public ReadOnly Property PageReturnPointMethodName As String
         Get
             If mobjCurPage IsNot Nothing Then
                 Return mobjCurPage.ReturnPointMethodName
@@ -225,13 +225,13 @@ Public Class WebNavigator
         End Get
     End Property
 
-    Public Sub SetCurrentPage(NavPage As System.Web.UI.Page, CurState As Object)
+    Public Sub SetCurrentPage(NavPage As Page, CurState As Object)
         mobjCurPage = New CallerPage
         mobjCurPage.url = GetCallingUrl(NavPage)
         mobjCurPage.state = CurState
     End Sub
 
-    Function GetCallingUrl(NavPage As System.Web.UI.Page) As String
+    Function GetCallingUrl(NavPage As Page) As String
         Dim callingUrl As String
         callingUrl = NavPage.Request.Url.AbsolutePath
         If NavPage.Request.QueryString IsNot Nothing AndAlso NavPage.Request.QueryString.ToString <> "" Then
@@ -249,7 +249,7 @@ Public Class WebNavigator
         Public StateExtension As New Hashtable
     End Class
 
-    Public ReadOnly Property StateSession() As Hashtable
+    Public ReadOnly Property StateSession As Hashtable
         Get
             Return mobjCurPage.StateExtension
         End Get

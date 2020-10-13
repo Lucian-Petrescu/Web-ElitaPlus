@@ -70,13 +70,13 @@ Public Class WebServicesDAL
 
         Dim whereClauseConditions As String
 
-        If (Not web_service_name Is Nothing) AndAlso (Not web_service_name.Equals(String.Empty) AndAlso (FormatSearchMask(web_service_name))) Then
+        If (web_service_name IsNot Nothing) AndAlso (Not web_service_name.Equals(String.Empty) AndAlso (FormatSearchMask(web_service_name))) Then
             whereClauseConditions &= Environment.NewLine & "WHERE UPPER(web_service_name) " & web_service_name.ToUpper
         End If
 
 
         If Not on_line_id.Equals(Guid.Empty) Then
-            If (Not whereClauseConditions Is Nothing) AndAlso (Not whereClauseConditions.Equals(String.Empty)) Then
+            If (whereClauseConditions IsNot Nothing) AndAlso (Not whereClauseConditions.Equals(String.Empty)) Then
                 whereClauseConditions &= Environment.NewLine & "AND on_line_id = " & MiscUtil.GetDbStringFromGuid(on_line_id, True)
             Else
                 whereClauseConditions &= Environment.NewLine & "WHERE on_line_id = " & MiscUtil.GetDbStringFromGuid(on_line_id, True)
@@ -149,7 +149,7 @@ Public Class WebServicesDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

@@ -50,7 +50,7 @@ Public Class ItemInfo
         EndDate = pCertItem.ExpirationDate
         SerialNumber = pCertItem.SerialNumber
         SKUNumber = pCertItem.SkuNumber
-        If Not pCertItem.OriginalRetailPrice Is Nothing Then
+        If pCertItem.OriginalRetailPrice IsNot Nothing Then
             OriginalRetailPrice = pCertItem.OriginalRetailPrice
         Else
             OriginalRetailPrice = Nothing

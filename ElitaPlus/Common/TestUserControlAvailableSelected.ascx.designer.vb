@@ -29,7 +29,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moOutTable As Global.System.Web.UI.HtmlControls.HtmlTable
+        Protected WithEvents moOutTable As HtmlTable
 
         '''<summary>
         '''moAvailableTitle control.
@@ -38,7 +38,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moAvailableTitle As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moAvailableTitle As Label
 
         '''<summary>
         '''moSelectedTitle control.
@@ -47,7 +47,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moSelectedTitle As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moSelectedTitle As Label
 
         '''<summary>
         '''moAvailableList control.
@@ -56,7 +56,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moAvailableList As Global.System.Web.UI.WebControls.ListBox
+        Protected WithEvents moAvailableList As ListBox
 
         '''<summary>
         '''moButtonsTable control.
@@ -65,7 +65,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moButtonsTable As Global.System.Web.UI.HtmlControls.HtmlTable
+        Protected WithEvents moButtonsTable As HtmlTable
 
         '''<summary>
         '''BtnAdd_WRITE control.
@@ -74,7 +74,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents BtnAdd_WRITE As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents BtnAdd_WRITE As Button
 
         '''<summary>
         '''BtnRemove_WRITE control.
@@ -83,7 +83,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents BtnRemove_WRITE As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents BtnRemove_WRITE As Button
 
         '''<summary>
         '''BtnRemoveAll_WRITE control.
@@ -92,7 +92,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents BtnRemoveAll_WRITE As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents BtnRemoveAll_WRITE As Button
 
         '''<summary>
         '''BtnAddAll_WRITE control.
@@ -101,7 +101,7 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents BtnAddAll_WRITE As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents BtnAddAll_WRITE As Button
 
         '''<summary>
         '''moSelectedList control.
@@ -110,6 +110,6 @@ Namespace Generic
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moSelectedList As Global.System.Web.UI.WebControls.ListBox
+        Protected WithEvents moSelectedList As ListBox
     End Class
 End Namespace

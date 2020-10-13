@@ -52,7 +52,7 @@ Public Class ServiceLevelGroupDAL
             whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(slg." & COL_NAME_DESCRIPTION & ") " & searchDesc.ToUpper
         End If
 
-        If ((Not fromDate Is Nothing) AndAlso (Not fromDate.Equals(String.Empty))) And ((Not fromDate Is Nothing) AndAlso (Not toDate.Equals(String.Empty))) Then
+        If ((fromDate IsNot Nothing) AndAlso (Not fromDate.Equals(String.Empty))) AndAlso ((fromDate IsNot Nothing) AndAlso (Not toDate.Equals(String.Empty))) Then
             whereClauseConditions &= Environment.NewLine & "and sld.effective_date between to_Date('" & fromDate & "', 'YYYYMMDD') and  to_Date('" & toDate & "', 'YYYYMMDD')"
         End If
 
@@ -79,7 +79,7 @@ Public Class ServiceLevelGroupDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

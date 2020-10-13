@@ -20,7 +20,7 @@ Partial Public Class CountryTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRequire As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRequire As Label
 
     '''<summary>
     '''Label2 control.
@@ -29,7 +29,7 @@ Partial Public Class CountryTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents Label2 As Label
 
     '''<summary>
     '''txtTaxDescription control.
@@ -38,7 +38,7 @@ Partial Public Class CountryTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtTaxDescription As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtTaxDescription As TextBox
 
     '''<summary>
     '''lblTaxComputeMeth control.
@@ -47,7 +47,7 @@ Partial Public Class CountryTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblTaxComputeMeth As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblTaxComputeMeth As Label
 
     '''<summary>
     '''dlstTaxComputeMethod control.
@@ -56,7 +56,7 @@ Partial Public Class CountryTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents dlstTaxComputeMethod As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents dlstTaxComputeMethod As DropDownList
 
     '''<summary>
     '''lblTaxPercent control.
@@ -65,7 +65,7 @@ Partial Public Class CountryTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblTaxPercent As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblTaxPercent As Label
 
     '''<summary>
     '''dlstTaxPercentFlag control.
@@ -74,7 +74,7 @@ Partial Public Class CountryTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents dlstTaxPercentFlag As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents dlstTaxPercentFlag As DropDownList
 
     '''<summary>
     '''lblPercent control.
@@ -83,7 +83,7 @@ Partial Public Class CountryTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPercent As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPercent As Label
 
     '''<summary>
     '''txtTaxPercent control.
@@ -92,5 +92,5 @@ Partial Public Class CountryTaxUserControl
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtTaxPercent As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtTaxPercent As TextBox
 End Class

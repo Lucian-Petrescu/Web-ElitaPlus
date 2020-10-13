@@ -457,7 +457,7 @@ Public Class CaseDAL
 
         Try
             DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetQuestionSetCode")
-            If (Not outputParameter(PoCursorCase) Is Nothing AndAlso Not outputParameter(PoCursorCase).Value Is Nothing) Then
+            If (outputParameter(PoCursorCase) IsNot Nothing AndAlso outputParameter(PoCursorCase).Value IsNot Nothing) Then
                 strQuestionSetCode = outputParameter(PoCursorCase).Value.ToString()
             End If
 
@@ -533,7 +533,7 @@ Public Class CaseDAL
         If (changesFilter Or (SupportChangesFilter)) <> (SupportChangesFilter) Then
             Throw New NotSupportedException()
         End If
-        If Not ds.Tables(TableName) Is Nothing Then
+        If ds.Tables(TableName) IsNot Nothing Then
             MyBase.Update(ds.Tables(TableName), Transaction, changesFilter)
         End If
     End Sub

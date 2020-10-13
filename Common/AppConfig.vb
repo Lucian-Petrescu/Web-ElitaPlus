@@ -616,7 +616,7 @@ Public Class AppConfig
         Public Shared ReadOnly Property TraceOn() As Boolean
             Get
                 Try
-                    If Not ElitaPlusParameters.CurrentParameters Is Nothing Then
+                    If ElitaPlusParameters.CurrentParameters IsNot Nothing Then
                         Return ElitaPlusParameters.CurrentParameters.TraceOn
                     Else
                         Return Boolean.Parse(System.Configuration.ConfigurationSettings.AppSettings("TRACE_ON"))

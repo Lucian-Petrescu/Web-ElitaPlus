@@ -203,7 +203,7 @@ Public Class Authentication
         Dim searchResult As SearchResult
         Dim returnValue As New Dictionary(Of String, Object)
 
-        Dim directoryEntry As New DirectoryEntry("LDAP://" + AppConfig.Ldap.LdapIp + "/dc=Assurant,dc=com", String.Empty, String.Empty, AuthenticationTypes.Anonymous)
+        Dim directoryEntry As New DirectoryEntry("LDAP://" & AppConfig.Ldap.LdapIp & "/dc=Assurant,dc=com", String.Empty, String.Empty, AuthenticationTypes.Anonymous)
         Try
             Using searcher As New DirectorySearcher()
                 searcher.SearchRoot = directoryEntry
@@ -374,7 +374,7 @@ Public Class Authentication
             ElseIf isInSecureGroup Then
                 Return AppConfig.DataProtectionPrivacyLevel.Privacy_Basic
             End If
-        ElseIf privacyLevel = AppConfig.DB_PRIVACY_BASIC And isInSecureGroup Then
+        ElseIf privacyLevel = AppConfig.DB_PRIVACY_BASIC AndAlso isInSecureGroup Then
             Return AppConfig.DataProtectionPrivacyLevel.Privacy_Basic
         End If
 

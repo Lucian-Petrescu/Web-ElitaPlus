@@ -30,10 +30,10 @@ Namespace SpecializedServices.GW
                 .EndorsementNumber = pCertficateEndorsement.EndorseNumber
                 .CreatedBy = pCertficateEndorsement.CreatedBy
                 .CreatedDate = pCertficateEndorsement.CreatedDate
-                If Not pCertficateEndorsement.EffectiveDate Is Nothing Then
+                If pCertficateEndorsement.EffectiveDate IsNot Nothing Then
                     .EffectiveDate = pCertficateEndorsement.EffectiveDate
                 End If
-                If Not pCertficateEndorsement.ExpirationDate Is Nothing Then
+                If pCertficateEndorsement.ExpirationDate IsNot Nothing Then
                     .ExpirationDate = pCertficateEndorsement.ExpirationDate
                 End If
             End With

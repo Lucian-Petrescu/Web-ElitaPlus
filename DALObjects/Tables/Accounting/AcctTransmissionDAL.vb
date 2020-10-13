@@ -105,7 +105,7 @@ Public Class AcctTransmissionDAL
             whereClauseConditions &= String.Format(" AND {0} = {1}", COL_NAME_FILE_TYPE_FLAG, JOURNAL_FILE_TYPE)
         End If
 
-        If Not StatusToInclude Is Nothing AndAlso StatusToInclude.Count > 0 Then
+        If StatusToInclude IsNot Nothing AndAlso StatusToInclude.Count > 0 Then
             whereClauseConditions &= String.Format(" AND {0} ", MiscUtil.BuildListForSql(COL_NAME_STATUS_ID, StatusToInclude, True))
         End If
 
@@ -251,7 +251,7 @@ Public Class AcctTransmissionDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -297,12 +297,12 @@ Public Class AcctTransmissionDAL
 
         Try
             DBHelper.ExecuteWithParam(selectStmt, parameters, tr)
-            If Not tr Is Nothing Then
+            If tr IsNot Nothing Then
                 'In Case of sucess, commit the transaction
                 DBHelper.Commit(tr)
             End If
         Catch ex As Exception
-            If Not tr Is Nothing Then
+            If tr IsNot Nothing Then
                 'In Case of error, rollback the transaction
                 DBHelper.RollBack(tr)
             End If

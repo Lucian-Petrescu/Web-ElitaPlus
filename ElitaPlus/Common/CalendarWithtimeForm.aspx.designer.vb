@@ -20,7 +20,7 @@ Partial Public Class CalendarWithtimeForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Literal1 As Global.System.Web.UI.WebControls.Literal
+    Protected WithEvents Literal1 As Literal
 
     '''<summary>
     '''Form1 control.
@@ -29,7 +29,7 @@ Partial Public Class CalendarWithtimeForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents Form1 As HtmlForm
 
     '''<summary>
     '''LabelMonth control.
@@ -38,7 +38,7 @@ Partial Public Class CalendarWithtimeForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelMonth As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelMonth As Label
 
     '''<summary>
     '''cboMonthList control.
@@ -47,7 +47,7 @@ Partial Public Class CalendarWithtimeForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboMonthList As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboMonthList As DropDownList
 
     '''<summary>
     '''LabelYear control.
@@ -56,7 +56,7 @@ Partial Public Class CalendarWithtimeForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LabelYear As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents LabelYear As Label
 
     '''<summary>
     '''cboYearList control.
@@ -65,7 +65,7 @@ Partial Public Class CalendarWithtimeForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboYearList As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboYearList As DropDownList
 
     '''<summary>
     '''MyCalendar control.
@@ -74,7 +74,7 @@ Partial Public Class CalendarWithtimeForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents MyCalendar As Global.System.Web.UI.WebControls.Calendar
+    Protected WithEvents MyCalendar As Calendar
 
     '''<summary>
     '''lblhour control.
@@ -83,7 +83,7 @@ Partial Public Class CalendarWithtimeForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblhour As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblhour As Label
 
     '''<summary>
     '''lblminute control.
@@ -92,7 +92,7 @@ Partial Public Class CalendarWithtimeForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblminute As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblminute As Label
 
     '''<summary>
     '''lblSecond control.
@@ -101,7 +101,7 @@ Partial Public Class CalendarWithtimeForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSecond As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSecond As Label
 
     '''<summary>
     '''ddlhour control.
@@ -110,7 +110,7 @@ Partial Public Class CalendarWithtimeForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlhour As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlhour As DropDownList
 
     '''<summary>
     '''ddlMinutes control.
@@ -119,7 +119,7 @@ Partial Public Class CalendarWithtimeForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlMinutes As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlMinutes As DropDownList
 
     '''<summary>
     '''ddlSeconds control.
@@ -128,7 +128,7 @@ Partial Public Class CalendarWithtimeForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlSeconds As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlSeconds As DropDownList
 
     '''<summary>
     '''ddlampm control.
@@ -137,5 +137,5 @@ Partial Public Class CalendarWithtimeForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ddlampm As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents ddlampm As DropDownList
 End Class

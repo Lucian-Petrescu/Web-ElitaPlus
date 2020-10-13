@@ -63,13 +63,13 @@ Namespace SpecializedServices.GW
                 .ItemNumber = pCertificateItem.ItemNumber
 
                 Dim rt As RiskType = pcompanyGroup.RiskTypes.Where(Function(r) r.RiskTypeId = pCertificateItem.RiskTypeId).FirstOrDefault
-                If Not rt Is Nothing Then
+                If rt IsNot Nothing Then
                     .RiskType = If(pLanguage.ToString().ToUpperInvariant() <> "EN", rt.Description, rt.RiskTypeEnglish)
                 End If
 
                 .SerialNumber = pCertificateItem.SerialNumber
                 '.Manufacturer = pcompanyGroup.Manufacturers.Where(Function(m) m.ManufacturerId = pCertificateItem.ManufacturerId).FirstOrDefault.Description
-                .Manufacturer = If(Not pCertificateItem.ManufacturerId Is Nothing,
+                .Manufacturer = If(pCertificateItem.ManufacturerId IsNot Nothing,
                                     pcompanyGroup.Manufacturers.Where(Function(m) m.ManufacturerId = pCertificateItem.ManufacturerId).FirstOrDefault.Description, String.Empty)
                 .Model = pCertificateItem.Model
                 .ItemDescription = pCertificateItem.ItemDescription
@@ -80,10 +80,10 @@ Namespace SpecializedServices.GW
                 .EffectiveDate = pCertificateItem.EffectiveDate
                 .ExpirationDate = pCertificateItem.ExpirationDate
                 .ImeiNumber = pCertificateItem.ImeiNumber
-                .TypeOfEquipmentCode = If(Not pCertificateItem.EquipmentId Is Nothing,
+                .TypeOfEquipmentCode = If(pCertificateItem.EquipmentId IsNot Nothing,
                                         pEquipmentManager.GetEquipment(pCertificateItem.EquipmentId).EquipmentTypeId.ToCode(pCommonManager, ListCodes.TypeOfEquipment, pLanguage), String.Empty)
                 'pCertificateItem.TypeOfEquipmentId.ToCode(pCommonManager, ListCodes.EquipmentType, LanguageCodes.USEnglish)
-                .TypeOfEquipmentDesc = If(Not pCertificateItem.EquipmentId Is Nothing,
+                .TypeOfEquipmentDesc = If(pCertificateItem.EquipmentId IsNot Nothing,
                                         pEquipmentManager.GetEquipment(pCertificateItem.EquipmentId).EquipmentTypeId.ToDescription(pCommonManager, ListCodes.TypeOfEquipment, pLanguage), String.Empty)
 
             End With

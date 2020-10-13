@@ -5,13 +5,14 @@ Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.Web.Forms
 Imports System.Threading
 Imports System.Collections.Generic
+Imports Assurant.Elita.CommonConfiguration.DataElements
 
 Public Class UserControlAttrtibutes
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
 #Region "Page Events"
 
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
 
     End Sub
 
@@ -108,7 +109,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property YesNoDataView As Collections.Generic.List(Of DataElements.ListItem)
+    Private ReadOnly Property YesNoDataView As List(Of ListItem)
         Get
             If (YesNoDataView Is Nothing) Then
                 YesNoDataView = CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode()).ToList()
@@ -150,7 +151,7 @@ Public Class UserControlAttrtibutes
     '    End Get
     'End Property
 
-    Private ReadOnly Property ReInsStatusDataView As Collections.Generic.List(Of DataElements.ListItem)
+    Private ReadOnly Property ReInsStatusDataView As List(Of ListItem)
         Get
             If (ReInsStatusDataView Is Nothing) Then
                 ReInsStatusDataView = (From ris In (CommonConfigManager.Current.ListManager.GetList("REINSURANCE_STATUSES", Thread.CurrentPrincipal.GetLanguageCode()))
@@ -194,7 +195,7 @@ Public Class UserControlAttrtibutes
     '    End Get
     'End Property
 
-    Private ReadOnly Property PostMigCndDataView As Collections.Generic.List(Of DataElements.ListItem)
+    Private ReadOnly Property PostMigCndDataView As List(Of ListItem)
         Get
             If (PostMigCndDataView Is Nothing) Then
                 PostMigCndDataView = CommonConfigManager.Current.ListManager.GetList("POST_MIG_CONDITIONS", Thread.CurrentPrincipal.GetLanguageCode()).ToList()
@@ -227,7 +228,7 @@ Public Class UserControlAttrtibutes
         End Get
     End Property
 
-    Private ReadOnly Property AcctProrateDataView As Collections.Generic.List(Of DataElements.ListItem)
+    Private ReadOnly Property AcctProrateDataView As List(Of ListItem)
         Get
             If (AcctProrateDataView Is Nothing) Then
                 AcctProrateDataView = CommonConfigManager.Current.ListManager.GetList("ACCT_PRORATE", Thread.CurrentPrincipal.GetLanguageCode()).ToList()
@@ -259,7 +260,7 @@ Public Class UserControlAttrtibutes
                 Select AcctProrateList.Code).FirstOrDefault()
         End Get
     End Property
-    Private ReadOnly Property AutoRenewCovLimitDataView As Collections.Generic.List(Of DataElements.ListItem)
+    Private ReadOnly Property AutoRenewCovLimitDataView As List(Of ListItem)
         Get
             If (AutoRenewCovLimitDataView Is Nothing) Then
                 AutoRenewCovLimitDataView = CommonConfigManager.Current.ListManager.GetList("AUTO_RENEW_COV_LIMIT", Thread.CurrentPrincipal.GetLanguageCode()).ToList()
@@ -300,7 +301,7 @@ Public Class UserControlAttrtibutes
     '    End Get
     'End Property
 
-    Private ReadOnly Property AttributeCodeDataView As Collections.Generic.List(Of DataElements.ListItem)
+    Private ReadOnly Property AttributeCodeDataView As List(Of ListItem)
         Get
             If (AttributeCodeDataView Is Nothing) Then
                 AttributeCodeDataView = CommonConfigManager.Current.ListManager.GetList("ATTRIBUTE", Thread.CurrentPrincipal.GetLanguageCode()).ToList()
@@ -334,7 +335,7 @@ Public Class UserControlAttrtibutes
     '    End Get
     'End Property
 
-    Private ReadOnly Property DataTypeDataView As Collections.Generic.List(Of DataElements.ListItem)
+    Private ReadOnly Property DataTypeDataView As List(Of ListItem)
         Get
             If (DataTypeDataView Is Nothing) Then
                 DataTypeDataView = CommonConfigManager.Current.ListManager.GetList("ATBDTYP", Thread.CurrentPrincipal.GetLanguageCode()).ToList()
@@ -419,8 +420,8 @@ Public Class UserControlAttrtibutes
 #Region "Grid Events"
 
     Public Sub UiProgCodeDropDown_SelectedIndexChanged(sender As Object, e As EventArgs)
-        Dim row As GridViewRow = DirectCast(DirectCast(sender, System.Web.UI.WebControls.DropDownList).Parent.Parent, GridViewRow)
-        Page.PopulateBOProperty(State.MyBO, "AttributeId", DirectCast(sender, System.Web.UI.WebControls.DropDownList))
+        Dim row As GridViewRow = DirectCast(DirectCast(sender, DropDownList).Parent.Parent, GridViewRow)
+        Page.PopulateBOProperty(State.MyBO, "AttributeId", DirectCast(sender, DropDownList))
         ShowHideEditRowControls(row, State.MyBO)
     End Sub
 
@@ -598,14 +599,14 @@ Public Class UserControlAttrtibutes
 
                     ' Populate Attributes
                     If (State.IsNew) Then
-                        Dim attributeList As New List(Of ListItem)
+                        Dim attributeList As New List(Of WebControls.ListItem)
                         For Each ea As ElitaAttribute In ParentBusinessObject.AttributeValues.Attribues
                             If (ea.UseEffectiveDate = "Y") OrElse (ea.AllowDuplicates = "Y") OrElse (ea.Id = oAttributeValue.AttributeId) Then
-                                attributeList.Add(New ListItem() With {.Value = ea.Id.ToString(), .Text = AttributeCodeDescriptionFromCode(ea.UiProgCode)})
+                                attributeList.Add(New WebControls.ListItem() With {.Value = ea.Id.ToString(), .Text = AttributeCodeDescriptionFromCode(ea.UiProgCode)})
                                 'attributeList.Add(New ListItem() With {.Value = ea.Id.ToString(), .Text = LookupListNew.GetDescriptionFromId(Me.AttributeCodeDataView, LookupListNew.GetIdFromCode(Me.AttributeCodeDataView, ea.UiProgCode))})
                             Else
                                 If (ParentBusinessObject.AttributeValues.Where(Function(av) av.AttributeId = ea.Id).Count() = 0) Then
-                                    attributeList.Add(New ListItem() With {.Value = ea.Id.ToString(), .Text = AttributeCodeDescriptionFromCode(ea.UiProgCode)})
+                                    attributeList.Add(New WebControls.ListItem() With {.Value = ea.Id.ToString(), .Text = AttributeCodeDescriptionFromCode(ea.UiProgCode)})
                                     'attributeList.Add(New ListItem() With {.Value = ea.Id.ToString(), .Text = LookupListNew.GetDescriptionFromId(Me.AttributeCodeDataView, LookupListNew.GetIdFromCode(Me.AttributeCodeDataView, ea.UiProgCode))})
                                 End If
                             End If

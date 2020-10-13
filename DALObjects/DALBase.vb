@@ -78,7 +78,7 @@ Public Class DALBase
 
     Public Shared Function GetOracleDate(dateColumn As String, Optional ByVal formatStr As String = "") As String
 
-        If (formatStr Is Nothing) Or (formatStr = String.Empty) Or (formatStr.Length = 0) Then
+        If (formatStr Is Nothing) OrElse (formatStr = String.Empty) OrElse (formatStr.Length = 0) Then
             formatStr = ORACLE_QUERY_DATEFORMAT
         End If
         Return " to_char(" & dateColumn & " , '" & formatStr & "' )"
@@ -125,7 +125,7 @@ Public Class DALBase
 
     Protected Function FormatSearchMask(ByRef str As String) As Boolean
 
-        If (Not str Is Nothing) AndAlso (Not (str.Equals(String.Empty))) Then
+        If (str IsNot Nothing) AndAlso (Not (str.Equals(String.Empty))) Then
             If str.IndexOf(TICKMARK) > -1 Then
                 str = str.Replace(TICKMARK, DOUBLETICKMARK)
             End If
@@ -145,7 +145,7 @@ Public Class DALBase
 
     Protected Function DictFormatSearchMask(ByRef str As String) As Boolean
 
-        If (Not str Is Nothing) AndAlso (Not (str.Equals(String.Empty))) Then
+        If (str IsNot Nothing) AndAlso (Not (str.Equals(String.Empty))) Then
 
             If str.IndexOf(TICKMARK) > -1 Then
                 str = str.Replace(TICKMARK, DOUBLETICKMARK)
@@ -178,7 +178,7 @@ Public Class DALBase
     Protected Function IsLikeClause(str As String) As Boolean
         Dim bLikeClause As Boolean = False
 
-        If (Not str Is Nothing) AndAlso (Not (str.Equals(String.Empty))) Then
+        If (str IsNot Nothing) AndAlso (Not (str.Equals(String.Empty))) Then
             ' Is Not Empty ?
             If (str.Trim.Equals(WILDCARD_CHAR) OrElse (str.Trim.Equals(ASTERISK))) Then
                 ' Does it have only % or *
@@ -287,8 +287,8 @@ Public Class DALBase
 
         ' When Filter is blank then do not do anything.
         If (Not (changesFilter Or DataRowState.Added = DataRowState.Added OrElse
-                 changesFilter Or DataRowState.Modified = DataRowState.Modified OrElse
-                 changesFilter Or DataRowState.Deleted = DataRowState.Deleted)) Then
+                 changesFilter OrElse DataRowState.Modified = DataRowState.Modified OrElse
+                 changesFilter OrElse DataRowState.Deleted = DataRowState.Deleted)) Then
             Return
         End If
 
@@ -297,19 +297,19 @@ Public Class DALBase
             ' First Execute Inserts, then Updates and finally Deletes
             If ((changesFilter And DataRowState.Added) = DataRowState.Added) Then
                 ' Execute the Inserts
-                If (Not table.GetChanges(DataRowState.Added) Is Nothing) Then
+                If (table.GetChanges(DataRowState.Added) IsNot Nothing) Then
                     da.Update(table.GetChanges(DataRowState.Added))
                 End If
             End If
             If ((changesFilter And DataRowState.Modified) = DataRowState.Modified) Then
                 ' Execute the Inserts
-                If (Not table.GetChanges(DataRowState.Modified) Is Nothing) Then
+                If (table.GetChanges(DataRowState.Modified) IsNot Nothing) Then
                     da.Update(table.GetChanges(DataRowState.Modified))
                 End If
             End If
             If ((changesFilter And DataRowState.Deleted) = DataRowState.Deleted) Then
                 ' Execute the Deletes
-                If (Not table.GetChanges(DataRowState.Deleted) Is Nothing) Then
+                If (table.GetChanges(DataRowState.Deleted) IsNot Nothing) Then
                     da.Update(table.GetChanges(DataRowState.Deleted))
                 End If
             End If

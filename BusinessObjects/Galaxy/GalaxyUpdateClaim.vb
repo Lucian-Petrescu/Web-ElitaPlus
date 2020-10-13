@@ -125,9 +125,7 @@ Public Class GalaxyUpdateClaim
                     StatusCode = .STATUS_CODE
                     IsStatusCodeNull = False
 
-                    If Not (StatusCode.Equals(Codes.CLAIM_STATUS__PENDING) Or _
-                        StatusCode.Equals(Codes.CLAIM_STATUS__ACTIVE) Or _
-                        StatusCode.Equals(Codes.CLAIM_STATUS__CLOSED)) Then
+                    If Not (StatusCode.Equals(Codes.CLAIM_STATUS__PENDING) OrElse StatusCode.Equals(Codes.CLAIM_STATUS__ACTIVE) OrElse StatusCode.Equals(Codes.CLAIM_STATUS__CLOSED)) Then
                         Throw New BOValidationException("GalaxyUpdateClaim Error: ", INVALID_STATUS_CODE)
                     End If
                 End If

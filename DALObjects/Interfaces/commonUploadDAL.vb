@@ -147,7 +147,7 @@ Public Class commonUploadDAL
             End Try
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         Finally
-            If Not conn Is Nothing Then
+            If conn IsNot Nothing Then
                 conn = Nothing
             End If
         End Try
@@ -276,9 +276,9 @@ Public Class commonUploadDAL
 
             DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, outParameters)
 
-            If Not outParameters(0).Value Is Nothing Then
+            If outParameters(0).Value IsNot Nothing Then
                 strResult = outParameters(0).Value.ToString().Trim
-                If Not outParameters(1).Value Is Nothing Then
+                If outParameters(1).Value IsNot Nothing Then
                     strErrMsg = outParameters(1).Value.ToString().Trim
                 End If
             End If

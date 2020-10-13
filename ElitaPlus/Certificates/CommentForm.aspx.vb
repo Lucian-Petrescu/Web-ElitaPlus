@@ -1,10 +1,15 @@
 Imports System.Collections.Generic
+Imports System.Diagnostics
+Imports System.Reflection
 Imports Assurant.Elita.ClientIntegration
 Imports Assurant.ElitaPlus.BusinessObjectsNew.LegacyBridgeService
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 Imports System.Threading
+Imports Assurant.Elita.ClientIntegration.Headers
+Imports Assurant.Elita.CommonConfiguration.DataElements
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Certificates
 
 Partial Class CommentForm
     Inherits ElitaPlusPage
@@ -12,11 +17,11 @@ Partial Class CommentForm
 #Region " Web Form Designer Generated Code "
 
     'This call is required by the Web Form Designer.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <DebuggerStepThrough> Private Sub InitializeComponent()
 
     End Sub
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(sender As Object, e As EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -45,7 +50,7 @@ Partial Class CommentForm
             Me.CommentBo = commentBo
         End Sub
         Public Sub New(commentID As Guid)
-            CommentBo = New Comment(commentID)
+            Me.CommentBo = New Comment(commentID)
         End Sub
     End Class
 #End Region
@@ -55,8 +60,8 @@ Partial Class CommentForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As Comment
         Public Sub New(LastOp As DetailPageCommand, curEditingBo As Comment)
-            LastOperation = LastOp
-            EditingBo = curEditingBo
+            Me.LastOperation = LastOp
+            Me.EditingBo = curEditingBo
         End Sub
     End Class
 #End Region
@@ -81,27 +86,27 @@ Partial Class CommentForm
         MyBase.New(New MyState)
     End Sub
 
-    Protected Shadows ReadOnly Property State() As MyState
+    Protected Shadows ReadOnly Property State As MyState
         Get
-            If NavController.State Is Nothing Then
-                NavController.State = New MyState
-                Me.State.MyBO = CType(NavController.ParametersPassed, Parameters).CommentBo
+            If Me.NavController.State Is Nothing Then
+                Me.NavController.State = New MyState
+                Me.State.MyBO = CType(Me.NavController.ParametersPassed, Parameters).CommentBo
                 If Me.State.MyBO IsNot Nothing Then
                     Me.State.MyBO.BeginEdit()
                 End If
             End If
-            Return CType(NavController.State, MyState)
+            Return CType(Me.NavController.State, MyState)
         End Get
     End Property
 
     Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
         Try
-            If CallingParameters IsNot Nothing Then
+            If Me.CallingParameters IsNot Nothing Then
                 'Get the id from the parent
-                State.MyBO = New Comment(CType(CallingParameters, Guid))
+                Me.State.MyBO = New Comment(CType(Me.CallingParameters, Guid))
             End If
         Catch ex As Exception
-            HandleErrors(ex, MasterPage.MessageController)
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
 
     End Sub
@@ -111,12 +116,12 @@ Partial Class CommentForm
 #Region "Page Events"
 
     Private Sub UpdateBreadCrum()
-        If (State IsNot Nothing) Then
-            If (State.MyBO IsNot Nothing) Then
+        If (Me.State IsNot Nothing) Then
+            If (Me.State.MyBO IsNot Nothing) Then
                 If IsFromCertificateForm() Then
-                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & "Certificate " & State.MyBO.CertificateNumber & ElitaBase.Sperator & "Comment"
+                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & "Certificate " & Me.State.MyBO.CertificateNumber & ElitaBase.Sperator & "Comment"
                 Else
-                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & "Certificate " & State.MyBO.CertificateNumber & ElitaBase.Sperator & "File New Claim"
+                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & "Certificate " & Me.State.MyBO.CertificateNumber & ElitaBase.Sperator & "File New Claim"
                 End If
             End If
         End If
@@ -129,7 +134,7 @@ Partial Class CommentForm
         Return False
     End Function
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
         If mbIsFirstPass = True Then
             mbIsFirstPass = False
@@ -137,7 +142,7 @@ Partial Class CommentForm
             ' Do not load again the Page that was already loaded
             Return
         End If
-        If NavController.CurrentNavState.Name <> COMMENT_DETAIL Then
+        If Me.NavController.CurrentNavState.Name <> COMMENT_DETAIL Then
             Return
         End If
         If Request.UrlReferrer.ToString.ToUpper.Contains(NEW_CLAIM_FORM.ToUpper) Then
@@ -146,59 +151,59 @@ Partial Class CommentForm
             WizardControl.Visible = False
         End If
         If IsFromCertificateForm() Then
-            If CallingParameters IsNot Nothing Then
+            If Me.CallingParameters IsNot Nothing Then
                 Try
-                    State.CertificateBO = New Certificate(CType(CallingParameters, Guid))
+                    Me.State.CertificateBO = New Certificate(CType(Me.CallingParameters, Guid))
                 Catch ex As Exception
-                    Dim callingParams As Certificates.CertificateForm.Parameters = CType(CallingParameters, Certificates.CertificateForm.Parameters)
-                    State.CertificateBO = New Certificate(callingParams.CertificateId)
+                    Dim callingParams As CertificateForm.Parameters = CType(Me.CallingParameters, CertificateForm.Parameters)
+                    Me.State.CertificateBO = New Certificate(callingParams.CertificateId)
                 End Try
-            ElseIf State.MyBO IsNot Nothing Then
-                State.CertificateBO = New Certificate(State.MyBO.CertId)
+            ElseIf Me.State.MyBO IsNot Nothing Then
+                Me.State.CertificateBO = New Certificate(Me.State.MyBO.CertId)
             End If
             ControlMgr.SetVisibleControl(Me, moCertificateInfoController, True)
             ControlMgr.SetVisibleControl(Me, moProtectionEvtDtl, False)
-            moCertificateInfoController.InitController(State.CertificateBO, , )
+            moCertificateInfoController.InitController(Me.State.CertificateBO, , )
             LabelTitle.Text = TranslationBase.TranslateLabelOrMessage("Comment")
             btnAdd_WRITE.Text = TranslationBase.TranslateLabelOrMessage("Save")
         Else
             ControlMgr.SetVisibleControl(Me, moCertificateInfoController, False)
         End If
-        MasterPage.MessageController.Clear()
+        Me.MasterPage.MessageController.Clear()
 
-        MasterPage.UsePageTabTitleInBreadCrum = False
-        MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Certificate")
+        Me.MasterPage.UsePageTabTitleInBreadCrum = False
+        Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Certificate")
         If IsFromCertificateForm() Then
-            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Message.Certificate_Detail) &
-                " (<strong>" & State.CertificateBO.CertNumber & "</strong>) " & TranslationBase.TranslateLabelOrMessage("SUMMARY")
+            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Message.Certificate_Detail) &
+                " (<strong>" & Me.State.CertificateBO.CertNumber & "</strong>) " & TranslationBase.TranslateLabelOrMessage("SUMMARY")
         Else
-            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PROTECTION_AND_EVENT_DETAILS)
+            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(PROTECTION_AND_EVENT_DETAILS)
         End If
-        UpdateBreadCrum()
+        Me.UpdateBreadCrum()
 
         Try
-            If Not IsPostBack Then
-                PopulateProtectionAndEventDetail()
-                If State.MyBO Is Nothing Then
-                    State.MyBO = New Comment
-                    State.MyBO.BeginEdit()
+            If Not Me.IsPostBack Then
+                Me.PopulateProtectionAndEventDetail()
+                If Me.State.MyBO Is Nothing Then
+                    Me.State.MyBO = New Comment
+                    Me.State.MyBO.BeginEdit()
                 End If
-                Trace(Me, "Comment Id =" & GuidControl.GuidToHexString(State.MyBO.Id))
+                Trace(Me, "Comment Id =" & GuidControl.GuidToHexString(Me.State.MyBO.Id))
                 PopulateDropdowns()
-                PopulateFormFromBOs()
-                EnableDisableFields()
+                Me.PopulateFormFromBOs()
+                Me.EnableDisableFields()
             End If
             BindBoPropertiesToLabels()
             CheckIfComingFromSaveConfirm()
-            If Not IsPostBack Then
-                AddLabelDecorations(State.MyBO)
+            If Not Me.IsPostBack Then
+                Me.AddLabelDecorations(Me.State.MyBO)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
             CleanPopupInput()
-            HandleErrors(ex, MasterPage.MessageController)
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
-        ShowMissingTranslations(MasterPage.MessageController)
+        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
     End Sub
 #End Region
 
@@ -206,100 +211,100 @@ Partial Class CommentForm
 
     Protected Sub EnableDisableFields()
         Try
-            ChangeEnabledProperty(TextboxCallerName, True)
-            ChangeEnabledProperty(TextboxCommentText, True)
-            ChangeEnabledProperty(cboCommentType, True)
-            btnBack.Enabled = True
+            Me.ChangeEnabledProperty(Me.TextboxCallerName, True)
+            Me.ChangeEnabledProperty(Me.TextboxCommentText, True)
+            Me.ChangeEnabledProperty(Me.cboCommentType, True)
+            Me.btnBack.Enabled = True
             'BEGIN - Ravi - Comment out the disabling of the "BACK" button
             'If Not Me.State.MyBO.IsNew Then
             '    Me.btnBack.Enabled = False
             'End If
             'END - Ravi - Comment out the disabling of the "BACK" button
-            If TextboxDateTime.Text Is Nothing OrElse TextboxDateTime.Text.Trim.Length = 0 Then
+            If Me.TextboxDateTime.Text Is Nothing OrElse Me.TextboxDateTime.Text.Trim.Length = 0 Then
                 'Make the Date/Time info invisible
-                ControlMgr.SetVisibleControl(Me, LabelDateTime, False)
-                ControlMgr.SetVisibleControl(Me, TextboxDateTime, False)
+                ControlMgr.SetVisibleControl(Me, Me.LabelDateTime, False)
+                ControlMgr.SetVisibleControl(Me, Me.TextboxDateTime, False)
             End If
         Catch ex As Exception
-            HandleErrors(ex, MasterPage.MessageController)
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
         Try
-            ClearGridHeadersAndLabelsErrSign()
-            If Not LabelDateTime.Text.EndsWith(":") Then
-                LabelDateTime.Text &= ":"
+            Me.ClearGridHeadersAndLabelsErrSign()
+            If Not Me.LabelDateTime.Text.EndsWith(":") Then
+                Me.LabelDateTime.Text &= ":"
             End If
-            BindBOPropertyToLabel(State.MyBO, "CallerName", LabelCallerName)
-            BindBOPropertyToLabel(State.MyBO, "CommentTypeId", LabelCommentType)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "CallerName", Me.LabelCallerName)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "CommentTypeId", Me.LabelCommentType)
         Catch ex As Exception
-            HandleErrors(ex, MasterPage.MessageController)
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub PopulateDropdowns()
         Try
-            Dim commentType As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("COMMT", Thread.CurrentPrincipal.GetLanguageCode())
+            Dim commentType As ListItem() = CommonConfigManager.Current.ListManager.GetList("COMMT", Thread.CurrentPrincipal.GetLanguageCode())
             cboCommentType.Populate(commentType, New PopulateOptions() With
                                                       {
                                                         .AddBlankItem = True
                                                        })
         Catch ex As Exception
-            HandleErrors(ex, MasterPage.MessageController)
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub PopulateFormFromBOs()
         Try
-            With State.MyBO
-                PopulateControlFromBOProperty(TextboxCallerName, .CallerName)
-                PopulateControlFromBOProperty(TextboxCertificate, .CertificateNumber)
-                PopulateControlFromBOProperty(TextboxCommentText, .Comments)
-                PopulateControlFromBOProperty(TextboxDealer, .Dealer)
-                PopulateControlFromBOProperty(cboCommentType, .CommentTypeId)
+            With Me.State.MyBO
+                Me.PopulateControlFromBOProperty(Me.TextboxCallerName, .CallerName)
+                Me.PopulateControlFromBOProperty(Me.TextboxCertificate, .CertificateNumber)
+                Me.PopulateControlFromBOProperty(Me.TextboxCommentText, .Comments)
+                Me.PopulateControlFromBOProperty(Me.TextboxDealer, .Dealer)
+                Me.PopulateControlFromBOProperty(Me.cboCommentType, .CommentTypeId)
 
                 If .CreatedDate IsNot Nothing Then
-                    PopulateControlFromBOProperty(TextboxDateTime, GetLongDateFormattedString(.CreatedDate.Value))
+                    Me.PopulateControlFromBOProperty(Me.TextboxDateTime, GetLongDateFormattedString(.CreatedDate.Value))
                 Else
-                    PopulateControlFromBOProperty(TextboxDateTime, Nothing)
+                    Me.PopulateControlFromBOProperty(Me.TextboxDateTime, Nothing)
                 End If
 
-                If State.ClaimBO IsNot Nothing Then
-                    If State.ClaimBO.IsAuthorizationLimitExceeded AndAlso (State.ClaimBO.StatusCode = Codes.CLAIM_STATUS__PENDING) Then
-                        MasterPage.MessageController.Clear()
-                        MasterPage.MessageController.AddInformation("MSG_AUTHORIZATION_LIMIT_EXCEEDED")
+                If Me.State.ClaimBO IsNot Nothing Then
+                    If Me.State.ClaimBO.IsAuthorizationLimitExceeded AndAlso (Me.State.ClaimBO.StatusCode = Codes.CLAIM_STATUS__PENDING) Then
+                        Me.MasterPage.MessageController.Clear()
+                        Me.MasterPage.MessageController.AddInformation("MSG_AUTHORIZATION_LIMIT_EXCEEDED")
                     End If
                 End If
 
 
             End With
         Catch ex As Exception
-            HandleErrors(ex, MasterPage.MessageController)
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub PopulateBOsFormFrom()
         Try
-            With State.MyBO
-                PopulateBOProperty(State.MyBO, "CallerName", TextboxCallerName)
-                PopulateBOProperty(State.MyBO, "Comments", TextboxCommentText)
-                PopulateBOProperty(State.MyBO, "CommentTypeId", cboCommentType)
+            With Me.State.MyBO
+                Me.PopulateBOProperty(Me.State.MyBO, "CallerName", Me.TextboxCallerName)
+                Me.PopulateBOProperty(Me.State.MyBO, "Comments", Me.TextboxCommentText)
+                Me.PopulateBOProperty(Me.State.MyBO, "CommentTypeId", Me.cboCommentType)
             End With
-            If ErrCollection.Count > 0 Then
+            If Me.ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         Catch ex As Exception
-            HandleErrors(ex, MasterPage.MessageController)
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub CleanPopupInput()
         Try
-            If State IsNot Nothing Then
+            If Me.State IsNot Nothing Then
                 'Clean after consuming the action
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                HiddenSaveChangesPromptResponse.Value = ""
+                Me.State.ActionInProgress = DetailPageCommand.Nothing_
+                Me.HiddenSaveChangesPromptResponse.Value = ""
             End If
         Catch ex As Exception
 
@@ -308,32 +313,32 @@ Partial Class CommentForm
 
     Protected Sub CheckIfComingFromSaveConfirm()
         Try
-            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
-            Dim actionInProgress As ElitaPlusPage.DetailPageCommand = State.ActionInProgress
+            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            Dim actionInProgress As DetailPageCommand = Me.State.ActionInProgress
             'Clean after consuming the action
             CleanPopupInput()
             If confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_YES Then
-                If actionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                    State.MyBO.Save()
-                    State.MyBO.EndEdit()
-                    NavController.Navigate(Me, FlowEvents.EVENT_ADD, Message.MSG_COMMENT_ADDED)
+                If actionInProgress <> DetailPageCommand.BackOnErr Then
+                    Me.State.MyBO.Save()
+                    Me.State.MyBO.EndEdit()
+                    Me.NavController.Navigate(Me, FlowEvents.EVENT_ADD, Message.MSG_COMMENT_ADDED)
                 End If
-                If actionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                    NavController.Navigate(Me, FlowEvents.EVENT_BACK)
+                If actionInProgress = DetailPageCommand.BackOnErr Then
+                    Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK)
                 End If
             ElseIf confResponse IsNot Nothing AndAlso confResponse = MSG_VALUE_NO Then
                 Select Case actionInProgress
-                    Case ElitaPlusPage.DetailPageCommand.Back
-                        State.MyBO.cancelEdit()
+                    Case DetailPageCommand.Back
+                        Me.State.MyBO.cancelEdit()
                         'Me.NavController.Navigate(Me, FlowEvents.EVENT_NEXT)
-                        NavController.Navigate(Me, FlowEvents.EVENT_BACK)
-                    Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
+                        Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK)
+                    Case DetailPageCommand.BackOnErr
+                        Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
                 End Select
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            HandleErrors(ex, MasterPage.MessageController)
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 
@@ -341,21 +346,21 @@ Partial Class CommentForm
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(sender As System.Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
-            PopulateBOsFormFrom()
-            If State.MyBO.IsDirty Then
-                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            Me.PopulateBOsFormFrom()
+            If Me.State.MyBO.IsDirty Then
+                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                Me.State.ActionInProgress = DetailPageCommand.Back
             Else
-                State.MyBO.cancelEdit()
+                Me.State.MyBO.cancelEdit()
                 'Me.NavController.Navigate(Me, FlowEvents.EVENT_NEXT)
                 Dim eventName As String
-                Select Case NavController.PrevNavState.Name
+                Select Case Me.NavController.PrevNavState.Name
                     Case "SOFTQUESTION_COMMENTS"
                         eventName = "back_soft_question"
                     Case "GET_CLAIM_COMMENT"
-                        If NavController.CurrentFlow.EndState.Name = "CLAIM_DETAIL" Then
+                        If Me.NavController.CurrentFlow.EndState.Name = "CLAIM_DETAIL" Then
                             eventName = "back_claim_details"
                         Else
                             eventName = "back_new_claim"
@@ -367,31 +372,31 @@ Partial Class CommentForm
 
                 End Select
 
-                NavController.Navigate(Me, eventName)
+                Me.NavController.Navigate(Me, eventName)
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            If (TypeOf ex Is System.Reflection.TargetInvocationException) AndAlso
-                (TypeOf ex.InnerException Is Threading.ThreadAbortException) Then Return
-            HandleErrors(ex, MasterPage.MessageController)
-            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            State.LastErrMsg = MasterPage.MessageController.Text
+            If (TypeOf ex Is TargetInvocationException) AndAlso
+                (TypeOf ex.InnerException Is ThreadAbortException) Then Return
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+            Me.State.ActionInProgress = DetailPageCommand.BackOnErr
+            Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
         End Try
 
     End Sub
 
-    Private Sub btnAdd_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnAdd_WRITE.Click
+    Private Sub btnAdd_WRITE_Click(sender As Object, e As EventArgs) Handles btnAdd_WRITE.Click
         Try
-            PopulateBOsFormFrom()
+            Me.PopulateBOsFormFrom()
 
-            NavController.FlowSession(FlowSessionKeys.SESSION_IS_CUSTOMER_EMAIL) = cbEmailToCustomer.Checked
-            NavController.FlowSession(FlowSessionKeys.SESSION_IS_SERVICE_CENTER_EMAIL) = cbEmailToServiceCenter.Checked
-            NavController.FlowSession(FlowSessionKeys.SESSION_IS_SALVAGE_CENTER_EMAIL) = cbEmailToSalvageCenter.Checked
+            Me.NavController.FlowSession(FlowSessionKeys.SESSION_IS_CUSTOMER_EMAIL) = cbEmailToCustomer.Checked
+            Me.NavController.FlowSession(FlowSessionKeys.SESSION_IS_SERVICE_CENTER_EMAIL) = cbEmailToServiceCenter.Checked
+            Me.NavController.FlowSession(FlowSessionKeys.SESSION_IS_SALVAGE_CENTER_EMAIL) = cbEmailToSalvageCenter.Checked
 
             If State.MyBO.Claim IsNot Nothing AndAlso Me.State.MyBO.Claim.Status = BasicClaimStatus.Active Then
                 'user story 192764 - Task-199011--Start------
-                Dim dsCaseFields As DataSet = CaseBase.GetCaseFieldsList(State.MyBO.Claim.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                Dim dsCaseFields As DataSet = CaseBase.GetCaseFieldsList(Me.State.MyBO.Claim.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 If (dsCaseFields IsNot Nothing AndAlso dsCaseFields.Tables.Count > 0 AndAlso dsCaseFields.Tables(0).Rows.Count > 0) Then
 
                     Dim hasBenefit As DataRow() = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
@@ -403,7 +408,7 @@ Partial Class CommentForm
                         If hasBenefit(0)("field_value") IsNot Nothing AndAlso String.Equals(hasBenefit(0)("field_value").ToString(), Boolean.FalseString, StringComparison.CurrentCultureIgnoreCase) Then
                             UpdateCaseFieldValues(hasBenefit, lossType)
 
-                            dsCaseFields = CaseBase.GetCaseFieldsList(State.MyBO.Claim.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                            dsCaseFields = CaseBase.GetCaseFieldsList(Me.State.MyBO.Claim.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                             hasBenefit = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
                         End If
                     End If
@@ -411,7 +416,7 @@ Partial Class CommentForm
                         If benefitCheckError(0)("field_value") IsNot Nothing AndAlso Not String.Equals(benefitCheckError(0)("field_value").ToString(), "NO ERROR", StringComparison.CurrentCultureIgnoreCase) Then
                             UpdateCaseFieldValues(benefitCheckError, lossType)
 
-                            dsCaseFields = CaseBase.GetCaseFieldsList(State.MyBO.Claim.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                            dsCaseFields = CaseBase.GetCaseFieldsList(Me.State.MyBO.Claim.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                             hasBenefit = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
                         End If
                     End If
@@ -430,29 +435,29 @@ Partial Class CommentForm
                 End If
             End If
 
-            If State.MyBO.IsDirty Then
-                State.MyBO.EndEdit()
-                State.MyBO.Save()
+            If Me.State.MyBO.IsDirty Then
+                Me.State.MyBO.EndEdit()
+                Me.State.MyBO.Save()
                 If State.MyBO.Claim IsNot Nothing Then
                     If (Me.State.MyBO.Claim.Status = BasicClaimStatus.Pending) Then
-                        NavController.Navigate(Me, FlowEvents.EVENT_BACK)
+                        Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK)
                         Exit Sub
                     Else
-                        NavController.Navigate(Me, FlowEvents.EVENT_ADD, Message.MSG_COMMENT_ADDED)
+                        Me.NavController.Navigate(Me, FlowEvents.EVENT_ADD, Message.MSG_COMMENT_ADDED)
                     End If
                 Else
-                    NavController.Navigate(Me, FlowEvents.EVENT_ADD, Message.MSG_COMMENT_ADDED)
+                    Me.NavController.Navigate(Me, FlowEvents.EVENT_ADD, Message.MSG_COMMENT_ADDED)
                 End If
             Else
-                If State.MyBO.IsNew Then
-                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                If Me.State.MyBO.IsNew Then
+                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 Else
-                    NavController.Navigate(Me, FlowEvents.EVENT_ADD, Message.MSG_COMMENT_ADDED)
+                    Me.NavController.Navigate(Me, FlowEvents.EVENT_ADD, Message.MSG_COMMENT_ADDED)
                 End If
             End If
-        Catch ex As Threading.ThreadAbortException
+        Catch ex As ThreadAbortException
         Catch ex As Exception
-            HandleErrors(ex, MasterPage.MessageController)
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 
@@ -463,31 +468,31 @@ Partial Class CommentForm
 
             benefitCheckResponse = WcfClientHelper.Execute(Of LegacyBridgeServiceClient, ILegacyBridgeService, LegacyBridgeResponse)(
                 client,
-                New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                 Function(lc As LegacyBridgeServiceClient)
                     Return lc.BenefitClaimPreCheck(GuidControl.ByteArrayToGuid(caseRecord(0)("case_Id")).ToString())
                 End Function)
 
                 If (benefitCheckResponse IsNot Nothing) Then
-                    State.MyBO.Claim.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
+                    Me.State.MyBO.Claim.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
                     If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
                         Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECKFAIL")
-                        Dim newClaimIssue As ClaimIssue = CType(State.MyBO.Claim.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-                        newClaimIssue.SaveNewIssue(State.MyBO.Claim.Id, issueId, State.MyBO.Claim.Certificate.Id, True)
+                        Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.Claim.ClaimIssuesList.GetNewChild, ClaimIssue)
+                        newClaimIssue.SaveNewIssue(Me.State.MyBO.Claim.Id, issueId, Me.State.MyBO.Claim.Certificate.Id, True)
                     End If
                 Else
-                    State.MyBO.Claim.Status = BasicClaimStatus.Pending
+                    Me.State.MyBO.Claim.Status = BasicClaimStatus.Pending
                     Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
-                    Dim newClaimIssue As ClaimIssue = CType(State.MyBO.Claim.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-                    newClaimIssue.SaveNewIssue(State.MyBO.Claim.Id, issueId, State.MyBO.Claim.Certificate.Id, True)
+                    Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.Claim.ClaimIssuesList.GetNewChild, ClaimIssue)
+                    newClaimIssue.SaveNewIssue(Me.State.MyBO.Claim.Id, issueId, Me.State.MyBO.Claim.Certificate.Id, True)
                 End If
 
             Catch ex As Exception
                 Log(ex)
-                State.MyBO.Claim.Status = BasicClaimStatus.Pending
+                Me.State.MyBO.Claim.Status = BasicClaimStatus.Pending
                 Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
-                Dim newClaimIssue As ClaimIssue = CType(State.MyBO.Claim.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-                newClaimIssue.SaveNewIssue(State.MyBO.Claim.Id, issueId, State.MyBO.Claim.Certificate.Id, True)
+                Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.Claim.ClaimIssuesList.GetNewChild, ClaimIssue)
+                newClaimIssue.SaveNewIssue(Me.State.MyBO.Claim.Id, issueId, Me.State.MyBO.Claim.Certificate.Id, True)
             End Try
     End Sub
 
@@ -512,19 +517,19 @@ Partial Class CommentForm
 
 #Region "Page Control Events"
 
-    Private Sub cboMonthlyBilling_SelectedIndexChanged(sender As System.Object, e As System.EventArgs)
+    Private Sub cboMonthlyBilling_SelectedIndexChanged(sender As Object, e As EventArgs)
         Try
-            EnableDisableFields()
+            Me.EnableDisableFields()
         Catch ex As Exception
-            HandleErrors(ex, MasterPage.MessageController)
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 
-    Private Sub cboDealerMarkup_SelectedIndexChanged(sender As System.Object, e As System.EventArgs)
+    Private Sub cboDealerMarkup_SelectedIndexChanged(sender As Object, e As EventArgs)
         Try
-            EnableDisableFields()
+            Me.EnableDisableFields()
         Catch ex As Exception
-            HandleErrors(ex, MasterPage.MessageController)
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 
@@ -543,15 +548,15 @@ Partial Class CommentForm
         Dim cssClassName As String
         Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
         Try
-            Dim newClaim As ClaimBase = CType(NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM), ClaimBase)
+            Dim newClaim As ClaimBase = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM), ClaimBase)
             'DEF 3577
             If newClaim Is Nothing Then
-                newClaim = CType(NavController.FlowSession(FlowSessionKeys.SESSION_OLD_CLAIM), ClaimBase)
+                newClaim = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_OLD_CLAIM), ClaimBase)
             End If
-            State.ClaimBO = newClaim
-            Dim strMasterClaimNumber As String = CType(NavController.FlowSession(FlowSessionKeys.SESSION_MSTR_CLAIM_NUMB), String)
+            Me.State.ClaimBO = newClaim
+            Dim strMasterClaimNumber As String = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_MSTR_CLAIM_NUMB), String)
             Dim objDateOfLoss As DateType = Nothing
-            Dim strDateOfLoss As String = CType(NavController.FlowSession(FlowSessionKeys.SESSION_DATE_OF_LOSS), String)
+            Dim strDateOfLoss As String = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_DATE_OF_LOSS), String)
 
             If newClaim IsNot Nothing Then
                 Dim oCerticate As Certificate = New Certificate(newClaim.CertificateId)
@@ -579,10 +584,10 @@ Partial Class CommentForm
                 moProtectionEvtDtl.ClaimStatusCss = cssClassName
 
                 Dim oCertItemCoverage As CertItemCoverage = New CertItemCoverage(newClaim.CertItemCoverageId)
-                State.CertItemBO = New CertItem(oCertItemCoverage.CertItemId)
-                If State.CertItemBO IsNot Nothing AndAlso Not State.CertItemBO.ManufacturerId.Equals(Guid.Empty) Then
-                    moProtectionEvtDtl.EnrolledMake = New Manufacturer(State.CertItemBO.ManufacturerId).Description
-                    moProtectionEvtDtl.EnrolledModel = State.CertItemBO.Model
+                Me.State.CertItemBO = New CertItem(oCertItemCoverage.CertItemId)
+                If Me.State.CertItemBO IsNot Nothing AndAlso Not Me.State.CertItemBO.ManufacturerId.Equals(Guid.Empty) Then
+                    moProtectionEvtDtl.EnrolledMake = New Manufacturer(Me.State.CertItemBO.ManufacturerId).Description
+                    moProtectionEvtDtl.EnrolledModel = Me.State.CertItemBO.Model
                 Else
                     moProtectionEvtDtl.EnrolledMake = String.Empty
                     moProtectionEvtDtl.EnrolledModel = String.Empty
@@ -591,9 +596,9 @@ Partial Class CommentForm
                 moProtectionEvtDtl.CustomerName = String.Empty
                 moProtectionEvtDtl.DateOfLoss = String.Empty
                 moProtectionEvtDtl.ProtectionStatus = String.Empty
-                With State.MyBO
-                    moProtectionEvtDtl.CallerName = .CallerName
-                    TextboxCommentText.Text = .Comments
+                With Me.State.MyBO
+                    Me.moProtectionEvtDtl.CallerName = .CallerName
+                    Me.TextboxCommentText.Text = .Comments
                     moProtectionEvtDtl.ClaimNumber = .ClaimNumber
                     moProtectionEvtDtl.ClaimStatus = LookupListNew.GetClaimStatusFromCode(langId, .ClaimStatus)
                     If (.ClaimStatus = Codes.CLAIM_STATUS__ACTIVE) Then
@@ -609,58 +614,58 @@ Partial Class CommentForm
             moProtectionEvtDtl.ClaimedMake = String.Empty
             moProtectionEvtDtl.ClaimedModel = String.Empty
             moProtectionEvtDtl.TypeOfLoss = String.Empty
-            If State.ClaimBO IsNot Nothing Then
-                If State.ClaimBO.ClaimedEquipment IsNot Nothing Then
-                    moProtectionEvtDtl.ClaimedMake = State.ClaimBO.ClaimedEquipment.Manufacturer
-                    moProtectionEvtDtl.ClaimedModel = State.ClaimBO.ClaimedEquipment.Model
-                    moProtectionEvtDtl.TypeOfLoss = State.ClaimBO.ClaimedEquipment.ClaimEquipmentType
+            If Me.State.ClaimBO IsNot Nothing Then
+                If Me.State.ClaimBO.ClaimedEquipment IsNot Nothing Then
+                    moProtectionEvtDtl.ClaimedMake = Me.State.ClaimBO.ClaimedEquipment.Manufacturer
+                    moProtectionEvtDtl.ClaimedModel = Me.State.ClaimBO.ClaimedEquipment.Model
+                    moProtectionEvtDtl.TypeOfLoss = Me.State.ClaimBO.ClaimedEquipment.ClaimEquipmentType
                 End If
             End If
-            If State.ClaimBO IsNot Nothing AndAlso Me.State.ClaimBO.ClaimAuthorizationType = ClaimAuthorizationType.Single Then
-                ManageEmail()
+            If Me.State.ClaimBO IsNot Nothing AndAlso Me.State.ClaimBO.ClaimAuthorizationType = ClaimAuthorizationType.Single Then
+                Me.ManageEmail()
             Else
-                TREmailToCustomer.Visible = False
-                TREmailToServiceCenter.Visible = False
-                TREmailToSalvageCenter.Visible = False
+                Me.TREmailToCustomer.Visible = False
+                Me.TREmailToServiceCenter.Visible = False
+                Me.TREmailToSalvageCenter.Visible = False
             End If
         Catch ex As Exception
-            HandleErrors(ex, MasterPage.MessageController)
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 
     Public Sub ManageEmail()
-        If State.CertItemBO IsNot Nothing Then
-            ControlMgr.SetVisibleControl(Me, TREmailToCustomer, True)
-            If Not String.IsNullOrEmpty(State.CertItemBO.Cert.Email) Then
-                TREmailToCustomer.Visible = True
+        If Me.State.CertItemBO IsNot Nothing Then
+            ControlMgr.SetVisibleControl(Me, Me.TREmailToCustomer, True)
+            If Not String.IsNullOrEmpty(Me.State.CertItemBO.Cert.Email) Then
+                Me.TREmailToCustomer.Visible = True
             Else
-                TREmailToCustomer.Visible = False
+                Me.TREmailToCustomer.Visible = False
             End If
-            EmailToCustomerText.Text = State.CertItemBO.Cert.Email
-        ElseIf State.CertItemBO Is Nothing Then
-            ControlMgr.SetVisibleControl(Me, TREmailToCustomer, False)
+            EmailToCustomerText.Text = Me.State.CertItemBO.Cert.Email
+        ElseIf Me.State.CertItemBO Is Nothing Then
+            ControlMgr.SetVisibleControl(Me, Me.TREmailToCustomer, False)
         End If
 
         LabelAddedBy.Text = ElitaPlusIdentity.Current.ActiveUser.UserName
 
-        If State.ClaimBO IsNot Nothing AndAlso Me.State.ClaimBO.ClaimAuthorizationType = ClaimAuthorizationType.Single Then
-            ControlMgr.SetVisibleControl(Me, TREmailToServiceCenter, True)
-            Dim oServiceCenter As ServiceCenter = New ServiceCenter(CType(State.ClaimBO, Claim).ServiceCenterId)
+        If Me.State.ClaimBO IsNot Nothing AndAlso Me.State.ClaimBO.ClaimAuthorizationType = ClaimAuthorizationType.Single Then
+            ControlMgr.SetVisibleControl(Me, Me.TREmailToServiceCenter, True)
+            Dim oServiceCenter As ServiceCenter = New ServiceCenter(CType(Me.State.ClaimBO, Claim).ServiceCenterId)
             If (oServiceCenter.DefaultToEmailFlag) Then
                 cbEmailToServiceCenter.Checked = True
             End If
             EmailToServiceCenterText.Text = oServiceCenter.Email
-            If Not State.ClaimBO.Dealer.DefaultSalvgeCenterId = Guid.Empty AndAlso State.ClaimBO.ClaimNumber.Substring(State.ClaimBO.ClaimNumber.Length - 1) = "R" Then
-                Dim oSalvageCenter As ServiceCenter = New ServiceCenter(State.ClaimBO.Dealer.DefaultSalvgeCenterId)
+            If Not Me.State.ClaimBO.Dealer.DefaultSalvgeCenterId = Guid.Empty AndAlso Me.State.ClaimBO.ClaimNumber.Substring(Me.State.ClaimBO.ClaimNumber.Length - 1) = "R" Then
+                Dim oSalvageCenter As ServiceCenter = New ServiceCenter(Me.State.ClaimBO.Dealer.DefaultSalvgeCenterId)
                 EmailToSalvageCenterText.Text = oSalvageCenter.Email
                 If Not EmailToSalvageCenterText.Text = Nothing Then
-                    ControlMgr.SetVisibleControl(Me, TREmailToSalvageCenter, True)
+                    ControlMgr.SetVisibleControl(Me, Me.TREmailToSalvageCenter, True)
                     cbEmailToSalvageCenter.Checked = True
                 End If
             End If
-        ElseIf State.ClaimBO Is Nothing Then
-            ControlMgr.SetVisibleControl(Me, TREmailToServiceCenter, False)
-            ControlMgr.SetVisibleControl(Me, TREmailToSalvageCenter, False)
+        ElseIf Me.State.ClaimBO Is Nothing Then
+            ControlMgr.SetVisibleControl(Me, Me.TREmailToServiceCenter, False)
+            ControlMgr.SetVisibleControl(Me, Me.TREmailToSalvageCenter, False)
         End If
     End Sub
 

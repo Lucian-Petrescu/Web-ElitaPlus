@@ -22,7 +22,7 @@ Namespace Security
             Dim newPolicies As List(Of IAuthorizationPolicy) = New List(Of IAuthorizationPolicy)
 
             ' Check if there are existing policies to add
-            If (Not currentPolicies Is Nothing) Then
+            If (currentPolicies IsNot Nothing) Then
                 ' Add the existing policies
                 newPolicies.AddRange(currentPolicies)
             End If

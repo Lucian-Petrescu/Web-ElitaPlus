@@ -46,7 +46,7 @@ Namespace SpecializedServices.Timb
 
         End Sub
         Public Sub New(Certificates As DataTable)
-            If (Not Certificates Is Nothing) Then
+            If (Certificates IsNot Nothing) Then
                 CertificateNumber = Certificates.Rows(0)("cert_number").ToString()
                 CertificateStatus = Certificates.Rows(0)("status_code").ToString()
                 WarrantySalesDate = Certificates.Rows(0)("warranty_Sales_date")

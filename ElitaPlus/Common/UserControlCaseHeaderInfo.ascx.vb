@@ -1,5 +1,5 @@
 ﻿Public Class UserControlCaseHeader
-    Inherits Web.UI.UserControl
+    Inherits UserControl
 #Region "Constants"
     Public Const NoData As String = " - "
 

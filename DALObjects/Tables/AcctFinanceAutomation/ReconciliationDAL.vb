@@ -56,7 +56,7 @@ Public Class ReconciliationDAL
             selectStmt = Config("/SQL/LOAD_PHP_RECON_DATA_DISCREP_ONLY")
         End If
 
-        If Not firstDayOfMonth Is Nothing AndAlso Not lastDayOfMonth Is Nothing Then
+        If firstDayOfMonth IsNot Nothing AndAlso lastDayOfMonth IsNot Nothing Then
             whereClauseConditions &= Environment.NewLine & " and billing_date >= to_date('" & firstDayOfMonth & "','mmddyyyy') and billing_date <= to_date('" & lastDayOfMonth & "','mmddyyyy')"
         End If
 
@@ -123,7 +123,7 @@ Public Class ReconciliationDAL
             selectStmt = Config("/SQL/LOAD_MHP_RECON_DATA_DISCREP_ONLY")
         End If
 
-        If Not firstDayOfMonth Is Nothing AndAlso Not lastDayOfMonth Is Nothing Then
+        If firstDayOfMonth IsNot Nothing AndAlso lastDayOfMonth IsNot Nothing Then
             whereClauseConditions &= Environment.NewLine & " and billing_date >= to_date('" & firstDayOfMonth & "','mmddyyyy') and billing_date <= to_date('" & lastDayOfMonth & "','mmddyyyy')"
         End If
 
@@ -152,7 +152,7 @@ Public Class ReconciliationDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub

@@ -1827,7 +1827,7 @@ Public Class AcctSetting
             Dim obj As AcctSetting = CType(objectToValidate, AcctSetting)
 
 
-            If (obj.SupplierAnalysisCode1 Is Nothing OrElse obj.SupplierAnalysisCode1.Trim = String.Empty) And obj.AccountType = ACCT_TYPE_CREDITOR Then
+            If (obj.SupplierAnalysisCode1 Is Nothing OrElse obj.SupplierAnalysisCode1.Trim = String.Empty) AndAlso obj.AccountType = ACCT_TYPE_CREDITOR Then
                 Dim _acctCompany As New AcctCompany(obj.AcctCompanyId)
                 If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListCache.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId), _acctCompany.AcctSystemId) = FelitaEngine.FELITA_PREFIX Then
                     Return False 'Required for Felita system

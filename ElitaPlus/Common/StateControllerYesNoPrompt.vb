@@ -25,10 +25,10 @@ Public Class StateControllerYesNoPrompt
         Public Sub New(strMsg As String, Optional ByVal translate As Boolean = True, _
                        Optional ByVal useDefatultValue As Boolean = False, _
                        Optional ByVal defaultYesValue As Boolean = False)
-            PromptMessage = strMsg
-            TranslateMessage = translate
-            UseDefault = useDefatultValue
-            IsDefaultValueYes = defaultYesValue
+            Me.PromptMessage = strMsg
+            Me.TranslateMessage = translate
+            Me.UseDefault = useDefatultValue
+            Me.IsDefaultValueYes = defaultYesValue
         End Sub
     End Class
 
@@ -40,14 +40,14 @@ Public Class StateControllerYesNoPrompt
         Public IsDefaultValueYes As Boolean = False
     End Class
 
-    Public ReadOnly Property State() As MyState
+    Public ReadOnly Property State As MyState
         Get
-            If NavController.State Is Nothing Then
-                NavController.State = New MyState
+            If Me.NavController.State Is Nothing Then
+                Me.NavController.State = New MyState
 
                 '    Me.State.PromptMessage = CType(Me.NavController.ParametersPassed, String)
-                If NavController.ParametersPassed IsNot Nothing Then
-                    Dim params As Parameters = CType(NavController.ParametersPassed, Parameters)
+                If Me.NavController.ParametersPassed IsNot Nothing Then
+                    Dim params As Parameters = CType(Me.NavController.ParametersPassed, Parameters)
                     Me.State.PromptMessage = params.PromptMessage
                     Me.State.TranslateMessage = params.TranslateMessage
                     Me.State.UseDefault = params.UseDefault
@@ -60,49 +60,49 @@ Public Class StateControllerYesNoPrompt
                 End If
                 'End If
             End If
-            Return CType(NavController.State, MyState)
+            Return CType(Me.NavController.State, MyState)
         End Get
     End Property
 #End Region
-    Public Sub Process(callingPage As System.Web.UI.Page, navCtrl As INavigationController) Implements IStateController.Process
-        NavController = navCtrl
+    Public Sub Process(callingPage As Page, navCtrl As INavigationController) Implements IStateController.Process
+        Me.NavController = navCtrl
         Me.CallingPage = CType(callingPage, ElitaPlusPage)
-        Select Case State.Stage
+        Select Case Me.State.Stage
             Case ProcessingStage.AddingYesNoPrompt
-                If (State.UseDefault) Then
-                    State.Stage = ProcessingStage.CheckingForUserSelection
-                    Process(callingPage, navCtrl)
+                If (Me.State.UseDefault) Then
+                    Me.State.Stage = ProcessingStage.CheckingForUserSelection
+                    Me.Process(callingPage, navCtrl)
                     Exit Sub
                 Else
-                    AddPrompt()
-                    State.Stage = ProcessingStage.CheckingForUserSelection
+                    Me.AddPrompt()
+                    Me.State.Stage = ProcessingStage.CheckingForUserSelection
                 End If
             Case ProcessingStage.CheckingForUserSelection
                 Dim response As String
-                If (State.UseDefault) Then
-                    If (State.IsDefaultValueYes) Then
+                If (Me.State.UseDefault) Then
+                    If (Me.State.IsDefaultValueYes) Then
                         response = ElitaPlusPage.MSG_VALUE_YES
                     Else
                         response = ElitaPlusPage.MSG_VALUE_NO
                     End If
                 Else
-                    response = GetPromptResponse
+                    response = Me.GetPromptResponse
                 End If
                 If response = ElitaPlusPage.MSG_VALUE_YES Then
-                    NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_YES)
+                    Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_YES)
                 ElseIf response = ElitaPlusPage.MSG_VALUE_NO Then
 
                     'REQ-346 - Added check to see if we're in the Customer_email prompt.  If so, and user selects "N", needs to navigate to sentemail if service order email has been chosen.
-                    If NavController.CurrentNavState.Name = "CUSTOMER_EMAIL_YES_NO_PROMPT" _
-                        AndAlso NavController.FlowSession(FlowSessionKeys.SESSION_EMAIL_SENT) IsNot Nothing _
-                        AndAlso NavController.FlowSession(FlowSessionKeys.SESSION_EMAIL_SENT).ToString = "Y" Then
-                        NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_SENT)
+                    If Me.NavController.CurrentNavState.Name = "CUSTOMER_EMAIL_YES_NO_PROMPT" _
+                        AndAlso Me.NavController.FlowSession(FlowSessionKeys.SESSION_EMAIL_SENT) IsNot Nothing _
+                        AndAlso Me.NavController.FlowSession(FlowSessionKeys.SESSION_EMAIL_SENT).ToString = "Y" Then
+                        Me.NavController.Navigate(Me.CallingPage, "sent_email", Message.MSG_EMAIL_SENT)
 
                     Else
-                        NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_NO)
+                        Me.NavController.Navigate(Me.CallingPage, FlowEvents.EVENT_NO)
                     End If
                 Else
-                    AddPrompt()
+                    Me.AddPrompt()
                     'Throw New GUIException("Unexpected YesNo Prompt Response", Assurant.ElitaPlus.Common.ErrorCodes.GUI_UNEXPECTED_PROMPT_RESPONSE)
                 End If
         End Select
@@ -110,25 +110,25 @@ Public Class StateControllerYesNoPrompt
 
     Sub AddPrompt()
 
-        Dim hiddenField As New HtmlControls.HtmlInputHidden
+        Dim hiddenField As New HtmlInputHidden
         hiddenField.ID = HIDDENFIELDNAME
-        If CallingPage.IsNewUI Then
-            CallingPage.MasterPage.FindControl("Form1").Controls.Add(hiddenField)
+        If Me.CallingPage.IsNewUI Then
+            Me.CallingPage.MasterPage.FindControl("Form1").Controls.Add(hiddenField)
         Else
-            CallingPage.FindControl("Form1").Controls.Add(hiddenField)
+            Me.CallingPage.FindControl("Form1").Controls.Add(hiddenField)
         End If
         hiddenField.Name = HIDDENFIELDNAME
         hiddenField.EnableViewState = True
         hiddenField.Value = "HHHHH"
-        CType(CallingPage, ElitaPlusPage).DisplayMessage(State.PromptMessage, "", ElitaPlusPage.MSG_BTN_YES_NO, ElitaPlusPage.MSG_TYPE_CONFIRM, hiddenField, State.TranslateMessage)
+        CType(Me.CallingPage, ElitaPlusPage).DisplayMessage(Me.State.PromptMessage, "", ElitaPlusPage.MSG_BTN_YES_NO, ElitaPlusPage.MSG_TYPE_CONFIRM, hiddenField, Me.State.TranslateMessage)
     End Sub
 
-    ReadOnly Property GetPromptResponse() As String
+    ReadOnly Property GetPromptResponse As String
         Get
-            If CallingPage.IsNewUI Then
-                Return CallingPage.MasterPage.Request.Form.Item(HIDDENFIELDNAME_UNIQUEID)
+            If Me.CallingPage.IsNewUI Then
+                Return Me.CallingPage.MasterPage.Request.Form.Item(Me.HIDDENFIELDNAME_UNIQUEID)
             Else
-                Return CallingPage.Request.Form.Item(HIDDENFIELDNAME)
+                Return Me.CallingPage.Request.Form.Item(Me.HIDDENFIELDNAME)
             End If
         End Get
     End Property

@@ -120,7 +120,7 @@ Public Class ClaimPaymentGroupDAL
         If ds Is Nothing Then
             Return
         End If
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
             MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
@@ -229,7 +229,7 @@ Public Class ClaimPaymentGroupDAL
     End Function
 
     Protected Sub SetValue(Row As DataRow, columnName As String, newValue As Object)
-        If Not newValue Is Nothing And Row(columnName) Is DBNull.Value Then
+        If newValue IsNot Nothing AndAlso Row(columnName) Is DBNull.Value Then
             'new value is something and old value is DBNULL
             If newValue.GetType Is GetType(BooleanType) Then
                 '- BooleanType, special case - convert to string Y or N
@@ -263,7 +263,7 @@ Public Class ClaimPaymentGroupDAL
                 '- let the DataColumn convert the value to its internal data type
                 Row(columnName) = newValue
             End If
-        ElseIf Not newValue Is Nothing Then
+        ElseIf newValue IsNot Nothing Then
             'new value is something and old value is also something
             '- convert current value to a string
             Dim currentValue As Object = Row(columnName)
@@ -277,7 +277,7 @@ Public Class ClaimPaymentGroupDAL
                 Dim types() As Type = {GetType(String)}
                 '- see if the 'newValue Type' has a 'Parse(String)' method taking a String parameter
                 Dim miMethodInfo As System.Reflection.MethodInfo = newValue.GetType.GetMethod("Parse", types)
-                If Not miMethodInfo Is Nothing Then
+                If miMethodInfo IsNot Nothing Then
                     '- it does have a Parse method, newValue must be a number type.
                     '- extract the current value as a string
                     Dim args() As Object = {Row(columnName).ToString}
@@ -315,7 +315,7 @@ Public Class ClaimPaymentGroupDAL
                 End If
                 Row(columnName) = newValue
             End If
-        ElseIf newValue Is Nothing And Not Row(columnName) Is DBNull.Value Then
+        ElseIf newValue Is Nothing AndAlso Row(columnName) IsNot DBNull.Value Then
             Row(columnName) = DBNull.Value
         End If
     End Sub

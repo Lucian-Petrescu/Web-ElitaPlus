@@ -20,7 +20,7 @@ Partial Public Class UserControlRiskTypeTolerance
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents moDealerInflationTabPanel As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents moDealerInflationTabPanel As Panel
 
     '''<summary>
     '''trPageSize control.
@@ -29,7 +29,7 @@ Partial Public Class UserControlRiskTypeTolerance
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+    Protected WithEvents trPageSize As HtmlTableRow
 
     '''<summary>
     '''lblPageSize control.
@@ -38,7 +38,7 @@ Partial Public Class UserControlRiskTypeTolerance
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPageSize As Label
 
     '''<summary>
     '''colonSepertor control.
@@ -47,7 +47,7 @@ Partial Public Class UserControlRiskTypeTolerance
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents colonSepertor As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents colonSepertor As Label
 
     '''<summary>
     '''cboDiPageSize control.
@@ -56,7 +56,7 @@ Partial Public Class UserControlRiskTypeTolerance
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboDiPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboDiPageSize As DropDownList
 
     '''<summary>
     '''lblRecordCount control.
@@ -65,7 +65,7 @@ Partial Public Class UserControlRiskTypeTolerance
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRecordCount As Label
 
     '''<summary>
     '''RiskTypeToleranceGrid control.
@@ -74,7 +74,7 @@ Partial Public Class UserControlRiskTypeTolerance
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents RiskTypeToleranceGrid As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents RiskTypeToleranceGrid As GridView
 
     '''<summary>
     '''HiddenDIDeletePromptResponse control.
@@ -83,7 +83,7 @@ Partial Public Class UserControlRiskTypeTolerance
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenDIDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenDIDeletePromptResponse As HtmlInputHidden
 
     '''<summary>
     '''NewButton_WRITE control.
@@ -92,5 +92,5 @@ Partial Public Class UserControlRiskTypeTolerance
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents NewButton_WRITE As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents NewButton_WRITE As Button
 End Class

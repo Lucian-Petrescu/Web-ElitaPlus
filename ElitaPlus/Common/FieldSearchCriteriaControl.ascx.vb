@@ -7,7 +7,7 @@ Imports System.Globalization
 
 <DefaultProperty("Value"), ToolboxData("<{0}:FieldSearchCriteriaControl runat=""server""><{0}:FieldSearchCriteriaControl>")> _
 Public Class FieldSearchCriteriaControl
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
     ' Future Enhancements
     ' * Specify Default Search Type in Markup
@@ -112,7 +112,7 @@ Public Class FieldSearchCriteriaControl
 #End Region
 
 #Region "Events"
-    Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         If (Not IsPostBack) Then
             If (Me.DataType = DataTypeEnum.Date) Then
                 ParentPage.AddCalendar_New(imgCalender1, moSearchCriteria1)
@@ -144,11 +144,11 @@ Public Class FieldSearchCriteriaControl
 
     <Category("Behavior"), Description("Gets/Sets the data type of Search Value."),
         MergableProperty(False), Bindable(False)>
-    Public Property DataType As FieldSearchCriteriaControl.DataTypeEnum
+    Public Property DataType As DataTypeEnum
         Get
             Return _dataType
         End Get
-        Set(value As FieldSearchCriteriaControl.DataTypeEnum)
+        Set(value As DataTypeEnum)
             If (value = DataTypeEnum.None) Then Throw New ArgumentException("None is not valid value for DataType", "DataType")
             If (_dataType <> value) Then
                 _dataType = value
@@ -162,11 +162,11 @@ Public Class FieldSearchCriteriaControl
         MergableProperty(False), Bindable(False)>
     Public Property SearchType As SearchTypeEnum
         Get
-            Return FieldSearchCriteriaControl.GetSearchType(ParentPage.GetSelectedValue(moSearchType))
+            Return GetSearchType(ParentPage.GetSelectedValue(moSearchType))
         End Get
         Set(value As SearchTypeEnum)
-            If (Not ParentPage.GetSelectedValue(moSearchType).Equals(FieldSearchCriteriaControl.GetSearchTypeCode(value, DataType))) Then
-                ParentPage.SetSelectedItem(moSearchType, FieldSearchCriteriaControl.GetSearchTypeCode(value, DataType))
+            If (Not ParentPage.GetSelectedValue(moSearchType).Equals(GetSearchTypeCode(value, DataType))) Then
+                ParentPage.SetSelectedItem(moSearchType, GetSearchTypeCode(value, DataType))
             End If
         End Set
     End Property

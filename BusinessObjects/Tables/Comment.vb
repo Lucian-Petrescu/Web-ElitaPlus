@@ -400,9 +400,9 @@ Public Class Comment
             'For Each row In parentClaim.Dataset.Tables(CommentDAL.TABLE_NAME).Rows
             For rowIndex = 0 To parentClaim.Dataset.Tables(CommentDAL.TABLE_NAME).Rows.Count - 1
                 row = parentClaim.Dataset.Tables(CommentDAL.TABLE_NAME).Rows.Item(rowIndex)
-                If Not (row.RowState = DataRowState.Deleted) Or (row.RowState = DataRowState.Detached) Then
+                If Not (row.RowState = DataRowState.Deleted) OrElse (row.RowState = DataRowState.Detached) Then
                     Dim c As Comment = New Comment(row)
-                    If parentClaim.Id.Equals(c.ClaimId) And c.IsNew Then
+                    If parentClaim.Id.Equals(c.ClaimId) AndAlso c.IsNew Then
                         c.Delete()
                     End If
                 End If

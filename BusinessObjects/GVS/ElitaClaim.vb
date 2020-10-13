@@ -96,8 +96,7 @@ Public Class ElitaClaim
                 FunctionTypeCode = .FUNCTION_TYPE_CODE
             End With
 
-            If Not (FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM OrElse FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM OrElse FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_NEW_CLAIM Or _
-                    FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_CLAIM) Then
+            If Not (FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM OrElse FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM OrElse FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_NEW_CLAIM OrElse FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_CLAIM) Then
                 Throw New BOValidationException("ElitaCancelSvcIntegration Error: ", Common.ErrorCodes.ERR_FUNCTION_TYPE_CODE)
             Else
                 FunctionTypeId = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), FunctionTypeCode)
@@ -187,11 +186,7 @@ Public Class ElitaClaim
                 Throw New BOValidationException("ElitaCancelSvcIntegration Error: ", Common.ErrorCodes.ERR_TRANSACTION_ALREADY_EXIST)
             End If
 
-            If FunctionTypeCode Is Nothing Or _
-                Not (FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM Or _
-                    FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM Or _
-                    FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_NEW_CLAIM Or _
-                    FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_CLAIM) Then
+            If FunctionTypeCode Is Nothing OrElse Not (FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_INSERT_NEW_CLAIM OrElse FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_ELITA_UPDATE_CLAIM OrElse FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_NEW_CLAIM OrElse FunctionTypeCode = TransactionLogHeaderDAL.FUNCTION_TYPE_CODE_GVS_UPDATE_CLAIM) Then
                 Throw New BOValidationException("ElitaCancelSvcIntegration Error: ", Common.ErrorCodes.ERR_FUNCTION_TYPE_CODE)
             Else
                 FunctionTypeId = LookupListNew.GetIdFromCode(LookupListNew.GetGVSFunctionTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), FunctionTypeCode)
