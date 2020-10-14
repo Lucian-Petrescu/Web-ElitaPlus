@@ -18,7 +18,7 @@ Namespace Tables
         '''moMessageController control.
         '''</summary>
         '''<remarks>
-        '''Auto-generated field. 
+        '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moMessageController As Global.Assurant.ElitaPlus.ElitaPlusWebApp.MessageController
@@ -850,6 +850,24 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ddlDepSchCashReimbursement As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
+        '''LabelRecoverDevice control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents LabelRecoverDevice As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''moRecoverDeviceDrop control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moRecoverDeviceDrop As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
         '''moPerIncidentLiabilityLimitCapLabel control.

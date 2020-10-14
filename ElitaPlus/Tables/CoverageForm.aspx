@@ -560,8 +560,13 @@
                                     <td nowrap colspan="1" align="left">
                                         <asp:DropDownList ID="ddlDepSchCashReimbursement" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
                                     </td>
-                                    <td align="right"></td>
-                                    <td align="left"></td>
+                                    <td style="height: 17px" align="right" colspan="1">
+                                        <asp:Label ID="LabelRecoverDevice" runat="server" Font-Bold="false">RECOVER_DEVICE</asp:Label>&nbsp;
+                                    </td>
+                                    <td style="height: 17px" align="left" colspan="1">
+                                        <asp:DropDownList ID="moRecoverDeviceDrop" runat="server" SkinID="SmallDropDown">
+                                        </asp:DropDownList>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td style="width: 1px" width="1"></td>

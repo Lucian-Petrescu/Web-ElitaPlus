@@ -61,6 +61,7 @@ Namespace Tables
             Public SelectedClaimLimitCount As String
             Public SelectedPerIncidentLiabilityLimitCap As String
             Public SelectedTaxTypeXcd As String
+            Public SelectedRecoverDeviceXcd As String
 
             'US 521697
             Public IsDiffSelectedTwice As Boolean
@@ -778,6 +779,7 @@ Namespace Tables
             State.SelectedClaimLimitCount = moClaimLimitCountText.Text
             State.SelectedPerIncidentLiabilityLimitCap = moPerIncidentLiabilityLimitCapText.Text
             State.SelectedTaxTypeXcd = GetSelectedValue(moTaxTypeDrop)
+            State.SelectedRecoverDeviceXcd = GetSelectedValue(moRecoverDeviceDrop)
 
         End Sub
 
@@ -1100,6 +1102,7 @@ Namespace Tables
             State.SelectedRecoverDeviceId = Guid.Empty
             State.SelectedClaimLimitCount = Nothing
             State.SelectedTaxTypeXcd = Nothing
+            State.SelectedRecoverDeviceXcd = Nothing
         End Sub
 
         Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew_WRITE.Click
@@ -2362,6 +2365,7 @@ Namespace Tables
             PopulateCoverageConseqDamageList()
             EnableUniqueFields()
             PopulateTaxTypeCode()
+            PopulateRecoverDeviceCode()
         End Sub
 
         Private Sub PopulateDealer()
@@ -2604,6 +2608,34 @@ Namespace Tables
                     Else
 
                         BindSelectItem(TheCoverage.TaxTypeXCD.ToString, moTaxTypeDrop)
+                    End If
+                End If
+
+            Catch ex As Exception
+                MasterPage.MessageController.AddError(CoverageForm002 & " " & ex.Message, True)
+            End Try
+        End Sub
+
+        Private Sub PopulateRecoverDeviceCode()
+            Try
+
+                moRecoverDeciveDrop.Populate(CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                                          {
+                                          .AddBlankItem = True,
+                                          .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
+                                          })
+
+                If IsPostBack And Not State.IsUndo Then
+                    ' JLR - Restore Previously Selected Values
+                    BindSelectItem(State.RecoverDeviceXcd.ToString, moRecoverDeciveDrop)
+                    State.IsUndo = False
+                Else
+
+                    If TheCoverage.RecoverDeviceXcd Is Nothing Then
+                        BindSelectItem(String.Empty, moRecoverDeviceDrop)
+                    Else
+
+                        BindSelectItem(TheCoverage.RecoverDeviceXcd.ToString, moRecoverDeciveDrop)
                     End If
                 End If
 
@@ -3044,6 +3076,7 @@ Namespace Tables
                 If moEarningCodeDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then PopulateBOProperty(TheCoverage, "EarningCodeId", moEarningCodeDrop)
                 If moRecoverDeciveDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then PopulateBOProperty(TheCoverage, "RecoverDeviceId", moRecoverDeciveDrop)
                 PopulateBOProperty(TheCoverage, "TaxTypeXCD", moTaxTypeDrop, False, True)
+                PopulateBOProperty(TheCoverage, "RecoverDeviceXcd", moRecoverDeciveDrop, False, True)
 
                 'US-489839
                 PopulateCoverageRateLiabilityLimitBOFromForm()

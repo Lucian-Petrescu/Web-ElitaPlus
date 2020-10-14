@@ -51,7 +51,8 @@
         tax_type_xcd,
         cn.dealer_markup_id,
         cov.fulfillment_profile_code,
-        cov.fulfillment_provider_xcd
+        cov.fulfillment_provider_xcd,
+        cov.recover_device_xcd
             FROM elp_coverage cov, elp_dealer edealer, elp_product_code pc, 
                  elp_item item, elp_risk_type risk, elp_contract cn
             WHERE
@@ -246,7 +247,8 @@
     liability_limit_per_incident,
     tax_type_xcd,
     fulfillment_profile_code,
-    fulfillment_provider_xcd
+    fulfillment_provider_xcd,
+    recover_device_xcd
     )
     VALUES
     (
@@ -286,7 +288,8 @@
     :liability_limit_per_incident,
     :tax_type_xcd,
     :fulfillment_profile_code,
-    :fulfillment_provider_xcd
+    :fulfillment_provider_xcd,
+    :recover_device_xcd
     )
   </INSERT>
 	<DELETE>
