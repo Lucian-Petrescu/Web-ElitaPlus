@@ -104,6 +104,7 @@ Partial Class AccountingEventForm
 
     Private Const AcctSystemFelita As String = "FEL"
     Private Const ACCTEVENTTYPE_PREMIUM As String = "PREM"
+    Private Const ACCTEVENTTYPE_UPR As String = "UPR"
 
     Private Const YESNO As String = "YESNO"
 
@@ -401,26 +402,7 @@ Partial Class AccountingEventForm
             ControlMgr.SetEnableControl(Me, Me.moAccountingCompanyDropDown, False)
         End If
 
-        Dim AcctCompanyBO As AcctCompany = New AcctCompany(Me.State.MyBO.AcctCompanyId)
-        If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM,
-                      ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), AcctCompanyBO.AcctSystemId) = AcctSystemFelita AndAlso
-                      LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_EVENT_TYPE,
-                      ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), GetSelectedItem(moEventTypeDDL)) = ACCTEVENTTYPE_PREMIUM Then
-
-            'moJournalLevelDDL.SelectedIndex = -1
-            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, True)
-            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, True)
-        Else
-            moJournalLevelDDL.SelectedIndex = -1
-            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, False)
-            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, False)
-        End If
-
-        'If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM,
-        '               ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), AcctCompanyBO.AcctSystemId) <> AcctSystemFelita Then
-        '    ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, False)
-        '    ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, False)
-        'End If
+        EnableDisableJournalLevelControls
 
     End Sub
 
@@ -706,27 +688,30 @@ Partial Class AccountingEventForm
 
     End Sub
 
-    Private Sub moEventTypeDDL_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moEventTypeDDL.SelectedIndexChanged
-        Dim AcctCompanyBO As AcctCompany = New AcctCompany(Me.State.MyBO.AcctCompanyId)
-        'If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM,
-        '              ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), AcctCompanyBO.AcctSystemId) <> AcctSystemFelita Then
-        '    ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, False)
-        '    ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, False)
+    Private sub EnableDisableJournalLevelControls()
+        Dim acctCompanyBo As AcctCompany = New AcctCompany(Me.State.MyBO.AcctCompanyId)
+        dim eventType as String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_EVENT_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), GetSelectedItem(moEventTypeDDL))
 
-        'Else
+
         If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM,
-                      ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), AcctCompanyBO.AcctSystemId) = AcctSystemFelita AndAlso
-                      LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_EVENT_TYPE,
-                      ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), GetSelectedItem(moEventTypeDDL)) = ACCTEVENTTYPE_PREMIUM Then
+                                                                        ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), AcctCompanyBO.AcctSystemId) = AcctSystemFelita AndAlso
+           (eventType= ACCTEVENTTYPE_PREMIUM OrElse eventType= ACCTEVENTTYPE_UPR) Then 'Journal level configuration enabled only for Premium and UPR events
 
-            moJournalLevelDDL.SelectedIndex = -1
             ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, True)
             ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, True)
+
+            if State.MyBO isnot Nothing Then
+                PopulateControlFromBOProperty(moJournalLevelDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_JOURNALLEVEL, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), State.MyBO.JournalLevel))
+            End If
+            
         Else
             moJournalLevelDDL.SelectedIndex = -1
             ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, False)
             ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, False)
         End If
+    End sub
+    Private Sub moEventTypeDDL_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moEventTypeDDL.SelectedIndexChanged
+        EnableDisableJournalLevelControls()
 
     End Sub
 
