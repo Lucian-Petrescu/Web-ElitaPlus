@@ -32,7 +32,7 @@
                             <asp:Label ID="lblDealerGroup" runat="server" Font-Bold="False">DEALER_GROUP:</asp:Label>
                         </td>
                         <td nowrap="nowrap">
-                            <asp:DropDownList ID="ddlDealerGroup" runat="server" AutoPostBack="false" TabIndex="4" SkinID="MediumDropDown"></asp:DropDownList>
+                            <asp:DropDownList ID="ddlDealerGroup" runat="server" AutoPostBack="true" TabIndex="4" SkinID="MediumDropDown"></asp:DropDownList>
                         </td>
                         <td nowrap="nowrap" align="right">
                             <asp:Label ID="lblDealer" runat="server" Font-Bold="False">DEALER:</asp:Label>
@@ -46,6 +46,7 @@
                             <asp:Label ID="lblProdCode" runat="server" Font-Bold="False">PRODUCT_CODE:</asp:Label>
                         </td>
                         <td nowrap="nowrap">
+                            <asp:TextBox ID="txtProductCode" runat="server" TabIndex="6" SkinID="MediumTextBox" MaxLength="5"></asp:TextBox>
                             <asp:DropDownList ID="ddlProductCode" runat="server" AutoPostBack="false" TabIndex="6" SkinID="MediumDropDown"></asp:DropDownList>
                         </td>
                         <td nowrap="nowrap" align="right">
