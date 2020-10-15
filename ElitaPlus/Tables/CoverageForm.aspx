@@ -638,7 +638,7 @@
                         <td align="Center" colspan="2">
                             <div id="scroller" style="overflow: auto; width: 96%; height: 125px" align="center">
                                 <asp:GridView ID="moGridView" runat="server" OnRowCreated="ItemCreated" OnRowCommand="ItemCommand"
-                                    AllowPaging="False" PageSize="50" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False"
+                                    AllowPaging="True" PageSize="50" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False"
                                     SkinID="DetailPageGridView">
                                     <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                                     <EditRowStyle Wrap="False"></EditRowStyle>

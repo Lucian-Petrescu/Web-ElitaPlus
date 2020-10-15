@@ -1942,6 +1942,14 @@
                                                     <asp:BoundField DataField="Status_Change_Date" SortExpression="Status_Change_Date" ReadOnly="true"
                                                         HeaderText="Status_Change_Date" HeaderStyle-HorizontalAlign="Center" DataFormatString="{0:d}"
                                                         HtmlEncode="false" />
+                                                    <asp:BoundField DataField="bank_account_number" SortExpression="bank_account_number" ReadOnly="true" HeaderText="bank_account_number"
+                                                                    HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                                                    <asp:BoundField DataField="bank_name" SortExpression="bank_name" ReadOnly="true" HeaderText="bank_name"
+                                                                    HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                                                    <asp:BoundField DataField="bank_acct_owner_name" SortExpression="bank_acct_owner_name" ReadOnly="true" HeaderText="bank_acct_owner_name"
+                                                                    HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                                                    <asp:BoundField DataField="bank_sort_code" SortExpression="bank_sort_code" ReadOnly="true" HeaderText="bank_sort_code"
+                                                                    HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                                 </Columns>
                                                 <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
                                                 <PagerStyle />

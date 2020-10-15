@@ -5268,28 +5268,7 @@ Public Class Certificate
     Public Class CertificateHistoryDV
         Inherits DataView
 #Region "Constants"
-        Public Const COL_RECORD_TYPE As String = "Record_type"
-        Public Const COL_DESCRIPTION As String = "description"
-        Public Const COL_PRODUCT_CODE As String = "product_code"
-        Public Const COL_FILENAME As String = "Source"
-        Public Const COL_IN_FORCE_DATE As String = "Inforce_Date"
         Public Const COL_PROCESSED_DATE As String = "Processed_date"
-        Public Const COL_CUSTOMER_NAME As String = "Customer_name"
-        Public Const COL_ADDRESS1 As String = "Address1"
-        Public Const COL_CITY As String = "City"
-        Public Const COL_STATE As String = "State"
-        Public Const COL_ZIP As String = "Zip"
-        Public Const COL_MANUFACTURER As String = "Manufacturer"
-        Public Const COL_MODEL As String = "Model"
-        Public Const COL_SERIAL_NUMBER As String = "Serial_number"
-        Public Const COL_SKU_NUMBER As String = "Sku_number"
-        Public Const COL_MEMBERSHIP_TYPE As String = "Membership_type"
-        Public Const COL_IDENTIFICATION_NUMBER As String = "Identification_number"
-        Public Const COL_SUBSCRIBER_STATUS As String = "Subscriber_status"
-        Public Const COL_HOME_PHONE As String = "Home_phone"
-        Public Const COL_WORK_PHONE As String = "Work_phone"
-        Public Const COL_EMAIL As String = "Email"
-
 #End Region
         Public Sub New()
             MyBase.New()

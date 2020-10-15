@@ -235,14 +235,25 @@ Public Class BillingCycle
             SetValue(BillingCycleDAL.COL_NAME_NUMBER_OF_DIGITS_ROUNDOFF_ID, Value)
         End Set
     End Property
+
+    <ValidNumericRange("", Max:=99, Min:=-99)>
+    Public Property BillingCoolOffDays() As LongType
+        Get
+            CheckDeleted()
+            If row(BillingCycleDAL.COL_NAME_BILLING_COOL_OFF_DAYS) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New LongType(CType(row(BillingCycleDAL.COL_NAME_BILLING_COOL_OFF_DAYS), Long))
+            End If
+        End Get
+        Set(ByVal value As LongType)
+            CheckDeleted()
+            SetValue(BillingCycleDAL.COL_NAME_BILLING_COOL_OFF_DAYS, value)
+        End Set
+    End Property
 #End Region
 
 #Region "Public Members"
-    Public Shared Sub DeleteBillingCycle(ByVal billingCycleId As Guid)
-        Dim dal As New BillingCycleDAL
-        dal.Delete(billingCycleId)
-    End Sub
-
     Public Overrides Sub Save()
         Try
             MyBase.Save()

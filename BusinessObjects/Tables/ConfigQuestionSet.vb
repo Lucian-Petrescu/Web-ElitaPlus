@@ -6,46 +6,46 @@
     'Exiting BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Dataset = New DataSet
-        Load(id)
+        Me.Dataset = New DataSet
+        Me.Load(id)
     End Sub
 
     'New BO
     Public Sub New()
         MyBase.New()
-        Dataset = New DataSet
-        Load()
+        Me.Dataset = New DataSet
+        Me.Load()
     End Sub
 
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
-        Dataset = familyDS
-        Load(id)
+        Me.Dataset = familyDS
+        Me.Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
-        Dataset = familyDS
-        Load()
+        Me.Dataset = familyDS
+        Me.Load()
     End Sub
 
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
-        Dataset = row.Table.DataSet
+        Me.Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
     Protected Sub Load()
         Try
             Dim dal As New ConfigQuestionSetDAL
-            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Dataset)
+            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Me.Dataset)
             End If
-            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
-            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Row = newRow
+            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
+            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Me.Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -56,20 +56,20 @@
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New ConfigQuestionSetDAL
-            If _isDSCreator Then
-                If Not Row Is Nothing Then
-                    Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
+            If Me._isDSCreator Then
+                If Not Me.Row Is Nothing Then
+                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
                 End If
             End If
-            Row = Nothing
-            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
+            Me.Row = Nothing
+            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Dataset, id)
-                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
+            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Me.Dataset, id)
+                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Row Is Nothing Then
+            If Me.Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -107,7 +107,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            SetValue(ConfigQuestionSetDAL.COL_NAME_COMPANY_GROUP_ID, Value)
+            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_COMPANY_GROUP_ID, Value)
         End Set
     End Property
 
@@ -122,7 +122,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            SetValue(ConfigQuestionSetDAL.COL_NAME_COMPANY_ID, Value)
+            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
 
@@ -137,7 +137,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            SetValue(ConfigQuestionSetDAL.COL_NAME_DEALER_GROUP_ID, Value)
+            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_DEALER_GROUP_ID, Value)
         End Set
     End Property
 
@@ -153,7 +153,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            SetValue(ConfigQuestionSetDAL.COL_NAME_DEALER_ID, Value)
+            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
 
@@ -169,7 +169,23 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            SetValue(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE_ID, Value)
+            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE_ID, Value)
+        End Set
+    End Property
+
+    <ValidProductCodeDealerGroup("Product Code")>
+    Public Property ProductCode As String
+        Get
+            CheckDeleted()
+            If Row(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE, Value)
         End Set
     End Property
 
@@ -184,7 +200,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            SetValue(ConfigQuestionSetDAL.COL_NAME_DEVICE_TYPE_ID, Value)
+            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_DEVICE_TYPE_ID, Value)
         End Set
     End Property
 
@@ -199,7 +215,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            SetValue(ConfigQuestionSetDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
+            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_COVERAGE_TYPE_ID, Value)
         End Set
     End Property
 
@@ -214,7 +230,7 @@
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            SetValue(ConfigQuestionSetDAL.COL_NAME_RISK_TYPE_ID, Value)
+            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_RISK_TYPE_ID, Value)
         End Set
     End Property
 
@@ -230,7 +246,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            SetValue(ConfigQuestionSetDAL.COL_NAME_PURPOSE_XCD, Value)
+            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_PURPOSE_XCD, Value)
         End Set
     End Property
 
@@ -246,7 +262,7 @@
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            SetValue(ConfigQuestionSetDAL.COL_NAME_QUESTION_SET_CODE, Value)
+            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_QUESTION_SET_CODE, Value)
         End Set
     End Property
 
@@ -256,25 +272,25 @@
     Public Overrides Sub Save()
         Try
             MyBase.Save()
-            If _isDSCreator AndAlso IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
+            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ConfigQuestionSetDAL
                 'Check for Duplicate Question Set Configuration
                 Dim rtnMessage As String
-                rtnMessage = dal.CheckForDuplicateConfiguration(ConfigQuestionSetID:=Id, CompanyGroupID:=CompanyGroupId, CompanyID:=CompanyId,
-                                                                CoverageTypeID:=CoverageTypeId, DealerGroupID:=DealerGroupId, DealerID:=DealerId,
-                                                                DeviceTypeID:=DeviceTypeId, ProductCodeID:=ProductCodeId, RiskTypeID:=RiskTypeId,
-                                                                LanguageID:=ElitaPlusIdentity.Current.ActiveUser.LanguageId, strPurposeXCD:=PurposeXCD, strQuestionSetCode:=QuestionSetCode)
+                rtnMessage = dal.CheckForValidConfiguration(ConfigQuestionSetID:=Me.Id, CompanyGroupID:=Me.CompanyGroupId, CompanyID:=Me.CompanyId,
+                                                                CoverageTypeID:=Me.CoverageTypeId, DealerGroupID:=Me.DealerGroupId, DealerID:=Me.DealerId,
+                                                                DeviceTypeID:=Me.DeviceTypeId, ProductCodeID:=Me.ProductCodeId, ProductCode:=Me.ProductCode, RiskTypeID:=Me.RiskTypeId,
+                                                                LanguageID:=ElitaPlusIdentity.Current.ActiveUser.LanguageId, strPurposeXCD:=Me.PurposeXCD, strQuestionSetCode:=Me.QuestionSetCode)
                 If rtnMessage <> "NO_ERROR" Then
-                    Dim vErrors() As ValidationError = {New ValidationError(rtnMessage, [GetType](), Nothing, "QuestionSetCode", Nothing)}
+                    Dim vErrors() As ValidationError = {New ValidationError(rtnMessage, Me.GetType(), Nothing, "QuestionSetCode", Nothing)}
                     Throw New BOValidationException(vErrors, "ConfigQuestionSet")
                 End If
-                dal.Update(Row)
+                dal.Update(Me.Row)
                 'Reload the Data from the DB
-                If Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Id
-                    Dataset = New DataSet
-                    Row = Nothing
-                    Load(objId)
+                If Me.Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Me.Id
+                    Me.Dataset = New DataSet
+                    Me.Row = Nothing
+                    Me.Load(objId)
                 End If
             End If
             'Catch ex As BOValidationException
@@ -409,6 +425,25 @@
                 (Guid.Empty = obj.DealerGroupId) And (Guid.Empty = obj.DealerId) And
                 (Guid.Empty = obj.ProductCodeId) And (Guid.Empty = obj.CoverageTypeId) And
                 (Guid.Empty = obj.RiskTypeId) And (Guid.Empty = obj.DeviceTypeId) Then
+                Return False
+            Else
+                Return True
+            End If
+
+        End Function
+    End Class
+
+    Public NotInheritable Class ValidProductCodeDealerGroup
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, "Dealer Group Is Required")
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj As ConfigQuestionSet = CType(objectToValidate, ConfigQuestionSet)
+
+            If (Guid.Empty = obj.DealerGroupId And obj.ProductCode <> String.Empty) Then
                 Return False
             Else
                 Return True
