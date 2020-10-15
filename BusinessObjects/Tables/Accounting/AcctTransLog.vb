@@ -1366,7 +1366,7 @@ Public Class AcctTransLog
 
                 End If
 
-            ElseIf eventType = "PREM" AndAlso newDs.Tables(0).Rows.Count > 0 AndAlso newDs.Tables(0).Rows(0)("JOURNAL_LEVEL").ToString = JOURNALLEVEL_SUMMARY Then
+            ElseIf (eventType = "PREM" OrElse eventType = "UPR") AndAlso newDs.Tables(0).Rows.Count > 0 AndAlso newDs.Tables(0).Rows(0)("JOURNAL_LEVEL").ToString = JOURNALLEVEL_SUMMARY Then
 
                 dtTempLine = newDs.Tables(0).Copy
                 If dtTempLine.Rows.Count > 0 Then
