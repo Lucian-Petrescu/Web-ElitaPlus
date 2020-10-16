@@ -153,13 +153,19 @@ Public Class ReactivateUploadForm
     End Sub
 
     Private Sub PopulateDropdown()
-        Dim Data As DataView = LookupListNew.DropdownLookupList("ADJUST", ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
-        Dim i As Integer
+        Dim ds As New DataSet
         ddlUploadType.Items.Clear()
-        ddlUploadType.Items.Add(New ListItem("", ""))
-        For i = 0 To Data.Count - 1
-            ddlUploadType.Items.Add(New ListItem(Data(i)("DESCRIPTION").ToString, Data(i)("CODE").ToString))
-        Next
+        ds = commonUpload.AddRemoveItemsBO(ElitaPlusIdentity.Current.ActiveUser.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+        'If ds.Tables(0).Rows.Count > 0 Then
+        If ds.Tables.Count > 0 And ds.Tables.Count > 0 Then
+            ddlUploadType.DataSource = ds.Tables(0)
+            ddlUploadType.DataTextField = "Description"
+            ddlUploadType.DataValueField = "Code"
+            ddlUploadType.DataBind()
+        Else
+            ddlUploadType.Items.Clear()
+            ddlUploadType.Items.Add("Please Check With User Roles")
+        End If
     End Sub
     Private Sub afterUpload()
         State.searchDV = Nothing
