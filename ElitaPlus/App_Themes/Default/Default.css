@@ -187,6 +187,13 @@ table.summaryGrid td span.disabled{ background:#F0F0F0; border:1px solid #CAD1DE
 /*-Certificate Overview  */
 h2.dataGridHeader{font-size:14px; color:#0066CC; font-weight:normal; border-bottom:1px solid #CCC;border-left:10px solid #0066CC; padding:0px 0px 0px 10px; margin-bottom:1px;}
 h2.searchGridHeader{font-size:14px; color:#0066CC; font-weight:normal; border-bottom:1px solid #CCC;border-left:10px solid #ff9900; padding:0px 0px 0px 10px; margin-bottom:1px;}
+h2.searchGridSubHeader {
+    font-size: 14px;
+    color: #0066CC;
+    font-weight: normal;
+    border-bottom: 1px solid #CCC;
+    margin-bottom: 1px;
+}
 h2.dataGridHeader span.highLightText{ color:#333; font-size:13px;}
 /* h2.dataGridHeader span{ color:#333;} */
 

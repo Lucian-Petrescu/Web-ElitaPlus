@@ -23,7 +23,7 @@
   </INSERT>
   <VALIDATE>
     <![CDATA[
-      elp_tbl_config_question_set.CheckForDuplicateConfiguration
+      elp_tbl_config_question_set.CheckForValidConfiguration
 		]]>
   </VALIDATE>
   <DELETE>
