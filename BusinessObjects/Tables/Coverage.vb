@@ -817,7 +817,7 @@ Public Class Coverage
             Me.SetValue(CoverageDAL.COL_NAME_DEALER_MARKUP, Value)
         End Set
     End Property
-
+    <ValidStringLength("", Max:=40)>
     Public Property DeviceExpectedBackXCD As String
         Get
             CheckDeleted()
