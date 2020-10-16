@@ -645,7 +645,7 @@ Namespace Certificates
             Public CertInstallmentHistorySortExpression As String = Certificate.CertInstallmentHistoryDV.COL_START_DATE & " ASC"
             Public CertExtensionSortExpression As String = Certificate.CertExtensionsDV.COL_FIELD_NAME & " ASC"
             Public CertUpgradeExtensionSortExpression As String = Certificate.CertUpgradeExtensionsDV.COL_SEQUENCE_NUMBER & " ASC"
-            Public CertExtFieldsSortExpression As String = Certificate.CertExtendedFieldsDv.COL_FIELD_NAME & " DESC"
+            Public CertExtFieldsSortExpression As String = Certificate.CertExtendedFieldsDv.COL_FIELD_NAME & " ASC"
             Public IsRepriceGridVisible As Boolean = False
             Public IsNew As Boolean
             Public CertificateId As Guid
@@ -5559,7 +5559,7 @@ Namespace Certificates
 
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
 
-                    Dim maxRenewalDuration as String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_MAX_RENEWAL_DURATION).ToString
+                    Dim maxRenewalDuration As String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_MAX_RENEWAL_DURATION).ToString
                     Dim coverageBeginDate as Date = CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date)
                     Dim coverageDuration as String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_COVERAGE_DURATION).ToString
                     Dim numberOfRenewals as String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_NO_OF_RENEWALS).ToString

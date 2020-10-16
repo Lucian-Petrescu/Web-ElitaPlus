@@ -19,6 +19,7 @@ Namespace Certificates
 
             Public oCert As Certificate
             Public oDealer As Dealer
+            Public oCustBankInfo As Certificate.CustomerBankDetailDV = Nothing
             Public CustPersonalHistDV As Certificate.CustPersonelHistoryDV = Nothing
             Public CustAddressHistDV As Certificate.CustAddressHistoryDV = Nothing
             Public CustContactHistDV As Certificate.CustContactHistoryDV = Nothing
@@ -37,139 +38,180 @@ Namespace Certificates
 #End Region
 
         Private Sub UpdateBreadCrum()
-            If (State IsNot Nothing) Then
-                If (State.oCert IsNot Nothing) Then
-                    MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
+            If (Not Me.State Is Nothing) Then
+                If (Not Me.State.oCert Is Nothing) Then
+                    Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
                         TranslationBase.TranslateLabelOrMessage("Customer_Profile_History")
-                    MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Customer_Profile_History")
+                    Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Customer_Profile_History")
                 End If
             End If
         End Sub
 #Region "Page Events"
-        Protected Sub Page_Load(sender As Object, e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
-            MasterPage.UsePageTabTitleInBreadCrum = False
-            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Certificates")
-            UpdateBreadCrum()
+            Me.MasterPage.UsePageTabTitleInBreadCrum = False
+            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Certificates")
+            Me.UpdateBreadCrum()
             Try
-                If Not IsPostBack Then
+                If Not Me.IsPostBack Then
                     PopulateCustomerProfileInfo()
-                    TranslateGridHeader(CustPersonalHistory)
+                    PopulateCustomerBankInfo()
+                    Me.TranslateGridHeader(Me.CustPersonalHistory)
                     PopulateCustPersonalHistory()
-                    TranslateGridHeader(CustAddressHistory)
+                    Me.TranslateGridHeader(Me.CustAddressHistory)
                     PopulateCustAddressHistory()
-                    TranslateGridHeader(CustContactHistory)
+                    Me.TranslateGridHeader(Me.CustContactHistory)
                     PopulateCustContactHistory()
-                    TranslateGridHeader(CustBankDetailHistory)
+                    Me.TranslateGridHeader(Me.CustBankDetailHistory)
                     PopulateCustBankDetailHistory()
-                    MasterPage.MessageController.Clear()
+                    Me.MasterPage.MessageController.Clear()
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
-            ShowMissingTranslations(MasterPage.MessageController)
+            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
 
         End Sub
 
         Private Sub CustomerProfileHistory_PageCall(CallFromUrl As String, CallingPar As Object) Handles Me.PageCall
             Try
-                If CallingParameters IsNot Nothing Then
-                    State.oCert = New Certificate(CType(CallingParameters, Guid))
-                    State.oDealer = New Dealer(State.oCert.DealerId)
+                If Not Me.CallingParameters Is Nothing Then
+                    Me.State.oCert = New Certificate(CType(Me.CallingParameters, Guid))
+                    Me.State.oDealer = New Dealer(Me.State.oCert.DealerId)
                 End If
             Catch ex As Exception
-                HandleErrors(ex, ErrControllerMaster, False)
+                Me.HandleErrors(ex, Me.ErrControllerMaster, False)
             End Try
         End Sub
 #End Region
         Public Sub PopulateCustomerProfileInfo()
-            If State.oCert IsNot Nothing Then
-                Dim dv As DataView = State.oCert.GetOtherCustomerDetails(State.oCert.CustomerId, ElitaPlusIdentity.Current.ActiveUser.LanguageId, State.oDealer.IdentificationNumberType)
+            If Not Me.State.oCert Is Nothing Then
+                Dim dv As DataView = Me.State.oCert.GetOtherCustomerDetails(Me.State.oCert.CustomerId, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.State.oDealer.IdentificationNumberType)
 
-                If dv.Table IsNot Nothing AndAlso dv.Table.Rows.Count > 0 Then
+                If Not dv.Table Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
 
 
-                    CustomerNameTD.InnerText = dv.Table.Rows(0)("salutation") & " " & dv.Table.Rows(0)("Customer_first_name") & " " & dv.Table.Rows(0)("customer_middle_name") & " " & dv.Table.Rows(0)("customer_last_name")
-                    If dv.Table.Rows(0)("identification_number") IsNot System.DBNull.Value Then
-                        IdentificationNumberTD.InnerText = dv.Table.Rows(0)("identification_number")
+                    Me.CustomerNameTD.InnerText = dv.Table.Rows(0)("salutation") & " " & dv.Table.Rows(0)("Customer_first_name") & " " & dv.Table.Rows(0)("customer_middle_name") & " " & dv.Table.Rows(0)("customer_last_name")
+                    If Not dv.Table.Rows(0)("identification_number") Is System.DBNull.Value Then
+                        Me.IdentificationNumberTD.InnerText = dv.Table.Rows(0)("identification_number")
                     End If
-                    If dv.Table.Rows(0)("gender") IsNot System.DBNull.Value Then
-                        GenderTD.InnerText = dv.Table.Rows(0)("gender")
+                    If Not dv.Table.Rows(0)("gender") Is System.DBNull.Value Then
+                        Me.GenderTD.InnerText = dv.Table.Rows(0)("gender")
                     End If
-                    If dv.Table.Rows(0)("marital_status") IsNot System.DBNull.Value Then
-                        MaritalStatusTD.InnerText = dv.Table.Rows(0)("marital_status")
+                    If Not dv.Table.Rows(0)("marital_status") Is System.DBNull.Value Then
+                        Me.MaritalStatusTD.InnerText = dv.Table.Rows(0)("marital_status")
                     End If
-                    If dv.Table.Rows(0)("place_of_birth") IsNot System.DBNull.Value Then
-                        PlaceOfBirthTD.InnerText = dv.Table.Rows(0)("place_of_birth")
+                    If Not dv.Table.Rows(0)("place_of_birth") Is System.DBNull.Value Then
+                        Me.PlaceOfBirthTD.InnerText = dv.Table.Rows(0)("place_of_birth")
                     End If
-                    If dv.Table.Rows(0)("date_of_birth") IsNot System.DBNull.Value Then
-                        DateOfBirthTD.InnerText = dv.Table.Rows(0)("date_of_birth")
+                    If Not dv.Table.Rows(0)("date_of_birth") Is System.DBNull.Value Then
+                        Me.DateOfBirthTD.InnerText = dv.Table.Rows(0)("date_of_birth")
                     End If
-                    If dv.Table.Rows(0)("nationality") IsNot System.DBNull.Value Then
-                        NationalityTD.InnerText = dv.Table.Rows(0)("nationality")
+                    If Not dv.Table.Rows(0)("nationality") Is System.DBNull.Value Then
+                        Me.NationalityTD.InnerText = dv.Table.Rows(0)("nationality")
                     End If
-                    If dv.Table.Rows(0)("email") IsNot System.DBNull.Value Then
-                        EmailTD.InnerText = dv.Table.Rows(0)("email")
+                    If Not dv.Table.Rows(0)("email") Is System.DBNull.Value Then
+                        Me.EmailTD.InnerText = dv.Table.Rows(0)("email")
                     End If
-                    If dv.Table.Rows(0)("home_phone") IsNot System.DBNull.Value Then
-                        HomePhoneTD.InnerText = dv.Table.Rows(0)("home_phone")
+                    If Not dv.Table.Rows(0)("home_phone") Is System.DBNull.Value Then
+                        Me.HomePhoneTD.InnerText = dv.Table.Rows(0)("home_phone")
                     End If
-                    If dv.Table.Rows(0)("work_phone") IsNot System.DBNull.Value Then
-                        WorkPhoneTD.InnerText = dv.Table.Rows(0)("work_phone")
+                    If Not dv.Table.Rows(0)("work_phone") Is System.DBNull.Value Then
+                        Me.WorkPhoneTD.InnerText = dv.Table.Rows(0)("work_phone")
                     End If
-                    If dv.Table.Rows(0)("address1") IsNot System.DBNull.Value Or dv.Table.Rows(0)("address2") IsNot System.DBNull.Value Or dv.Table.Rows(0)("address3") IsNot System.DBNull.Value Then
-                        AddressTD.InnerText = dv.Table.Rows(0)("address1") & " " & dv.Table.Rows(0)("address2") & " " & dv.Table.Rows(0)("address3")
+                    If Not dv.Table.Rows(0)("address1") Is System.DBNull.Value Or Not dv.Table.Rows(0)("address2") Is System.DBNull.Value Or Not dv.Table.Rows(0)("address3") Is System.DBNull.Value Then
+                        Me.AddressTD.InnerText = dv.Table.Rows(0)("address1") & " " & dv.Table.Rows(0)("address2") & " " & dv.Table.Rows(0)("address3")
                     End If
-                    If dv.Table.Rows(0)("city") IsNot System.DBNull.Value Then
-                        CityTD.InnerText = dv.Table.Rows(0)("city")
+                    If Not dv.Table.Rows(0)("city") Is System.DBNull.Value Then
+                        Me.CityTD.InnerText = dv.Table.Rows(0)("city")
                     End If
-                    If dv.Table.Rows(0)("state") IsNot System.DBNull.Value Then
-                        StateTD.InnerText = dv.Table.Rows(0)("state")
+                    If Not dv.Table.Rows(0)("state") Is System.DBNull.Value Then
+                        Me.StateTD.InnerText = dv.Table.Rows(0)("state")
                     End If
-                    If dv.Table.Rows(0)("postal_code") IsNot System.DBNull.Value Then
-                        PostalCodeTD.InnerText = dv.Table.Rows(0)("postal_code")
+                    If Not dv.Table.Rows(0)("postal_code") Is System.DBNull.Value Then
+                        Me.PostalCodeTD.InnerText = dv.Table.Rows(0)("postal_code")
                     End If
-                    If dv.Table.Rows(0)("country") IsNot System.DBNull.Value Then
-                        CountryCodeTD.InnerText = dv.Table.Rows(0)("country")
+                    If Not dv.Table.Rows(0)("country") Is System.DBNull.Value Then
+                        Me.CountryCodeTD.InnerText = dv.Table.Rows(0)("country")
                     End If
-                    If dv.Table.Rows(0)("corporate_name") IsNot System.DBNull.Value Then
-                        CorporateNameTD.InnerText = dv.Table.Rows(0)("corporate_name")
+                    If Not dv.Table.Rows(0)("corporate_name") Is System.DBNull.Value Then
+                        Me.CorporateNameTD.InnerText = dv.Table.Rows(0)("corporate_name")
                     End If
+                End If
+            End If
+        End Sub
+        Public Sub PopulateCustomerBankInfo()
+            If Me.State.oCert IsNot Nothing Then
+                Dim dv As DataView = Me.State.oCert.GetCustomerCurrentBankInfo(Me.State.oCert.Id)
+
+                If Not dv.Table Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
+
+                    If dv.Table.Rows(0)("account_name") IsNot System.DBNull.Value Then
+                        Me.NameOnAccountTD.InnerText = dv.Table.Rows(0)("account_name")
+                    End If
+                    If dv.Table.Rows(0)("bank_name") IsNot System.DBNull.Value Then
+                        Me.BankNameTD.InnerText = dv.Table.Rows(0)("bank_name")
+                    End If
+                    If dv.Table.Rows(0)("bank_id") IsNot System.DBNull.Value Then
+                        Me.BankIDTD.InnerText = dv.Table.Rows(0)("bank_id")
+                    End If
+                    If dv.Table.Rows(0)("account_type") IsNot System.DBNull.Value Then
+                        Me.AccountTypeTD.InnerText = dv.Table.Rows(0)("account_type")
+                    End If
+                    If dv.Table.Rows(0)("bank_lookup_code") IsNot System.DBNull.Value Then
+                        Me.BankLookupCodeTD.InnerText = dv.Table.Rows(0)("bank_lookup_code")
+                    End If
+                    If dv.Table.Rows(0)("bank_sort_code") IsNot System.DBNull.Value Then
+                        Me.BankSortCodeTD.InnerText = dv.Table.Rows(0)("bank_sort_code")
+                    End If
+                    If dv.Table.Rows(0)("branch_name") IsNot System.DBNull.Value Then
+                        Me.BranchNameTD.InnerText = dv.Table.Rows(0)("branch_name")
+                    End If
+                    If dv.Table.Rows(0)("bank_sub_code") IsNot System.DBNull.Value Then
+                        Me.BankSubCodeTD.InnerText = dv.Table.Rows(0)("bank_sub_code")
+                    End If
+                    If dv.Table.Rows(0)("account_number") IsNot System.DBNull.Value Then
+                        Me.AccountNumberTD.InnerText = dv.Table.Rows(0)("account_number")
+                    End If
+                    If dv.Table.Rows(0)("iban_number") IsNot System.DBNull.Value Then
+                        Me.IBANNumberTD.InnerText = dv.Table.Rows(0)("iban_number")
+                    End If
+
                 End If
             End If
         End Sub
 
         Public Sub PopulateCustPersonalHistory()
-            State.CustPersonalHistDV = State.oCert.GetCustPersonalHistory(State.oCert.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            CustPersonalHistory.AutoGenerateColumns = False
-            CustPersonalHistory.DataSource = State.CustPersonalHistDV
-            CustPersonalHistory.DataBind()
+            Me.State.CustPersonalHistDV = Me.State.oCert.GetCustPersonalHistory(Me.State.oCert.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            Me.CustPersonalHistory.AutoGenerateColumns = False
+            Me.CustPersonalHistory.DataSource = Me.State.CustPersonalHistDV
+            Me.CustPersonalHistory.DataBind()
         End Sub
         Public Sub PopulateCustAddressHistory()
-            State.CustAddressHistDV = State.oCert.GetCustAddressHistory(State.oCert.Id)
-            CustAddressHistory.AutoGenerateColumns = False
-            CustAddressHistory.DataSource = State.CustAddressHistDV
-            CustAddressHistory.DataBind()
+            Me.State.CustAddressHistDV = Me.State.oCert.GetCustAddressHistory(Me.State.oCert.Id)
+            Me.CustAddressHistory.AutoGenerateColumns = False
+            Me.CustAddressHistory.DataSource = Me.State.CustAddressHistDV
+            Me.CustAddressHistory.DataBind()
         End Sub
         Public Sub PopulateCustContactHistory()
-            State.CustContactHistDV = State.oCert.GetCustContactHistory(State.oCert.Id)
-            CustContactHistory.AutoGenerateColumns = False
-            CustContactHistory.DataSource = State.CustContactHistDV
-            CustContactHistory.DataBind()
+            Me.State.CustContactHistDV = Me.State.oCert.GetCustContactHistory(Me.State.oCert.Id)
+            Me.CustContactHistory.AutoGenerateColumns = False
+            Me.CustContactHistory.DataSource = Me.State.CustContactHistDV
+            Me.CustContactHistory.DataBind()
         End Sub
         Public Sub PopulateCustBankDetailHistory()
-            State.CustBankDetailHistDV = State.oCert.GetCustBankDetailHistory(State.oCert.Id)
-            CustBankDetailHistory.AutoGenerateColumns = False
-            CustBankDetailHistory.DataSource = State.CustBankDetailHistDV
-            CustBankDetailHistory.DataBind()
+            Me.State.CustBankDetailHistDV = Me.State.oCert.GetCustBankDetailHistory(Me.State.oCert.Id)
+            Me.CustBankDetailHistory.AutoGenerateColumns = False
+            Me.CustBankDetailHistory.DataSource = Me.State.CustBankDetailHistDV
+            Me.CustBankDetailHistory.DataBind()
         End Sub
         Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
-                ReturnToCallingPage()
+                Me.ReturnToCallingPage()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                HandleErrors(ex, ErrControllerMaster)
+                Me.HandleErrors(ex, Me.ErrControllerMaster)
             End Try
         End Sub
     End Class
