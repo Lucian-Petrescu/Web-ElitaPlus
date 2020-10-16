@@ -3213,7 +3213,7 @@ Public Class ClaimRecordingForm
 
                             'Logistic Options - Service Center
                         Case LogisticOptionType.ServiceCenter
-                                RowDataBoundServiceCenter(e, isEnableControl, trServiceCenter, trBankInfo, trCheckInfo)  
+                                RowDataBoundServiceCenter(e, isEnableControl,trShippingAddress, trServiceCenter, trBankInfo, trCheckInfo)  
 
                             'Delivery Options
                         Case logisticsOptionItem.DeliveryOptions IsNot Nothing AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate
@@ -3345,8 +3345,9 @@ Public Class ClaimRecordingForm
         btnEstimateDeliveryDate.Text = TranslationBase.TranslateLabelOrMessage("GET_DELIVERY_DATE")
     End Sub
 
-    Private Sub RowDataBoundServiceCenter(e As GridViewRowEventArgs, isEnableControl As Boolean, trServiceCenter As HtmlTableRow, trBankInfo As HtmlTableRow, trCheckInfo As HtmlTableRow)
+    Private Sub RowDataBoundServiceCenter(e As GridViewRowEventArgs, isEnableControl As Boolean, trShippingAddress as HtmlTableRow, trServiceCenter As HtmlTableRow, trBankInfo As HtmlTableRow, trCheckInfo As HtmlTableRow)
 
+        ControlMgr.SetVisibleControl(Me, trShippingAddress, false)
         ControlMgr.SetVisibleControl(Me, trServiceCenter, True)
         ControlMgr.SetVisibleControl(Me, trBankInfo, False)
         ControlMgr.SetVisibleControl(Me, trCheckInfo, False)
