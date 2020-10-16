@@ -1095,26 +1095,63 @@ group  by c.cert_number
   </LOAD_CUST_CONTACT_HISTORY>
   <LOAD_CUST_BANK_DETAIL_HISTORY>
     select distinct
+    bih.account_name,
+    bih.bank_name,
+    bih.bank_id,
+    elp_utl_lov.Description(bih.account_type_id) account_type_id,
+    bih.bank_lookup_code,
+    bih.bank_sort_code,
+    bih.branch_name,
+    bih.bank_sub_code,
+    SUBSTR(bih.account_number,-4,4) as account_number,
+    get_cert_ext_field_value(ci.cert_id, 'PaymentReferenceNumber') as mandate_id,
+    decode(bih.iban_number,null,'',SUBSTR(bih.iban_number,1,4)  ||'***' ||SUBSTR(bih.iban_number,-4,4))   as iban_number,
+    bih.created_by,
+    bih.hist_created_date created_date
+from elp_cert_installment ci
+join elp_bank_info_hist   bih on ci.bank_info_id=bih.bank_info_id
+where ci.cert_id =:cert_id
+union
+select distinct
     bi.account_name,
     bi.bank_name,
     bi.bank_id,
-    bi.account_type_id,
+    elp_utl_lov.Description(bi.account_type_id) account_type_id,
     bi.bank_lookup_code,
     bi.bank_sort_code,
     bi.branch_name,
     bi.bank_sub_code,
     SUBSTR(bi.account_number,-4,4) as account_number,
     get_cert_ext_field_value(ap.reference_id, 'PaymentReferenceNumber') as mandate_id,
-    SUBSTR(bi.iban_number,1,4)  ||'***' ||SUBSTR(bi.iban_number,-4,4)   as iban_number,
+    decode(bi.iban_number,null,'',SUBSTR(bi.iban_number,1,4)  ||'***' ||SUBSTR(bi.iban_number,-4,4))   as iban_number,
     bi.created_by,
     bi.created_date
     from elp_bank_info bi
     left join elp_dealer_group dg on dg.bank_info_id = bi.bank_info_id
     join elp_ar_payments ap on ap.bank_info_id = bi.bank_info_id
-    join elp_cert c on c.cert_id = ap.reference_id
     where ap.reference_id = :cert_id
     and   ap.reference = 'ELP_CERT'
+order by created_date
   </LOAD_CUST_BANK_DETAIL_HISTORY>
+  <GET_CUSTOMER_CURRENTBANKINFO>
+    select bi.account_name,
+    bi.branch_name,
+    bi.bank_name,
+    bi.bank_sort_code,
+    decode(bi.iban_number,null,'',(SUBSTR(bi.iban_number,1,4)  ||'***' ||SUBSTR(bi.iban_number,-4,4)))   as iban_number,
+    bi.swift_code,
+    elp_utl_lov.Description(bi.account_type_id) account_type,
+    bi.bank_id,
+    bi.account_number,
+    bi.bank_lookup_code,
+    bi.branch_number,
+    bi.bank_sub_code
+    from elp_bank_info bi
+    join elp_cert_installment ci on ci.bank_info_id=bi.bank_info_id
+    join elp_cert c on c.cert_id=ci.cert_id
+    where 1=1
+    and c.cert_id=:cert_id
+  </GET_CUSTOMER_CURRENTBANKINFO>
   
   <CANCEL_CERT_BY_EXTERNAL_NUMBER>
     Elita.elp_certificate.CancelCertByExternalCertNum
