@@ -402,7 +402,7 @@ Partial Class AccountingEventForm
             ControlMgr.SetEnableControl(Me, Me.moAccountingCompanyDropDown, False)
         End If
 
-        EnableDisableJournalLevelControls
+        EnableDisableJournalLevelControls()
 
     End Sub
 
