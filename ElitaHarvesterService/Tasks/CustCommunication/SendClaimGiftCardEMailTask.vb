@@ -224,7 +224,7 @@ Public Class SendClaimGiftCardEMailTask
         Dim request As New Request
 
         Dim giftCardRequest As GenerateGiftCardRequest = PopulateCustomerAndGiftCardStaticInfo(oCertificate)
-        giftCardRequest.ReferenceNumber = oCertificate.CertNumber + DateTime.UtcNow.ToString("ddMMyyyy")
+        giftCardRequest.ReferenceNumber = oCertificate.CertNumber + DateTime.Now.ToString("ddMMyyyy")
         giftCardRequest.OperationFor = GiftCardOperationCodeForVoucher
 
         request.GiftcardRequest = giftCardRequest
