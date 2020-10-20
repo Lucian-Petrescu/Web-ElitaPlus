@@ -1,4 +1,5 @@
-﻿Imports Assurant.ElitaPlus.DALObjects
+﻿Imports Assurant.Elita
+Imports Assurant.ElitaPlus.DALObjects
 
 Namespace Claims
     Public Class ClaimReplacementQuoteForm
@@ -232,7 +233,7 @@ Namespace Claims
                 oClaimStatus = New ClaimStatus With {
                     .ClaimId = oClaim.Id,
                     .ClaimStatusByGroupId = claimStatusByGroupId,
-                    .StatusDate = DateTime.UtcNow,
+                    .StatusDate = ApplicationDateTime.Now,
                     .Comments = ucSelectServiceCenter.SelectedServiceCenter.ServiceCenterCode + " : " + New ServiceCenter(ucSelectServiceCenter.SelectedServiceCenter.ServiceCenterId).Description
                 }
                 oClaimStatus.Save()
@@ -272,7 +273,7 @@ Namespace Claims
                                                coverageTypeId:=Guid.Empty,
                                                sender:="Claim Replacement Quote",
                                                arguments:=argumentsToAddEvent,
-                                               eventDate:=DateTime.UtcNow,
+                                               eventDate:=ApplicationDateTime.Now,
                                                eventTypeId:=LookupListNew.GetIdFromCode(Codes.EVNT_TYP, Codes.EVNT_TYP_CLM_REPLACEMNT_QUOTE),
                                                eventArgumentId:=Nothing)
                     End With

@@ -375,5 +375,23 @@ Public Class commonUploadDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
+
+    Public Function AddRemoveItemsDAL(ByVal userid As Guid, ByVal languageid As Guid) As DataSet
+
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/ADDREMOVEITEMS"))
+                cmd.AddParameter("pi_user_id", OracleDbType.Raw, userid.ToByteArray())
+                cmd.AddParameter("pi_language_id", OracleDbType.Raw, languageid.ToByteArray())
+                cmd.AddParameter("po_items", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                Return OracleDbHelper.Fetch(cmd, "userrole")
+
+            End Using
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+
+    End Function
 #End Region
 End Class
