@@ -2421,7 +2421,8 @@ Namespace ClaimRecordingService
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoElectronicDelivery)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoUnspecified)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoHandlingStore)),  _
-     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoBankTransfer))>  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoBankTransfer)),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoCheckCustomerMail))>  _
     Partial Public Class LogisticOptionInfoBase
         Inherits Object
         Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
@@ -2677,6 +2678,9 @@ Namespace ClaimRecordingService
         
         <System.Runtime.Serialization.EnumMemberAttribute()>  _
         BankTransfer = 6
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        CheckCustomerMail = 7
     End Enum
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
@@ -2812,6 +2816,29 @@ Namespace ClaimRecordingService
                 If (Object.ReferenceEquals(Me.BankInfoField, value) <> true) Then
                     Me.BankInfoField = value
                     Me.RaisePropertyChanged("BankInfo")
+                End If
+            End Set
+        End Property
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="LogisticOptionInfoCheckCustomerMail", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/Shared/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class LogisticOptionInfoCheckCustomerMail
+        Inherits ClaimRecordingService.LogisticOptionInfoBase
+        
+        Private AddressField As ClaimRecordingService.Address
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property Address() As ClaimRecordingService.Address
+            Get
+                Return Me.AddressField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.AddressField, value) <> true) Then
+                    Me.AddressField = value
+                    Me.RaisePropertyChanged("Address")
                 End If
             End Set
         End Property
