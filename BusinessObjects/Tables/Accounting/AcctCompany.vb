@@ -385,7 +385,21 @@ Public Class AcctCompany
         Return (dv)
 
     End Function
+    Public Function IsCompUsingNewAccounting(ByVal acctCompanyId As Guid) As Boolean
+        Try
+            Dim objacctcompdal As New AcctCompanyDAL
+            Dim ds As DataSet = objacctcompdal.GetCompUsingNewAccForAccCompany(acctCompanyId)
+            If ds.Tables(0).Rows.Count > 0 Then
+                Return True
+            Else
+                Return False
+            End If
 
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+
+    End Function
 #End Region
 
 
