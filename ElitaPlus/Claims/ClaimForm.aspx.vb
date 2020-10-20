@@ -4132,26 +4132,11 @@ Partial Class ClaimForm
     Private Function getClaimKey(ByVal companyCode As String, ByVal claimNumber As String) As String
         Dim handler As New DynamicFulfillmentKeyHandler()
         Dim keys As New Dictionary(Of String, String)
-        Dim tenant As String = $"{GetTenant(ElitaConfig.Current.General.Environment)}-{ElitaConfig.Current.General.Hub.ToLower()}"
+        Dim tenant As String = $"{ElitaConfig.Current.General.Environment.ToString()}-{ElitaConfig.Current.General.Hub.ToString()}"
         keys.Add("Tenant", tenant)
         keys.Add("CompanyCode", companyCode)
         keys.Add("ClaimNumber", claimNumber)
         Return handler.Encode(keys)
-    End Function
-
-    Private Function GetTenant(value As Environments) As String
-        Select Case value
-            Case Environments.Development
-                Return "dev"
-            Case Environments.Model
-                Return "modl"
-            Case Environments.Production
-                Return "prod"
-            Case Environments.Test
-                Return "test"
-            Case Else
-                Throw New ArgumentException($"Environment value {value}, not implemented")
-        End Select
     End Function
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
