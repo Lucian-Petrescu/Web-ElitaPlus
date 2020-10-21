@@ -17,6 +17,7 @@ Public Class ServiceGroupDAL
     Public Const PAR_IN_SERVICE_GROUP_ID As String = "pi_service_group_id"
     Public Const PAR_IN_RISK_TYPE_ID As String = "pi_risk_type_id"
     Public Const PAR_IN_SGRT_MANU As String = "pi_sgrt_manu"
+    Public Const PAR_IN_USER_ID As String = "pi_network_id"
     Public Const PAR_IN_PAGE_INDEX As String = "pi_page_index"
     Public Const PAR_IN_NAME_SORT_EXPRESSION As String = "pi_sort_expression"
     Public Const PAR_OU_RESULT_SET As String = "po_result"
@@ -31,7 +32,7 @@ Public Class ServiceGroupDAL
 
 #End Region
 
-    Public Delegate Sub AsyncCaller(ByVal ServiceGroupId As Guid, ByVal RiskTypeId As Guid, ByVal SgrtManu As String)
+    Public Delegate Sub AsyncCaller(ByVal ServiceGroupId As Guid, ByVal RiskTypeId As Guid, ByVal SgrtManu As String, ByVal network_id As String)
 #Region "Load Methods"
 
     Public Sub LoadSchema(ByVal ds As DataSet)
@@ -60,20 +61,21 @@ Public Class ServiceGroupDAL
         End Try
     End Function
 
-    Public Sub sgrtmanusave(ByVal ServiceGroupId As Guid, ByVal risktypeid As Guid, ByVal sgrtmanu As String)
+    Public Sub sgrtmanusave(ByVal ServiceGroupId As Guid, ByVal risktypeid As Guid, ByVal sgrtmanu As String, ByVal network_id As String)
 
         Dim aSyncHandler As New AsyncCaller(AddressOf Asyncsgrtmanusave)
-        aSyncHandler.BeginInvoke(ServiceGroupId, risktypeid, sgrtmanu, Nothing, Nothing)
+        aSyncHandler.BeginInvoke(ServiceGroupId, risktypeid, sgrtmanu, network_id, Nothing, Nothing)
 
 
     End Sub
 
-    Private Sub Asyncsgrtmanusave(ByVal ServiceGroupId As Guid, ByVal RiskTypeId As Guid, ByVal SgrtManu As String)
+    Private Sub Asyncsgrtmanusave(ByVal ServiceGroupId As Guid, ByVal RiskTypeId As Guid, ByVal SgrtManu As String, ByVal network_id As String)
         Try
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/SGRTMANU_SAVE"))
                 cmd.AddParameter(PAR_IN_SERVICE_GROUP_ID, OracleDbType.Raw, ServiceGroupId.ToByteArray())
                 cmd.AddParameter(PAR_IN_RISK_TYPE_ID, OracleDbType.Raw, value:=RiskTypeId)
                 cmd.AddParameter(PAR_IN_SGRT_MANU, OracleDbType.Clob, value:=SgrtManu)
+                cmd.AddParameter(PAR_IN_USER_ID, OracleDbType.Varchar2, value:=network_id)
                 OracleDbHelper.ExecuteNonQuery(cmd)
             End Using
         Catch ex As Exception

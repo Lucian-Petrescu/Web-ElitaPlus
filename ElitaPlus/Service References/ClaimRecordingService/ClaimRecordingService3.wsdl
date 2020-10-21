@@ -1005,6 +1005,7 @@
           <xs:enumeration value="HandlingStore" />
           <xs:enumeration value="ServiceCenter" />
           <xs:enumeration value="BankTransfer" />
+          <xs:enumeration value="CheckCustomerMail" />
         </xs:restriction>
       </xs:simpleType>
       <xs:element name="LogisticOptionType" nillable="true" type="tns:LogisticOptionType" />
@@ -1108,6 +1109,16 @@
         </xs:sequence>
       </xs:complexType>
       <xs:element name="BankInfo" nillable="true" type="tns:BankInfo" />
+      <xs:complexType name="LogisticOptionInfoCheckCustomerMail">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:LogisticOptionInfoBase">
+            <xs:sequence>
+              <xs:element name="Address" nillable="true" type="tns:Address" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="LogisticOptionInfoCheckCustomerMail" nillable="true" type="tns:LogisticOptionInfoCheckCustomerMail" />
       <xs:complexType name="DeliveryOptions">
         <xs:sequence>
           <xs:element name="CourierCode" nillable="true" type="xs:string" />
