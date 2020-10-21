@@ -719,7 +719,7 @@ Partial Class ClaimForm
                     (Not (claim.ReasonClosedId.Equals(Guid.Empty)))) Then
                     'This is a Replacement Claim
                     'Change the Label for the RepairDate field to "REPLACED_ON"
-                    Me.LabelRepairDate.Text = claim.REPLACED_ON
+                    Me.LabelRepairDate.Text = Claim.REPLACED_ON
                 End If
             Else
                 'There is NO Loaner taken
