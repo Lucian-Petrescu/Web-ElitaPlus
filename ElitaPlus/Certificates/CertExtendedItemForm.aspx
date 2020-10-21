@@ -23,7 +23,41 @@
             }
         }
     </script>
-    
+    <script type="text/javascript">    
+        function InEnrollment_SelectedIndexChanged(obj) { 
+            var ddlYesNO = document.getElementById(obj);
+            if (ddlYesNO.selectedIndex > 0) {
+                var status = ddlYesNO.options[ddlYesNO.selectedIndex].text;
+                var splitObj = obj.split("_");
+                var objTextID = splitObj[0] + "_" + splitObj[1] + "_" + splitObj[2] + "_" + splitObj[3] + "_" + "DefaultValueTextBox";
+ 
+                var objTextDefaultValue = document.getElementById(objTextID);
+ 
+                if (status != 'No') {
+                    objTextDefaultValue.disabled = true;
+                    objTextDefaultValue.style.backgroundColor="grey"
+                }
+                else {
+                    objTextDefaultValue.disabled = false;
+                }
+                // enable the TextBox here
+            }
+          //var status = obj.options[obj.selectedIndex].text;    
+          //var row = obj.parentNode.parentNode;    
+          //var rowIndex = row.rowIndex - 1;    
+          ////you may need to change the index of cells value based on the location    
+          ////of your ddlReason DropDownList    DefaultValueTextBox
+          //  var txtDefaultValue = row.cells[2].getElementsByTagName('SELECT')[1];    
+          //switch (status) {    
+          //    case "Yes":    
+          //        alert(txtDefaultValue);    
+          //        break;      
+          //    case "No":    
+          //        alert(txtDefaultValue); 
+          //        break;    
+          //}    
+      }    
+    </script> 
 </asp:Content>
 <asp:Content ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
@@ -94,7 +128,7 @@
                                 <asp:Label runat="server" ID="InEnrollmentLabel"></asp:Label>
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:DropDownList runat="server" ID="InEnrollmentDropDown" AutoPostBack="true" OnSelectedIndexChanged="InEnrollment_SelectedIndexChanged">
+                                <asp:DropDownList runat="server" ID="InEnrollmentDropDown" onchange="InEnrollment_SelectedIndexChanged(this.id);">
                                 </asp:DropDownList>
                             </EditItemTemplate>
                         </asp:TemplateField>
