@@ -38,7 +38,7 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -124,8 +124,8 @@
       <Project>{3e2ec759-6ae6-4db3-9400-cc6d389a960a}</Project>
       <Name>Security</Name>
     </ProjectReference>
-    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.3\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
+    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.4\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Common.Types, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Elita.Assurant.Common.Types.2.0.0\lib\net462\Assurant.Common.Types.dll</HintPath>
