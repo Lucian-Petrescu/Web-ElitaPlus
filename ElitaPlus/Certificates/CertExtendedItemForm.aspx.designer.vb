@@ -131,15 +131,6 @@ Partial Public Class CertExtendedItemForm
     Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''rdoDealers control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents rdoDealers As Global.System.Web.UI.WebControls.RadioButton
-
-    '''<summary>
     '''rdoCompanies control.
     '''</summary>
     '''<remarks>
@@ -147,6 +138,15 @@ Partial Public Class CertExtendedItemForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents rdoCompanies As Global.System.Web.UI.WebControls.RadioButton
+
+    '''<summary>
+    '''rdoDealers control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents rdoDealers As Global.System.Web.UI.WebControls.RadioButton
 
     '''<summary>
     '''hdnSelectedTab control.
@@ -167,6 +167,15 @@ Partial Public Class CertExtendedItemForm
     Protected WithEvents hdnDisabledTab As Global.System.Web.UI.WebControls.HiddenField
 
     '''<summary>
+    '''hrefCompany control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hrefCompany As Global.System.Web.UI.HtmlControls.HtmlAnchor
+
+    '''<summary>
     '''lblCompanyTab control.
     '''</summary>
     '''<remarks>
@@ -174,6 +183,15 @@ Partial Public Class CertExtendedItemForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblCompanyTab As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''hrefDealer control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hrefDealer As Global.System.Web.UI.HtmlControls.HtmlAnchor
 
     '''<summary>
     '''lblDealerTab control.

@@ -6,16 +6,36 @@
 <%@ Register TagPrefix="mytab" Namespace="Microsoft.Web.UI.WebControls" Assembly="Microsoft.Web.UI.WebControls, Version=1.0.2.226, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
 <%@ Register Assembly="Microsoft.Web.UI.WebControls" Namespace="Microsoft.Web.UI.WebControls" TagPrefix="iewc" %>
 <asp:Content ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    <script src="../Navigation/scripts/Common.js" type="text/javascript"></script>
+    <script src="../Navigation/scripts/Common.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+        function changeSelection() {
+
+            var rdoCompany = document.getElementById("<%=rdoCompanies.ClientID %>");
+            var rdoDealers = document.getElementById("<%=rdoDealers.ClientID %>");
+            if (rdoCompany.checked) {
+                var lblComapany = document.getElementById("<%=hrefCompany.ClientID %>");
+                lblComapany.click()
+            }
+            if (rdoDealers.checked) {
+                var lblDealer = document.getElementById("<%=hrefDealer.ClientID %>");
+                lblDealer.click()
+            }
+        }
+    </script>
+    
+</asp:Content>
+<asp:Content ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
-    <table id="TableFixed" cellspacing="0" cellpadding="0" border="0" width="60%" class="summaryGrid">
+    <table id="TableFixed" cellspacing="0" cellpadding="0" border="0" width="70%" class="searchGrid">
         <tbody>
             <tr>
-                <td align="left">
-                    <asp:Label ID="LabelCertItemConfigCode" runat="server">CERT_ITEM_CONFIG_CODE</asp:Label>
+                <td nowrap="nowrap" align="left">
+                    <span class="mandatory">*</span>
+                    <asp:Label ID="LabelCertItemConfigCode" runat="server" Font-Bold="false">CERT_ITEM_CONFIG_CODE</asp:Label>
                 </td>
-                <td>
+                <td nowrap="nowrap">
                     <asp:TextBox ID="TextboxCertItemConfigCode" TabIndex="1" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                 </td>
                 <td nowrap="nowrap" align="right">
@@ -27,8 +47,6 @@
             </tr>
         </tbody>
     </table>
-</asp:Content>
-<asp:Content ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:Panel runat="server" ID="WorkingPanel">
@@ -122,15 +140,16 @@
                 <tbody>
                     <tr>
                         <td align="left">
-                            <asp:Label ID="Label1" runat="server">CONFIGURATION_BY</asp:Label>
+                            <h2 class="dataGridHeader">
+                                <asp:Label ID="Label1" runat="server">CONFIGURATION_BY</asp:Label>
+                            </h2>
                         </td>
-
                     </tr>
                     <tr>
                         <td align="left">
-                            <asp:RadioButton ID="rdoDealers" runat="server" Text="Company" Checked="True" AutoPostBack="false" GroupName="ConfigGroup"></asp:RadioButton>
+                            <asp:RadioButton ID="rdoCompanies" runat="server" Text="Company" Checked="True" AutoPostBack="false" GroupName="ConfigGroup"></asp:RadioButton>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <asp:RadioButton ID="rdoCompanies" runat="server" Text="Dealer" AutoPostBack="false" GroupName="ConfigGroup"></asp:RadioButton>
+                            <asp:RadioButton ID="rdoDealers" runat="server" Text="Dealer" AutoPostBack="false" GroupName="ConfigGroup"></asp:RadioButton>
                         </td>
                     </tr>
 
@@ -142,9 +161,9 @@
             <asp:HiddenField ID="hdnDisabledTab" runat="server" />
             <div id="tabs" class="style-tabs">
                 <ul>
-                    <li><a href="#tab_Company">
+                    <li><a href="#tab_Company" runat="server" id="hrefCompany">
                         <asp:Label ID="lblCompanyTab" runat="server" CssClass="tabHeaderText">COMPANY_TAB</asp:Label></a></li>
-                    <li><a href="#tab_Dealer">
+                    <li><a href="#tab_Dealer" runat="server" id="hrefDealer">
                         <asp:Label ID="lblDealerTab" runat="server" CssClass="tabHeaderText">DEALER_TAB</asp:Label></a></li>
                 </ul>
                 <div id="tab_Company">

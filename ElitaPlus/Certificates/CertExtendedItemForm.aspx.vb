@@ -329,6 +329,8 @@ Public Class CertExtendedItemForm
                 End If
                 Me.PopulateBOFromForm()
                 Me.PopulateFormFromBOs()
+                rdoDealers.Attributes.Add("onClick", "javascript:changeSelection()")
+                rdoCompanies.Attributes.Add("onClick", "javascript:changeSelection()")
             Else
                 BindBoPropertiesToGridHeaders()
             End If
@@ -416,7 +418,6 @@ Public Class CertExtendedItemForm
         End If
 
     End Sub
-
 #End Region
 
 End Class
