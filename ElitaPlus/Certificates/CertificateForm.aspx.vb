@@ -7577,7 +7577,7 @@ Namespace Certificates
                             State.validateAddress = False
                         End If
                         Me.PopulateBOProperty(Me.State.certCancellationBO, "PaymentMethodId", Me.PaymentMethodDrop)
-                        If PaymentMethodDrop.SelectedItem.Text = "Bank Transfer" Then
+                        If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
                             BankControlsEnableOnPaymentMethod()
                         End If
                     End If 'Not inputAmountRequiredMissing
