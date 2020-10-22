@@ -9,7 +9,7 @@ Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita
 Imports System.Text
-Imports policyservice = Assurant.ElitaPlus.ElitaPlusWebApp.PolicyService
+Imports Policyservice = Assurant.ElitaPlus.ElitaPlusWebApp.PolicyService
 Imports Assurant.Elita.ClientIntegration
 Imports System.Collections.Generic
 
@@ -2038,7 +2038,7 @@ Namespace Certificates
                     End If
                 End If
             End If
-            ControlMgr.SetVisibleControl(Me, btnBankInfo, True)
+            ControlMgr.SetVisibleControl(Me, btnBankInfo, result)
 
         End Sub
 
@@ -4894,8 +4894,8 @@ Namespace Certificates
         Private Sub BankInfoEndorseRequest(ByVal bankinfo As BankInfo)
             Dim endorseRequest As PolicyService.EndorsePolicyRequest = New PolicyService.EndorsePolicyRequest
             Dim updateBankInfo As PolicyService.UpdateBankInfo = New PolicyService.UpdateBankInfo
-            updateBankInfo.EndorsementReason = PolicyService.EndorsementPolicyReasons.BankFulfillment
 
+            updateBankInfo.EndorsementReason = PolicyService.EndorsementPolicyReasons.BankFulfillment
             updateBankInfo.AccountOwnerName = bankinfo.Account_Name
             updateBankInfo.AccountNumber = bankinfo.Account_Number
             updateBankInfo.RoutingNumber = bankinfo.Bank_Id
@@ -4912,7 +4912,7 @@ Namespace Certificates
                                                                              End Function)
             Catch ex As Exception
                 '///CHANGE THE MESSAGE CODE
-                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_POLICYSERVICE_SERVICE_ERR, True)
                 Throw
             End Try
         End Sub
@@ -4921,10 +4921,6 @@ Namespace Certificates
             Dim client = New PolicyService.PolicyServiceClient("CustomBinding_IPolicyService", oWebPasswd.Url)
             client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
             client.ClientCredentials.UserName.Password = oWebPasswd.Password
-            'Dim client = New PolicyService.PolicyServiceClient("CustomBinding_IPolicyService", "http://localhost/PolicyService/PolicyService.svc")
-            'client.ClientCredentials.UserName.UserName = "elita1" ' oWebPasswd.UserId
-            'client.ClientCredentials.UserName.Password = "elita1"
-
             Return client
         End Function
         Private Sub AdjustTheBillingStatus()
