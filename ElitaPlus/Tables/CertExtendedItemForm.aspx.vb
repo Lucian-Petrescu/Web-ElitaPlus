@@ -264,7 +264,6 @@ Public Class CertExtendedItemForm
                     SetSelectedItem(allowUpdateDropDown, LookupListNew.GetIdFromCode(_YesNoDataView, "Y"))
 
                     defaultValuetextBox.Enabled = False
-                    defaultValuetextBox.BackColor = Color.Gray
                 Else
 
                     Dim fieldNameLabel As Label = CType(e.Row.FindControl(Me.FIELD_NAME_LABEL_NAME), Label)

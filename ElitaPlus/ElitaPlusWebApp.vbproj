@@ -605,10 +605,10 @@
       <DependentUpon>AgentSearchForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Certificates\CertExtendedItemForm.aspx.designer.vb">
+    <Compile Include="Tables\CertExtendedItemForm.aspx.designer.vb">
       <DependentUpon>CertExtendedItemForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Certificates\CertExtendedItemForm.aspx.vb">
+    <Compile Include="Tables\CertExtendedItemForm.aspx.vb">
       <DependentUpon>CertExtendedItemForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -5792,7 +5792,7 @@
     <Content Include="businessobjects\MaintainUser.aspx" />
     <Content Include="businessobjects\MaintainUserList.aspx" />
     <Content Include="Certificates\AgentSearchForm.aspx" />
-    <Content Include="Certificates\CertExtendedItemForm.aspx" />
+    <Content Include="Tables\CertExtendedItemForm.aspx" />
     <Content Include="Certificates\BankInfoForm.aspx" />
     <Content Include="Certificates\BillingHistoryListForm.aspx" />
     <Content Include="Certificates\BillingPaymentHistoryListForm.aspx" />
