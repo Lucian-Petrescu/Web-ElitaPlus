@@ -17,6 +17,7 @@ Public Class ServiceGroupDAL
     Public Const PAR_IN_SERVICE_GROUP_ID As String = "pi_service_group_id"
     Public Const PAR_IN_RISK_TYPE_ID As String = "pi_risk_type_id"
     Public Const PAR_IN_SGRT_MANU As String = "pi_sgrt_manu"
+    Public Const PAR_IN_USER_ID As String = "pi_network_id"
     Public Const PAR_IN_PAGE_INDEX As String = "pi_page_index"
     Public Const PAR_IN_NAME_SORT_EXPRESSION As String = "pi_sort_expression"
     Public Const PAR_OU_RESULT_SET As String = "po_result"
@@ -31,26 +32,26 @@ Public Class ServiceGroupDAL
 
 #End Region
 
-    Public Delegate Sub AsyncCaller(ServiceGroupId As Guid, RiskTypeId As Guid, SgrtManu As String)
+    Public Delegate Sub AsyncCaller(ByVal ServiceGroupId As Guid, ByVal RiskTypeId As Guid, ByVal SgrtManu As String, ByVal network_id As String)
 #Region "Load Methods"
 
-    Public Sub LoadSchema(ds As DataSet)
+    Public Sub LoadSchema(ByVal ds As DataSet)
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(familyDS As DataSet, id As Guid)
-        Dim selectStmt As String = Config("/SQL/LOAD")
+    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
+        Dim selectStmt As String = Me.Config("/SQL/LOAD")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("service_group_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, TABLE_NAME, parameters)
+            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public Function countofrecords(servicegroupid As Guid) As DataSet
+    Public Function countofrecords(ByVal servicegroupid As Guid) As DataSet
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/COUNTOFRECORDS"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/COUNTOFRECORDS"))
                 cmd.AddParameter(PAR_IN_SERVICE_GROUP_ID, OracleDbType.Raw, servicegroupid.ToByteArray())
                 cmd.AddParameter(PAR_OU_RESULT_SET, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
                 Return OracleDbHelper.Fetch(cmd, "countofrecords")
@@ -60,20 +61,21 @@ Public Class ServiceGroupDAL
         End Try
     End Function
 
-    Public Sub sgrtmanusave(ServiceGroupId As Guid, risktypeid As Guid, sgrtmanu As String)
+    Public Sub sgrtmanusave(ByVal ServiceGroupId As Guid, ByVal risktypeid As Guid, ByVal sgrtmanu As String, ByVal network_id As String)
 
         Dim aSyncHandler As New AsyncCaller(AddressOf Asyncsgrtmanusave)
-        aSyncHandler.BeginInvoke(ServiceGroupId, risktypeid, sgrtmanu, Nothing, Nothing)
+        aSyncHandler.BeginInvoke(ServiceGroupId, risktypeid, sgrtmanu, network_id, Nothing, Nothing)
 
 
     End Sub
 
-    Private Sub Asyncsgrtmanusave(ServiceGroupId As Guid, RiskTypeId As Guid, SgrtManu As String)
+    Private Sub Asyncsgrtmanusave(ByVal ServiceGroupId As Guid, ByVal RiskTypeId As Guid, ByVal SgrtManu As String, ByVal network_id As String)
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/SGRTMANU_SAVE"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/SGRTMANU_SAVE"))
                 cmd.AddParameter(PAR_IN_SERVICE_GROUP_ID, OracleDbType.Raw, ServiceGroupId.ToByteArray())
                 cmd.AddParameter(PAR_IN_RISK_TYPE_ID, OracleDbType.Raw, value:=RiskTypeId)
                 cmd.AddParameter(PAR_IN_SGRT_MANU, OracleDbType.Clob, value:=SgrtManu)
+                cmd.AddParameter(PAR_IN_USER_ID, OracleDbType.Varchar2, value:=network_id)
                 OracleDbHelper.ExecuteNonQuery(cmd)
             End Using
         Catch ex As Exception
@@ -81,13 +83,13 @@ Public Class ServiceGroupDAL
         End Try
     End Sub
 
-    Public Function LoadGrid(servicegroupID As Guid,
-                                pageindex As Integer,
-                                sortExpression As String) As DataSet
+    Public Function LoadGrid(ByVal servicegroupID As Guid,
+                                ByVal pageindex As Integer,
+                                ByVal sortExpression As String) As DataSet
         Try
 
 
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Config("/SQL/LOAD_GRID"))
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_GRID"))
                 cmd.AddParameter(PAR_IN_SERVICE_GROUP_ID, OracleDbType.Raw, servicegroupID.ToByteArray())
                 cmd.AddParameter(PAR_IN_PAGE_INDEX, OracleDbType.Int64, value:=pageindex)
                 cmd.AddParameter(PAR_IN_NAME_SORT_EXPRESSION, OracleDbType.Varchar2, value:=sortExpression)
@@ -98,26 +100,26 @@ Public Class ServiceGroupDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    Public Function LoadList(oCountryIds As ArrayList, searchCode As String, searchDesc As String) As DataSet
-        Dim selectStmt As String = Config("/SQL/LOAD_LIST")
+    Public Function LoadList(ByVal oCountryIds As ArrayList, ByVal searchCode As String, ByVal searchDesc As String) As DataSet
+        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
 
         Dim whereClauseConditions As String = ""
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & COL_NAME_COUNTRY_ID, oCountryIds, False)
-        If FormatSearchMask(searchCode) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sg." & COL_NAME_SHORT_DESC & ") " & searchCode.ToUpper
+        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & Me.COL_NAME_COUNTRY_ID, oCountryIds, False)
+        If Me.FormatSearchMask(searchCode) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sg." & Me.COL_NAME_SHORT_DESC & ") " & searchCode.ToUpper
         End If
-        If FormatSearchMask(searchDesc) Then
-            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sg." & COL_NAME_DESCRIPTION & ") " & searchDesc.ToUpper
+        If Me.FormatSearchMask(searchDesc) Then
+            whereClauseConditions &= " AND " & Environment.NewLine & "UPPER(sg." & Me.COL_NAME_DESCRIPTION & ") " & searchDesc.ToUpper
         End If
         If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
+            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
         Else
-            selectStmt = selectStmt.Replace(DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
         End If
 
         Try
             Dim ds As New DataSet
-            ds = DBHelper.Fetch(selectStmt, TABLE_NAME)
+            ds = DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -131,7 +133,7 @@ Public Class ServiceGroupDAL
 #Region "Overloaded Methods"
 
     'This method was added manually to accommodate BO families Save
-    Public Overloads Sub UpdateFamily(familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
         Dim ServGrpRiskTypeDal As New ServiceGroupRiskTypeDAL
         Dim ServGrpRiskTypeManufacturerDal As New SgRtManufacturerDAL
         Dim tr As IDbTransaction = Transaction
@@ -142,10 +144,10 @@ Public Class ServiceGroupDAL
             'First Pass updates Deletions
             ServGrpRiskTypeManufacturerDal.Update(familyDataset, tr, DataRowState.Deleted)
             ServGrpRiskTypeDal.Update(familyDataset, tr, DataRowState.Deleted)
-            MyBase.Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            Update(familyDataset.Tables(TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
             ServGrpRiskTypeDal.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             ServGrpRiskTypeManufacturerDal.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             If Transaction Is Nothing Then
@@ -161,9 +163,9 @@ Public Class ServiceGroupDAL
         End Try
     End Sub
 
-    Public Overloads Sub Update(ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
-        If Not ds.Tables(TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(TABLE_NAME), Transaction, changesFilter)
+    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
 #End Region

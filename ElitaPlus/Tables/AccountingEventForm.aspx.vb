@@ -61,7 +61,7 @@ Partial Class AccountingEventForm
     'Do not delete or move it.
     Private designerPlaceholderDeclaration As System.Object
 
-    Private Sub Page_Init(sender As System.Object, e As System.EventArgs) Handles MyBase.Init
+    Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
         InitializeComponent()
@@ -104,6 +104,7 @@ Partial Class AccountingEventForm
 
     Private Const AcctSystemFelita As String = "FEL"
     Private Const ACCTEVENTTYPE_PREMIUM As String = "PREM"
+    Private Const ACCTEVENTTYPE_UPR As String = "UPR"
 
     Private Const YESNO As String = "YESNO"
 
@@ -133,32 +134,32 @@ Partial Class AccountingEventForm
         End Get
     End Property
 
-    Private Sub Page_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
+    Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
         Try
-            If CallingParameters IsNot Nothing Then
+            If Not Me.CallingParameters Is Nothing Then
                 'Get the id from the parent
-                State.MyBO = New AcctEvent(CType(CallingParameters, Guid))
+                Me.State.MyBO = New AcctEvent(CType(Me.CallingParameters, Guid))
             Else
-                State.IsNew = True
+                Me.State.IsNew = True
             End If
         Catch ex As Exception
-            HandleErrors(ex, ErrControllerMaster)
+            Me.HandleErrors(ex, Me.ErrControllerMaster)
         End Try
     End Sub
 
 
-    Private Sub Page_PageReturn(ReturnFromUrl As String, ReturnPar As Object) Handles Me.PageReturn
+    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles Me.PageReturn
 
         Try
-            If ReturnPar IsNot Nothing Then
+            If Not ReturnPar Is Nothing Then
                 'Get the id from the parent
                 Dim _ret As ReturnType = CType(ReturnPar, ReturnType)
-                State.MyBO = _ret.EditingBo
+                Me.State.MyBO = _ret.EditingBo
             Else
-                State.IsNew = True
+                Me.State.IsNew = True
             End If
         Catch ex As Exception
-            HandleErrors(ex, ErrControllerMaster)
+            Me.HandleErrors(ex, Me.ErrControllerMaster)
         End Try
 
     End Sub
@@ -170,9 +171,9 @@ Partial Class AccountingEventForm
         Public LastOperation As DetailPageCommand
         Public EditingBo As AcctEvent
         Public HasDataChanged As Boolean
-        Public Sub New(LastOp As DetailPageCommand, curEditingBo As AcctEvent, hasDataChanged As Boolean)
-            LastOperation = LastOp
-            EditingBo = curEditingBo
+        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As AcctEvent, ByVal hasDataChanged As Boolean)
+            Me.LastOperation = LastOp
+            Me.EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
     End Class
@@ -180,38 +181,38 @@ Partial Class AccountingEventForm
 
 #Region "Page Events"
 
-    Private Sub Page_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         'Put user code to initialize the page here
-        ErrControllerMaster.Clear_Hide()
+        Me.ErrControllerMaster.Clear_Hide()
         Try
-            If Not IsPostBack Then
+            If Not Me.IsPostBack Then
 
-                SetFormTitle(PAGE_TITLE)
-                SetFormTab(PAGE_TAB)
+                Me.SetFormTitle(Me.PAGE_TITLE)
+                Me.SetFormTab(Me.PAGE_TAB)
 
-                MenuEnabled = False
-                AddConfirmation(btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
+                Me.MenuEnabled = False
+                Me.AddConfirmation(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT)
 
                 PopulateAll()
 
-                If State.IsNew = True Then
+                If Me.State.IsNew = True Then
                     CreateNew()
                 End If
 
-                PopulateFormFromBOs()
-                EnableDisableFields()
+                Me.PopulateFormFromBOs()
+                Me.EnableDisableFields()
 
             End If
             BindBoPropertiesToLabels()
             CheckIfComingFromSaveConfirm()
-            If Not IsPostBack Then
-                AddLabelDecorations(State.MyBO)
+            If Not Me.IsPostBack Then
+                Me.AddLabelDecorations(Me.State.MyBO)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            HandleErrors(ex, ErrControllerMaster)
+            Me.HandleErrors(ex, Me.ErrControllerMaster)
         End Try
-        ShowMissingTranslations(ErrControllerMaster)
+        Me.ShowMissingTranslations(Me.ErrControllerMaster)
     End Sub
 
 #End Region
@@ -221,7 +222,7 @@ Partial Class AccountingEventForm
     Private Sub PopulateAll()
 
         Dim YESNOdv As DataView = LookupListNew.DropdownLookupList(YESNO, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
-        State.YESNOdv = YESNOdv
+        Me.State.YESNOdv = YESNOdv
 
         'BindListControlToDataView(Me.moAllowBalTranDDL, YESNOdv)
         'BindListControlToDataView(Me.moAllowOverBudgetDDL, YESNOdv)
@@ -242,101 +243,101 @@ Partial Class AccountingEventForm
            CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO",
                                                            languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
 
-        moAllowBalTranDDL.Populate(YesNoList.ToArray(), populateOptions)
-        moAllowOverBudgetDDL.Populate(YesNoList.ToArray(), populateOptions)
-        moAllowPostToSuspendedDDL.Populate(YesNoList.ToArray(), populateOptions)
-        moLoadOnlyDDL.Populate(YesNoList.ToArray(), populateOptions)
-        moPostProvisionalDDL.Populate(YesNoList.ToArray(), populateOptions)
-        moSuppressSubstitutedMessagesDDL.Populate(YesNoList.ToArray(), populateOptions)
+        Me.moAllowBalTranDDL.Populate(YesNoList.ToArray(), populateOptions)
+        Me.moAllowOverBudgetDDL.Populate(YesNoList.ToArray(), populateOptions)
+        Me.moAllowPostToSuspendedDDL.Populate(YesNoList.ToArray(), populateOptions)
+        Me.moLoadOnlyDDL.Populate(YesNoList.ToArray(), populateOptions)
+        Me.moPostProvisionalDDL.Populate(YesNoList.ToArray(), populateOptions)
+        Me.moSuppressSubstitutedMessagesDDL.Populate(YesNoList.ToArray(), populateOptions)
 
         Dim JournalLevel As DataElements.ListItem() =
            CommonConfigManager.Current.ListManager.GetList(listCode:="JOURNALLEVEL",
                                                            languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
 
-        moJournalLevelDDL.Populate(JournalLevel.ToArray(), populateOptions)
+        Me.moJournalLevelDDL.Populate(JournalLevel.ToArray(), populateOptions)
 
         Dim EventType As DataElements.ListItem() =
            CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTTRANSTYP",
                                                            languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
 
-        moEventTypeDDL.Populate(EventType.ToArray(), populateOptions)
+        Me.moEventTypeDDL.Populate(EventType.ToArray(), populateOptions)
 
         Dim BalancingOptions As DataElements.ListItem() =
            CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTBO",
                                                            languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
 
-        moBalancingOptionsDDL.Populate(BalancingOptions.ToArray(), populateOptions)
+        Me.moBalancingOptionsDDL.Populate(BalancingOptions.ToArray(), populateOptions)
 
         Dim PostingType As DataElements.ListItem() =
            CommonConfigManager.Current.ListManager.GetList(listCode:="POSTTYPE",
                                                            languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
 
-        moPostingTypeDDL.Populate(PostingType.ToArray(), populateOptions)
+        Me.moPostingTypeDDL.Populate(PostingType.ToArray(), populateOptions)
 
 
         If ElitaPlusIdentity.Current.ActiveUser.AccountingCompanies.Length > 0 Then
             For Each _acctCo As AcctCompany In ElitaPlusIdentity.Current.ActiveUser.AccountingCompanies
-                moAccountingCompanyDropDown.Items.Add(New ListItem(_acctCo.Description, _acctCo.Id.ToString))
+                Me.moAccountingCompanyDropDown.Items.Add(New ListItem(_acctCo.Description, _acctCo.Id.ToString))
             Next
-            If moAccountingCompanyDropDown.Items.Count > 1 Then
-                ControlMgr.SetEnableControl(Me, moAccountingCompanyDropDown, True)
-                moAccountingCompanyDropDown.Items.Add(New ListItem("", NOTHING_SELECTED))
-                moAccountingCompanyDropDown.SelectedValue = NOTHING_SELECTED
-            ElseIf moAccountingCompanyDropDown.Items.Count = 1 Then
-                ControlMgr.SetEnableControl(Me, moAccountingCompanyDropDown, False)
+            If Me.moAccountingCompanyDropDown.Items.Count > 1 Then
+                ControlMgr.SetEnableControl(Me, Me.moAccountingCompanyDropDown, True)
+                Me.moAccountingCompanyDropDown.Items.Add(New ListItem("", Me.NOTHING_SELECTED))
+                Me.moAccountingCompanyDropDown.SelectedValue = Me.NOTHING_SELECTED
+            ElseIf Me.moAccountingCompanyDropDown.Items.Count = 1 Then
+                ControlMgr.SetEnableControl(Me, Me.moAccountingCompanyDropDown, False)
             End If
         End If
 
     End Sub
 
     Protected Sub CreateNew()
-        moAccountingEventGrid.CurrentPageIndex = 0
-        State.ScreenSnapShotBO = Nothing
-        State.MyBO = New AcctEvent
+        Me.moAccountingEventGrid.CurrentPageIndex = 0
+        Me.State.ScreenSnapShotBO = Nothing
+        Me.State.MyBO = New AcctEvent
     End Sub
 
     Protected Sub PopulateFormFromBOs()
 
-        Dim YesNodv As DataView = State.YESNOdv
+        Dim YesNodv As DataView = Me.State.YESNOdv
 
-        With State.MyBO
+        With Me.State.MyBO
 
-            PopulateControlFromBOProperty(moJournalTypeTEXT, .JournalType)
-            PopulateControlFromBOProperty(moPostToHoldTEXT, .PostToHold)
-            PopulateControlFromBOProperty(moReportingAccountTEXT, .ReportingAccount)
-            PopulateControlFromBOProperty(moSuspenseAccountTEXT, .SuspenseAccount)
-            PopulateControlFromBOProperty(moTransactionAmountAccountTEXT, .TransactionAmountAccount)
-            PopulateControlFromBOProperty(moLayoutCodeTEXT, .LayoutCode)
-            PopulateControlFromBOProperty(moEventDescriptionTEXT, .EventDescription)
+            Me.PopulateControlFromBOProperty(Me.moJournalTypeTEXT, .JournalType)
+            Me.PopulateControlFromBOProperty(Me.moPostToHoldTEXT, .PostToHold)
+            Me.PopulateControlFromBOProperty(Me.moReportingAccountTEXT, .ReportingAccount)
+            Me.PopulateControlFromBOProperty(Me.moSuspenseAccountTEXT, .SuspenseAccount)
+            Me.PopulateControlFromBOProperty(Me.moTransactionAmountAccountTEXT, .TransactionAmountAccount)
+            Me.PopulateControlFromBOProperty(Me.moLayoutCodeTEXT, .LayoutCode)
+            Me.PopulateControlFromBOProperty(Me.moEventDescriptionTEXT, .EventDescription)
 
             'Fill Drop Down Lists
-            PopulateControlFromBOProperty(moSuppressSubstitutedMessagesDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(YesNodv, .SuppressSubstitutedMessages))
-            PopulateControlFromBOProperty(moPostProvisionalDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(YesNodv, .PostProvisional))
-            PopulateControlFromBOProperty(moLoadOnlyDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(YesNodv, .LoadOnly))
-            PopulateControlFromBOProperty(moAllowBalTranDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(YesNodv, .AllowBalTran))
-            PopulateControlFromBOProperty(moAllowOverBudgetDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(YesNodv, .AllowOverBudget))
-            PopulateControlFromBOProperty(moAllowPostToSuspendedDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(YesNodv, .AllowPostToSuspended))
-            PopulateControlFromBOProperty(moBalancingOptionsDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCTBO, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), .BalancingOptions))
-            PopulateControlFromBOProperty(moPostingTypeDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_POSTINGTYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), .PostingType))
-            PopulateControlFromBOProperty(moJournalLevelDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_JOURNALLEVEL, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), .JournalLevel))
+            Me.PopulateControlFromBOProperty(Me.moSuppressSubstitutedMessagesDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(YesNodv, .SuppressSubstitutedMessages))
+            Me.PopulateControlFromBOProperty(Me.moPostProvisionalDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(YesNodv, .PostProvisional))
+            Me.PopulateControlFromBOProperty(Me.moLoadOnlyDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(YesNodv, .LoadOnly))
+            Me.PopulateControlFromBOProperty(Me.moAllowBalTranDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(YesNodv, .AllowBalTran))
+            Me.PopulateControlFromBOProperty(Me.moAllowOverBudgetDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(YesNodv, .AllowOverBudget))
+            Me.PopulateControlFromBOProperty(Me.moAllowPostToSuspendedDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(YesNodv, .AllowPostToSuspended))
+            Me.PopulateControlFromBOProperty(Me.moBalancingOptionsDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCTBO, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), .BalancingOptions))
+            Me.PopulateControlFromBOProperty(Me.moPostingTypeDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_POSTINGTYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), .PostingType))
+            Me.PopulateControlFromBOProperty(Me.moJournalLevelDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_JOURNALLEVEL, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), .JournalLevel))
 
-            PopulateControlFromBOProperty(moEventTypeDDL, .AcctEventTypeId)
+            Me.PopulateControlFromBOProperty(Me.moEventTypeDDL, .AcctEventTypeId)
 
             If Not .AcctCompanyId = Guid.Empty Then
 
-                If moAccountingCompanyDropDown.Items.Count > 1 Then
-                    PopulateControlFromBOProperty(moAccountingCompanyDropDown, .AcctCompanyId)
+                If Me.moAccountingCompanyDropDown.Items.Count > 1 Then
+                    Me.PopulateControlFromBOProperty(Me.moAccountingCompanyDropDown, .AcctCompanyId)
                 Else
-                    moAccountingCompanyDropDown.SelectedIndex = 0
+                    Me.moAccountingCompanyDropDown.SelectedIndex = 0
                 End If
 
             Else
 
-                If State.MyBO.IsNew Then
+                If Me.State.MyBO.IsNew Then
                     If ElitaPlusIdentity.Current.ActiveUser.AccountingCompanies.Length > 1 Then
-                        PopulateBOProperty(State.MyBO, ACCTCOMPANY_PROPERTY, moAccountingCompanyDropDown)
+                        Me.PopulateBOProperty(Me.State.MyBO, ACCTCOMPANY_PROPERTY, Me.moAccountingCompanyDropDown)
                     Else
-                        State.MyBO.AcctCompanyId = ElitaPlusIdentity.Current.ActiveUser.AccountingCompanies(0).Id
+                        Me.State.MyBO.AcctCompanyId = ElitaPlusIdentity.Current.ActiveUser.AccountingCompanies(0).Id
                     End If
                 End If
             End If
@@ -350,148 +351,129 @@ Partial Class AccountingEventForm
     Private Sub PopulateEventDetails()
 
         Dim dv As AcctEventDetail.AcctEventDetailSearchDV
-        dv = AcctEventDetail.getList(State.MyBO.Id)
-        If dv IsNot Nothing Then
-            moAccountingEventGrid.DataSource = dv
-            moAccountingEventGrid.DataBind()
+        dv = AcctEventDetail.getList(Me.State.MyBO.Id)
+        If Not dv Is Nothing Then
+            Me.moAccountingEventGrid.DataSource = dv
+            Me.moAccountingEventGrid.DataBind()
         End If
 
     End Sub
 
     Protected Sub BindBoPropertiesToLabels()
 
-        With State
-            BindBOPropertyToLabel(.MyBO, JOURNALTYPE_PROPERTY, moJournalTypeLABEL)
-            BindBOPropertyToLabel(.MyBO, LOADONLY_PROPERTY, moLoadOnlyLABEL)
-            BindBOPropertyToLabel(.MyBO, POSTINGTYPE_PROPERTY, moPostingTypeLABEL)
-            BindBOPropertyToLabel(.MyBO, POSTPROVISIONAL_PROPERTY, moPostProvisionalLABEL)
-            BindBOPropertyToLabel(.MyBO, POSTTOHOLD_PROPERTY, moPostToHoldLABEL)
-            BindBOPropertyToLabel(.MyBO, REPORTINGACCOUNT_PROPERTY, moReportingAccountLABEL)
-            BindBOPropertyToLabel(.MyBO, SUPPRESSSUBSTITUTEDMESSAGES_PROPERTY, moSuppressSubstitutedMessagesLABEL)
-            BindBOPropertyToLabel(.MyBO, SUSPENSEACCOUNT_PROPERTY, moSuspenseAccountLABEL)
-            BindBOPropertyToLabel(.MyBO, TRANSACTIONAMOUNTACCOUNT_PROPERTY, moTransactionAmountAccountLABEL)
-            BindBOPropertyToLabel(.MyBO, JOURNALLEVEL_PROPERTY, moJournalLevelLABEL)
-            BindBOPropertyToLabel(.MyBO, ACCTCOMPANY_PROPERTY, moAccountingCompanyLABEL)
-            BindBOPropertyToLabel(.MyBO, ALLOWBALTRANSFER_PROPERTY, moAllowBalTranLABEL)
-            BindBOPropertyToLabel(.MyBO, ALLOWOVERBUDGET_PROPERTY, moAllowOverBudgetLABEL)
-            BindBOPropertyToLabel(.MyBO, ALLOWPOSTTOSUSPENDED_PROPERTY, moAllowPostToSuspendedLABEL)
-            BindBOPropertyToLabel(.MyBO, BALANCINGOPTIONS_PROPERTY, moBalancingOptionsLABEL)
-            BindBOPropertyToLabel(.MyBO, ACCTEVENTTYPE_PROPERTY, moEventTypeLABEL)
-            BindBOPropertyToLabel(.MyBO, LAYOUTCODE_PROPERTY, moLayoutCodeLABEL)
-            BindBOPropertyToLabel(.MyBO, EVENTDESCRIPTION_PROPERTY, moEventDescriptionLABEL)
+        With Me.State
+            Me.BindBOPropertyToLabel(.MyBO, JOURNALTYPE_PROPERTY, Me.moJournalTypeLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, LOADONLY_PROPERTY, Me.moLoadOnlyLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, POSTINGTYPE_PROPERTY, Me.moPostingTypeLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, POSTPROVISIONAL_PROPERTY, Me.moPostProvisionalLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, POSTTOHOLD_PROPERTY, Me.moPostToHoldLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, REPORTINGACCOUNT_PROPERTY, Me.moReportingAccountLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, SUPPRESSSUBSTITUTEDMESSAGES_PROPERTY, Me.moSuppressSubstitutedMessagesLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, SUSPENSEACCOUNT_PROPERTY, Me.moSuspenseAccountLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, TRANSACTIONAMOUNTACCOUNT_PROPERTY, Me.moTransactionAmountAccountLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, JOURNALLEVEL_PROPERTY, Me.moJournalLevelLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, ACCTCOMPANY_PROPERTY, Me.moAccountingCompanyLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, ALLOWBALTRANSFER_PROPERTY, Me.moAllowBalTranLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, ALLOWOVERBUDGET_PROPERTY, Me.moAllowOverBudgetLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, ALLOWPOSTTOSUSPENDED_PROPERTY, Me.moAllowPostToSuspendedLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, BALANCINGOPTIONS_PROPERTY, Me.moBalancingOptionsLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, ACCTEVENTTYPE_PROPERTY, Me.moEventTypeLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, LAYOUTCODE_PROPERTY, Me.moLayoutCodeLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, EVENTDESCRIPTION_PROPERTY, Me.moEventDescriptionLABEL)
 
         End With
 
-        ClearGridHeadersAndLabelsErrSign()
+        Me.ClearGridHeadersAndLabelsErrSign()
     End Sub
 
     Protected Sub EnableDisableFields()
         'Enabled by Default
 
         ControlMgr.SetEnableControl(Me, btnDelete_WRITE, True)
-        ControlMgr.SetEnableControl(Me, btnBack, True)
-        ControlMgr.SetEnableControl(Me, btnSave_WRITE, True)
-        ControlMgr.SetEnableControl(Me, btnUndo_Write, True)
+        ControlMgr.SetEnableControl(Me, Me.btnBack, True)
+        ControlMgr.SetEnableControl(Me, Me.btnSave_WRITE, True)
+        ControlMgr.SetEnableControl(Me, Me.btnUndo_Write, True)
 
-        If State.MyBO.IsNew Then
+        If Me.State.MyBO.IsNew Then
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
-            ControlMgr.SetEnableControl(Me, btnUndo_Write, False)
-            ControlMgr.SetEnableControl(Me, moAccountingCompanyDropDown, True)
+            ControlMgr.SetEnableControl(Me, Me.btnUndo_Write, False)
+            ControlMgr.SetEnableControl(Me, Me.moAccountingCompanyDropDown, True)
         Else
-            ControlMgr.SetEnableControl(Me, moAccountingCompanyDropDown, False)
+            ControlMgr.SetEnableControl(Me, Me.moAccountingCompanyDropDown, False)
         End If
 
-        Dim AcctCompanyBO As AcctCompany = New AcctCompany(State.MyBO.AcctCompanyId)
-        If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM,
-                      ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), AcctCompanyBO.AcctSystemId) = AcctSystemFelita AndAlso
-                      LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_EVENT_TYPE,
-                      ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), GetSelectedItem(moEventTypeDDL)) = ACCTEVENTTYPE_PREMIUM Then
-
-            'moJournalLevelDDL.SelectedIndex = -1
-            ControlMgr.SetVisibleControl(Me, moJournalLevelDDL, True)
-            ControlMgr.SetVisibleControl(Me, moJournalLevelLABEL, True)
-        Else
-            moJournalLevelDDL.SelectedIndex = -1
-            ControlMgr.SetVisibleControl(Me, moJournalLevelDDL, False)
-            ControlMgr.SetVisibleControl(Me, moJournalLevelLABEL, False)
-        End If
-
-        'If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM,
-        '               ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), AcctCompanyBO.AcctSystemId) <> AcctSystemFelita Then
-        '    ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, False)
-        '    ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, False)
-        'End If
+        EnableDisableJournalLevelControls()
 
     End Sub
 
     Protected Sub CheckIfComingFromSaveConfirm()
-        Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
-        If confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_OK Then
-            If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                State.MyBO.Save()
+        Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        If Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_OK Then
+            If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                Me.State.MyBO.Save()
             End If
-            Select Case State.ActionInProgress
+            Select Case Me.State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
+                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    CreateNew()
+                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    Me.CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                    CreateNewWithCopy()
+                    Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                    Me.CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
+                    Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.Redirect_
-                    callPage(AccountingEventDetailForm.URL, New AccountingEventDetailForm.ReturnType(State.SelectedDetailId, State.MyBO))
+                    Me.callPage(AccountingEventDetailForm.URL, New AccountingEventDetailForm.ReturnType(Me.State.SelectedDetailId, Me.State.MyBO))
                 Case DetailPageCommand.Delete
                     DeleteEventDetailItem()
             End Select
-        ElseIf confResponse IsNot Nothing AndAlso confResponse = CONFIRM_MESSAGE_CANCEL Then
-            Select Case State.ActionInProgress
+        ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_CANCEL Then
+            Select Case Me.State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
-                    ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
+                    Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
                 Case ElitaPlusPage.DetailPageCommand.New_
-                    CreateNew()
+                    Me.CreateNew()
                 Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                    CreateNewWithCopy()
+                    Me.CreateNewWithCopy()
                 Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                    ErrControllerMaster.AddErrorAndShow(State.LastErrMsg)
+                    Me.ErrControllerMaster.AddErrorAndShow(Me.State.LastErrMsg)
             End Select
         End If
         'Clean after consuming the action
-        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-        HiddenSaveChangesPromptResponse.Value = ""
+        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+        Me.HiddenSaveChangesPromptResponse.Value = ""
     End Sub
 
     Protected Sub PopulateBOsFromForm()
 
-        With State
+        With Me.State
 
-            PopulateBOProperty(.MyBO, JOURNALTYPE_PROPERTY, moJournalTypeTEXT)
-            PopulateBOProperty(.MyBO, POSTTOHOLD_PROPERTY, moPostToHoldTEXT)
-            PopulateBOProperty(.MyBO, REPORTINGACCOUNT_PROPERTY, moReportingAccountTEXT)
-            PopulateBOProperty(.MyBO, SUSPENSEACCOUNT_PROPERTY, moSuspenseAccountTEXT)
-            PopulateBOProperty(.MyBO, TRANSACTIONAMOUNTACCOUNT_PROPERTY, moTransactionAmountAccountTEXT)
-            PopulateBOProperty(.MyBO, LAYOUTCODE_PROPERTY, moLayoutCodeTEXT)
-            PopulateBOProperty(.MyBO, EVENTDESCRIPTION_PROPERTY, moEventDescriptionTEXT)
+            Me.PopulateBOProperty(.MyBO, JOURNALTYPE_PROPERTY, Me.moJournalTypeTEXT)
+            Me.PopulateBOProperty(.MyBO, POSTTOHOLD_PROPERTY, Me.moPostToHoldTEXT)
+            Me.PopulateBOProperty(.MyBO, REPORTINGACCOUNT_PROPERTY, Me.moReportingAccountTEXT)
+            Me.PopulateBOProperty(.MyBO, SUSPENSEACCOUNT_PROPERTY, Me.moSuspenseAccountTEXT)
+            Me.PopulateBOProperty(.MyBO, TRANSACTIONAMOUNTACCOUNT_PROPERTY, Me.moTransactionAmountAccountTEXT)
+            Me.PopulateBOProperty(.MyBO, LAYOUTCODE_PROPERTY, Me.moLayoutCodeTEXT)
+            Me.PopulateBOProperty(.MyBO, EVENTDESCRIPTION_PROPERTY, Me.moEventDescriptionTEXT)
 
             'Fill Drop Down Lists
-            PopulateBOProperty(.MyBO, SUPPRESSSUBSTITUTEDMESSAGES_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(moSuppressSubstitutedMessagesDDL.SelectedValue)))
-            PopulateBOProperty(.MyBO, JOURNALLEVEL_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_JOURNALLEVEL, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), New Guid(moJournalLevelDDL.SelectedValue)))
+            Me.PopulateBOProperty(.MyBO, SUPPRESSSUBSTITUTEDMESSAGES_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(Me.moSuppressSubstitutedMessagesDDL.SelectedValue)))
+            Me.PopulateBOProperty(.MyBO, JOURNALLEVEL_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_JOURNALLEVEL, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), New Guid(Me.moJournalLevelDDL.SelectedValue)))
 
-            PopulateBOProperty(.MyBO, POSTPROVISIONAL_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(moPostProvisionalDDL.SelectedValue)))
-            PopulateBOProperty(.MyBO, LOADONLY_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(moLoadOnlyDDL.SelectedValue)))
-            PopulateBOProperty(.MyBO, ALLOWBALTRANSFER_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(moAllowBalTranDDL.SelectedValue)))
-            PopulateBOProperty(.MyBO, ALLOWOVERBUDGET_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(moAllowOverBudgetDDL.SelectedValue)))
-            PopulateBOProperty(.MyBO, ALLOWPOSTTOSUSPENDED_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(moAllowPostToSuspendedDDL.SelectedValue)))
-            PopulateBOProperty(.MyBO, BALANCINGOPTIONS_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCTBO, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), New Guid(moBalancingOptionsDDL.SelectedValue)))
-            PopulateBOProperty(.MyBO, POSTINGTYPE_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_POSTINGTYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), New Guid(moPostingTypeDDL.SelectedValue)))
+            Me.PopulateBOProperty(.MyBO, POSTPROVISIONAL_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(Me.moPostProvisionalDDL.SelectedValue)))
+            Me.PopulateBOProperty(.MyBO, LOADONLY_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(Me.moLoadOnlyDDL.SelectedValue)))
+            Me.PopulateBOProperty(.MyBO, ALLOWBALTRANSFER_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(Me.moAllowBalTranDDL.SelectedValue)))
+            Me.PopulateBOProperty(.MyBO, ALLOWOVERBUDGET_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(Me.moAllowOverBudgetDDL.SelectedValue)))
+            Me.PopulateBOProperty(.MyBO, ALLOWPOSTTOSUSPENDED_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(Me.moAllowPostToSuspendedDDL.SelectedValue)))
+            Me.PopulateBOProperty(.MyBO, BALANCINGOPTIONS_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCTBO, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), New Guid(Me.moBalancingOptionsDDL.SelectedValue)))
+            Me.PopulateBOProperty(.MyBO, POSTINGTYPE_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_POSTINGTYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), New Guid(Me.moPostingTypeDDL.SelectedValue)))
 
-            PopulateBOProperty(.MyBO, ACCTEVENTTYPE_PROPERTY, moEventTypeDDL)
+            Me.PopulateBOProperty(.MyBO, ACCTEVENTTYPE_PROPERTY, Me.moEventTypeDDL)
 
             If .MyBO.IsNew Then
                 If ElitaPlusIdentity.Current.ActiveUser.AccountingCompanies.Length > 1 Then
-                    PopulateBOProperty(.MyBO, ACCTCOMPANY_PROPERTY, moAccountingCompanyDropDown)
+                    Me.PopulateBOProperty(.MyBO, ACCTCOMPANY_PROPERTY, Me.moAccountingCompanyDropDown)
                 Else
                     .MyBO.AcctCompanyId = ElitaPlusIdentity.Current.ActiveUser.AccountingCompanies(0).Id
                 End If
@@ -505,18 +487,18 @@ Partial Class AccountingEventForm
     Private Sub DeleteEventDetailItem()
 
         Try
-            Dim _eventDetail As New AcctEventDetail(State.SelectedDetailId)
+            Dim _eventDetail As New AcctEventDetail(Me.State.SelectedDetailId)
             _eventDetail.Delete()
             _eventDetail.Save()
             _eventDetail = Nothing
 
-            moAccountingEventGrid.CurrentPageIndex = 0
+            Me.moAccountingEventGrid.CurrentPageIndex = 0
             PopulateEventDetails()
-            State.SelectedDetailId = Guid.Empty
-            AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
+            Me.State.SelectedDetailId = Guid.Empty
+            Me.AddInfoMsg(Message.DELETE_RECORD_CONFIRMATION)
 
         Catch ex As Exception
-            HandleErrors(ex, ErrControllerMaster)
+            Me.HandleErrors(ex, Me.ErrControllerMaster)
         End Try
     End Sub
 
@@ -524,121 +506,121 @@ Partial Class AccountingEventForm
 
         Dim newBO As New AcctEvent
 
-        newBO.AcctCompanyId = State.MyBO.AcctCompanyId
-        State.MyBO = newBO
+        newBO.AcctCompanyId = Me.State.MyBO.AcctCompanyId
+        Me.State.MyBO = newBO
 
         'Reset the source  and business unit fields
-        moEventTypeDDL.SelectedIndex = 0
+        Me.moEventTypeDDL.SelectedIndex = 0
 
-        PopulateBOsFromForm()
+        Me.PopulateBOsFromForm()
         PopulateEventDetails()
 
         'create the backup copy
-        State.ScreenSnapShotBO = New AcctEvent
-        State.ScreenSnapShotBO.Clone(State.MyBO)
+        Me.State.ScreenSnapShotBO = New AcctEvent
+        Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
     End Sub
 
 #End Region
 
 #Region "Button Clicks"
 
-    Private Sub btnBack_Click(sender As Object, e As System.EventArgs) Handles btnBack.Click
+    Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
         Try
-            PopulateBOsFromForm()
-            If State.MyBO.IsDirty Then
-                AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            Me.PopulateBOsFromForm()
+            If Me.State.MyBO.IsDirty Then
+                Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
+                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
-                ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
+                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            HandleErrors(ex, ErrControllerMaster)
-            AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            State.LastErrMsg = ErrControllerMaster.Text
+            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            Me.AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, Me.HiddenSaveChangesPromptResponse)
+            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            Me.State.LastErrMsg = Me.ErrControllerMaster.Text
         End Try
     End Sub
 
-    Private Sub btnUndo_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnUndo_Write.Click
+    Private Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
         Try
-            If Not State.MyBO.IsNew Then
+            If Not Me.State.MyBO.IsNew Then
                 'Reload from the DB
-                State.MyBO = New AcctEvent(State.MyBO.Id)
-            ElseIf State.ScreenSnapShotBO IsNot Nothing Then
+                Me.State.MyBO = New AcctEvent(Me.State.MyBO.Id)
+            ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
                 'It was a new with copy
-                State.MyBO.Clone(State.ScreenSnapShotBO)
+                Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
             Else
                 CreateNew()
             End If
             PopulateAll()
-            PopulateFormFromBOs()
-            EnableDisableFields()
+            Me.PopulateFormFromBOs()
+            Me.EnableDisableFields()
         Catch ex As Exception
-            HandleErrors(ex, ErrControllerMaster)
+            Me.HandleErrors(ex, Me.ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnApply_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub btnApply_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
-            PopulateBOsFromForm()
-            If State.MyBO.IsDirty Then
-                State.MyBO.Save()
-                State.HasDataChanged = True
-                PopulateFormFromBOs()
-                EnableDisableFields()
-                AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+            Me.PopulateBOsFromForm()
+            If Me.State.MyBO.IsDirty Then
+                Me.State.MyBO.Save()
+                Me.State.HasDataChanged = True
+                Me.PopulateFormFromBOs()
+                Me.EnableDisableFields()
+                Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
             Else
-                AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
+                Me.AddInfoMsg(Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Exception
-            HandleErrors(ex, ErrControllerMaster)
+            Me.HandleErrors(ex, Me.ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnDelete_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete_WRITE.Click
+    Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
         Try
-            State.MyBO.Delete()
-            State.MyBO.Save()
-            State.HasDataChanged = True
-            ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, State.MyBO, State.HasDataChanged))
+            Me.State.MyBO.Delete()
+            Me.State.MyBO.Save()
+            Me.State.HasDataChanged = True
+            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             'undo the delete
-            State.MyBO.RejectChanges()
-            HandleErrors(ex, ErrControllerMaster)
+            Me.State.MyBO.RejectChanges()
+            Me.HandleErrors(ex, Me.ErrControllerMaster)
         End Try
     End Sub
 
-    Private Sub btnNew_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnNew_WRITE.Click
+    Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
-            PopulateBOsFromForm()
-            If State.MyBO.IsDirty Then
-                AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Redirect_
+            Me.PopulateBOsFromForm()
+            If Me.State.MyBO.IsDirty Then
+                Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
+                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Redirect_
             Else
-                callPage(AccountingEventDetailForm.URL, New AccountingEventDetailForm.ReturnType(Guid.Empty, State.MyBO))
+                Me.callPage(AccountingEventDetailForm.URL, New AccountingEventDetailForm.ReturnType(Guid.Empty, Me.State.MyBO))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            HandleErrors(ex, ErrControllerMaster)
-            AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            State.LastErrMsg = ErrControllerMaster.Text
+            Me.HandleErrors(ex, Me.ErrControllerMaster)
+            Me.AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, Me.HiddenSaveChangesPromptResponse)
+            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            Me.State.LastErrMsg = Me.ErrControllerMaster.Text
         End Try
     End Sub
 
-    Private Sub btnCopy_WRITE_Click(sender As Object, e As System.EventArgs) Handles btnCopy_WRITE.Click
+    Private Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
         Try
-            PopulateBOsFromForm()
-            If State.MyBO.IsDirty Then
-                AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
-                State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+            Me.PopulateBOsFromForm()
+            If Me.State.MyBO.IsDirty Then
+                Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
+                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
             Else
-                CreateNewWithCopy()
+                Me.CreateNewWithCopy()
             End If
         Catch ex As Exception
-            HandleErrors(ex, ErrControllerMaster)
+            Me.HandleErrors(ex, Me.ErrControllerMaster)
         End Try
     End Sub
 
@@ -647,86 +629,89 @@ Partial Class AccountingEventForm
 
 #Region "DataGrid Methods"
 
-    Private Sub moAccountingEventGrid_ItemCommand(source As Object, e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles moAccountingEventGrid.ItemCommand
+    Private Sub moAccountingEventGrid_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles moAccountingEventGrid.ItemCommand
 
         Try
             If e.CommandName = "SelectAction" Then
                 Try
-                    PopulateBOsFromForm()
-                    If State.MyBO.IsDirty Then
-                        AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, HiddenSaveChangesPromptResponse)
-                        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Redirect_
-                        State.SelectedDetailId = New Guid(e.Item.Cells(GRIDCOL_EVENTDETAIL_ID).Text)
+                    Me.PopulateBOsFromForm()
+                    If Me.State.MyBO.IsDirty Then
+                        Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
+                        Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Redirect_
+                        Me.State.SelectedDetailId = New Guid(e.Item.Cells(Me.GRIDCOL_EVENTDETAIL_ID).Text)
                     Else
-                        callPage(AccountingEventDetailForm.URL, New AccountingEventDetailForm.ReturnType(New Guid(e.Item.Cells(GRIDCOL_EVENTDETAIL_ID).Text), State.MyBO))
+                        Me.callPage(AccountingEventDetailForm.URL, New AccountingEventDetailForm.ReturnType(New Guid(e.Item.Cells(Me.GRIDCOL_EVENTDETAIL_ID).Text), Me.State.MyBO))
                     End If
                 Catch ex As Threading.ThreadAbortException
                 Catch ex As Exception
-                    HandleErrors(ex, ErrControllerMaster)
-                    AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, HiddenSaveChangesPromptResponse)
-                    State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                    State.LastErrMsg = ErrControllerMaster.Text
+                    Me.HandleErrors(ex, Me.ErrControllerMaster)
+                    Me.AddConfirmMsg(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, Me.HiddenSaveChangesPromptResponse)
+                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                    Me.State.LastErrMsg = Me.ErrControllerMaster.Text
                 End Try
             ElseIf e.CommandName = "DeleteRecord" Then
-                State.ActionInProgress = DetailPageCommand.Delete
-                State.SelectedDetailId = New Guid(e.Item.Cells(GRIDCOL_EVENTDETAIL_ID).Text)
-                AddConfirmMsg(Message.DELETE_RECORD_PROMPT, HiddenSaveChangesPromptResponse)
+                Me.State.ActionInProgress = DetailPageCommand.Delete
+                Me.State.SelectedDetailId = New Guid(e.Item.Cells(Me.GRIDCOL_EVENTDETAIL_ID).Text)
+                Me.AddConfirmMsg(Message.DELETE_RECORD_PROMPT, Me.HiddenSaveChangesPromptResponse)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            HandleErrors(ex, ErrControllerMaster)
+            Me.HandleErrors(ex, Me.ErrControllerMaster)
         End Try
 
     End Sub
 
-    Private Sub moAccountingEventGrid_ItemDataBound(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moAccountingEventGrid.ItemDataBound
+    Private Sub moAccountingEventGrid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moAccountingEventGrid.ItemDataBound
 
         Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
         Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
 
         If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-            e.Item.Cells(GRIDCOL_EVENTDETAIL_ID).Text = GetGuidStringFromByteArray(CType(dvRow(AcctEventDetail.AcctEventDetailSearchDV.COL_ACCT_EVENT_DETAIL_ID), Byte()))
-            e.Item.Cells(GRIDCOL_BUSINESS_UNIT).Text = dvRow(AcctEventDetail.AcctEventDetailSearchDV.COL_BUSINESS_UNIT).ToString
-            e.Item.Cells(GRIDCOL_DEBITCREDIT).Text = dvRow(AcctEventDetail.AcctEventDetailSearchDV.COL_DEBIT_CREDIT).ToString
-            e.Item.Cells(GRIDCOL_FIELDTYPE).Text = dvRow(AcctEventDetail.AcctEventDetailSearchDV.COL_FIELD_TYPE).ToString
-            e.Item.Cells(GRIDCOL_ACCOUNTCODE).Text = dvRow(AcctEventDetail.AcctEventDetailSearchDV.COL_ACCOUNT_CODE).ToString
+            e.Item.Cells(Me.GRIDCOL_EVENTDETAIL_ID).Text = GetGuidStringFromByteArray(CType(dvRow(AcctEventDetail.AcctEventDetailSearchDV.COL_ACCT_EVENT_DETAIL_ID), Byte()))
+            e.Item.Cells(Me.GRIDCOL_BUSINESS_UNIT).Text = dvRow(AcctEventDetail.AcctEventDetailSearchDV.COL_BUSINESS_UNIT).ToString
+            e.Item.Cells(Me.GRIDCOL_DEBITCREDIT).Text = dvRow(AcctEventDetail.AcctEventDetailSearchDV.COL_DEBIT_CREDIT).ToString
+            e.Item.Cells(Me.GRIDCOL_FIELDTYPE).Text = dvRow(AcctEventDetail.AcctEventDetailSearchDV.COL_FIELD_TYPE).ToString
+            e.Item.Cells(Me.GRIDCOL_ACCOUNTCODE).Text = dvRow(AcctEventDetail.AcctEventDetailSearchDV.COL_ACCOUNT_CODE).ToString
         End If
 
     End Sub
 
-    Private Sub moAccountingEventGrid_ItemCreated(sender As Object, e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moAccountingEventGrid.ItemCreated
+    Private Sub moAccountingEventGrid_ItemCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles moAccountingEventGrid.ItemCreated
         Dim pg As New ElitaPlusSearchPage
         pg.BaseItemCreated(sender, e)
     End Sub
 
-    Private Sub moAccountingEventGrid_PageIndexChanged(source As Object, e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moAccountingEventGrid.PageIndexChanged
+    Private Sub moAccountingEventGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles moAccountingEventGrid.PageIndexChanged
 
-        moAccountingEventGrid.CurrentPageIndex = e.NewPageIndex
+        Me.moAccountingEventGrid.CurrentPageIndex = e.NewPageIndex
         PopulateEventDetails()
 
     End Sub
 
-    Private Sub moEventTypeDDL_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moEventTypeDDL.SelectedIndexChanged
-        Dim AcctCompanyBO As AcctCompany = New AcctCompany(State.MyBO.AcctCompanyId)
-        'If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM,
-        '              ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), AcctCompanyBO.AcctSystemId) <> AcctSystemFelita Then
-        '    ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, False)
-        '    ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, False)
+    Private sub EnableDisableJournalLevelControls()
+        Dim acctCompanyBo As AcctCompany = New AcctCompany(Me.State.MyBO.AcctCompanyId)
+        dim eventType as String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_EVENT_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), GetSelectedItem(moEventTypeDDL))
 
-        'Else
+
         If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM,
-                      ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), AcctCompanyBO.AcctSystemId) = AcctSystemFelita AndAlso
-                      LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_EVENT_TYPE,
-                      ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), GetSelectedItem(moEventTypeDDL)) = ACCTEVENTTYPE_PREMIUM Then
+                                                                        ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), AcctCompanyBO.AcctSystemId) = AcctSystemFelita AndAlso
+           (eventType= ACCTEVENTTYPE_PREMIUM OrElse eventType= ACCTEVENTTYPE_UPR) Then 'Journal level configuration enabled only for Premium and UPR events
 
-            moJournalLevelDDL.SelectedIndex = -1
-            ControlMgr.SetVisibleControl(Me, moJournalLevelDDL, True)
-            ControlMgr.SetVisibleControl(Me, moJournalLevelLABEL, True)
+            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, True)
+            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, True)
+
+            if State.MyBO isnot Nothing Then
+                PopulateControlFromBOProperty(moJournalLevelDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_JOURNALLEVEL, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), State.MyBO.JournalLevel))
+            End If
+            
         Else
             moJournalLevelDDL.SelectedIndex = -1
-            ControlMgr.SetVisibleControl(Me, moJournalLevelDDL, False)
-            ControlMgr.SetVisibleControl(Me, moJournalLevelLABEL, False)
+            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, False)
+            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, False)
         End If
+    End sub
+    Private Sub moEventTypeDDL_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moEventTypeDDL.SelectedIndexChanged
+        EnableDisableJournalLevelControls()
 
     End Sub
 
