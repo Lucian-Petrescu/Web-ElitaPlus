@@ -78,17 +78,6 @@ Public Class CertExtendedItemForm
     End Sub
 
 #End Region
-#Region "Handlers-DropDown"
-    Public Function PopulateCompaniesDropDown() As DataView
-        Return ElitaPlusIdentity.Current.ActiveUser.GetUserCompanies(ElitaPlusIdentity.Current.ActiveUser.Id)
-    End Function
-
-    Public Function PopulateSelectedAssignedCompanies() As DataView
-        Return ElitaPlusIdentity.Current.ActiveUser.GetSelectedAssignedCompanies(ElitaPlusIdentity.Current.ActiveUser.Id)
-    End Function
-
-
-#End Region
 #Region "Grid-Events"
     Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
@@ -163,18 +152,18 @@ Public Class CertExtendedItemForm
     Protected Sub populateuserConctrols()
 
         ''UserControlAvailableSelectedDealers
-        UserControlAvailableSelectedDealers.SetAvailableData(Me.State.MyBO.GetAvailableDealers(), "Description", "ID")
+        'UserControlAvailableSelectedDealers.SetAvailableData(Me.State.MyBO.GetAvailableDealers(), "Description", "ID")
         'UserControlAvailableSelectedDealers.SetSelectedData(Me.State.MyBO.GetDealerRuleListSelectionView, "Description", "DEALER_ID")
-        UserControlAvailableSelectedDealers.BackColor = "#d5d6e4"
-        UserControlAvailableSelectedDealers.RemoveSelectedFromAvailable()
+        'UserControlAvailableSelectedDealers.BackColor = "#d5d6e4"
+        'UserControlAvailableSelectedDealers.RemoveSelectedFromAvailable()
 
         ''UserControlAvailableSelectedCompanies
         'Me.State.MyBO.GetAvailableCompanys()
         'PopulateCompaniesDropDown
-        UserControlAvailableSelectedCompanies.SetAvailableData(PopulateSelectedAssignedCompanies, "Description", "COMPANY_ID")
+        'UserControlAvailableSelectedCompanies.SetAvailableData(PopulateSelectedAssignedCompanies, "Description", "COMPANY_ID")
         'UserControlAvailableSelectedCompanies.SetSelectedData(Me.State.MyBO.GetCompanyRuleListSelectionView, "Description", "COMPANY_ID")
-        UserControlAvailableSelectedCompanies.BackColor = "#d5d6e4"
-        UserControlAvailableSelectedCompanies.RemoveSelectedFromAvailable()
+        'UserControlAvailableSelectedCompanies.BackColor = "#d5d6e4"
+        'UserControlAvailableSelectedCompanies.RemoveSelectedFromAvailable()
 
 
     End Sub
