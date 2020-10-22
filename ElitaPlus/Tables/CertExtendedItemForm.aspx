@@ -35,7 +35,8 @@
  
                 if (status != 'No') {
                     objTextDefaultValue.disabled = true;
-                    objTextDefaultValue.style.backgroundColor="grey"
+                    objTextDefaultValue.style.backgroundColor = "grey";
+                    objTextDefaultValue.value = "";
                 }
                 else {
                     objTextDefaultValue.disabled = false;

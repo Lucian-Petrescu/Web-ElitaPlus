@@ -39,7 +39,7 @@ Public Class CertExtendedItemForm
     Private Const CANCEL_LINK_BUTTON_NAME As String = "CancelLinkButton"
     Private Const SAVE_BUTTON_NAME As String = "SaveButton"
 
-    Private Const CERTIFICATE As String = "Certificate"
+    Private Const ADMIN As String = "Admin"
     Private Const CERTITEMEXTENDEDCONTROL As String = "Certificate Extended Item Control"
 #End Region
 
@@ -171,7 +171,7 @@ Public Class CertExtendedItemForm
         ''UserControlAvailableSelectedCompanies
         'Me.State.MyBO.GetAvailableCompanys()
         'PopulateCompaniesDropDown
-        UserControlAvailableSelectedCompanies.SetAvailableData(Me.State.MyBO.GetAvailableCompanys(), "Description", "ID")
+        UserControlAvailableSelectedCompanies.SetAvailableData(PopulateSelectedAssignedCompanies, "Description", "COMPANY_ID")
         'UserControlAvailableSelectedCompanies.SetSelectedData(Me.State.MyBO.GetCompanyRuleListSelectionView, "Description", "COMPANY_ID")
         UserControlAvailableSelectedCompanies.BackColor = "#d5d6e4"
         UserControlAvailableSelectedCompanies.RemoveSelectedFromAvailable()
@@ -307,7 +307,7 @@ Public Class CertExtendedItemForm
         'Put user code to initialize the page here
         Try
             Me.MasterPage.MessageController.Clear()
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(CERTIFICATE)
+            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(ADMIN)
             Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(CERTITEMEXTENDEDCONTROL)
             Me.UpdateBreadCrum()
             If Not Me.IsPostBack Then
