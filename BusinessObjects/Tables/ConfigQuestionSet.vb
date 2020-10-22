@@ -293,9 +293,6 @@
                     Me.Load(objId)
                 End If
             End If
-            'Catch ex As BOValidationException
-            '    Dim vErrors() As ValidationError = {New ValidationError(ex.Message, Me.GetType(), Nothing, "QuestionSetCode", Nothing)}
-            '    Throw New BOValidationException(vErrors, "ConfigQuestionSet")
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
