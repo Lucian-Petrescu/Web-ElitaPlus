@@ -682,6 +682,7 @@ Public Class Codes
     Public Const SERVICE_TYPE__UTILTY_SERVICE As String = "UTILITY_SERVICE"
     Public Const SERVICE_TYPE_GROUP_NAME As String = "Services"
     Public Const SERVICE_TYPE_SOLICIT_API_URL = "SOLICITATION_API"
+    Public Const SERVICE_TYPE_POLICY_API_URL = "SVC_CERT_ENROLL"
 
 
     'REQ-6230
