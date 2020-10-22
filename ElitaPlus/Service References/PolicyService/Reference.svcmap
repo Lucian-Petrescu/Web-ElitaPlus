@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="2155387f-fcd5-4db9-8715-b6a9f970296e" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/PolicyService/PolicyService.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="PolicyService.wsdl" MetadataType="Wsdl" ID="308126f4-f231-4d88-ac3f-608d38dc6997" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?wsdl" />
+    <MetadataFile FileName="PolicyService.xsd" MetadataType="Schema" ID="89de9027-316d-482d-9612-e1947f87c593" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd3" />
+    <MetadataFile FileName="PolicyService1.xsd" MetadataType="Schema" ID="702ce3ec-34d2-44aa-b48d-a8c6ea89054f" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd10" />
+    <MetadataFile FileName="PolicyService2.xsd" MetadataType="Schema" ID="6ce065f1-3603-4020-9dae-2a6c6442fcfb" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd8" />
+    <MetadataFile FileName="PolicyService3.xsd" MetadataType="Schema" ID="1c14e8a5-f477-41f5-b947-8fea8cc4f799" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd9" />
+    <MetadataFile FileName="PolicyService4.xsd" MetadataType="Schema" ID="ed75fdd7-5d31-48e5-8909-0709df0b31d1" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd4" />
+    <MetadataFile FileName="PolicyService5.xsd" MetadataType="Schema" ID="c5497650-afc7-4fe1-9dba-5d22f3bc6133" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd5" />
+    <MetadataFile FileName="PolicyService6.xsd" MetadataType="Schema" ID="bc33b80e-ef29-4469-9b75-acfdad7a80ec" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd6" />
+    <MetadataFile FileName="PolicyService7.xsd" MetadataType="Schema" ID="9b167831-1df5-4ed9-8238-d9756c48219f" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd7" />
+    <MetadataFile FileName="PolicyService8.xsd" MetadataType="Schema" ID="246d1c3f-47a8-40f4-ac6a-07368da8ac3d" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd0" />
+    <MetadataFile FileName="PolicyService9.xsd" MetadataType="Schema" ID="d378db3c-ff0f-4cab-882e-6682b290d3b0" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd1" />
+    <MetadataFile FileName="PolicyService10.xsd" MetadataType="Schema" ID="c01c535b-757b-4bb5-8090-79b42a2b2db5" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd2" />
+    <MetadataFile FileName="PolicyService1.wsdl" MetadataType="Wsdl" ID="47235d81-6ab9-4711-824e-55061a44dcc0" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="PolicyService11.xsd" MetadataType="Schema" ID="6677774f-48c9-4923-993e-642c1007361a" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd11" />
+    <MetadataFile FileName="PolicyService12.xsd" MetadataType="Schema" ID="65033883-aeac-40de-a98e-4195eb912188" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd12" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

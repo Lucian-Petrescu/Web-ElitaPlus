@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.assurant.com/Elita/PolicyService/Endorse" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/PolicyService/Endorse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/PolicyService/PolicyService.svc?xsd=xsd1" namespace="http://elita.assurant.com/Elita/PolicyService" />
+  <xs:complexType name="UpdateItemInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicyEndorseAction">
+        <xs:sequence>
+          <xs:element name="Manufacturer" nillable="true" type="xs:string" />
+          <xs:element name="Model" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductDescription" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductPrice" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ProductSalesDate" nillable="true" type="xs:dateTime" />
+          <xs:element name="RiskTypeCode" nillable="true" type="xs:string" />
+          <xs:element name="SerialNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SkuNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FirstUseDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="LastUseDate" nillable="true" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="UpdateItemInfo" nillable="true" type="tns:UpdateItemInfo" />
+  <xs:complexType name="BasePolicyEndorseAction">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://elita.assurant.com/Elita/PolicyService" minOccurs="0" name="EndorsementReason" type="q1:EndorsementPolicyReasons" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BasePolicyEndorseAction" nillable="true" type="tns:BasePolicyEndorseAction" />
+  <xs:complexType name="EndorsePolicyExtensionInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicyEndorseAction">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="EmailFulfillment" type="xs:boolean" />
+          <xs:element minOccurs="0" name="ServiceStartDate" nillable="true" type="xs:dateTime">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="NetworkStartDate" nillable="true" type="xs:dateTime">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EndorsePolicyExtensionInfo" nillable="true" type="tns:EndorsePolicyExtensionInfo" />
+  <xs:complexType name="UpdateBankInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicyEndorseAction">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BankLookupCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IbanCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AccountOwnerName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BranchName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BankName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BankSortCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SwiftCode" nillable="true" type="xs:string" />
+          <xs:element xmlns:q2="http://elita.assurant.com/Elita/PolicyService" minOccurs="0" name="AccountType" nillable="true" type="q2:AccountTypes" />
+          <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BranchNumber" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="RoutingNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="UpdateBankInfo" nillable="true" type="tns:UpdateBankInfo" />
+  <xs:complexType name="EndorsePolicyRequest">
+    <xs:sequence>
+      <xs:element name="CertificateNumber" nillable="true" type="xs:string" />
+      <xs:element name="DealerCode" nillable="true" type="xs:string" />
+      <xs:element name="Requests" nillable="true" type="tns:ArrayOfBasePolicyEndorseAction" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EndorsePolicyRequest" nillable="true" type="tns:EndorsePolicyRequest" />
+  <xs:complexType name="ArrayOfBasePolicyEndorseAction">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BasePolicyEndorseAction" nillable="true" type="tns:BasePolicyEndorseAction" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBasePolicyEndorseAction" nillable="true" type="tns:ArrayOfBasePolicyEndorseAction" />
+</xs:schema>

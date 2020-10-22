@@ -104,10 +104,6 @@ Public Class CertInstallmentDAL
                 cciDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             End If
 
-            If Not familyDataset.Tables(BankInfoDAL.TABLE_NAME) Is Nothing AndAlso familyDataset.Tables(BankInfoDAL.TABLE_NAME).Rows.Count > 0 Then
-                Dim biDal As New BankInfoDAL
-                biDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            End If
 
             'Second Pass updates additions and changes
             Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)

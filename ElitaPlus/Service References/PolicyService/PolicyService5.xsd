@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.assurant.com/Elita/PolicyService/PolicySearch" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/PolicyService/PolicySearch" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/PolicyService/PolicyService.svc?xsd=xsd1" namespace="http://elita.assurant.com/Elita/PolicyService" />
+  <xs:complexType name="SearchPolicyByCertificateNumber">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element name="CertificateNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyByCertificateNumber" nillable="true" type="tns:SearchPolicyByCertificateNumber" />
+  <xs:complexType name="BasePolicySearchRequest">
+    <xs:sequence>
+      <xs:element name="CompanyCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BasePolicySearchRequest" nillable="true" type="tns:BasePolicySearchRequest" />
+  <xs:complexType name="SearchPolicyByIdentificationNumber">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IdentificationNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="HomePhoneNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BirthDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyByIdentificationNumber" nillable="true" type="tns:SearchPolicyByIdentificationNumber" />
+  <xs:complexType name="SearchPolicyByMembershipNumber">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MembershipNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="HomePhoneNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="BirthDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyByMembershipNumber" nillable="true" type="tns:SearchPolicyByMembershipNumber" />
+  <xs:complexType name="SearchPolicyByPhoneNumber">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyByPhoneNumber" nillable="true" type="tns:SearchPolicyByPhoneNumber" />
+  <xs:complexType name="SearchPolicyBySerialNumber">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyBySerialNumber" nillable="true" type="tns:SearchPolicyBySerialNumber" />
+  <xs:complexType name="SearchPolicyByServiceLineNumber">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ServiceLineNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyByServiceLineNumber" nillable="true" type="tns:SearchPolicyByServiceLineNumber" />
+  <xs:complexType name="SearchPolicyByInvoiceNumber">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyByInvoiceNumber" nillable="true" type="tns:SearchPolicyByInvoiceNumber" />
+  <xs:complexType name="SearchPolicyByEmailPostalCode">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CompanyGroup" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+          <xs:element name="Email" nillable="true" type="xs:string" />
+          <xs:element name="PostalCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyByEmailPostalCode" nillable="true" type="tns:SearchPolicyByEmailPostalCode" />
+  <xs:complexType name="SearchPolicyByInvoiceNumberPostalCode">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+          <xs:element name="InvoiceNumber" nillable="true" type="xs:string" />
+          <xs:element name="PostalCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyByInvoiceNumberPostalCode" nillable="true" type="tns:SearchPolicyByInvoiceNumberPostalCode" />
+  <xs:complexType name="SearchPolicyByDealerGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CompanyGroup" nillable="true" type="xs:string" />
+          <xs:element name="DealerGroup" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IdentificationNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PostalCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ServiceLineNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyByDealerGroup" nillable="true" type="tns:SearchPolicyByDealerGroup" />
+  <xs:complexType name="SearchPolicyByImeiNumber">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+          <xs:element name="ImeiNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyByImeiNumber" nillable="true" type="tns:SearchPolicyByImeiNumber" />
+  <xs:complexType name="SearchPolicyByIdentificationNumberPhoneNumber">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IdentificationNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyByIdentificationNumberPhoneNumber" nillable="true" type="tns:SearchPolicyByIdentificationNumberPhoneNumber" />
+  <xs:complexType name="SearchPolicyByImeiNumberPhoneNumber">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element name="ImeiNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyByImeiNumberPhoneNumber" nillable="true" type="tns:SearchPolicyByImeiNumberPhoneNumber" />
+  <xs:complexType name="SearchPolicyByPhoneNumberPostalCode">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string" />
+          <xs:element name="PostalCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyByPhoneNumberPostalCode" nillable="true" type="tns:SearchPolicyByPhoneNumberPostalCode" />
+  <xs:complexType name="SearchPolicyByEmail">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+          <xs:element name="Email" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyByEmail" nillable="true" type="tns:SearchPolicyByEmail" />
+  <xs:complexType name="SearchPolicyByEmailDateofBirth">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BasePolicySearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+          <xs:element name="Email" nillable="true" type="xs:string" />
+          <xs:element name="BirthDate" nillable="true" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchPolicyByEmailDateofBirth" nillable="true" type="tns:SearchPolicyByEmailDateofBirth" />
+  <xs:complexType name="SearchRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="PolicyLookup" nillable="true" type="tns:BasePolicySearchRequest" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SearchRequest" nillable="true" type="tns:SearchRequest" />
+  <xs:complexType name="SearchResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://elita.assurant.com/Elita/PolicyService" base="q1:BasePolicyResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ErrorCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PolicyResponse" nillable="true" type="tns:ArrayOfSearchPolicyResponseInfo" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchResponse" nillable="true" type="tns:SearchResponse" />
+  <xs:complexType name="ArrayOfSearchPolicyResponseInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SearchPolicyResponseInfo" nillable="true" type="tns:SearchPolicyResponseInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSearchPolicyResponseInfo" nillable="true" type="tns:ArrayOfSearchPolicyResponseInfo" />
+  <xs:complexType name="SearchPolicyResponseInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="HomePhone" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IdentificationNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ImeiNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ItemDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ItemEffectiveDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Manufacturer" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProductCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProductDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProductSalesDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="SKUNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ServiceLineNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Statuscode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WarrantySalesDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="WorkPhone" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SearchPolicyResponseInfo" nillable="true" type="tns:SearchPolicyResponseInfo" />
+  <xs:complexType name="GetDetailsRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://elita.assurant.com/Elita/PolicyService" base="q2:BasePolicyRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CultureCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="GetDetailsRequest" nillable="true" type="tns:GetDetailsRequest" />
+</xs:schema>

@@ -9,6 +9,9 @@ Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita
 Imports System.Text
+Imports policyservice = Assurant.ElitaPlus.ElitaPlusWebApp.PolicyService
+Imports Assurant.Elita.ClientIntegration
+Imports System.Collections.Generic
 
 Namespace Certificates
     Partial Class CertificateForm
@@ -168,10 +171,10 @@ Namespace Certificates
         Public Const CERT_EXT_CERT_ID_IDX As Integer = 1
         Public Const CERT_EXT_FIELD_NAME_IDX As Integer = 2
         Public Const CERT_EXT_FIELD_VALUE_IDX As Integer = 3
-        Public Const CERT_EXT_CREATED_BY_IDX as Integer = 4
-        Public Const CERT_EXT_CREATED_DATE_IDX as Integer = 5
-        Public Const CERT_EXT_MODIFIED_BY_IDX as Integer = 6
-        Public Const CERT_EXT_MODIFIED_DATE_IDX as Integer = 7
+        Public Const CERT_EXT_CREATED_BY_IDX As Integer = 4
+        Public Const CERT_EXT_CREATED_DATE_IDX As Integer = 5
+        Public Const CERT_EXT_MODIFIED_BY_IDX As Integer = 6
+        Public Const CERT_EXT_MODIFIED_DATE_IDX As Integer = 7
 
 #End Region
 
@@ -796,7 +799,7 @@ Namespace Certificates
                         Me.State.MyBO = New Certificate(CType(Me.CallingParameters, Guid))
                     Catch ex As Exception
                         Me.State.MyBO = New Certificate(CType(Me.CallingParameters, Parameters).CertificateId)
-                        Me.state.IsCallerAuthenticated = CType(Me.CallingParameters, Parameters).IsCallerAuthenticated
+                        Me.State.IsCallerAuthenticated = CType(Me.CallingParameters, Parameters).IsCallerAuthenticated
                     End Try
                     Me.CertId = Me.State.MyBO.Id
                     Me.State.ValFlag = Me.State.MyBO.GetValFlag()
@@ -1485,7 +1488,7 @@ Namespace Certificates
                         Else
                             ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, True)
                         End If
-                    ElseIf Me.State.certCancelRequestBO Is Nothing And Not Me.State.MyBO.getCertCancelRequestID.Equals(guid.Empty) Then
+                    ElseIf Me.State.certCancelRequestBO Is Nothing And Not Me.State.MyBO.getCertCancelRequestID.Equals(Guid.Empty) Then
                         Me.State.CertCancelRequestId = Me.State.MyBO.getCertCancelRequestID
                         Me.State.certCancelRequestBO = New CertCancelRequest(Me.State.CertCancelRequestId)
                         ControlMgr.SetVisibleControl(Me, btnCreateNewRequest_WRITE, False)
@@ -2035,7 +2038,7 @@ Namespace Certificates
                     End If
                 End If
             End If
-            ControlMgr.SetVisibleControl(Me, btnBankInfo, result)
+            ControlMgr.SetVisibleControl(Me, btnBankInfo, True)
 
         End Sub
 
@@ -2823,8 +2826,8 @@ Namespace Certificates
                     End If
 
                 Else
-                        'populate the dropdowns
-                        PopulateIncomeRangeDropdown(cboIncomeRangeId)
+                    'populate the dropdowns
+                    PopulateIncomeRangeDropdown(cboIncomeRangeId)
                     PopulatePoliticallyExposedDropdown(cboPoliticallyExposedId)
                     Me.PopulateControlFromBOProperty(Me.moOccupationText, .Occupation)
                     Me.SetSelectedItem(Me.cboPoliticallyExposedId, .PoliticallyExposedId)
@@ -2861,17 +2864,17 @@ Namespace Certificates
                     End If
                     'Gender
                     PopulateGenderDropdown(ddlGender)
-                        Me.SetSelectedItem(Me.ddlGender, .Gender)
-                        Me.PopulateControlFromBOProperty(Me.moGenderText, Me.ddlGender.SelectedItem.Text) '.Gender
-                        'CUIT_CUIL
-                        Me.PopulateControlFromBOProperty(Me.moCUIT_CUILText, .CUIT_CUIL)
-                        'Person Type
-                        PopulatePersonTypeDropdown(ddlPersonType)
-                        Me.SetSelectedItem(Me.ddlPersonType, .PersonTypeId)
-                        Me.PopulateControlFromBOProperty(Me.moPersonTypeText, Me.ddlPersonType.SelectedItem.Text)
-                    End If
-                    'REQ-1255 - AML Regulations - END
-                    If Not .ReinsuranceStatusId.Equals(Guid.Empty) Then
+                    Me.SetSelectedItem(Me.ddlGender, .Gender)
+                    Me.PopulateControlFromBOProperty(Me.moGenderText, Me.ddlGender.SelectedItem.Text) '.Gender
+                    'CUIT_CUIL
+                    Me.PopulateControlFromBOProperty(Me.moCUIT_CUILText, .CUIT_CUIL)
+                    'Person Type
+                    PopulatePersonTypeDropdown(ddlPersonType)
+                    Me.SetSelectedItem(Me.ddlPersonType, .PersonTypeId)
+                    Me.PopulateControlFromBOProperty(Me.moPersonTypeText, Me.ddlPersonType.SelectedItem.Text)
+                End If
+                'REQ-1255 - AML Regulations - END
+                If Not .ReinsuranceStatusId.Equals(Guid.Empty) Then
                     ControlMgr.SetVisibleControl(Me, moReinsuranceStatusLabel, True)
                     ControlMgr.SetVisibleControl(Me, moReinsuranceStatusText, True)
                     Me.PopulateControlFromBOProperty(Me.moReinsuranceStatusText, LookupListNew.GetDescriptionFromId(LookupListNew.LK_REINSURANCE_STATUSES, .ReinsuranceStatusId))
@@ -3224,11 +3227,11 @@ Namespace Certificates
                         Me.PopulateBOProperty(Me.State.MyBO, "CityOfBirth", Me.moCityOfBirthText)
                     End If
                     Me.PopulateBOProperty(Me.State.MyBO, "Gender", Me.ddlGender)
-                        Me.PopulateBOProperty(Me.State.MyBO, "PersonTypeId", Me.ddlPersonType)
-                        Me.PopulateBOProperty(Me.State.MyBO, "CUIT_CUIL", Me.moCUIT_CUILText)
-                    End If
-                    'REQ-1255 - AML Regulations - END
-                    If Not .CustomerId.Equals(Guid.Empty) Then
+                    Me.PopulateBOProperty(Me.State.MyBO, "PersonTypeId", Me.ddlPersonType)
+                    Me.PopulateBOProperty(Me.State.MyBO, "CUIT_CUIL", Me.moCUIT_CUILText)
+                End If
+                'REQ-1255 - AML Regulations - END
+                If Not .CustomerId.Equals(Guid.Empty) Then
                     Me.PopulateBOProperty(Me.State.MyBO, "CustomerFirstName", Me.moCustomerFirstNameText)
                     Me.PopulateBOProperty(Me.State.MyBO, "CustomerMiddleName", Me.moCustomerMiddleNameText)
                     Me.PopulateBOProperty(Me.State.MyBO, "CustomerLastName", Me.moCustomerLastNameText)
@@ -4862,17 +4865,16 @@ Namespace Certificates
                     If Me.State.creditCardPayment Then
                         Me.State.TheDirectDebitState.CreditCardInfo.Save()
                         Me.State.TheDirectDebitState.certInstallment.CreditCardInfoId = Me.State.TheDirectDebitState.CreditCardInfo.Id
-                    ElseIf Me.State.directDebitPayment Then
+                    ElseIf Me.State.directDebitPayment AndAlso Me.State.TheDirectDebitState.bankInfo.IsDirty Then
+
                         Me.State.TheDirectDebitState.bankInfo.DomesticTransfer = False
                         Me.State.TheDirectDebitState.bankInfo.InternationalTransfer = False
                         Me.State.TheDirectDebitState.bankInfo.InternationalTransfer = False
                         Me.State.TheDirectDebitState.bankInfo.SourceCountryID = Me.State.TheDirectDebitState.bankInfo.CountryID
-                        Me.State.TheDirectDebitState.bankInfo.Save()
-                        Me.State.TheDirectDebitState.certInstallment.BankInfoId = Me.State.TheDirectDebitState.bankInfo.Id
+                        BankInfoEndorseRequest(Me.State.TheDirectDebitState.bankInfo)
                     End If
 
                     If Me.State.BillingInformationChanged Then AdjustTheBillingStatus()
-
                     Me.State.TheDirectDebitState.certInstallment.Save()
                     Me.State.IsEdit = False
                     Me.PopulatePremiumInfoTab()
@@ -4889,7 +4891,42 @@ Namespace Certificates
 
             End Try
         End Sub
+        Private Sub BankInfoEndorseRequest(ByVal bankinfo As BankInfo)
+            Dim endorseRequest As PolicyService.EndorsePolicyRequest = New PolicyService.EndorsePolicyRequest
+            Dim updateBankInfo As PolicyService.UpdateBankInfo = New PolicyService.UpdateBankInfo
+            updateBankInfo.EndorsementReason = PolicyService.EndorsementPolicyReasons.BankFulfillment
 
+            updateBankInfo.AccountOwnerName = bankinfo.Account_Name
+            updateBankInfo.AccountNumber = bankinfo.Account_Number
+            updateBankInfo.RoutingNumber = bankinfo.Bank_Id
+            endorseRequest.DealerCode = Me.State.MyBO.Dealer.Dealer
+            endorseRequest.CertificateNumber = Me.State.MyBO.CertNumber
+            endorseRequest.Requests = New PolicyService.BasePolicyEndorseAction() {updateBankInfo}
+
+            Try
+                WcfClientHelper.Execute(Of PolicyService.PolicyServiceClient, PolicyService.IPolicyService, PolicyService.EndorseResponse)(
+                                                                            GetClient(),
+                                                                            New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                                                                             Function(ByVal c As PolicyService.PolicyServiceClient)
+                                                                                 Return c.Endorse(endorseRequest)
+                                                                             End Function)
+            Catch ex As Exception
+                '///CHANGE THE MESSAGE CODE
+                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+                Throw
+            End Try
+        End Sub
+        Private Function GetClient() As PolicyService.PolicyServiceClient
+            Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__SVC_CERT_ENROLL), False)
+            Dim client = New PolicyService.PolicyServiceClient("CustomBinding_IPolicyService", oWebPasswd.Url)
+            client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+            client.ClientCredentials.UserName.Password = oWebPasswd.Password
+            'Dim client = New PolicyService.PolicyServiceClient("CustomBinding_IPolicyService", "http://localhost/PolicyService/PolicyService.svc")
+            'client.ClientCredentials.UserName.UserName = "elita1" ' oWebPasswd.UserId
+            'client.ClientCredentials.UserName.Password = "elita1"
+
+            Return client
+        End Function
         Private Sub AdjustTheBillingStatus()
             With Me.State.TheDirectDebitState.certInstallment
                 Dim currentStatus As String = LookupListNew.GetCodeFromId(LookupListNew.GetBillingStatusListShort(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.State.BillingStatusId)
@@ -5535,21 +5572,21 @@ Namespace Certificates
         End Sub
 
 
-        private function CoverageExpirationDate(ByVal coverageBeginDate as Date, ByVal maxRenewalDuration as Integer) as Date?
-            dim expirationDate as Date = DateAdd(DateInterval.Month, maxRenewalDuration, coverageBeginDate)
-            return DateAdd(DateInterval.Day, -1, expirationDate)
-        End function
+        Private Function CoverageExpirationDate(ByVal coverageBeginDate As Date, ByVal maxRenewalDuration As Integer) As Date?
+            Dim expirationDate As Date = DateAdd(DateInterval.Month, maxRenewalDuration, coverageBeginDate)
+            Return DateAdd(DateInterval.Day, -1, expirationDate)
+        End Function
 
-        private function NumberOfRenewalsRemaining(ByVal renewalDuration as Integer, ByVal coverageDuration as Integer, ByVal numberOfRenewals As Integer) As Integer
-            Dim renewalsRemaining as Integer = renewalDuration/coverageDuration - (numberOfRenewals + 1) '+1 for initial registration
+        Private Function NumberOfRenewalsRemaining(ByVal renewalDuration As Integer, ByVal coverageDuration As Integer, ByVal numberOfRenewals As Integer) As Integer
+            Dim renewalsRemaining As Integer = renewalDuration / coverageDuration - (numberOfRenewals + 1) '+1 for initial registration
 
-            if renewalsRemaining < 0 then
+            If renewalsRemaining < 0 Then
                 'potential data issue - should we log an 'exception'?
                 renewalsRemaining = 0
             End If
 
-            return renewalsRemaining
-        End function
+            Return renewalsRemaining
+        End Function
 
         Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles Grid.ItemDataBound
             Try
@@ -5559,10 +5596,10 @@ Namespace Certificates
 
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
 
-                    Dim maxRenewalDuration as String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_MAX_RENEWAL_DURATION).ToString
-                    Dim coverageBeginDate as Date = CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date)
-                    Dim coverageDuration as String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_COVERAGE_DURATION).ToString
-                    Dim numberOfRenewals as String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_NO_OF_RENEWALS).ToString
+                    Dim maxRenewalDuration As String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_MAX_RENEWAL_DURATION).ToString
+                    Dim coverageBeginDate As Date = CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date)
+                    Dim coverageDuration As String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_COVERAGE_DURATION).ToString
+                    Dim numberOfRenewals As String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_NO_OF_RENEWALS).ToString
 
                     e.Item.Cells(Me.GRID_COL_RISK_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_RISK_TYPE).ToString
                     e.Item.Cells(Me.GRID_COL_BEGIN_DATE_IDX).Text = Me.GetDateFormattedStringNullable(coverageBeginDate)
@@ -5574,13 +5611,13 @@ Namespace Certificates
                     'e.Item.Cells(Me.GRID_COL_BEGIN_KM_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_Ext_Begin_KM_MI).ToString
                     'e.Item.Cells(Me.GRID_COL_END_KM_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_Ext_End_KM_MI).ToString
 
-                    If (Not String.IsNullOrWhiteSpace(maxRenewalDuration)) then
+                    If (Not String.IsNullOrWhiteSpace(maxRenewalDuration)) Then
                         e.Item.Cells(Me.GRID_COL_MAX_RENEWAL_DURATION_IDX).Text = maxRenewalDuration
-                        Dim renewalDuration as Integer = maxRenewalDuration.ToInteger()
+                        Dim renewalDuration As Integer = maxRenewalDuration.ToInteger()
                         If (0 < renewalDuration) Then
                             e.Item.Cells(Me.GRID_COL_COVERAGE_EXPIRATION_DATE_IDX).Text = Me.GetDateFormattedStringNullable(CoverageExpirationDate(coverageBeginDate, renewalDuration))
                         End If
-                        Dim coverDuration as Integer = coverageDuration.ToInteger()
+                        Dim coverDuration As Integer = coverageDuration.ToInteger()
                         If (0 < coverDuration) Then
                             e.Item.Cells(Me.GRID_COL_NO_OF_RENEWALS_REMAINING_IDX).Text = NumberOfRenewalsRemaining(renewalDuration, coverDuration, numberOfRenewals.ToInteger()).ToString
                         End If
@@ -6872,12 +6909,12 @@ Namespace Certificates
                     e.Item.Cells(CERT_EXT_CREATED_BY_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_BY).ToString
                     e.Item.Cells(CERT_EXT_MODIFIED_BY_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_BY).ToString
                     e.Item.Cells(CERT_EXT_CREATED_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_DATE), Date))
-                    If Not IsDBNull(dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE)) then
+                    If Not IsDBNull(dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE)) Then
                         e.Item.Cells(CERT_EXT_MODIFIED_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE), Date))
-                    Else 
+                    Else
                         e.Item.Cells(CERT_EXT_MODIFIED_DATE_IDX).Text = String.Empty
                     End If
-                    
+
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -6941,7 +6978,7 @@ Namespace Certificates
 
             ControlMgr.SetVisibleControl(Me, GridCertExtFields, Me.State.IsCertExtFieldsGridVisible)
         End Sub
-        
+
 #End Region
 
 #Region "Button Clicks"
