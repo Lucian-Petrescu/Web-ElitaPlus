@@ -22,6 +22,16 @@
                 lblDealer.click()
             }
         }
+
+        function changeSelectionDealer() {
+                var rdoDealers = document.getElementById("<%=rdoDealers.ClientID %>");
+                rdoDealers.checked = true;
+        }
+
+        function changeSelectionCompany() {
+                var rdoComapany = document.getElementById("<%=rdoCompanies.ClientID %>");
+                rdoComapany.checked = true;
+        }
     </script>
     <script type="text/javascript">    
         function InEnrollment_SelectedIndexChanged(obj) { 

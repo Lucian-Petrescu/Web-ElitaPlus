@@ -330,6 +330,8 @@ Public Class CertExtendedItemForm
                 Me.PopulateFormFromBOs()
                 rdoDealers.Attributes.Add("onClick", "javascript:changeSelection()")
                 rdoCompanies.Attributes.Add("onClick", "javascript:changeSelection()")
+                hrefCompany.Attributes.Add("onClick", "javascript:changeSelectionCompany()")
+                hrefDealer.Attributes.Add("onClick", "javascript:changeSelectionDealer()")
             Else
                 BindBoPropertiesToGridHeaders()
             End If
