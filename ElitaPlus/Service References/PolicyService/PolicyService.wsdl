@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://elita.assurant.com/Elita/PolicyService" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://elita.assurant.com/Elita/PolicyService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://elita.assurant.com/Elita/PolicyService/Imports">
+      <xsd:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd1" namespace="http://elita.assurant.com/Elita/PolicyService" />
+      <xsd:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd3" namespace="http://elita.assurant.com/PolicyService.Contracts/Faults" />
+      <xsd:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd2" namespace="http://elita.assurant.com/Elita/PolicyService/Enroll" />
+      <xsd:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd4" namespace="http://elita.assurant.com/Elita/PolicyService/Cancel" />
+      <xsd:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd5" namespace="http://elita.assurant.com/Elita/PolicyService/PolicySearch" />
+      <xsd:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd6" namespace="http://elita.assurant.com/Elita/PolicyService/Endorse" />
+      <xsd:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd8" namespace="http://elita.assurant.com/PolicyService/Faults" />
+      <xsd:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd7" namespace="http://elita.assurant.com/Elita/PolicyService/RegisterItem" />
+      <xsd:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd9" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd10" namespace="http://elita.assurant.com/Elita/PolicyService/ExpireRegisteredItem" />
+      <xsd:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd11" namespace="http://elita.assurant.com/Elita/PolicyService/CustomerProfile" />
+      <xsd:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd12" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.PolicyService.Contracts.PolicyService.GetDetails" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IPolicyService_Enroll_InputMessage">
+    <wsdl:part name="parameters" element="tns:Enroll" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Enroll_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EnrollResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Enroll_EnrollFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q1:EnrollFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Enroll_CompanyNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q2:CompanyNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Enroll_MultiplePrimaryCustomersFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q3:MultiplePrimaryCustomersFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Enroll_DuplicateIdentificationNumberFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q4:DuplicateIdentificationNumberFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Enroll_BankAcOrCreditCardAllowedFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q5:BankAcOrCreditCardAllowedFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Enroll_CardTypeFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q6:CardTypeFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Cancel_InputMessage">
+    <wsdl:part name="parameters" element="tns:Cancel" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Cancel_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CancelResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Cancel_EnrollFaultFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q7:EnrollFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Cancel_CertificateNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q8:CertificateNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Search_InputMessage">
+    <wsdl:part name="parameters" element="tns:Search" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Search_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Search_EnrollFaultFault_FaultMessage">
+    <wsdl:part xmlns:q9="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q9:EnrollFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Search_CertificateNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q10="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q10:CertificateNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_GetDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDetails" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_GetDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_GetDetails_EnrollFaultFault_FaultMessage">
+    <wsdl:part xmlns:q11="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q11:EnrollFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_GetDetails_CertificateNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q12="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q12:CertificateNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_GetDetails_InvalidCultureCodeFaultFault_FaultMessage">
+    <wsdl:part xmlns:q13="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q13:InvalidCultureCodeFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_ComputeRefund_InputMessage">
+    <wsdl:part name="parameters" element="tns:ComputeRefund" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_ComputeRefund_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ComputeRefundResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_ComputeRefund_EnrollFaultFault_FaultMessage">
+    <wsdl:part xmlns:q14="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q14:EnrollFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_ComputeRefund_DealerNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q15="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q15:DealerNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_ComputeRefund_CertificateNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q16="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q16:CertificateNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Endorse_InputMessage">
+    <wsdl:part name="parameters" element="tns:Endorse" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Endorse_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EndorseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_Endorse_EndorseFaultFault_FaultMessage">
+    <wsdl:part xmlns:q17="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q17:EnrollFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_RegisterItem_InputMessage">
+    <wsdl:part name="parameters" element="tns:RegisterItem" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_RegisterItem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RegisterItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_RegisterItem_EnrollFaultFault_FaultMessage">
+    <wsdl:part xmlns:q18="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q18:EnrollFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_RegisterItem_RegItemFaultFault_FaultMessage">
+    <wsdl:part xmlns:q19="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q19:RegItemFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_RegisterItem_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q20="http://elita.assurant.com/PolicyService/Faults" name="detail" element="q20:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_UpdateRegisteredItem_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateRegisteredItem" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_UpdateRegisteredItem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateRegisteredItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_UpdateRegisteredItem_EnrollFaultFault_FaultMessage">
+    <wsdl:part xmlns:q21="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q21:EnrollFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_ExpireRegisteredItem_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExpireRegisteredItem" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_ExpireRegisteredItem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExpireRegisteredItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_ExpireRegisteredItem_EnrollFaultFault_FaultMessage">
+    <wsdl:part xmlns:q22="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q22:EnrollFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_PullUpdate_InputMessage">
+    <wsdl:part name="parameters" element="tns:PullUpdate" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_PullUpdate_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PullUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_PullUpdate_PullUpdateFaultFault_FaultMessage">
+    <wsdl:part xmlns:q23="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q23:PullUpdateFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_GetDetailsByIdentifier_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDetailsByIdentifier" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_GetDetailsByIdentifier_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDetailsByIdentifierResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_GetDetailsByIdentifier_EnrollFaultFault_FaultMessage">
+    <wsdl:part xmlns:q24="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q24:EnrollFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_GetDetailsByIdentifier_DataNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q25="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q25:DataNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_GetDetailsByIdentifier_CompanyNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q26="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q26:CompanyNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_GetDetailsByIdentifier_DealerGroupNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q27="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q27:DealerGroupNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IPolicyService_GetDetailsByIdentifier_DealerNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q28="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q28:DealerNotFoundFault" />
+  </wsdl:message>
+  <wsdl:portType name="IPolicyService">
+    <wsdl:operation name="Enroll">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/Enroll" message="tns:IPolicyService_Enroll_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/EnrollResponse" message="tns:IPolicyService_Enroll_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/EnrollEnrollFaultFault" name="EnrollFaultFault" message="tns:IPolicyService_Enroll_EnrollFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/EnrollCompanyNotFoundFaultFault" name="CompanyNotFoundFaultFault" message="tns:IPolicyService_Enroll_CompanyNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/EnrollMultiplePrimaryCustomersFoundFaultFault" name="MultiplePrimaryCustomersFoundFaultFault" message="tns:IPolicyService_Enroll_MultiplePrimaryCustomersFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/EnrollDuplicateIdentificationNumberFoundFaultFault" name="DuplicateIdentificationNumberFoundFaultFault" message="tns:IPolicyService_Enroll_DuplicateIdentificationNumberFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/EnrollBankAcOrCreditCardAllowedFaultFault" name="BankAcOrCreditCardAllowedFaultFault" message="tns:IPolicyService_Enroll_BankAcOrCreditCardAllowedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/EnrollCardTypeFaultFault" name="CardTypeFaultFault" message="tns:IPolicyService_Enroll_CardTypeFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Cancel">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/Cancel" message="tns:IPolicyService_Cancel_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/CancelResponse" message="tns:IPolicyService_Cancel_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/CancelEnrollFaultFault" name="EnrollFaultFault" message="tns:IPolicyService_Cancel_EnrollFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/CancelCertificateNotFoundFaultFault" name="CertificateNotFoundFaultFault" message="tns:IPolicyService_Cancel_CertificateNotFoundFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Search">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/Search" message="tns:IPolicyService_Search_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/SearchResponse" message="tns:IPolicyService_Search_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/SearchEnrollFaultFault" name="EnrollFaultFault" message="tns:IPolicyService_Search_EnrollFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/SearchCertificateNotFoundFaultFault" name="CertificateNotFoundFaultFault" message="tns:IPolicyService_Search_CertificateNotFoundFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDetails">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/GetDetails" message="tns:IPolicyService_GetDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/GetDetailsResponse" message="tns:IPolicyService_GetDetails_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/GetDetailsEnrollFaultFault" name="EnrollFaultFault" message="tns:IPolicyService_GetDetails_EnrollFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/GetDetailsCertificateNotFoundFaultFault" name="CertificateNotFoundFaultFault" message="tns:IPolicyService_GetDetails_CertificateNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/GetDetailsInvalidCultureCodeFaultFault" name="InvalidCultureCodeFaultFault" message="tns:IPolicyService_GetDetails_InvalidCultureCodeFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ComputeRefund">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/ComputeRefund" message="tns:IPolicyService_ComputeRefund_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/ComputeRefundResponse" message="tns:IPolicyService_ComputeRefund_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/ComputeRefundEnrollFaultFault" name="EnrollFaultFault" message="tns:IPolicyService_ComputeRefund_EnrollFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/ComputeRefundDealerNotFoundFaultFault" name="DealerNotFoundFaultFault" message="tns:IPolicyService_ComputeRefund_DealerNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/ComputeRefundCertificateNotFoundFaultFault" name="CertificateNotFoundFaultFault" message="tns:IPolicyService_ComputeRefund_CertificateNotFoundFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Endorse">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/Endorse" message="tns:IPolicyService_Endorse_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/EndorseResponse" message="tns:IPolicyService_Endorse_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/EndorseEndorseFaultFault" name="EndorseFaultFault" message="tns:IPolicyService_Endorse_EndorseFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterItem">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/RegisterItem" message="tns:IPolicyService_RegisterItem_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/RegisterItemResponse" message="tns:IPolicyService_RegisterItem_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/RegisterItemEnrollFaultFault" name="EnrollFaultFault" message="tns:IPolicyService_RegisterItem_EnrollFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/RegisterItemRegItemFaultFault" name="RegItemFaultFault" message="tns:IPolicyService_RegisterItem_RegItemFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/RegisterItemValidationFaultFault" name="ValidationFaultFault" message="tns:IPolicyService_RegisterItem_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRegisteredItem">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/UpdateRegisteredItem" message="tns:IPolicyService_UpdateRegisteredItem_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/UpdateRegisteredItemResponse" message="tns:IPolicyService_UpdateRegisteredItem_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/UpdateRegisteredItemEnrollFaultFault" name="EnrollFaultFault" message="tns:IPolicyService_UpdateRegisteredItem_EnrollFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExpireRegisteredItem">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/ExpireRegisteredItem" message="tns:IPolicyService_ExpireRegisteredItem_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/ExpireRegisteredItemResponse" message="tns:IPolicyService_ExpireRegisteredItem_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/ExpireRegisteredItemEnrollFaultFault" name="EnrollFaultFault" message="tns:IPolicyService_ExpireRegisteredItem_EnrollFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PullUpdate">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/PullUpdate" message="tns:IPolicyService_PullUpdate_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/PullUpdateResponse" message="tns:IPolicyService_PullUpdate_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/PullUpdatePullUpdateFaultFault" name="PullUpdateFaultFault" message="tns:IPolicyService_PullUpdate_PullUpdateFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDetailsByIdentifier">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/GetDetailsByIdentifier" message="tns:IPolicyService_GetDetailsByIdentifier_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/GetDetailsByIdentifierResponse" message="tns:IPolicyService_GetDetailsByIdentifier_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/GetDetailsByIdentifierEnrollFaultFault" name="EnrollFaultFault" message="tns:IPolicyService_GetDetailsByIdentifier_EnrollFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/GetDetailsByIdentifierDataNotFoundFaultFault" name="DataNotFoundFaultFault" message="tns:IPolicyService_GetDetailsByIdentifier_DataNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/GetDetailsByIdentifierCompanyNotFoundFaultFault" name="CompanyNotFoundFaultFault" message="tns:IPolicyService_GetDetailsByIdentifier_CompanyNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/GetDetailsByIdentifierDealerGroupNotFoundFaultFault" name="DealerGroupNotFoundFaultFault" message="tns:IPolicyService_GetDetailsByIdentifier_DealerGroupNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/IPolicyService/GetDetailsByIdentifierDealerNotFoundFaultFault" name="DealerNotFoundFaultFault" message="tns:IPolicyService_GetDetailsByIdentifier_DealerNotFoundFaultFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>
