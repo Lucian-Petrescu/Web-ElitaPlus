@@ -6871,7 +6871,11 @@ Namespace Certificates
                     e.Item.Cells(CERT_EXT_FIELD_VALUE_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE).ToString
                     e.Item.Cells(CERT_EXT_CREATED_BY_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_BY).ToString
                     e.Item.Cells(CERT_EXT_MODIFIED_BY_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_BY).ToString
-                    e.Item.Cells(CERT_EXT_CREATED_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_DATE), Date))
+                    If Not IsDBNull(dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_DATE)) Then
+                        e.Item.Cells(CERT_EXT_CREATED_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_DATE), Date))
+                    Else
+                        e.Item.Cells(CERT_EXT_CREATED_DATE_IDX).Text = String.Empty
+                    End If
                     If Not IsDBNull(dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE)) then
                         e.Item.Cells(CERT_EXT_MODIFIED_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE), Date))
                     Else 
@@ -7577,6 +7581,9 @@ Namespace Certificates
                             State.validateAddress = False
                         End If
                         Me.PopulateBOProperty(Me.State.certCancellationBO, "PaymentMethodId", Me.PaymentMethodDrop)
+                        If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
+                            BankControlsEnableOnPaymentMethod()
+                        End If
                     End If 'Not inputAmountRequiredMissing
                 Else 'Not errorExist
                     ControlMgr.SetVisibleControl(Me, RefundAmtTextbox, False)
@@ -7603,6 +7610,29 @@ Namespace Certificates
             Finally
                 Me.PopulatePremiumInfoTab()
             End Try
+        End Sub
+
+        Private Sub BankControlsEnableOnPaymentMethod()
+            Dim objCompany As New Company(LookupListNew.GetIdFromCode(LookupListNew.LK_COMPANY, Me.State.companyCode))
+            Dim selectedPaymentMethod As Guid
+            selectedPaymentMethod = Me.GetSelectedItem(Me.PaymentMethodDrop)
+
+            Me.moBankInfoController.Visible = True
+            Me.State.BankInfoBO = Nothing
+            Me.State.BankInfoBO = Me.State.certCancellationBO.bankinfo
+
+            Me.State.BankInfoBO.CountryID = Me.State.MyBO.AddressChild.CountryId
+            Me.State.BankInfoBO.SourceCountryID = objCompany.CountryId
+            Me.moBankInfoController.EnableDisableControls()
+            Me.State.BankInfoBO.Account_Name = Me.moCustomerNameText.Text.Trim
+            Me.State.BankInfoBO.PaymentMethodId = selectedPaymentMethod
+            'Me.State.BankInfoBO.ACCOUNT_NUMBER = System.DBNull.Value
+
+            Me.moBankInfoController.Bind(Me.State.BankInfoBO)
+            Me.State.BankInfoCtrVisible = True
+
+            Me.moPaymentOrderInfoCtrl.Visible = False
+            Me.State.PaymentOrderInfoCtrVisible = False
         End Sub
 
         Private Sub btnCancelRequestSave_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCancelRequestSave_WRITE.Click
@@ -7968,28 +7998,7 @@ Namespace Certificates
             selectedPaymentMethod = Me.GetSelectedItem(Me.PaymentMethodDrop)
             Me.PopulateBOProperty(Me.State.certCancellationBO, "PaymentMethodId", Me.PaymentMethodDrop)
             If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
-
-
-                ' SHOW THE BANK INFO USER CONTROL HERE -----
-                ' Me.trbank.Visible = True
-                Me.moBankInfoController.Visible = True
-                Me.State.BankInfoBO = Nothing
-                Me.State.BankInfoBO = Me.State.certCancellationBO.bankinfo
-
-                Me.State.BankInfoBO.CountryID = Me.State.MyBO.AddressChild.CountryId
-                Me.State.BankInfoBO.SourceCountryID = objCompany.CountryId
-                Me.moBankInfoController.EnableDisableControls()
-                Me.State.BankInfoBO.Account_Name = Me.moCustomerNameText.Text.Trim
-                Me.State.BankInfoBO.PaymentMethodId = selectedPaymentMethod
-                'Me.State.BankInfoBO.ACCOUNT_NUMBER = System.DBNull.Value
-
-                Me.moBankInfoController.Bind(Me.State.BankInfoBO)
-                Me.State.BankInfoCtrVisible = True
-
-                Me.moPaymentOrderInfoCtrl.Visible = False
-                Me.State.PaymentOrderInfoCtrVisible = False
-
-                'Me.moBankInfoController.
+                BankControlsEnableOnPaymentMethod()
             ElseIf LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__PAYMENT_ORDER Then
                 Me.moBankInfoController.Visible = False
                 Me.State.BankInfoCtrVisible = False
