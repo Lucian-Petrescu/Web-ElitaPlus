@@ -9,6 +9,9 @@ Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita
 Imports System.Text
+Imports Policyservice = Assurant.ElitaPlus.ElitaPlusWebApp.PolicyService
+Imports Assurant.Elita.ClientIntegration
+Imports System.Collections.Generic
 
 Namespace Certificates
     Partial Class CertificateForm
@@ -4862,13 +4865,13 @@ Namespace Certificates
                     If Me.State.creditCardPayment Then
                         Me.State.TheDirectDebitState.CreditCardInfo.Save()
                         Me.State.TheDirectDebitState.certInstallment.CreditCardInfoId = Me.State.TheDirectDebitState.CreditCardInfo.Id
-                    ElseIf Me.State.directDebitPayment Then
+                    ElseIf Me.State.directDebitPayment AndAlso Me.State.TheDirectDebitState.bankInfo.IsDirty Then
                         Me.State.TheDirectDebitState.bankInfo.DomesticTransfer = False
                         Me.State.TheDirectDebitState.bankInfo.InternationalTransfer = False
                         Me.State.TheDirectDebitState.bankInfo.InternationalTransfer = False
                         Me.State.TheDirectDebitState.bankInfo.SourceCountryID = Me.State.TheDirectDebitState.bankInfo.CountryID
-                        Me.State.TheDirectDebitState.bankInfo.Save()
-                        Me.State.TheDirectDebitState.certInstallment.BankInfoId = Me.State.TheDirectDebitState.bankInfo.Id
+                        BankInfoEndorseRequest(Me.State.TheDirectDebitState.bankInfo)
+
                     End If
 
                     If Me.State.BillingInformationChanged Then AdjustTheBillingStatus()
@@ -4890,6 +4893,38 @@ Namespace Certificates
             End Try
         End Sub
 
+        Private Sub BankInfoEndorseRequest(ByVal bankinfo As BankInfo)
+            Dim endorseRequest As PolicyService.EndorsePolicyRequest = New PolicyService.EndorsePolicyRequest
+            Dim updateBankInfo As PolicyService.UpdateBankInfo = New PolicyService.UpdateBankInfo
+
+            updateBankInfo.EndorsementReason = PolicyService.EndorsementPolicyReasons.BankFulfillment
+            updateBankInfo.AccountOwnerName = bankinfo.Account_Name
+            updateBankInfo.AccountNumber = bankinfo.Account_Number
+            updateBankInfo.RoutingNumber = bankinfo.Bank_Id
+            endorseRequest.DealerCode = Me.State.MyBO.Dealer.Dealer
+            endorseRequest.CertificateNumber = Me.State.MyBO.CertNumber
+            endorseRequest.Requests = New PolicyService.BasePolicyEndorseAction() {updateBankInfo}
+
+            Try
+                WcfClientHelper.Execute(Of PolicyService.PolicyServiceClient, PolicyService.IPolicyService, PolicyService.EndorseResponse)(
+                                                                            GetClient(),
+                                                                            New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                                                                             Function(ByVal c As PolicyService.PolicyServiceClient)
+                                                                                 Return c.Endorse(endorseRequest)
+                                                                             End Function)
+            Catch ex As Exception
+                '///CHANGE THE MESSAGE CODE
+                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_POLICYSERVICE_SERVICE_ERR, True)
+                Throw
+            End Try
+        End Sub
+        Private Function GetClient() As PolicyService.PolicyServiceClient
+            Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__SVC_CERT_ENROLL), False)
+            Dim client = New PolicyService.PolicyServiceClient("CustomBinding_IPolicyService", oWebPasswd.Url)
+            client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+            client.ClientCredentials.UserName.Password = oWebPasswd.Password
+            Return client
+        End Function
         Private Sub AdjustTheBillingStatus()
             With Me.State.TheDirectDebitState.certInstallment
                 Dim currentStatus As String = LookupListNew.GetCodeFromId(LookupListNew.GetBillingStatusListShort(ElitaPlusIdentity.Current.ActiveUser.LanguageId), Me.State.BillingStatusId)

@@ -1041,7 +1041,7 @@ Public Class ErrorCodes
     Public Const GUI_INVALID_REIMBURSEMENT_AMOUNT As String = "GUI_INVALID_REIMBURSEMENT_AMOUNT" ' Reimbursement Amount is not valid
     Public Const COVERAGE_CONSEQUENTIAL_DAMAGE_LIABILITY_NOT_FOUND As String = "COVERAGE_CONSEQUENTIAL_DAMAGE_LIABILITY_NOT_FOUND" 'Coverage Consequential Damage Liability Limit not found so issue cannot be resolved
     Public Const ISSUE_CONSEQUENTIAL_DAMAGE_REIMBURSEMENT_AMOUNT_INCORRECT As String = "ISSUE_CONSEQUENTIAL_DAMAGE_REIMBURSEMENT_AMOUNT_INCORRECT" 'Reimbursement Amount should be less than or equal to
-
+    Public Const GUI_POLICYSERVICE_SERVICE_ERR As String = "POLICYSERVICE_SERVICE_ERR" ' Error while calling claim Policy web service
     'BUG-176521
     Public Const ACCOUNTING_COMPANY_NOT_CONFIGURED_ERR As String = "ACCOUNTING_COMPANY_NOT_CONFIGURED_ERR"
 
