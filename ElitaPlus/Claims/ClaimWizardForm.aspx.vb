@@ -768,7 +768,6 @@ Public Class ClaimWizardForm
             Me.EnableDisableWizardControls(ClaimWizardSteps.Step4)
             If Me.step4_RadioButtonAll.Checked Then
                 Me.State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.All
-                Dim address As New BO.Address(Me.State.CertBO.AddressId)
                 Dim SelectedCountry As New ArrayList
                 SelectedCountry.Add(Me.GetSelectedItem(step4_moCountryDrop))
                 PopulateCountryDropdown(SelectedCountry)
@@ -801,7 +800,6 @@ Public Class ClaimWizardForm
                 Me.EnableDisableWizardControls(ClaimWizardSteps.Step4)
                 Me.State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.All
 
-                Dim address As New BO.Address(Me.State.CertBO.AddressId)
                 Dim SelectedCountry As New ArrayList
                 SelectedCountry.Add(Me.GetSelectedItem(step4_moCountryDrop))
 
@@ -2968,7 +2966,6 @@ Public Class ClaimWizardForm
         'get the customer countryId
         Try
             Dim ServNetworkSvc As New ServiceNetworkSvc
-            Dim address As New BO.Address(Me.State.CertBO.AddressId)
             Dim objCompany As New Company(Me.State.CertBO.CompanyId)
             Dim UseZipDistrict As Boolean = True
             Dim DealerType As String

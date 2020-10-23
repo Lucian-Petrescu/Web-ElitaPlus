@@ -643,8 +643,8 @@ Public NotInheritable Class MultiAuthClaim
                     Function(ByVal c As WebAppGatewayClient)
                         Return c.GetFulfillmentDetails(wsRequest)
                     End Function)
-            Catch
-
+            Catch ex As Exception
+                Throw
             End Try
         End If
 

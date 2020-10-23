@@ -3899,14 +3899,9 @@ Public NotInheritable Class Claim
     Public Function GetFulfillmentDetails(claimNumber As String, companyCode As String) As FulfillmentDetails Implements IFullfillable.GetFulfillmentDetails
 
         Dim response As New FulfillmentDetails
-        Dim fees As New Fee()
-        'Dim logisticStages As New SelectedLogisticStage()
-        Dim logisticStage As New List(Of SelectedLogisticStage)
-        Dim charges As New Charge()
-
-        response.Charges = New Charge() {New Charge()}
-        response.Fees = New Fee() {New Fee()}
-        response.LogisticStages = New SelectedLogisticStage() {New SelectedLogisticStage() With {
+        response.Charges = {New Charge()}
+        response.Fees =  {New Fee()}
+        response.LogisticStages =  {New SelectedLogisticStage() With {
                                                                                                 .Address = New FulfillmentAddress With {.Address1 = ContactInfo.Address.Address1,
                                                                                                      .Address2 = Me.ContactInfo.Address.Address2,
                                                                                                      .Address3 = Me.ContactInfo.Address.Address3,
@@ -3924,6 +3919,7 @@ Public NotInheritable Class Claim
                                                                         .ServiceCenterDescription = Me.ServiceCenterObject.Description,
                                                                         .Shipping = New ClaimFulfillmentWebAppGatewayService.ShippingInfo()
             }}
+        
         Return response
     End Function
 
