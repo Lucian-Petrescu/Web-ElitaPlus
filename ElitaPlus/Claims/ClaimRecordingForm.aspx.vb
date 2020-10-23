@@ -3449,43 +3449,51 @@ Public Class ClaimRecordingForm
     End Sub
 
       Private Function GetCustomerOrDealerBranchAddress(e As GridViewRowEventArgs, logisticsOptionItem As LogisticOption, lblLoShippingAddress As Label, oCertificate As Certificate, isEnableControl As Boolean, addressDetail As BusinessObjectsNew.Address) As BusinessObjectsNew.Address
-
         If logisticsOptionItem.Type = LogisticOptionType.CustomerAddress Then
-
-            lblLoShippingAddress.Text = TranslationBase.TranslateLabelOrMessage("CUSTOMER_ADDRESS")
-
-            If logisticsOptionItem.LogisticOptionInfo Is Nothing Then
-                If oCertificate.AddressChild IsNot Nothing Then
-                    addressDetail = oCertificate.AddressChild
-                End If
-            Else
-                Dim infoCustomerAddress As LogisticOptionInfoCustomerAddress
-                infoCustomerAddress = logisticsOptionItem.LogisticOptionInfo
-                If infoCustomerAddress.Address IsNot Nothing Then
-                    addressDetail = ConvertToAddressControllerField(infoCustomerAddress.Address)
-                End If
-            End If
-            Dim trStoreNumber As HtmlTableRow = CType(e.Row.FindControl("trStoreNumber"), HtmlTableRow)
-            trStoreNumber.Attributes("style") = "display: none"
+            addressDetail = GetLogisticCustomerAddressDetails(logisticsOptionItem, lblLoShippingAddress, oCertificate, e, addressDetail)
         ElseIf logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress Then
+            addressDetail = GetLogisticDealerBranchAddressDetails(logisticsOptionItem, lblLoShippingAddress, e, addressDetail, isEnableControl)
+        End If
+        Return addressDetail
+    End Function
 
-            lblLoShippingAddress.Text = TranslationBase.TranslateLabelOrMessage("DEALER_BRANCH_ADDRESS")
+    Private Function GetLogisticDealerBranchAddressDetails(logisticsOptionItem As LogisticOption, lblLoShippingAddress As Label, e As GridViewRowEventArgs, addressDetail As BusinessObjectsNew.Address, isEnableControl As Boolean) As BusinessObjectsNew.Address
 
-            Dim lblStoreNumber As Label = CType(e.Row.FindControl(GridLoStoreNumberLblCtrl), Label)
-            lblStoreNumber.Text = TranslationBase.TranslateLabelOrMessage("STORE_NUMBER")
+        lblLoShippingAddress.Text = TranslationBase.TranslateLabelOrMessage("DEALER_BRANCH_ADDRESS")
 
-            Dim txtStoreNumber As TextBox = CType(e.Row.FindControl(GridLoStoreNumberTxtCtrl), TextBox)
-            ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
+        Dim lblStoreNumber As Label = CType(e.Row.FindControl(GridLoStoreNumberLblCtrl), Label)
+        lblStoreNumber.Text = TranslationBase.TranslateLabelOrMessage("STORE_NUMBER")
 
-            If logisticsOptionItem.LogisticOptionInfo IsNot Nothing Then
-                Dim infoStoreAddress As LogisticOptionInfoDealerBranchAddress
-                infoStoreAddress = logisticsOptionItem.LogisticOptionInfo
-                txtStoreNumber.Text = infoStoreAddress.BranchCode
-                If infoStoreAddress.Address IsNot Nothing Then
-                    addressDetail = ConvertToAddressControllerField(infoStoreAddress.Address)
-                End If
+        Dim txtStoreNumber As TextBox = CType(e.Row.FindControl(GridLoStoreNumberTxtCtrl), TextBox)
+        ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
+
+        If logisticsOptionItem.LogisticOptionInfo IsNot Nothing Then
+            Dim infoStoreAddress As LogisticOptionInfoDealerBranchAddress
+            infoStoreAddress = logisticsOptionItem.LogisticOptionInfo
+            txtStoreNumber.Text = infoStoreAddress.BranchCode
+            If infoStoreAddress.Address IsNot Nothing Then
+                addressDetail = ConvertToAddressControllerField(infoStoreAddress.Address)
             End If
         End If
+        Return addressDetail
+    End Function
+
+    Private Function GetLogisticCustomerAddressDetails(logisticsOptionItem As LogisticOption, lblLoShippingAddress As Label, oCertificate As Certificate, e As GridViewRowEventArgs, addressDetail As BusinessObjectsNew.Address) As BusinessObjectsNew.Address
+
+        lblLoShippingAddress.Text = TranslationBase.TranslateLabelOrMessage("CUSTOMER_ADDRESS")
+        If logisticsOptionItem.LogisticOptionInfo Is Nothing Then
+            If oCertificate.AddressChild IsNot Nothing Then
+                addressDetail = oCertificate.AddressChild
+            End If
+        Else
+            Dim infoCustomerAddress As LogisticOptionInfoCustomerAddress
+            infoCustomerAddress = logisticsOptionItem.LogisticOptionInfo
+            If infoCustomerAddress.Address IsNot Nothing Then
+                addressDetail = ConvertToAddressControllerField(infoCustomerAddress.Address)
+            End If
+        End If
+        Dim trStoreNumber As HtmlTableRow = CType(e.Row.FindControl("trStoreNumber"), HtmlTableRow)
+        trStoreNumber.Attributes("style") = "display: none"
         Return addressDetail
     End Function
 
