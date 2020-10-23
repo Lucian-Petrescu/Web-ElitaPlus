@@ -7,10 +7,6 @@ Imports Assurant.Elita.Web.Forms
 Public Class CertExtendedItemForm
     Inherits ElitaPlusSearchPage
 
-#Region "Private Variables and Properties"
-    Private _YesNoDataView As DataView
-#End Region
-
 #Region "Constants"
     Public Const URL As String = "CertExtendedItemForm.aspx"
     Private Const DEFAULT_SORT As String = "FIELD_NAME ASC"
@@ -104,12 +100,12 @@ Public Class CertExtendedItemForm
 
             If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
                 If Me.SortDirection.EndsWith(" ASC") Then
-                    Me.SortDirection = e.SortExpression + " DESC"
+                    Me.SortDirection = e.SortExpression & " DESC"
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    Me.SortDirection = e.SortExpression & " ASC"
                 End If
             Else
-                Me.SortDirection = e.SortExpression + " ASC"
+                Me.SortDirection = e.SortExpression & " ASC"
             End If
             Me.State.SortExpression = Me.SortDirection
             Me.State.PageIndex = 0
@@ -129,17 +125,14 @@ Public Class CertExtendedItemForm
     End Sub
 
     Protected Sub BindBoPropertiesToGridHeaders()
-        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "FieldName", Me.GridViewCertItemConfig.Columns(Me.GRID_COL_FIELD_NAME_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "InEnrollment", Me.GridViewCertItemConfig.Columns(Me.GRID_COL_IN_ENROLLMENT_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "DefaultValue", Me.GridViewCertItemConfig.Columns(Me.GRID_COL_DEFAULT_VALUE_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "AllowUpdate", Me.GridViewCertItemConfig.Columns(Me.GRID_COL_ALLOW_UPDATE_IDX))
-        Me.ClearGridViewHeadersAndLabelsErrSign()
+        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "FieldName", Me.GridViewCertItemConfig.Columns(GRID_COL_FIELD_NAME_IDX))
+        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "InEnrollment", Me.GridViewCertItemConfig.Columns(GRID_COL_IN_ENROLLMENT_IDX))
+        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "DefaultValue", Me.GridViewCertItemConfig.Columns(GRID_COL_DEFAULT_VALUE_IDX))
+        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "AllowUpdate", Me.GridViewCertItemConfig.Columns(GRID_COL_ALLOW_UPDATE_IDX))
+        Me.ClearGridViewHeadersAndLabelsErrorSign()
     End Sub
 
     Private Sub PopulateBOFromForm()
-        If (_YesNoDataView Is Nothing) Then
-            PopulateDataViews()
-        End If
         If Me.ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
@@ -196,10 +189,6 @@ Public Class CertExtendedItemForm
     End Sub
     Public Sub GridViewCertItemConfig_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles GridViewCertItemConfig.RowDataBound
         Try
-            If (_YesNoDataView Is Nothing) Then
-                PopulateDataViews()
-            End If
-
             Dim rowType As DataControlRowType = CType(e.Row.RowType, DataControlRowType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
@@ -209,9 +198,9 @@ Public Class CertExtendedItemForm
 
                 If (rowState And DataControlRowState.Edit) = DataControlRowState.Edit Then
 
-                    Dim inEnrollmentDropDown As DropDownList = CType(e.Row.FindControl(Me.IN_ENROLLMENT_DROPDOWN_NAME), DropDownList)
-                    Dim defaultValuetextBox As TextBox = CType(e.Row.FindControl(Me.DEFAULT_VALUE_TEXTBOX_NAME), TextBox)
-                    Dim allowUpdateDropDown As DropDownList = CType(e.Row.FindControl(Me.ALLOW_UPDATE_DROPDOWN_NAME), DropDownList)
+                    Dim inEnrollmentDropDown As DropDownList = CType(e.Row.FindControl(IN_ENROLLMENT_DROPDOWN_NAME), DropDownList)
+                    Dim defaultValuetextBox As TextBox = CType(e.Row.FindControl(DEFAULT_VALUE_TEXTBOX_NAME), TextBox)
+                    Dim allowUpdateDropDown As DropDownList = CType(e.Row.FindControl(ALLOW_UPDATE_DROPDOWN_NAME), DropDownList)
 
                     Dim populateOptions = New PopulateOptions() With
                                             {
@@ -226,24 +215,26 @@ Public Class CertExtendedItemForm
                     inEnrollmentDropDown.Populate(yesNoList.ToArray(), populateOptions)
                     allowUpdateDropDown.Populate(yesNoList.ToArray(), populateOptions)
 
-                    SetSelectedItem(inEnrollmentDropDown, LookupListNew.GetIdFromCode(_YesNoDataView, "Y"))
-                    SetSelectedItem(allowUpdateDropDown, LookupListNew.GetIdFromCode(_YesNoDataView, "Y"))
+                    Dim defaultSelectedCodeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
+
+                    SetSelectedItem(inEnrollmentDropDown, defaultSelectedCodeId)
+                    SetSelectedItem(allowUpdateDropDown, defaultSelectedCodeId)
 
                     defaultValuetextBox.Enabled = False
                 Else
 
-                    Dim fieldNameLabel As Label = CType(e.Row.FindControl(Me.FIELD_NAME_LABEL_NAME), Label)
-                    Dim inEnrollmentLabel As Label = CType(e.Row.FindControl(Me.IN_ENROLLMENT_LABEL_NAME), Label)
-                    Dim defaultValueLabel As Label = CType(e.Row.FindControl(Me.DEFAULT_VALUE_LABEL_NAME), Label)
-                    Dim allowUpdateLabel As Label = CType(e.Row.FindControl(Me.ALLOW_UPDATE_LABEL_NAME), Label)
+                    Dim fieldNameLabel As Label = CType(e.Row.FindControl(FIELD_NAME_LABEL_NAME), Label)
+                    Dim inEnrollmentLabel As Label = CType(e.Row.FindControl(IN_ENROLLMENT_LABEL_NAME), Label)
+                    Dim defaultValueLabel As Label = CType(e.Row.FindControl(DEFAULT_VALUE_LABEL_NAME), Label)
+                    Dim allowUpdateLabel As Label = CType(e.Row.FindControl(ALLOW_UPDATE_LABEL_NAME), Label)
 
                     fieldNameLabel.Text = attribute.FieldName
-                    inEnrollmentLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.InEnrollment)
+                    inEnrollmentLabel.Text = "Yes"
                     defaultValueLabel.Text = attribute.DefaultValue
                     If (inEnrollmentLabel.Text.ToUpper() = "YES") Then
                         defaultValueLabel.Enabled = False
                     End If
-                    allowUpdateLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.AllowUpdate)
+                    allowUpdateLabel.Text = "Yes"
 
                 End If
             End If
@@ -275,17 +266,11 @@ Public Class CertExtendedItemForm
             Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(CERTITEMEXTENDEDCONTROL)
             Me.UpdateBreadCrum()
             If Not Me.IsPostBack Then
-                Dim CountryList As DataElements.ListItem() =
-                            CommonConfigManager.Current.ListManager.GetList(listCode:=ListCodes.Country)
-                Dim UserCountries As DataElements.ListItem() = (From Country In CountryList
-                                                                Where ElitaPlusIdentity.Current.ActiveUser.Countries.Contains(Country.ListItemId)
-                                                                Select Country).ToArray()
-
                 Me.SetGridItemStyleColor(GridViewCertItemConfig)
                 Me.TranslateGridHeader(GridViewCertItemConfig)
                 Me.ShowMissingTranslations(Me.MasterPage.MessageController)
                 Me.MenuEnabled = False
-                Me.SortDirection = Me.DEFAULT_SORT
+                Me.SortDirection = DEFAULT_SORT
                 Me.PopulateGrid(Nothing)
                 If Me.State.MyBO Is Nothing Then
                     Me.State.MyBO = New CertExtendedItemFormBO
@@ -308,7 +293,7 @@ Public Class CertExtendedItemForm
         Me.ShowMissingTranslations(Me.MasterPage.MessageController)
     End Sub
 
-    Private Sub CertExtendedItemForm_PageCall(ByVal CallFromUrl As String, ByVal CallingParameter As Object) Handles Me.PageCall
+    Private Sub CertExtendedItemForm_PageCall() Handles Me.PageCall
         If (Me.State.DataSet Is Nothing) Then
             Me.State.DataSet = CertExtendedItemFormBO.GetData()
         End If
@@ -317,12 +302,6 @@ Public Class CertExtendedItemForm
 #End Region
 
 #Region "Controlling Logic"
-
-    Sub PopulateDataViews()
-        Dim languageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-        _YesNoDataView = LookupListNew.GetYesNoLookupList(languageId, False)
-    End Sub
-
     Sub AddNew()
         ' Create new BO and Assign Default Values
         Me.State.MyBO = New CertExtendedItemFormBO(Me.State.DataSet)

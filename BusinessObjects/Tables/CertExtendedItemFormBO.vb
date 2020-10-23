@@ -73,17 +73,17 @@ Public Class CertExtendedItemFormBO
         Try
             Dim dal As New CertExtendedItemFormDAL
             If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
+                If Me.Row IsNot Nothing Then
                     Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
                 End If
             End If
             Me.Row = Nothing
             If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+                Me.Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
             If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
                 dal.Load(Me.Dataset, id)
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+                Me.Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
             If Me.Row Is Nothing Then
                 Throw New DataNotFoundException
@@ -92,49 +92,6 @@ Public Class CertExtendedItemFormBO
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Public ReadOnly Property CompanyRuleChildren() As CompanyRuleList.CompanyRuleListDetailView
-        Get
-            Dim RL As New RuleList
-            Return New CompanyRuleList.CompanyRuleListDetailView(RL)
-        End Get
-    End Property
-    Public Class CompanyRuleListDetailSelectionView
-        Inherits DataView
-        Public Const COL_NAME_RULE_LIST_ID As String = CompanyRuleListDAL.COL_NAME_RULE_LIST_ID
-        Public Const COL_NAME_COMPANY_RULE_LIST_ID As String = CompanyRuleListDAL.COL_NAME_COMPANY_RULE_LIST_ID
-        Public Const COL_NAME_COMPANY_ID As String = CompanyRuleListDAL.COL_NAME_COMPANY_ID
-        Public Const COL_NAME_DESCRIPTION As String = "DESCRIPTION"
-        Public Const COL_NAME_EFFECTIVE As String = CompanyRuleListDAL.COL_NAME_EFFECTIVE
-        Public Const COL_NAME_EXPIRATION As String = CompanyRuleListDAL.COL_NAME_EXPIRATION
-
-        Public Sub New(ByVal Table As DataTable)
-            MyBase.New(Table)
-        End Sub
-
-        Public Shared Function CreateTable() As DataTable
-            Dim t As New DataTable
-            t.Columns.Add(COL_NAME_COMPANY_RULE_LIST_ID, GetType(Byte()))
-            t.Columns.Add(COL_NAME_RULE_LIST_ID, GetType(Byte()))
-            t.Columns.Add(COL_NAME_COMPANY_ID, GetType(Byte()))
-            t.Columns.Add(COL_NAME_DESCRIPTION, GetType(String))
-            t.Columns.Add(COL_NAME_EFFECTIVE, GetType(String))
-            t.Columns.Add(COL_NAME_EXPIRATION, GetType(String))
-            Return t
-        End Function
-    End Class
-    Function GetAvailableCompanys() As DataView
-        Try
-            Dim certExtendedItemFormDAL As New CertExtendedItemFormDAL
-            Return certExtendedItemFormDAL.getAvailableCompanys()
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
-        End Try
-    End Function
-
-    Public Function GetAvailableDealers() As DataView
-        Dim dv As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies())
-        Return dv
-    End Function
 #End Region
 
 #Region "Private Members"
@@ -196,9 +153,9 @@ Public Class CertExtendedItemFormBO
                 Return CType(Row(CertExtendedItemFormDAL.COL_NAME_FIELD_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertExtendedItemFormDAL.COL_NAME_FIELD_NAME, Value)
+            Me.SetValue(CertExtendedItemFormDAL.COL_NAME_FIELD_NAME, value)
         End Set
     End Property
     <ValueMandatory(""), ValidStringLength("", Max:=1)>
@@ -211,9 +168,9 @@ Public Class CertExtendedItemFormBO
                 Return CType(Row(CertExtendedItemFormDAL.COL_NAME_IN_ENROLLMENT), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertExtendedItemFormDAL.COL_NAME_IN_ENROLLMENT, Value)
+            Me.SetValue(CertExtendedItemFormDAL.COL_NAME_IN_ENROLLMENT, value)
         End Set
     End Property
 
@@ -227,9 +184,9 @@ Public Class CertExtendedItemFormBO
                 Return CType(Row(CertExtendedItemFormDAL.COL_NAME_DEFAULT_VALUE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertExtendedItemFormDAL.COL_NAME_DEFAULT_VALUE, Value)
+            Me.SetValue(CertExtendedItemFormDAL.COL_NAME_DEFAULT_VALUE, value)
         End Set
     End Property
 
@@ -243,9 +200,9 @@ Public Class CertExtendedItemFormBO
                 Return CType(Row(CertExtendedItemFormDAL.COL_NAME_ALLOW_UPDATE), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertExtendedItemFormDAL.COL_NAME_ALLOW_UPDATE, Value)
+            Me.SetValue(CertExtendedItemFormDAL.COL_NAME_ALLOW_UPDATE, value)
         End Set
     End Property
 
