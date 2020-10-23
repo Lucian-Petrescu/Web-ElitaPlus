@@ -16,6 +16,7 @@
 <%@ Register TagPrefix="Elita" TagName="UserControlClaimDeviceInfo" Src="~/Interfaces/ClaimDeviceInformationController.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlAddressInfo" Src="~/Common/UserControlAddress_New.ascx" %>
 
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
     <style type="text/css">
         .ModalBackground {
@@ -56,14 +57,14 @@
             <p class="modalTitle">
                 <asp:Label ID="lblModalTitle" runat="server" Text="CONFIRM"></asp:Label>
                 <a href="javascript:void(0)" onclick="hideModal('ModalCancel');">
-                    <img id="Img1" src="/ElitaPlusWebApp/App_Themes/Default/Images/icon_modalClose.png" runat="server"
+                    <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
             <table class="formGrid" width="98%" cellspacing="0" cellpadding="0" border="0">
                 <tbody>
                     <tr>
                         <td align="right">
-                            <img id="imgMsgIcon" name="imgMsgIcon" width="28" runat="server" src="/ElitaPlusWebApp/App_Themes/Default/Images/dialogue_confirm.png"
+                            <img id="imgMsgIcon" name="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
                                 height="28" />
                         </td>
                         <td id="tdModalMessage" colspan="2" runat="server">
@@ -91,14 +92,14 @@
             <p class="modalTitle">
                 <asp:Label ID="lblModalTitleServiceWarranty" runat="server" Text="CONFIRM"></asp:Label>
                 <a href="javascript:void(0)" onclick="hideModal('ModalServiceWarranty');">
-                    <img id="Img11" src="/ElitaPlusWebApp/App_Themes/Default/Images/icon_modalClose.png" runat="server"
+                    <img id="Img11" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
             <table class="formGrid" width="98%" cellspacing="0" cellpadding="0" border="0">
                 <tbody>
                     <tr>
                         <td align="right">
-                            <img id="img12" name="imgMsgIcon" width="28" runat="server" src="/ElitaPlusWebApp/App_Themes/Default/Images/dialogue_confirm.png"
+                            <img id="img12" name="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
                                 height="28" />
                         </td>
                         <td id="tdModalMessageServiceWarranty" colspan="2" runat="server">
@@ -125,14 +126,14 @@
             <p class="modalTitle">
                 <asp:Label ID="lblModalClaimCancelTitle" runat="server" Text="CONFIRM"></asp:Label>
                 <a href="javascript:void(0)" onclick="hideModal('ModalClaimCancel');">
-                    <img id="Img7" src="/ElitaPlusWebApp/App_Themes/Default/Images/icon_modalClose.png" runat="server"
+                    <img id="Img7" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
             <table class="formGrid" width="98%" cellspacing="0" cellpadding="0" border="0">
                 <tbody>
                     <tr>
                         <td align="right">
-                            <img id="img8" name="imgMsgIcon" width="28" runat="server" src="/ElitaPlusWebApp/App_Themes/Default/Images/dialogue_confirm.png"
+                            <img id="img8" name="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
                                 height="28" />
                         </td>
                         <td id="td1" colspan="2" runat="server">
@@ -164,7 +165,7 @@
                             <asp:Label ID="modalHeaderLabel" Text="SELECT_MASTER_CLAIM_NUMBER" runat="server"></asp:Label></td>
                         <td align="right">
                             <a href="javascript:void(0)" onclick="hideModal('ModalMasterClaim');">
-                                <img id="Img6" src="/ElitaPlusWebApp/App_Themes/Default/Images/icon_modalClose.png" runat="server"
+                                <img id="Img6" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                                     width="16" height="18" align="top" /></a>
             </p>
             </td></tr></table>
@@ -203,7 +204,7 @@
             <p class="modalTitle">
                 <asp:Label ID="Label2" Text="Deny_Claim" runat="server"></asp:Label>
                 <a href="javascript:void(0)" onclick="hideModal('ModalDenyClaim');">
-                    <img id="Img9" src="/ElitaPlusWebApp/App_Themes/Default/Images/icon_modalClose.png" runat="server"
+                    <img id="Img9" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
             <table width="100%" border="0" class="formGrid" cellpadding="0" cellspacing="0">
@@ -250,14 +251,14 @@
             <p class="modalTitle">
                 <asp:Label ID="lblTitle" runat="server" Text="CONFIRM"></asp:Label>
                 <a href="javascript:void(0)" onclick="hideModal('ModalBypassDoL');">
-                    <img id="Img13" src="/ElitaPlusWebApp/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR" alt="" />
+                    <img id="Img13" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR" alt="" />
                 </a>
             </p>
             <table class="formGrid" width="98%">
                 <tbody>
                     <tr>
                         <td>
-                            <img id="img14" width="28" runat="server" src="/ElitaPlusWebApp/App_Themes/Default/Images/dialogue_confirm.png" height="28" />
+                            <img id="img14" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png" height="28" />
                         </td>
                         <td id="tdModalBbDolMessage" colspan="2" runat="server">
                             <asp:Label ID="lblInvalidDoLMessage" runat="server">Bypass_Invalid_DoL</asp:Label>
@@ -283,7 +284,7 @@
             <p class="modalTitle">
                 <asp:Label ID="lbl" runat="server">Soft Questions</asp:Label>
                 <a href="javascript:void(0)" onclick="hideModal('ModalSoftQuestions');">
-                    <img id="Img10" src="/ElitaPlusWebApp/App_Themes/Default/Images/icon_modalClose.png" runat="server"
+                    <img id="Img10" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
             <div class="dataContainer">
@@ -309,13 +310,13 @@
             <div class="dataContainer">
                 <div class="stepWizBox">
                     <Elita:UserControlWizard runat="server" ID="WizardControl">
-                        <steps>
+                        <Steps>
                             <Elita:StepDefinition StepNumber="1" StepName="DATE_OF_INCIDENT" />
                             <Elita:StepDefinition StepNumber="2" StepName="COVERAGE_DETAILS" />
                             <Elita:StepDefinition StepNumber="3" StepName="CLAIM_DETAILS" />
                             <Elita:StepDefinition StepNumber="4" StepName="LOCATE_SERVICE_CENTER" />
                             <Elita:StepDefinition StepNumber="5" StepName="SUBMIT_CLAIM" />
-                        </steps>
+                        </Steps>
                     </Elita:UserControlWizard>
                 </div>
             </div>
@@ -873,24 +874,24 @@
                                             SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td nowrap="nowrap" align="right">
-                                        <asp:Label ID="step3_lblPickupDate" runat="server">PickUp_Date</asp:Label>
-                                    </td>
-                                    <td nowrap="nowrap">
-                                        <asp:TextBox ID="step3_txtPickupDate" TabIndex="76" runat="server" AutoPostBack="true"
-                                            SkinID="MediumTextBox"></asp:TextBox>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td nowrap="nowrap" align="right">
-                                        <asp:Label ID="step3_lblVisitDate" runat="server">Visit_Date</asp:Label>
-                                    </td>
-                                    <td nowrap="nowrap">
-                                        <asp:TextBox ID="step3_txtVisitDate" TabIndex="88" runat="server" AutoPostBack="true"
-                                            SkinID="MediumTextBox"></asp:TextBox>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td nowrap="nowrap" align="right">
+                                    <asp:Label ID="step3_lblPickupDate" runat="server">PickUp_Date</asp:Label>
+                                </td>
+                                <td nowrap="nowrap">
+                                    <asp:TextBox ID="step3_txtPickupDate" TabIndex="76" runat="server" AutoPostBack="true"
+                                                 SkinID="MediumTextBox"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td nowrap="nowrap" align="right">
+                                    <asp:Label ID="step3_lblVisitDate" runat="server">Visit_Date</asp:Label>
+                                </td>
+                                <td nowrap="nowrap">
+                                    <asp:TextBox ID="step3_txtVisitDate" TabIndex="88" runat="server" AutoPostBack="true"
+                                                 SkinID="MediumTextBox"></asp:TextBox>   
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -922,7 +923,7 @@
                                 <li><a href="#tabsActionInfo">
                                     <asp:Label ID="ActionInfoLabel" runat="server" CssClass="tabHeaderText">CASE_ACTION</asp:Label></a></li>
                                 <li><a href="#tbClaimConsequentialDamage">
-                                    <asp:Label ID="Label5" runat="server" CssClass="tabHeaderText">CLAIM_CONSEQUENTIAL_DAMAGE</asp:Label></a></li>
+                                    <asp:Label ID="Label5" runat="server" CssClass="tabHeaderText">CLAIM_CONSEQUENTIAL_DAMAGE</asp:Label></a></li>                        
                             </ul>
 
                             <div id="tabClaimIssues">
@@ -1078,11 +1079,11 @@
                                                     <asp:BoundField DataField="AuthorizedAmount" SortExpression="AuthorizedAmount" ReadOnly="true"
                                                         HtmlEncode="false" HeaderText="AUTHORIZED_AMOUNT" HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Right" />
                                                     <asp:BoundField DataField="AuthorizationType" SortExpression="AuthorizationType" ReadOnly="true"
-                                                        HtmlEncode="false" HeaderText="AUTHORIZATION_TYPE" HeaderStyle-HorizontalAlign="Center" />
+                                                                    HtmlEncode="false" HeaderText="AUTHORIZATION_TYPE" HeaderStyle-HorizontalAlign="Center" />
                                                     <asp:BoundField DataField="RefundMethod" SortExpression="RefundMethod" ReadOnly="true"
-                                                        HtmlEncode="false" HeaderText="REFUND_METHOD" HeaderStyle-HorizontalAlign="Center" />
+                                                                    HtmlEncode="false" HeaderText="REFUND_METHOD" HeaderStyle-HorizontalAlign="Center" />
                                                     <asp:BoundField DataField="CreatedBy" SortExpression="CreatedBy" ReadOnly="true"
-                                                        HtmlEncode="false" HeaderText="CREATED_BY" HeaderStyle-HorizontalAlign="Center" />
+                                                                    HtmlEncode="false" HeaderText="CREATED_BY" HeaderStyle-HorizontalAlign="Center" />
                                                     <asp:BoundField DataField="CreatedDate" SortExpression="CreatedDate" ReadOnly="true"
                                                         HtmlEncode="false" HeaderText="CREATED_DATE" HeaderStyle-HorizontalAlign="Center" />
                                                     <asp:BoundField DataField="ClaimAuthStatus" ReadOnly="true" HeaderText="Status" SortExpression="ClaimAuthStatus"
@@ -1188,7 +1189,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
+                             <tr>
                                 <td>
                                     <h2 class="dataGridHeader">
                                         <asp:Label ID="step3_LabelSpecialInstruction" runat="server">Special_Instruction</asp:Label>
@@ -1254,13 +1255,12 @@
                     </tbody>
                 </table>
             </div>
-
                 <div id="modalClaimImages" class="overlay">
                     <div id="light" class="overlay_message_content" style="width: 1100px; left: 8%">
                         <p class="modalTitle">
                             <asp:Label ID="lblClaimImage" runat="server" Text="CLAIM_IMAGE"></asp:Label>
                             <a href="javascript:void(0)" onclick="hideModal('modalClaimImages');">
-                                <img id="img3" src="/ElitaPlusWebApp/App_Themes/Default/Images/icon_modalClose.png" runat="server"
+                                <img id="img3" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                                     width="16" height="18" align="absmiddle" class="floatR" /></a>
                         </p>
                         <iframe class="pdfContainer" align="left" runat="server" id="pdfIframe"></iframe>
@@ -1273,13 +1273,13 @@
                         <p class="modalTitle">
                             <asp:Label ID="Label1" runat="server" Text="NEW_CLAIM_ISSUE"></asp:Label>
                             <a href="javascript:void(0)" onclick="HideErrorAndModal('ModalIssue');">
-                                <img id="img2" src="/ElitaPlusWebApp/App_Themes/Default/Images/icon_modalClose.png" runat="server"
+                                <img id="img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                                     width="16" height="18" align="absmiddle" class="floatR" /></a>
                         </p>
                         <div class="dataContainer">
                             <div runat="server" id="modalMessageBox" class="errorMsg" style="display: none">
                                 <p>
-                                    <img id="imgIssueMsg" width="16" height="13" align="middle" runat="server" src="/ElitaPlusWebApp/App_Themes/Default/Images/icon_error.png" />
+                                    <img id="imgIssueMsg" width="16" height="13" align="middle" runat="server" src="~/App_Themes/Default/Images/icon_error.png" />
                                     <asp:Literal runat="server" ID="MessageLiteral" />
                                 </p>
                             </div>
@@ -1306,7 +1306,7 @@
                             </tr>
                             <tr>
                                 <td colspan="3" class="seperator">
-                                    <img id="Img4" src="/ElitaPlusWebApp/App_Themes/Default/Images/icon_dash.png" runat="server" width="6"
+                                    <img id="Img4" src="~/App_Themes/Default/Images/icon_dash.png" runat="server" width="6"
                                         height="5" />
                                 </td>
                             </tr>
@@ -1351,7 +1351,7 @@
                         <p class="modalTitle">
                             <asp:Label ID="lblCollectDeductible" runat="server" Text="COLLECT_DEDUCTIBLE"></asp:Label>
                             <a href="javascript:void(0)" onclick="hideModal('modalCollectDeductible');">
-                                <img id="img5" src="/ElitaPlusWebApp/App_Themes/Default/Images/icon_modalClose.png" runat="server"
+                                <img id="img5" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                                     width="16" height="18" align="middle" class="floatR" /></a>
                         </p>
                         <Elita:MessageController runat="server" ID="moModalCollectDivMsgController" />
@@ -1536,8 +1536,8 @@
                 <asp:Button ID="btnClaimOverride_Write" TabIndex="190" runat="server" Text="Override"
                     SkinID="AlternateLeftButton" />
                 <asp:Button ID="btnComment" TabIndex="190" runat="server" Text="Comments" SkinID="AlternateLeftButton" />
-                <asp:Button ID="btnClaimDeductibleRefund" TabIndex="190" runat="server" Text="CLAIM_DEDUCTIBLE_REFUND" SkinID="AlternateLeftButton" Visible="false" />
-                <asp:Button ID="btnDenyClaim" runat="server" Font-Bold="false" TabIndex="195" Text="Deny_Claim"
+                <asp:Button ID="btnClaimDeductibleRefund" TabIndex="190"  runat="server" Text="CLAIM_DEDUCTIBLE_REFUND" SkinID="AlternateLeftButton" Visible="false" />
+               <asp:Button ID="btnDenyClaim" runat="server" Font-Bold="false" TabIndex="195" Text="Deny_Claim"
                     SkinID="AlternateLeftButton" />
                 <asp:LinkButton ID="btnCancel_Write" TabIndex="190" runat="server" Text="Cancel"
                     OnClientClick="return revealModal('ModalCancel');" SkinID="AlternateRightButton"
