@@ -2774,179 +2774,219 @@ Public Class ClaimRecordingForm
 
         Return shippingAdd
     End Function
+
     Private Function GetUserSelectedLogisticsData() As Boolean
-        Dim islogisticsOptionSelected As Boolean = False
+        Dim logisticsOptionSelected As Boolean = False
         Dim gvr As GridViewRow
 
         For Each gvr In GridViewLogisticsOptions.Rows
             Dim rb As RadioButton
             rb = CType(gvr.Cells(GridLoColLoRdoIdx).FindControl(GridLogisticsOptionsRdoCtrl), RadioButton)
             If rb.Checked Then
-
                 Dim lb As Label
-                lb = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(GridLoCodeLblCtrl), Label)
-
                 Dim wsResponse As LogisticStagesResponse
+                Dim lOption As LogisticOption =
+                        wsResponse.Stages(State.LogisticsStage).Options.FirstOrDefault(Function(q) q.Code = lb.Text)
+                lb = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(GridLoCodeLblCtrl), Label)
                 wsResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, LogisticStagesResponse)
-
-                Dim lOption As LogisticOption = wsResponse.Stages(State.LogisticsStage).Options.FirstOrDefault(Function(q) q.Code = lb.Text)
                 lOption.Selected = True
 
                 ' Questions
-                Dim logistictUserControlQuestion As UserControlQuestion = CType(gvr.Cells(GridLoColLoRdoIdx).FindControl(LogisticsOptionsQuestionsCtrl), UserControlQuestion)
-                If logistictUserControlQuestion IsNot Nothing Then
-                    'Retrieve the selections from the user
-                    logistictUserControlQuestion.GetQuestionAnswer()
-                    If (Not String.IsNullOrEmpty(logistictUserControlQuestion.ErrAnswerMandatory.ToString())) Then
-                        MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, True)
-                        Return False
-                    ElseIf (Not String.IsNullOrEmpty(logistictUserControlQuestion.ErrorQuestionCodes.ToString())) Then
-                        MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR, True)
-                        Return False
-                    End If
+                If Not GetSelectedQuestionData(gvr) Then
+                    Return False
+                    ' Logistics Options
+                elseIf Not GetSelectedLogisticCustomerOrBranchAddressData() Then
+                    Return False
+                    ' Service Center
+                elseIf Not GetSelectedServiceCenterData(gvr, wsResponse, lOption) then
+                    Return False
+                    ' Bank transfer
+                elseIf Not GetSelectedBankTransferData(gvr, lOption)
+                    Return False
+                    'Customer Info for Check Payment
+                ElseIf Not GetSelectedCustomerCheckPaymentData(gvr, lOption)
+                    Return False
                 End If
-
-                ' Logistics Options
-                If Not lOption Is Nothing _
-                   AndAlso (lOption.Type = LogisticOptionType.DealerBranchAddress OrElse lOption.Type = LogisticOptionType.CustomerAddress) Then
-
-                    Dim addressSelected As ClaimRecordingService.Address = PopulateAddressFromAddressController(CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ucAddressControllerLogisticsOptions"), UserControlAddress_New))
-                    Dim postalCodeOld As String
-                    Dim countryCodeOld As String
-
-                    If addressSelected.Address1 Is Nothing OrElse addressSelected.Address1.Trim() = String.Empty Then
-                        MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS1_FIELD_IS_REQUIRED, True)
-                        Return False
-                    End If
-
-                    If lOption.Type = LogisticOptionType.DealerBranchAddress Then
-                        Dim storeNumber As String = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(GridLoStoreNumberTxtCtrl), TextBox).Text
-                        If String.IsNullOrWhiteSpace(storeNumber) Then
-                            MasterPage.MessageController.AddError(Message.MSG_ERR_STORE_NUMBER_MANDATORY, True)
-                            Return False
-                        End If
-                        If Not lOption.LogisticOptionInfo Is Nothing _
-                       AndAlso Not CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address Is Nothing Then
-                            postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.PostalCode
-                            countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.Country
-                        End If
-                        CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).BranchCode = storeNumber
-                        CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address = addressSelected
-
-                    ElseIf lOption.Type = LogisticOptionType.CustomerAddress Then
-                        If Not lOption.LogisticOptionInfo Is Nothing _
-                       AndAlso Not CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address Is Nothing Then
-                            postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.PostalCode
-                            countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.Country
-                        End If
-
-                        CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address = addressSelected
-                    End If
-
-                    If Not lOption Is Nothing _
-                   AndAlso Not lOption.DeliveryOptions Is Nothing _
-                   AndAlso lOption.DeliveryOptions.DisplayEstimatedDeliveryDate Then
-
-                        If (Not String.IsNullOrWhiteSpace(countryCodeOld) AndAlso addressSelected.Country <> countryCodeOld) _
-                       OrElse (Not String.IsNullOrWhiteSpace(postalCodeOld) AndAlso addressSelected.PostalCode <> postalCodeOld) Then
-                            MasterPage.MessageController.AddError(Message.MSG_ERR_GET_DELIVERY_DATE, True)
-                            Return False
-                        End If
-
-                        Dim ucDeliverySlots As UserControlDeliverySlot = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(LogisticsOptionsEstimateDeliveryDateCtrl), UserControlDeliverySlot)
-                        Dim selectedDeliveryDate As Nullable(Of Date) = ucDeliverySlots.DeliveryDate
-
-                        State.DeliveryDate = ucDeliverySlots.DeliveryDate
-                        State.DefaultDeliveryDay = ucDeliverySlots.DefaultDeliveryDay
-                        State.DeliverySlotTimeSpan = If(ucDeliverySlots.DeliverySlotTimeSpan Is Nothing, TimeSpan.Zero, ucDeliverySlots.DeliverySlotTimeSpan)
-
-                        If lOption.DeliveryOptions.DesiredDeliveryDateMandatory AndAlso Not selectedDeliveryDate.HasValue Then
-                            MasterPage.MessageController.AddError(Message.MSG_ERR_DELIVERY_DATE_MANDATORY, True)
-                            Return False
-                        Else
-                            If Not lOption.LogisticOptionInfo Is Nothing Then
-                                If State.LogisticsOption.Code.ToUpper().Equals("X") Then
-
-                                    If Not State.IsExpeditedBtnClicked Then
-                                        MasterPage.MessageController.AddError(Message.MSG_ERR_SELECT_EXPEDITED_DELIVERY_BUTTON, True)
-                                        Return False
-                                    End If
-                                End If
-                                lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = selectedDeliveryDate
-                            End If
-                        End If
-                    End If
-
-                End If
-
-                ' Service Center
-                If Not lOption Is Nothing _
-                    AndAlso lOption.Type = LogisticOptionType.ServiceCenter Then
-
-                    Dim uc As UserControlServiceCenterSelection
-                    uc = CType(gvr.FindControl("ucServiceCenterUserControl"), UserControlServiceCenterSelection)
-
-                    Dim logisticStage As LogisticStage
-                    logisticStage = wsResponse.Stages(State.LogisticsStage)
-
-                    If uc IsNot Nothing AndAlso uc.SelectedServiceCenter IsNot Nothing Then
-                        logisticStage.ServiceCenterCode = uc.SelectedServiceCenter.ServiceCenterCode
-                    Else
-                        MasterPage.MessageController.AddError(Message.MSG_ERR_DEFAULT_SERVICE_CENTER, True)
-                        Return False
-                    End If
-                End If
-
-                ' Bank transfer
-                If  lOption IsNot Nothing _
-                    AndAlso lOption.Type = LogisticOptionType.BankTransfer Then
-                    Dim moBankInfoController As UserControlBankInfo_New = CType(gvr.FindControl(LogisticsOptionsBankInfoCtrl), UserControlBankInfo_New)
-                    Dim logisticOptionInfoBankTransfer As LogisticOptionInfoBankTransfer = CType(lOption.LogisticOptionInfo, LogisticOptionInfoBankTransfer)
-                    If moBankInfoController IsNot Nothing Then
-                        moBankInfoController.PopulateBOFromControl()
-                        logisticOptionInfoBankTransfer.BankInfo = New BankInfo With {
-                            .ReferenceId = moBankInfoController.State.myBankInfoBo.Id.ToString
-                        }
-                    Else
-                        MasterPage.MessageController.AddError(Message.MSG_BANK_NAME_VALUE_REQUIRED, True)
-                        Return False
-                    End If
-                End If
-
-                'Customer Info for Check Payment
-                If  lOption IsNot Nothing _
-                   AndAlso lOption.Type = LogisticOptionType.CheckCustomerMail Then
-                    Dim moCustomerAddressController As UserControlAddress_New = CType(gvr.FindControl(LogisticsOptionsCheckInfoCtrl), UserControlAddress_New)
-                    Dim logisticOptionInfoCustomerInfoForCheck As LogisticOptionInfoCheckCustomerMail = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCheckCustomerMail)
-
-                    If moCustomerAddressController IsNot Nothing Then
-                        Dim addressSelected As ClaimRecordingService.Address = PopulateAddressFromAddressController(moCustomerAddressController)
-                        If addressSelected.Address1 Is Nothing OrElse addressSelected.Address1.Trim() = String.Empty Then
-                            MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS1_FIELD_IS_REQUIRED, True)
-                            Return False
-                        End If
-                        logisticOptionInfoCustomerInfoForCheck.Address= addressSelected
-                    Else
-                        MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS_REQUIRED, True)
-                        Return False
-                    End If
-                End If
-
-                islogisticsOptionSelected = True
+                logisticsOptionSelected = True
                 Exit For
-            
             End If
-
         Next
-
-        If Not islogisticsOptionSelected Then
+        If Not logisticsOptionSelected Then
             MasterPage.MessageController.AddError(Message.MSG_ERR_SELECT_A_LOGISTIC_OPTION, True)
             Return False
         End If
+        Return True
+    End Function
+
+    Private Function GetSelectedCustomerCheckPaymentData(gvr As GridViewRow, lOption As LogisticOption) As Boolean
+
+        If  lOption IsNot Nothing _
+            AndAlso lOption.Type = LogisticOptionType.CheckCustomerMail Then
+            Dim moCustomerAddressController As UserControlAddress_New = CType(gvr.FindControl(LogisticsOptionsCheckInfoCtrl), UserControlAddress_New)
+            Dim logisticOptionInfoCustomerInfoForCheck As LogisticOptionInfoCheckCustomerMail = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCheckCustomerMail)
+
+            If moCustomerAddressController IsNot Nothing Then
+                Dim addressSelected As ClaimRecordingService.Address = PopulateAddressFromAddressController(moCustomerAddressController)
+                If addressSelected.Address1 Is Nothing OrElse addressSelected.Address1.Trim() = String.Empty Then
+                    MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS1_FIELD_IS_REQUIRED, True)
+                    Return False
+                End If
+                logisticOptionInfoCustomerInfoForCheck.Address= addressSelected
+            Else
+                MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS_REQUIRED, True)
+                Return False
+            End If
+        End If
 
         Return True
-
     End Function
+
+    Private Function GetSelectedBankTransferData(gvr As GridViewRow, lOption As LogisticOption) As Boolean
+
+        If  lOption IsNot Nothing _
+            AndAlso lOption.Type = LogisticOptionType.BankTransfer Then
+            Dim moBankInfoController As UserControlBankInfo_New = CType(gvr.FindControl(LogisticsOptionsBankInfoCtrl), UserControlBankInfo_New)
+            Dim logisticOptionInfoBankTransfer As LogisticOptionInfoBankTransfer = CType(lOption.LogisticOptionInfo, LogisticOptionInfoBankTransfer)
+            If moBankInfoController IsNot Nothing Then
+                moBankInfoController.PopulateBOFromControl()
+                logisticOptionInfoBankTransfer.BankInfo = New BankInfo With {
+                    .ReferenceId = moBankInfoController.State.myBankInfoBo.Id.ToString
+                    }
+            Else
+                MasterPage.MessageController.AddError(Message.MSG_BANK_NAME_VALUE_REQUIRED, True)
+                Return False
+            End If
+        End If
+        Return True
+    End Function
+
+    Private Function GetSelectedServiceCenterData(gvr As GridViewRow, wsResponse As LogisticStagesResponse, lOption As LogisticOption) As Boolean
+
+        If  lOption IsNot Nothing _
+            AndAlso lOption.Type = LogisticOptionType.ServiceCenter Then
+
+            Dim uc As UserControlServiceCenterSelection
+            uc = CType(gvr.FindControl("ucServiceCenterUserControl"), UserControlServiceCenterSelection)
+
+            Dim logisticStage As LogisticStage
+            logisticStage = wsResponse.Stages(State.LogisticsStage)
+
+            If uc IsNot Nothing AndAlso uc.SelectedServiceCenter IsNot Nothing Then
+                logisticStage.ServiceCenterCode = uc.SelectedServiceCenter.ServiceCenterCode
+            Else
+                MasterPage.MessageController.AddError(Message.MSG_ERR_DEFAULT_SERVICE_CENTER, True)
+                Return False
+            End If
+        End If
+        Return True
+    End Function
+
+    Private Function GetSelectedLogisticCustomerOrBranchAddressData() As Boolean
+        Dim gvr As GridViewRow
+        Dim lOption As LogisticOption
+
+        If  lOption IsNot Nothing AndAlso (lOption.Type = LogisticOptionType.DealerBranchAddress OrElse lOption.Type = LogisticOptionType.CustomerAddress) Then
+            Dim addressSelected As ClaimRecordingService.Address = PopulateAddressFromAddressController(CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ucAddressControllerLogisticsOptions"), UserControlAddress_New))
+            Dim postalCodeOld As String
+            Dim countryCodeOld As String
+
+            If addressSelected.Address1 Is Nothing OrElse addressSelected.Address1.Trim() = String.Empty Then
+                MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS1_FIELD_IS_REQUIRED, True)
+                Return False
+            elseif Not GetSelectedLogisticCustomerBranchAddressData(lOption, gvr, addressSelected, countryCodeOld, postalCodeOld) then
+                 Return False
+            elseif  Not GetSelectedEstimatedDeliveryOptionData() Then
+                Return False
+            End If
+        End If
+        Return True
+    End Function
+
+    Private Function GetSelectedEstimatedDeliveryOptionData() As Boolean
+        Dim lOption As LogisticOption
+        Dim gvr As GridViewRow
+        Dim addressSelected As ClaimRecordingService.Address
+        Dim countryCodeOld As String
+        Dim postalCodeOld As String
+
+        If  lOption IsNot Nothing _
+           AndAlso  lOption.DeliveryOptions IsNot Nothing _
+           AndAlso lOption.DeliveryOptions.DisplayEstimatedDeliveryDate Then
+
+            If (Not String.IsNullOrWhiteSpace(countryCodeOld) AndAlso addressSelected.Country <> countryCodeOld) _
+               OrElse (Not String.IsNullOrWhiteSpace(postalCodeOld) AndAlso addressSelected.PostalCode <> postalCodeOld) Then
+                MasterPage.MessageController.AddError(Message.MSG_ERR_GET_DELIVERY_DATE, True)
+                Return False
+            End If
+
+            Dim ucDeliverySlots As UserControlDeliverySlot = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(LogisticsOptionsEstimateDeliveryDateCtrl), UserControlDeliverySlot)
+            Dim selectedDeliveryDate As Nullable(Of Date) = ucDeliverySlots.DeliveryDate
+
+            State.DeliveryDate = ucDeliverySlots.DeliveryDate
+            State.DefaultDeliveryDay = ucDeliverySlots.DefaultDeliveryDay
+            State.DeliverySlotTimeSpan = If(ucDeliverySlots.DeliverySlotTimeSpan Is Nothing, TimeSpan.Zero, ucDeliverySlots.DeliverySlotTimeSpan)
+
+            If lOption.DeliveryOptions.DesiredDeliveryDateMandatory AndAlso Not selectedDeliveryDate.HasValue Then
+                MasterPage.MessageController.AddError(Message.MSG_ERR_DELIVERY_DATE_MANDATORY, True)
+                Return False
+            Else
+                If  lOption.LogisticOptionInfo IsNot Nothing Then
+                    If State.LogisticsOption.Code.ToUpper().Equals("X")  AndAlso  Not State.IsExpeditedBtnClicked Then
+                            MasterPage.MessageController.AddError(Message.MSG_ERR_SELECT_EXPEDITED_DELIVERY_BUTTON, True)
+                            Return False
+                    End If
+                    lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = selectedDeliveryDate
+                End If
+            End If
+        End If
+        Return True
+    End Function
+
+    Private Function GetSelectedLogisticCustomerBranchAddressData(lOption As LogisticOption, gvr As GridViewRow, addressSelected As ClaimRecordingService.Address, ByRef countryCodeOld As String, ByRef postalCodeOld As String) As Boolean
+
+        If lOption.Type = LogisticOptionType.DealerBranchAddress Then
+            Dim storeNumber As String = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(GridLoStoreNumberTxtCtrl), TextBox).Text
+            If String.IsNullOrWhiteSpace(storeNumber) Then
+                MasterPage.MessageController.AddError(Message.MSG_ERR_STORE_NUMBER_MANDATORY, True)
+                Return False
+            End If
+            If  lOption.LogisticOptionInfo IsNot Nothing _
+               AndAlso  CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address IsNot Nothing Then
+                postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.PostalCode
+                countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.Country
+            End If
+            CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).BranchCode = storeNumber
+            CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address = addressSelected
+
+        ElseIf lOption.Type = LogisticOptionType.CustomerAddress Then
+            If  lOption.LogisticOptionInfo IsNot Nothing _
+               AndAlso  CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address IsNot Nothing Then
+                postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.PostalCode
+                countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.Country
+            End If
+
+            CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address = addressSelected
+        End If
+        Return True
+    End Function
+
+    Private Function GetSelectedQuestionData(gvr As GridViewRow) As Boolean
+
+        Dim logisticUserControlQuestion As UserControlQuestion = CType(gvr.Cells(GridLoColLoRdoIdx).FindControl(LogisticsOptionsQuestionsCtrl), UserControlQuestion)
+        If logisticUserControlQuestion IsNot Nothing Then
+            'Retrieve the selections from the user
+            logisticUserControlQuestion.GetQuestionAnswer()
+            If (Not String.IsNullOrEmpty(logisticUserControlQuestion.ErrAnswerMandatory.ToString())) Then
+                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, True)
+                Return False
+            ElseIf (Not String.IsNullOrEmpty(logisticUserControlQuestion.ErrorQuestionCodes.ToString())) Then
+                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR, True)
+                Return False
+            End If
+        End If
+        Return True
+    End Function
+
 #End Region
 
 #Region "Logistics Options -  Call Web Service"
@@ -3214,7 +3254,7 @@ Public Class ClaimRecordingForm
                         LogisticOptionType.CustomerAddress OrElse
                         logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress
                         RowDataBoundAddress(e, logisticsOptionItem, rdoLogisticsOptions, isEnableControl, addressDetail,
-                                            logisticsStage, trServiceCenter, trBankInfo, trCheckInfo)
+                                            logisticsStage)
 
                         'Logistic Options - Service Center
                     Case LogisticOptionType.ServiceCenter
@@ -3427,16 +3467,16 @@ Public Class ClaimRecordingForm
         ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
     End Sub
 
-    Private Sub RowDataBoundAddress(e As GridViewRowEventArgs, logisticsOptionItem As LogisticOption,
-                                    rdoLogisticsOptions As RadioButton, isEnableControl As Boolean,
-                                    addressDetail As BusinessObjectsNew.Address, logisticsStage As LogisticStage,
-                                    trServiceCenter As HtmlTableRow, trBankInfo As HtmlTableRow,
-                                    trCheckInfo As HtmlTableRow)
+    Private Sub RowDataBoundAddress(e As GridViewRowEventArgs, logisticsOptionItem As LogisticOption, rdoLogisticsOptions As RadioButton, isEnableControl As Boolean, addressDetail As BusinessObjectsNew.Address, logisticsStage As LogisticStage)
 
         Dim lblLoShippingAddress As Label = CType(e.Row.FindControl(GridLoShippingAddressLblCtrl), Label)
 
         Dim addressController As UserControlAddress_New = CType(e.Row.FindControl(GridLoAddressCtrl),
                                                                 UserControlAddress_New)
+        Dim trBankInfo As HtmlTableRow = CType(e.Row.FindControl(GridLoBankInfoTr), HtmlTableRow)
+        Dim trCheckInfo As HtmlTableRow = CType(e.Row.FindControl(GridLoCheckInfoTr), HtmlTableRow)
+        Dim trServiceCenter As HtmlTableRow = CType(e.Row.FindControl(GridLoServiceCenterTr), HtmlTableRow)
+
         addressController.Visible = True
         ControlMgr.SetVisibleControl(Me, trServiceCenter, false)
         ControlMgr.SetVisibleControl(Me, trBankInfo, False)
@@ -3451,6 +3491,22 @@ Public Class ClaimRecordingForm
 
 
         Dim oCertificate As Certificate = New Certificate(State.CertificateId)
+        addressDetail = GetCustomerOrDealerBranchAddress(e, logisticsOptionItem, lblLoShippingAddress, oCertificate, isEnableControl, addressDetail)
+
+        addressController.TranslateAllLabelControl()
+
+        'KDDI
+        addressController.Bind(addressDetail, oCertificate.Product.ClaimProfile)
+        addressController.EnableControls(Not isEnableControl, True)
+
+        If _
+            logisticsStage.Code = "RV" AndAlso (logisticsOptionItem.Code = "ST" OrElse logisticsOptionItem.Code = "E") AndAlso
+            logisticsOptionItem.Type = LogisticOptionType.CustomerAddress Then
+            addressController.EnableControls(True, True)
+        End If
+    End Sub
+
+    Private Function GetCustomerOrDealerBranchAddress(e As GridViewRowEventArgs, logisticsOptionItem As LogisticOption, lblLoShippingAddress As Label, oCertificate As Certificate, isEnableControl As Boolean, addressDetail As BusinessObjectsNew.Address) As BusinessObjectsNew.Address
 
         If logisticsOptionItem.Type = LogisticOptionType.CustomerAddress Then
 
@@ -3488,19 +3544,8 @@ Public Class ClaimRecordingForm
                 End If
             End If
         End If
-
-        addressController.TranslateAllLabelControl()
-
-        'KDDI
-        addressController.Bind(addressDetail, oCertificate.Product.ClaimProfile)
-        addressController.EnableControls(Not isEnableControl, True)
-
-        If _
-            logisticsStage.Code = "RV" AndAlso (logisticsOptionItem.Code = "ST" OrElse logisticsOptionItem.Code = "E") AndAlso
-            logisticsOptionItem.Type = LogisticOptionType.CustomerAddress Then
-            addressController.EnableControls(True, True)
-        End If
-    End Sub
+        Return addressDetail
+    End Function
 
     Private Sub ServiceCenterSelectionHandler(userControl As UserControlServiceCenterSelection)
         userControl.TranslationFunc = Function(value As String)

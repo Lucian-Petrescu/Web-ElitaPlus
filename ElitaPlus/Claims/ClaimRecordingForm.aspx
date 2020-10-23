@@ -682,19 +682,19 @@
                                                     </tr>
                                                      <tr runat="server" id="trChequeInfo">
                                                         <td style="text-align: left;">
-                                                            <table id="tblChequeInfo" class="formGrid">
+                                                            <table id="tblChequeInfo" class="formGrid" summary="Customer Check Payment Info">
                                                                 <tr>
-                                                                    <td style="text-align: left;" colspan="2">
+                                                                    <th style="text-align: left;" colspan="2">
                                                                         <h2 class="dataGridHeader" runat="server">
                                                                             <asp:Label runat="server" ID="moChequeInfoLabel" Text="CUSTOMER_INFO_FOR_CHEQUE_PAYMENT" />
                                                                         </h2>
-                                                                    </td>
+                                                                    </th>
                                                                 </tr>
                                                                 <tr>
                                                                     <td style="text-align:right;">
                                                                         <asp:Label runat="server" ID="moPayableToLabel" Text="PAYABLE_TO" />:
                                                                     </td>
-                                                                    <td style="text-align: left; width: 100%;" nowrap="nowrap">
+                                                                    <td style="text-align: left; width: 100%;">
                                                                         <asp:TextBox ID="moPayableToText" runat="server" ReadOnly="true" SkinID="LargeTextBox"></asp:TextBox>
                                                                     </td>
                                                                 </tr>
