@@ -146,10 +146,10 @@ Public Class CertExtendedItemForm
     End Sub
     Protected Sub PopulateFormFromBOs()
         With Me.State.MyBO
-            populateuserConctrols()
+            PopulateUserConctrols()
         End With
     End Sub
-    Protected Sub populateuserConctrols()
+    Protected Sub PopulateUserConctrols()
 
         ''UserControlAvailableSelectedDealers
         'UserControlAvailableSelectedDealers.SetAvailableData(Me.State.MyBO.GetAvailableDealers(), "Description", "ID")
@@ -171,35 +171,15 @@ Public Class CertExtendedItemForm
         Try
             Select Case e.CommandName
                 Case "CancelRecord"
-                    'If (Me.State.ActionInProgress = DetailPageCommand.New_) Then
-                    '    Me.State.MyBO.Delete()
-                    '    Me.State.MyBO.Save()
-                    'Else
-                    '    Me.State.DataSet = Nothing
-                    'End If
+
                     Me.GridViewCertItemConfig.EditIndex = NO_ITEM_SELECTED_INDEX
                     Me.State.DataSet = Nothing
                     Me.PopulateGrid(Nothing)
-                Case "SaveRecord"
-                    'PopulateBOFromForm()
-                    'If (Me.State.MyBO.IsDirty) Then
-                    '    Me.State.MyBO.Save()
-                    '    Me.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_SAVED_OK, True)
-                    'Else
-                    '    Me.MasterPage.MessageController.AddWarning(Me.MSG_RECORD_NOT_SAVED, True)
-                    'End If
-                    'Me.State.DataSet = Nothing
+                Case "SaveRecord", "DeleteRecord"
                     Me.State.DataSet = Nothing
                     Me.PopulateGrid(Nothing)
                 Case "EditRecord"
-                    'Me.State.MyBO = New ElitaAttribute(New Guid(CType(e.CommandArgument, String)), Me.State.DataSet)
-                    'Me.PopulateGrid(Me.State.MyBO.Id)
-                Case "DeleteRecord"
-                    'Me.State.MyBO = New ElitaAttribute(New Guid(CType(e.CommandArgument, String)), Me.State.DataSet)
-                    'Me.State.MyBO.Delete()
-                    'Me.State.MyBO.Save()
-                    Me.State.DataSet = Nothing
-                    Me.PopulateGrid(Nothing)
+
             End Select
         Catch ex As Oracle.ManagedDataAccess.Client.OracleException
             Select Case ex.Number
@@ -223,31 +203,28 @@ Public Class CertExtendedItemForm
             Dim rowType As DataControlRowType = CType(e.Row.RowType, DataControlRowType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-            If (rowType = DataControlRowType.DataRow) AndAlso (Not dvRow Is Nothing) Then
+            If (rowType = DataControlRowType.DataRow) AndAlso (dvRow IsNot Nothing) Then
                 Dim attribute As CertExtendedItemFormBO = New CertExtendedItemFormBO(dvRow.Row)
                 Dim rowState As DataControlRowState = CType(e.Row.RowState, DataControlRowState)
 
                 If (rowState And DataControlRowState.Edit) = DataControlRowState.Edit Then
 
-                    Dim fieldNameTextBox As TextBox = CType(e.Row.FindControl(Me.FIELD_NAME_TEXTBOX_NAME), TextBox)
                     Dim inEnrollmentDropDown As DropDownList = CType(e.Row.FindControl(Me.IN_ENROLLMENT_DROPDOWN_NAME), DropDownList)
                     Dim defaultValuetextBox As TextBox = CType(e.Row.FindControl(Me.DEFAULT_VALUE_TEXTBOX_NAME), TextBox)
                     Dim allowUpdateDropDown As DropDownList = CType(e.Row.FindControl(Me.ALLOW_UPDATE_DROPDOWN_NAME), DropDownList)
-                    Dim editButton As Button = CType(e.Row.FindControl(Me.EDIT_BUTTON_NAME), Button)
-                    Dim cancelLinkButton As LinkButton = CType(e.Row.FindControl(Me.CANCEL_LINK_BUTTON_NAME), LinkButton)
 
                     Dim populateOptions = New PopulateOptions() With
                                             {
                                                .AddBlankItem = True
                                             }
-                    Dim LanguageCode = Thread.CurrentPrincipal.GetLanguageCode()
+                    Dim languageCode = Thread.CurrentPrincipal.GetLanguageCode()
 
-                    Dim YesNoList As DataElements.ListItem() =
+                    Dim yesNoList As DataElements.ListItem() =
                        CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO",
-                                                                       languageCode:=LanguageCode)
+                                                                       languageCode:=languageCode)
 
-                    inEnrollmentDropDown.Populate(YesNoList.ToArray(), populateOptions)
-                    allowUpdateDropDown.Populate(YesNoList.ToArray(), populateOptions)
+                    inEnrollmentDropDown.Populate(yesNoList.ToArray(), populateOptions)
+                    allowUpdateDropDown.Populate(yesNoList.ToArray(), populateOptions)
 
                     SetSelectedItem(inEnrollmentDropDown, LookupListNew.GetIdFromCode(_YesNoDataView, "Y"))
                     SetSelectedItem(allowUpdateDropDown, LookupListNew.GetIdFromCode(_YesNoDataView, "Y"))
@@ -259,8 +236,6 @@ Public Class CertExtendedItemForm
                     Dim inEnrollmentLabel As Label = CType(e.Row.FindControl(Me.IN_ENROLLMENT_LABEL_NAME), Label)
                     Dim defaultValueLabel As Label = CType(e.Row.FindControl(Me.DEFAULT_VALUE_LABEL_NAME), Label)
                     Dim allowUpdateLabel As Label = CType(e.Row.FindControl(Me.ALLOW_UPDATE_LABEL_NAME), Label)
-                    Dim editButton As ImageButton = CType(e.Row.FindControl(Me.EDIT_BUTTON_NAME), ImageButton)
-                    Dim deleteButton As ImageButton = CType(e.Row.FindControl(Me.DELETE_BUTTON_NAME), ImageButton)
 
                     fieldNameLabel.Text = attribute.FieldName
                     inEnrollmentLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.InEnrollment)
@@ -271,7 +246,7 @@ Public Class CertExtendedItemForm
                     allowUpdateLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.AllowUpdate)
 
                 End If
-                End If
+            End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -387,25 +362,6 @@ Public Class CertExtendedItemForm
         Me.State.dv = dv
         Me.GridViewCertItemConfig.DataSource = Me.State.dv ' New ArrayList() ' this is only for test purpose 'Me.State.dv
         Me.GridViewCertItemConfig.DataBind()
-
-    End Sub
-    Public Sub InEnrollment_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs)
-
-        'Reference the DropDownList.
-        Dim dropDownList As DropDownList = CType(sender, DropDownList)
-
-        'Get the ID of the DropDownList.
-        Dim id As String = dropDownList.ID
-        Dim row As GridViewRow = TryCast(dropDownList.NamingContainer, GridViewRow)
-
-        If (dropDownList.SelectedItem.Text.ToUpper() = "YES") And row IsNot Nothing Then
-            Dim defaultValuetextBox As TextBox = CType(row.FindControl(Me.DEFAULT_VALUE_TEXTBOX_NAME), TextBox)
-            defaultValuetextBox.Enabled = False
-            defaultValuetextBox.Text = ""
-        ElseIf (dropDownList.SelectedItem.Text.ToUpper() = "NO") And row IsNot Nothing Then
-            Dim defaultValuetextBox As TextBox = CType(row.FindControl(Me.DEFAULT_VALUE_TEXTBOX_NAME), TextBox)
-            defaultValuetextBox.Enabled = True
-        End If
 
     End Sub
 #End Region
