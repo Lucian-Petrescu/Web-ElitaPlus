@@ -73,14 +73,14 @@
 <asp:Content ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
-    <table id="TableFixed" cellspacing="0" cellpadding="0" border="0" width="70%" class="searchGrid">
+    <table id="TableFixed" border="0" style="width:70%;" class="searchGrid">
         <caption></caption>
         <tr>
             <th scope="col"></th>
         </tr>
         <tbody>
             <tr>
-                <td nowrap="nowrap">
+                <td style="white-space:nowrap;">
                     <span class="mandatory">*</span>
                     <asp:Label ID="LabelCertItemConfigCode" runat="server" Font-Bold="false">CERT_ITEM_CONFIG_CODE</asp:Label>
                 </td>
@@ -100,7 +100,7 @@
 <asp:Content ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:Panel runat="server" ID="WorkingPanel">
         <div class="dataContainer">
-            <table width="100%" border="0" class="dataGrid">
+            <table style="width:100%;" border="0" class="dataGrid">
                 <caption></caption>
                 <tr>
                     <th scope="col"></th>
@@ -121,7 +121,7 @@
                             <asp:ListItem Value="50">50</asp:ListItem>
                         </asp:DropDownList>
                     </td>
-                    <td align="right" class="bor">
+                    <td style="text-align:right;" class="bor">
                         <asp:Label ID="lblRecordCount" runat="server"></asp:Label>
                         <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
                             runat="server" />
@@ -196,14 +196,14 @@
                 </tr>
                 <tbody>
                     <tr>
-                        <td align="left">
+                        <td>
                             <h2 class="dataGridHeader">
                                 <asp:Label ID="Label1" runat="server">CONFIGURATION_BY</asp:Label>
                             </h2>
                         </td>
                     </tr>
                     <tr>
-                        <td align="left">
+                        <td>
                             <asp:RadioButton ID="rdoCompanies" runat="server" Text="Company" Checked="True" AutoPostBack="false" GroupName="ConfigGroup"></asp:RadioButton>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <asp:RadioButton ID="rdoDealers" runat="server" Text="Dealer" AutoPostBack="false" GroupName="ConfigGroup"></asp:RadioButton>
