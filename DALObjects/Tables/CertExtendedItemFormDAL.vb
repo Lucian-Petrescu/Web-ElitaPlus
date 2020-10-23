@@ -1,7 +1,7 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject v2.cst (6/9/2015)********************
 
 
-Public Class CertExtendedItemFormDAL
+Public Class CertExtendedItemFormDal
     Inherits OracleDALBase
 
 #Region "Constants"
@@ -57,16 +57,17 @@ Public Class CertExtendedItemFormDAL
             'End Using
             Dim table As New DataTable(TABLE_NAME)
 
-            ' Create four typed columns in the DataTable.
-            table.Columns.Add("cert_extended_item_id", GetType(Guid))
-            table.Columns.Add("field_name", GetType(String))
-            table.Columns.Add("in_enrollment", GetType(String))
-            table.Columns.Add("default_value", GetType(String))
-            table.Columns.Add("allow_update", GetType(String))
+            With table
+                ' Create four typed columns in the DataTable.
+                .Columns.Add("cert_extended_item_id", GetType(Guid))
+                .Columns.Add("field_name", GetType(String))
+                .Columns.Add("in_enrollment", GetType(String))
+                .Columns.Add("default_value", GetType(String))
+                .Columns.Add("allow_update", GetType(String))
 
-            ' Add 1 rows with those columns filled in the DataTable.
-            table.Rows.Add(Guid.NewGuid, "FieldName1", "Y", "", "Y")
-
+                ' Add 1 rows with those columns filled in the DataTable.
+                .Rows.Add(Guid.NewGuid, "FieldName1", "Y", "", "Y")
+            End With
             Dim ds As New DataSet
 
             ds.Tables.Add(table)
@@ -77,10 +78,10 @@ Public Class CertExtendedItemFormDAL
         End Try
     End Function
 
-    Public Function getAvailableCompanys() As DataView
+    Public Function GetAvailableCompany() As DataView
         Dim selectStmt As String = Me.Config("/SQL/LOAD_COMPANY_LIST")
         Try
-            Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME).Tables(0).DefaultView
+            Return DBHelper.Fetch(selectStmt, TABLE_NAME).Tables(0).DefaultView
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -88,15 +89,15 @@ Public Class CertExtendedItemFormDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
+    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
         If ds Is Nothing Then
             Return
         End If
         If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
             Throw New NotSupportedException()
         End If
-        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
-            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        If ds.Tables(TABLE_NAME) IsNot Nothing Then
+            MyBase.Update(ds.Tables(TABLE_NAME), transaction, changesFilter)
         End If
     End Sub
 
@@ -141,7 +142,7 @@ Public Class CertExtendedItemFormDAL
 
         Try
             Dim ds As New DataSet
-            OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, ds)
+            OracleDbHelper.Fetch(cmd, TABLE_NAME, ds)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

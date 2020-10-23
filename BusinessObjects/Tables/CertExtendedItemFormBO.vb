@@ -54,14 +54,14 @@ Public Class CertExtendedItemFormBO
 
     Protected Sub Load()
         Try
-            Dim dal As New CertExtendedItemFormDAL
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
-                dal.LoadSchema(Me.Dataset)
+            Dim dal As New CertExtendedItemFormDal
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+                dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
-            Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
-            Me.Row = newRow
-            Me.Row(dal.TABLE_KEY_NAME) = Guid.NewGuid
+            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
+            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Row = newRow
+            Row(dal.TABLE_KEY_NAME) = Guid.NewGuid
             'SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -71,21 +71,19 @@ Public Class CertExtendedItemFormBO
 
     Protected Sub Load(ByVal id As Guid)
         Try
-            Dim dal As New CertExtendedItemFormDAL
-            If Me._isDSCreator Then
-                If Me.Row IsNot Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
-                End If
+            Dim dal As New CertExtendedItemFormDal
+            If _isDSCreator And Row IsNot Nothing Then
+                Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
             End If
-            Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
+            Row = Nothing
+            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, id)
-                Me.Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
+            If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Dataset, id)
+                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then
+            If Row Is Nothing Then
                 Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -97,10 +95,10 @@ Public Class CertExtendedItemFormBO
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        Me.InEnrollment = Codes.YESNO_Y
-        Me.AllowUpdate = Codes.YESNO_Y
-        Me.FieldName = String.Empty
-        Me.DefaultValue = String.Empty
+        InEnrollment = Codes.YESNO_Y
+        AllowUpdate = Codes.YESNO_Y
+        FieldName = String.Empty
+        DefaultValue = String.Empty
     End Sub
 #End Region
 
@@ -123,7 +121,7 @@ Public Class CertExtendedItemFormBO
             If Row(CertExtendedItemFormDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return Row(CertExtendedItemFormDAL.COL_NAME_CERT_EXTENDED_ITEM_ID)
+                Return CType(Row(CertExtendedItemFormDal.COL_NAME_CERT_EXTENDED_ITEM_ID), Guid)
             End If
         End Get
     End Property
@@ -137,9 +135,9 @@ Public Class CertExtendedItemFormBO
                 Return CType(Row(CertExtendedItemFormDAL.COL_NAME_TABLE_NAME), String)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertExtendedItemFormDAL.COL_NAME_TABLE_NAME, Value)
+            Me.SetValue(CertExtendedItemFormDal.COL_NAME_TABLE_NAME, value)
         End Set
     End Property
 
