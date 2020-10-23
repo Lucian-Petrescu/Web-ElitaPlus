@@ -8,6 +8,7 @@
 <%@ Register TagPrefix="Elita" TagName="BestReplacementOption" Src="~/Interfaces/ReplacementOptions.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlLogisticalInfo" Src="~/Claims/UserControlLogisticalInfo.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlClaimDeviceInfo" Src="~/Interfaces/ClaimDeviceInformationController.ascx" %>
+<%@ Register TagPrefix="Elita" TagName="UserControlAddressInfo" Src="~/Common/UserControlAddress_New.ascx" %>
 
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="NewClaimForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.NewClaimForm" Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
@@ -1707,6 +1708,42 @@
                 <uc1:UserControlContactInfo ID="moUserControlContactInfo" runat="server" Visible="false"></uc1:UserControlContactInfo>
             </tbody>
         </table>
+    <div class="dataContainer">
+        <table style="width:100%;">
+            <tbody>
+            <tr>
+                <td style="width:100%;">
+                    <h2 class="dataGridHeader">
+                        <asp:Label ID="lblLogisticStageAddress" runat="server">LOGISTIC_STAGE_ADDRESSES</asp:Label>
+                    </h2>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:100%;">
+                    <asp:Repeater ID="repAddress" runat="server" OnItemDataBound="repAddress_OnItemDataBound" Visible="True">
+                        <ItemTemplate>
+                            <table class="dataRep" style="width: 65%; border-collapse: collapse; border: 0;">
+                                <tbody>
+                                <tr>
+                                    <td style="width: 100%; text-align: left;">
+                                        <asp:Label ID="LogisticStage" runat="server" Font-Bold="true" /> :
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 100%;text-align: left;">
+                                        <Elita:UserControlAddressInfo ID="moAddressController" runat="server" Visible="True"></Elita:UserControlAddressInfo>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
         <table border="0"></table>
     </asp:Panel>
     <div class="btnZone">
