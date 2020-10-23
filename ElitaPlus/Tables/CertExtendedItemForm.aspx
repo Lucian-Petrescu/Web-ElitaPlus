@@ -51,22 +51,7 @@
                 else {
                     objTextDefaultValue.disabled = false;
                 }
-                // enable the TextBox here
-            }
-            //var status = obj.options[obj.selectedIndex].text;    
-            //var row = obj.parentNode.parentNode;    
-            //var rowIndex = row.rowIndex - 1;    
-            ////you may need to change the index of cells value based on the location    
-            ////of your ddlReason DropDownList    DefaultValueTextBox
-            //  var txtDefaultValue = row.cells[2].getElementsByTagName('SELECT')[1];    
-            //switch (status) {    
-            //    case "Yes":    
-            //        alert(txtDefaultValue);    
-            //        break;      
-            //    case "No":    
-            //        alert(txtDefaultValue); 
-            //        break;    
-            //}    
+            }   
         }
     </script>
 </asp:Content>
@@ -186,7 +171,7 @@
         </div>
         <div class="btnZone">
             <asp:Button ID="btnAdd" runat="server" SkinID="AlternateLeftButton" Text="Add_New" />
-            <%--<asp:Button runat="server" ID="btnSave" Text="Save" SkinID="AlternateLeftButton" />--%>
+   
         </div>
         <div class="dataContainer">
             <table id="TableConfig"  border="0" class="formGrid">
