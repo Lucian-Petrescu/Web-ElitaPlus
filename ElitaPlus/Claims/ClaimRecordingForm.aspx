@@ -682,12 +682,10 @@
                                                     </tr>
                                                      <tr runat="server" id="trChequeInfo">
                                                         <td style="text-align: left;">
-                                                            <table id="tblChequeInfo" class="formGrid" summary="Customer Check Payment Info">
+                                                            <table id="tblChequeInfo" class="formGrid">
                                                                 <tr>
-                                                                    <th style="text-align: left;" colspan="2">
-                                                                        <h2 class="dataGridHeader" runat="server">
+                                                                    <th class="dataGridHeader">
                                                                             <asp:Label runat="server" ID="moChequeInfoLabel" Text="CUSTOMER_INFO_FOR_CHEQUE_PAYMENT" />
-                                                                        </h2>
                                                                     </th>
                                                                 </tr>
                                                                 <tr>
