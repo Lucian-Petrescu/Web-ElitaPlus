@@ -55,13 +55,13 @@ Public Class CertExtendedItemFormBO
     Protected Sub Load()
         Try
             Dim dal As New CertExtendedItemFormDal
-            If Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
+            If Dataset.Tables.IndexOf(CertExtendedItemFormDal.TABLE_NAME) < 0 Then
                 dal.LoadSchema(Dataset)
             End If
-            Dim newRow As DataRow = Dataset.Tables(dal.TABLE_NAME).NewRow
-            Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
+            Dim newRow As DataRow = Dataset.Tables(CertExtendedItemFormDal.TABLE_NAME).NewRow
+            Dataset.Tables(CertExtendedItemFormDal.TABLE_NAME).Rows.Add(newRow)
             Row = newRow
-            Row(dal.TABLE_KEY_NAME) = Guid.NewGuid
+            Row(CertExtendedItemFormDal.TABLE_KEY_NAME) = Guid.NewGuid
             'SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -72,16 +72,16 @@ Public Class CertExtendedItemFormBO
     Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New CertExtendedItemFormDal
-            If _isDSCreator And Row IsNot Nothing Then
-                Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Row)
+            If _isDSCreator AndAlso Row IsNot Nothing Then
+                Dataset.Tables(CertExtendedItemFormDal.TABLE_NAME).Rows.Remove(Row)
             End If
             Row = Nothing
-            If Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
+            If Dataset.Tables.IndexOf(CertExtendedItemFormDal.TABLE_NAME) >= 0 Then
+                Row = FindRow(id, CertExtendedItemFormDal.TABLE_KEY_NAME, Dataset.Tables(CertExtendedItemFormDal.TABLE_NAME))
             End If
             If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
                 dal.Load(Dataset, id)
-                Row = FindRow(id, dal.TABLE_KEY_NAME, Dataset.Tables(dal.TABLE_NAME))
+                Row = FindRow(id, CertExtendedItemFormDal.TABLE_KEY_NAME, Dataset.Tables(CertExtendedItemFormDal.TABLE_NAME))
             End If
             If Row Is Nothing Then
                 Throw New DataNotFoundException

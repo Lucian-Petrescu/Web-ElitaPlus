@@ -24,25 +24,25 @@
         }
 
         function changeSelectionDealer() {
-                var rdoDealers = document.getElementById("<%=rdoDealers.ClientID %>");
-                rdoDealers.checked = true;
+            var rdoDealers = document.getElementById("<%=rdoDealers.ClientID %>");
+            rdoDealers.checked = true;
         }
 
         function changeSelectionCompany() {
-                var rdoComapany = document.getElementById("<%=rdoCompanies.ClientID %>");
-                rdoComapany.checked = true;
+            var rdoComapany = document.getElementById("<%=rdoCompanies.ClientID %>");
+            rdoComapany.checked = true;
         }
     </script>
     <script type="text/javascript">    
-        function InEnrollment_SelectedIndexChanged(obj) { 
+        function InEnrollment_SelectedIndexChanged(obj) {
             var ddlYesNO = document.getElementById(obj);
             if (ddlYesNO.selectedIndex > 0) {
                 var status = ddlYesNO.options[ddlYesNO.selectedIndex].text;
                 var splitObj = obj.split("_");
                 var objTextID = splitObj[0] + "_" + splitObj[1] + "_" + splitObj[2] + "_" + splitObj[3] + "_" + "DefaultValueTextBox";
- 
+
                 var objTextDefaultValue = document.getElementById(objTextID);
- 
+
                 if (status != 'No') {
                     objTextDefaultValue.disabled = true;
                     objTextDefaultValue.style.backgroundColor = "grey";
@@ -53,40 +53,44 @@
                 }
                 // enable the TextBox here
             }
-          //var status = obj.options[obj.selectedIndex].text;    
-          //var row = obj.parentNode.parentNode;    
-          //var rowIndex = row.rowIndex - 1;    
-          ////you may need to change the index of cells value based on the location    
-          ////of your ddlReason DropDownList    DefaultValueTextBox
-          //  var txtDefaultValue = row.cells[2].getElementsByTagName('SELECT')[1];    
-          //switch (status) {    
-          //    case "Yes":    
-          //        alert(txtDefaultValue);    
-          //        break;      
-          //    case "No":    
-          //        alert(txtDefaultValue); 
-          //        break;    
-          //}    
-      }    
-    </script> 
+            //var status = obj.options[obj.selectedIndex].text;    
+            //var row = obj.parentNode.parentNode;    
+            //var rowIndex = row.rowIndex - 1;    
+            ////you may need to change the index of cells value based on the location    
+            ////of your ddlReason DropDownList    DefaultValueTextBox
+            //  var txtDefaultValue = row.cells[2].getElementsByTagName('SELECT')[1];    
+            //switch (status) {    
+            //    case "Yes":    
+            //        alert(txtDefaultValue);    
+            //        break;      
+            //    case "No":    
+            //        alert(txtDefaultValue); 
+            //        break;    
+            //}    
+        }
+    </script>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
     <table id="TableFixed" cellspacing="0" cellpadding="0" border="0" width="70%" class="searchGrid">
+        <caption></caption>
+        <tr>
+            <th scope="col"></th>
+        </tr>
         <tbody>
             <tr>
-                <td nowrap="nowrap" align="left">
+                <td nowrap="nowrap">
                     <span class="mandatory">*</span>
                     <asp:Label ID="LabelCertItemConfigCode" runat="server" Font-Bold="false">CERT_ITEM_CONFIG_CODE</asp:Label>
                 </td>
-                <td nowrap="nowrap">
+                <td>
                     <asp:TextBox ID="TextboxCertItemConfigCode" TabIndex="1" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                 </td>
-                <td nowrap="nowrap" align="right">
+                <td>
                     <asp:Label ID="LabelCertItemConfigDesc" runat="server">CERT_ITEM_CONFIG_DESC</asp:Label>
                 </td>
-                <td nowrap="nowrap">
+                <td>
                     <asp:TextBox ID="TextboxCertItemConfigDesc" TabIndex="2" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                 </td>
             </tr>
@@ -96,7 +100,11 @@
 <asp:Content ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:Panel runat="server" ID="WorkingPanel">
         <div class="dataContainer">
-            <table width="100%" border="0" class="dataGrid" cellpadding="0" cellspacing="0">
+            <table width="100%" border="0" class="dataGrid">
+                <caption></caption>
+                <tr>
+                    <th scope="col"></th>
+                </tr>
                 <tr id="trPageSize" runat="server">
                     <td class="bor">
                         <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label>: &nbsp;
@@ -181,7 +189,11 @@
             <%--<asp:Button runat="server" ID="btnSave" Text="Save" SkinID="AlternateLeftButton" />--%>
         </div>
         <div class="dataContainer">
-            <table id="TableConfig" cellspacing="0" cellpadding="0" border="0" width="100%" class="formGrid">
+            <table id="TableConfig"  border="0" class="formGrid">
+                <caption></caption>
+                <tr>
+                    <th scope="col"></th>
+                </tr>
                 <tbody>
                     <tr>
                         <td align="left">
