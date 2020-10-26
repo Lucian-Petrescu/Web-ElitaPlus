@@ -817,6 +817,21 @@ Public Class Coverage
             Me.SetValue(CoverageDAL.COL_NAME_DEALER_MARKUP, Value)
         End Set
     End Property
+    <ValidStringLength("", Max:=40)>
+    Public Property DeviceExpectedBackXCD As String
+        Get
+            CheckDeleted()
+            If Row(CoverageDAL.COL_NAME_DEVICE_EXPECTED_BACK_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageDAL.COL_NAME_DEVICE_EXPECTED_BACK_XCD), String)
+            End If
+        End Get
+        Set
+            CheckDeleted()
+            SetValue(CoverageDAL.COL_NAME_DEVICE_EXPECTED_BACK_XCD, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Public Members"
