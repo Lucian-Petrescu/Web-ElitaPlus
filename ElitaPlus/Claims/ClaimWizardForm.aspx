@@ -1222,6 +1222,12 @@
                 </div>
             <div class="dataContainer">
                 <table style="width:100%;">
+                    <caption></caption>
+                    <thead>
+                    <tr>
+                        <th style="border-right: 0px; border-bottom: 0px;"></th>
+                    </tr>
+                    </thead>
                     <tbody>
                     <tr>
                         <td style="width:100%;">
@@ -1235,6 +1241,12 @@
                             <asp:Repeater ID="repAddress" runat="server" OnItemDataBound="repAddress_OnItemDataBound" Visible="True">
                                 <ItemTemplate>
                                     <table class="dataRep" style="width: 65%; border-collapse: collapse; border: 0;">
+                                        <caption></caption>
+                                        <thead>
+                                        <tr>
+                                            <th style="border-right: 0px; border-bottom: 0px;"></th>
+                                        </tr>
+                                        </thead>
                                         <tbody>
                                         <tr>
                                             <td style="width: 100%; text-align: left;">

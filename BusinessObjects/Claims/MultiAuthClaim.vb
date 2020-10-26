@@ -635,7 +635,6 @@ Public NotInheritable Class MultiAuthClaim
 
 
         If Not String.IsNullOrEmpty(claimNumber) AndAlso Not String.IsNullOrEmpty(companyCode) Then
-            Try
 
                 wsResponseObject = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, FulfillmentDetails)(
                     GetClaimFulfillmentWebAppGatewayClient(),
@@ -643,9 +642,6 @@ Public NotInheritable Class MultiAuthClaim
                     Function(ByVal c As WebAppGatewayClient)
                         Return c.GetFulfillmentDetails(wsRequest)
                     End Function)
-            Catch ex As Exception
-                Throw
-            End Try
         End If
 
         Return wsResponseObject
