@@ -11,7 +11,7 @@ Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
-
+Imports Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService
 Imports System.Threading
 Partial Class NewClaimForm
     Inherits ElitaPlusSearchPage
@@ -154,7 +154,7 @@ Partial Class NewClaimForm
         Public PoliceReportBO As PoliceReport
         Public ScreenSnapShotBO As Claim
         Public InputParameters As Parameters
-        Public ShippingInfoBO As ShippingInfo
+        Public ShippingInfoBO As Assurant.ElitaPlus.BusinessObjectsNew.ShippingInfo
         Public LastState As InternalStates = InternalStates.Regular
         Public LastErrMsg As String
         Public isSalutation As Boolean = False
@@ -212,7 +212,7 @@ Partial Class NewClaimForm
 
         Public CaseQuestionAnswerListDV As CaseQuestionAnswer.CaseQuestionAnswerDV = Nothing
         Public ClaimActionListDV As CaseAction.CaseActionDV = Nothing
-
+        Public FulfillmentDetailsResponse As BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails = Nothing
     End Class
 
     Public Sub New()
@@ -299,7 +299,7 @@ Partial Class NewClaimForm
             '#Req 1106 end
 
             'shippingInfo
-            Me.State.ShippingInfoBO = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_SHIPPING_INFO), ShippingInfo)
+            Me.State.ShippingInfoBO = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_SHIPPING_INFO), Assurant.ElitaPlus.BusinessObjectsNew.ShippingInfo)
 
             'Thunder User story 13 - Task - 199011
             If (Me.State.MyBO.Certificate.Dealer.UseClaimAuthorizationId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)) Then
@@ -739,6 +739,7 @@ Partial Class NewClaimForm
             If Not Me.IsPostBack Then
                 IsMaxSvcWrtyClaimsReached()  'developed for Req-5921 - Google OOW 
             End If
+            PopulateLogisticStageAddress()
 
             Me.MasterPage.UsePageTabTitleInBreadCrum = False
             Me.UpdateBreadCrum(Me.NavController.CurrentFlow.Name)
@@ -753,6 +754,41 @@ Partial Class NewClaimForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
         Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+    End Sub
+
+    Private Sub PopulateLogisticStageAddress()
+
+        Dim fullFilInfo As Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails
+
+        fullFilInfo = Me.State.MyBO.GetFulfillmentDetails(Me.State.MyBO.ClaimNumber, Me.State.MyBO.Company.Code)
+        Me.State.FulfillmentDetailsResponse = fullFilInfo
+        If Me.State.FulfillmentDetailsResponse IsNot Nothing Then
+
+            If Me.State.FulfillmentDetailsResponse.GetType() Is GetType(Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails) Then
+                If Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
+                   Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
+
+                    Dim logisticStages As New List(Of FulfillmentAddressBinding)
+
+                    logisticStages = New List(Of FulfillmentAddressBinding)(
+                        From dr In Me.State.FulfillmentDetailsResponse.LogisticStages Select New FulfillmentAddressBinding() With {
+                                                                               .Address = dr.Address,
+                                                                               .LogisticStage = dr.Description
+                                                                               }
+                        )
+                    Dim filteredLogisticStages = logisticStages.Where(Function(item) item.Address.Address1 IsNot Nothing).ToList()
+                    repAddress.DataSource = filteredLogisticStages
+                    repAddress.DataBind()
+
+                Else
+                    repAddress.Visible = False
+                End If
+
+            End If
+
+        Else
+            repAddress.Visible = False
+        End If
     End Sub
 
 #End Region
@@ -799,7 +835,11 @@ Partial Class NewClaimForm
         End Get
     End Property
 
+    Public Class FulfillmentAddressBinding
+        Public Property LogisticStage As String
 
+        Public Property Address As FulfillmentAddress
+    End Class
 #End Region
 
 #Region "Controlling Logic"
@@ -1825,13 +1865,13 @@ Partial Class NewClaimForm
                     If Not allowEnrolledDeviceUpdate Is Nothing AndAlso allowEnrolledDeviceUpdate.Value = Codes.YESNO_Y Then
                         For Each i As ClaimIssue In State.MyBO.ClaimIssuesList
                             If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS and i.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Then
-                                    .ShowDeviceEditImg = True
-                                    Exit For
-                             Else 
+                                .ShowDeviceEditImg = True
+                                Exit For
+                            Else
                                 .ShowDeviceEditImg = False
                             End If
                         Next
-                    Else 
+                    Else
                         .ShowDeviceEditImg = False
                     End If
                 End With
@@ -2606,27 +2646,27 @@ Partial Class NewClaimForm
                     Return lc.BenefitClaimPreCheck(GuidControl.ByteArrayToGuid(caseRecord(0)("case_Id")).ToString())
                 End Function)
 
-                If (Not benefitCheckResponse Is Nothing) Then
-                    Me.State.MyBO.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
-                    If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
-                        Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECKFAIL")
-                        Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-                        newClaimIssue.SaveNewIssue(Me.State.MyBO.Id, issueId, Me.State.MyBO.Certificate.Id, True)
-                    End If
-                Else
-                    Me.State.MyBO.Status = BasicClaimStatus.Pending
-                    Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
+            If (Not benefitCheckResponse Is Nothing) Then
+                Me.State.MyBO.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
+                If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
+                    Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECKFAIL")
                     Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
                     newClaimIssue.SaveNewIssue(Me.State.MyBO.Id, issueId, Me.State.MyBO.Certificate.Id, True)
                 End If
-
-            Catch ex As Exception
-                Log(ex)
+            Else
                 Me.State.MyBO.Status = BasicClaimStatus.Pending
                 Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
                 Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
                 newClaimIssue.SaveNewIssue(Me.State.MyBO.Id, issueId, Me.State.MyBO.Certificate.Id, True)
-            End Try
+            End If
+
+        Catch ex As Exception
+            Log(ex)
+            Me.State.MyBO.Status = BasicClaimStatus.Pending
+            Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
+            Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+            newClaimIssue.SaveNewIssue(Me.State.MyBO.Id, issueId, Me.State.MyBO.Certificate.Id, True)
+        End Try
     End Sub
 
     Private Shared Sub UpdateCaseFieldValues(ByRef caseFieldRow As DataRow(), ByRef lossType As DataRow())
@@ -2855,6 +2895,35 @@ Partial Class NewClaimForm
         End Select
     End Sub
 
+    Protected Sub RepAddress_OnItemDataBound(sender As Object, e As RepeaterItemEventArgs)
+        If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
+            Dim lbLogisticStage As Label = DirectCast(e.Item.FindControl("LogisticStage"), Label)
+            Dim addressControls As UserControlAddress_New = DirectCast(e.Item.FindControl("moAddressController"), UserControlAddress_New)
+            addressControls.TranslateAllLabelControl()
+
+            Dim logisticStage As Object = DataBinder.Eval(e.Item.DataItem, "LogisticStage")
+            Dim addressFulfill As Object = DataBinder.Eval(e.Item.DataItem, "Address")
+            Dim convertedAddress As BusinessObjectsNew.Address = ConvertToAddressControllerField(addressFulfill)
+            lbLogisticStage.Text = logisticStage
+            addressControls.Bind(convertedAddress)
+            addressControls.EnableControls(False, True)
+        End If
+
+    End Sub
+
+    Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As FulfillmentAddress) As BusinessObjectsNew.Address
+
+        Dim convertAddress As New BusinessObjectsNew.Address With {
+                .CountryId = LookupListNew.GetIdFromCode(LookupListNew.DataView(LookupListNew.LK_COUNTRIES, False), sourceAddress.Country),
+                .Address1 = sourceAddress.Address1,
+                .Address2 = sourceAddress.Address2,
+                .Address3 = sourceAddress.Address3,
+                .City = sourceAddress.City,
+                .PostalCode = sourceAddress.PostalCode,
+                .RegionId = LookupListNew.GetIdFromDescription(LookupListNew.DataView(LookupListNew.LK_REGIONS, False), sourceAddress.State)
+                }
+        Return convertAddress
+    End Function
 
 #End Region
 
