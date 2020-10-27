@@ -1103,6 +1103,24 @@ Partial Public Class ClaimForm
     Protected WithEvents TextboxLoanerRequested As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''LabelDeductibleCollected control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents LabelDeductibleCollected As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''TextboxDeductibleCollected control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents TextboxDeductibleCollected As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''LabelTotalPaid control.
     '''</summary>
     '''<remarks>
@@ -3072,6 +3090,15 @@ Partial Public Class ClaimForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnReplacementQuote As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnClaimDeductibleRefund control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnClaimDeductibleRefund As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.

@@ -72,6 +72,7 @@ Namespace Certificates
         Public Const CERT_REPRICE_TAB As Integer = 12
         'Data Protection Tab
         Public Const CERT_DATA_PROTECTION_TAB As Integer = 13
+        Public Const CERT_EXTENDED_FIELDS_TAB As Integer = 14
         Public Const Total_installments As Integer = 0
         Public Const Remaining_Installments As Integer = 1
         Public Const Amount_Collected As Integer = 2
@@ -158,6 +159,19 @@ Namespace Certificates
         Private Const GRID_CTRL_NAME_COMMENT As String = "txtComment"
         Private Const GRID_CTRL_NAME_REQUEST_ID_HEADER As String = "lblRequestHeader"
         Private Const GRID_CTRL_NAME_COMMENT_HEADER As String = "lblCommentHeader"
+
+#End Region
+
+#Region "Cert Extended Fields Grid"
+
+        Public Const CERT_EXT_ID_ID_IDX As Integer = 0
+        Public Const CERT_EXT_CERT_ID_IDX As Integer = 1
+        Public Const CERT_EXT_FIELD_NAME_IDX As Integer = 2
+        Public Const CERT_EXT_FIELD_VALUE_IDX As Integer = 3
+        Public Const CERT_EXT_CREATED_BY_IDX as Integer = 4
+        Public Const CERT_EXT_CREATED_DATE_IDX as Integer = 5
+        Public Const CERT_EXT_MODIFIED_BY_IDX as Integer = 6
+        Public Const CERT_EXT_MODIFIED_DATE_IDX as Integer = 7
 
 #End Region
 
@@ -590,12 +604,15 @@ Namespace Certificates
             Public selectedClaimItemId As Guid = Guid.Empty
             Public SelectedCommentId As Guid = Guid.Empty
             Public SelectedEndorseId As Guid = Guid.Empty
+            Public SelectedCertExtId As Guid = Guid.Empty
             Public isPremiumTAbVisible As Boolean = True
             Public PageIndex As Integer = 0
             Public PageIndexClaimsGrid As Integer = 0
             Public IsGridVisible As Boolean = False
             Public CommentsPageIndex As Integer = 0
+            Public CertExtFieldsPageIndex As Integer = 0
             Public IsCommentsGridVisible As Boolean = False
+            Public IsCertExtFieldsGridVisible As Boolean = False
             Public EndorsementsPageIndex As Integer = 0
             Public ItemsPageIndex As Integer = 0
             Public ExtensionGridPageIndex As Integer = 0
@@ -628,6 +645,7 @@ Namespace Certificates
             Public CertInstallmentHistorySortExpression As String = Certificate.CertInstallmentHistoryDV.COL_START_DATE & " ASC"
             Public CertExtensionSortExpression As String = Certificate.CertExtensionsDV.COL_FIELD_NAME & " ASC"
             Public CertUpgradeExtensionSortExpression As String = Certificate.CertUpgradeExtensionsDV.COL_SEQUENCE_NUMBER & " ASC"
+            Public CertExtFieldsSortExpression As String = Certificate.CertExtendedFieldsDv.COL_FIELD_NAME & " ASC"
             Public IsRepriceGridVisible As Boolean = False
             Public IsNew As Boolean
             Public CertificateId As Guid
@@ -909,6 +927,7 @@ Namespace Certificates
                 Me.State.IsCommentsGridVisible = True
                 Me.State.IsEndorsementsGridVisible = True
                 Me.State.IsCertHistoryGridVisible = True
+                Me.State.IsCertExtFieldsGridVisible = True
                 ' Me.State.isItemsGridVisible = True
 
                 If Not Me.State.MyBO Is Nothing AndAlso Contract.HasContract(Me.State.MyBO.DealerId, Me.State.MyBO.WarrantySalesDate.Value) Then
@@ -1002,6 +1021,10 @@ Namespace Certificates
 
                     If Me.State.IsEndorsementsGridVisible Then
                         Me.PopulateEndorsementsGrid()
+                    End If
+
+                    If Me.State.IsCertExtFieldsGridVisible Then
+                        Me.PopulateCertExtendedFieldsGrid()
                     End If
 
                     'Certificate History tab
@@ -5536,7 +5559,7 @@ Namespace Certificates
 
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
 
-                    Dim maxRenewalDuration as String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_MAX_RENEWAL_DURATION).ToString
+                    Dim maxRenewalDuration As String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_MAX_RENEWAL_DURATION).ToString
                     Dim coverageBeginDate as Date = CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date)
                     Dim coverageDuration as String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_COVERAGE_DURATION).ToString
                     Dim numberOfRenewals as String = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_NO_OF_RENEWALS).ToString
@@ -6837,6 +6860,94 @@ Namespace Certificates
 
 #End Region
 
+#Region "Certificate Extended Fields grid Related"
+        Private Sub GridCertExtFields_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles GridCertExtFields.ItemDataBound
+            Try
+                Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
+                Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
+                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+                    e.Item.Cells(CERT_EXT_CERT_ID_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_CERT_ID).ToString
+                    e.Item.Cells(CERT_EXT_FIELD_NAME_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_NAME).ToString
+                    e.Item.Cells(CERT_EXT_FIELD_VALUE_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE).ToString
+                    e.Item.Cells(CERT_EXT_CREATED_BY_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_BY).ToString
+                    e.Item.Cells(CERT_EXT_MODIFIED_BY_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_BY).ToString
+                    If Not IsDBNull(dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_DATE)) Then
+                        e.Item.Cells(CERT_EXT_CREATED_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_DATE), Date))
+                    Else
+                        e.Item.Cells(CERT_EXT_CREATED_DATE_IDX).Text = String.Empty
+                    End If
+                    If Not IsDBNull(dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE)) then
+                        e.Item.Cells(CERT_EXT_MODIFIED_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE), Date))
+                    Else 
+                        e.Item.Cells(CERT_EXT_MODIFIED_DATE_IDX).Text = String.Empty
+                    End If
+                    
+                End If
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+        Private Sub GridCertExtFields_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles GridCertExtFields.SortCommand
+            Try
+                If Me.State.CertExtFieldsSortExpression.StartsWith(e.SortExpression) Then
+                    If Me.State.CertExtFieldsSortExpression.EndsWith(" DESC") Then
+                        Me.State.CertExtFieldsSortExpression = e.SortExpression
+                    Else
+                        Me.State.CertExtFieldsSortExpression &= " DESC"
+                    End If
+                Else
+                    Me.State.CertExtFieldsSortExpression = e.SortExpression
+                End If
+                Me.State.SelectedCertExtId = Nothing
+                Me.State.PageIndex = 0
+                Me.PopulateCertExtendedFieldsGrid()
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+        Public Sub GridCertExtFields_ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles GridCertExtFields.ItemCreated
+            Try
+                BaseItemCreated(sender, e)
+            Catch ex As Exception
+                Me.HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Private Sub GridCertExtFields_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles GridCertExtFields.PageIndexChanged
+            Try
+                Me.State.CertExtFieldsPageIndex = e.NewPageIndex
+                Me.State.SelectedCertExtId = Guid.Empty
+                Me.PopulateCertExtendedFieldsGrid()
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Public Sub PopulateCertExtendedFieldsGrid()
+            Dim cert As Certificate = Me.State.MyBO
+            Dim dv As Certificate.CertExtendedFieldsDv = Certificate.GetCertExtensionFieldsList(Me.State.MyBO.Id, Authentication.CurrentUser.LanguageId)
+            dv.Sort = Me.State.CertExtFieldsSortExpression
+
+            Me.GridCertExtFields.AutoGenerateColumns = False
+            Me.GridCertExtFields.Columns(CERT_EXT_FIELD_NAME_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_FIELD_NAME
+            Me.GridCertExtFields.Columns(CERT_EXT_FIELD_VALUE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE
+            Me.GridCertExtFields.Columns(CERT_EXT_CREATED_BY_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_CREATED_BY
+            Me.GridCertExtFields.Columns(CERT_EXT_CREATED_DATE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_CREATED_DATE
+            Me.GridCertExtFields.Columns(CERT_EXT_MODIFIED_BY_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_MODIFIED_BY
+            Me.GridCertExtFields.Columns(CERT_EXT_MODIFIED_DATE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE
+            Me.GridCertExtFields.EditItemIndex = -1
+            SetPageAndSelectedIndexFromGuid(dv, Me.State.SelectedCertExtId, Me.GridCertExtFields, Me.State.CertExtFieldsPageIndex)
+            Me.State.CertExtFieldsPageIndex = Me.GridCertExtFields.CurrentPageIndex
+            Me.GridCertExtFields.DataSource = dv
+            Me.GridCertExtFields.DataBind()
+
+            lblCertificateExtendedFields.Text = TranslationBase.TranslateLabelOrMessage("CERT_EXT_FIELDS") & " : " & dv.Count.ToString()
+
+            ControlMgr.SetVisibleControl(Me, GridCertExtFields, Me.State.IsCertExtFieldsGridVisible)
+        End Sub
+        
+#End Region
+
 #Region "Button Clicks"
 
         Private Sub TNCButton_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles TNCButton_WRITE.Click
@@ -7470,6 +7581,9 @@ Namespace Certificates
                             State.validateAddress = False
                         End If
                         Me.PopulateBOProperty(Me.State.certCancellationBO, "PaymentMethodId", Me.PaymentMethodDrop)
+                        If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
+                            BankControlsEnableOnPaymentMethod()
+                        End If
                     End If 'Not inputAmountRequiredMissing
                 Else 'Not errorExist
                     ControlMgr.SetVisibleControl(Me, RefundAmtTextbox, False)
@@ -7496,6 +7610,29 @@ Namespace Certificates
             Finally
                 Me.PopulatePremiumInfoTab()
             End Try
+        End Sub
+
+        Private Sub BankControlsEnableOnPaymentMethod()
+            Dim objCompany As New Company(LookupListNew.GetIdFromCode(LookupListNew.LK_COMPANY, Me.State.companyCode))
+            Dim selectedPaymentMethod As Guid
+            selectedPaymentMethod = Me.GetSelectedItem(Me.PaymentMethodDrop)
+
+            Me.moBankInfoController.Visible = True
+            Me.State.BankInfoBO = Nothing
+            Me.State.BankInfoBO = Me.State.certCancellationBO.bankinfo
+
+            Me.State.BankInfoBO.CountryID = Me.State.MyBO.AddressChild.CountryId
+            Me.State.BankInfoBO.SourceCountryID = objCompany.CountryId
+            Me.moBankInfoController.EnableDisableControls()
+            Me.State.BankInfoBO.Account_Name = Me.moCustomerNameText.Text.Trim
+            Me.State.BankInfoBO.PaymentMethodId = selectedPaymentMethod
+            'Me.State.BankInfoBO.ACCOUNT_NUMBER = System.DBNull.Value
+
+            Me.moBankInfoController.Bind(Me.State.BankInfoBO)
+            Me.State.BankInfoCtrVisible = True
+
+            Me.moPaymentOrderInfoCtrl.Visible = False
+            Me.State.PaymentOrderInfoCtrVisible = False
         End Sub
 
         Private Sub btnCancelRequestSave_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCancelRequestSave_WRITE.Click
@@ -7861,28 +7998,7 @@ Namespace Certificates
             selectedPaymentMethod = Me.GetSelectedItem(Me.PaymentMethodDrop)
             Me.PopulateBOProperty(Me.State.certCancellationBO, "PaymentMethodId", Me.PaymentMethodDrop)
             If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
-
-
-                ' SHOW THE BANK INFO USER CONTROL HERE -----
-                ' Me.trbank.Visible = True
-                Me.moBankInfoController.Visible = True
-                Me.State.BankInfoBO = Nothing
-                Me.State.BankInfoBO = Me.State.certCancellationBO.bankinfo
-
-                Me.State.BankInfoBO.CountryID = Me.State.MyBO.AddressChild.CountryId
-                Me.State.BankInfoBO.SourceCountryID = objCompany.CountryId
-                Me.moBankInfoController.EnableDisableControls()
-                Me.State.BankInfoBO.Account_Name = Me.moCustomerNameText.Text.Trim
-                Me.State.BankInfoBO.PaymentMethodId = selectedPaymentMethod
-                'Me.State.BankInfoBO.ACCOUNT_NUMBER = System.DBNull.Value
-
-                Me.moBankInfoController.Bind(Me.State.BankInfoBO)
-                Me.State.BankInfoCtrVisible = True
-
-                Me.moPaymentOrderInfoCtrl.Visible = False
-                Me.State.PaymentOrderInfoCtrVisible = False
-
-                'Me.moBankInfoController.
+                BankControlsEnableOnPaymentMethod()
             ElseIf LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.State.certCancellationBO.PaymentMethodId) = Codes.PAYMENT_METHOD__PAYMENT_ORDER Then
                 Me.moBankInfoController.Visible = False
                 Me.State.BankInfoCtrVisible = False

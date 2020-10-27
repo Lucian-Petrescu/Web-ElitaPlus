@@ -55,8 +55,8 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.3\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
+    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.4\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Common.Types, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Elita.Assurant.Common.Types.2.0.0\lib\net462\Assurant.Common.Types.dll</HintPath>
@@ -87,8 +87,8 @@
       <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>True</SpecificVersion>
-      <Private>False</Private>
+      <HintPath>..\packages\VS.QualityTools.UnitTestFramework.15.0.27323.2\lib\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>

@@ -572,6 +572,18 @@
                                         <asp:TextBox ID="moPerIncidentLiabilityLimitCapText" TabIndex="12" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td style="width: 1px" width="1"></td>
+                                    <td style="height: 12px" align="right" colspan="1">&nbsp;
+                                        <asp:Label ID="lblDeviceExpectedBack" runat="server" Font-Bold="false">DEVICE_EXPECTED_BACK</asp:Label>&nbsp;
+                                    </td>
+                                    <td nowrap colspan="1" align="left">
+                                        <asp:DropDownList ID="ddlDeviceExpectedBack" TabIndex="19" runat="server" SkinID="SmallDropDown">
+                                        </asp:DropDownList>
+                                    </td>
+                                    <td align="right"></td>
+                                    <td align="left"></td>
+                                </tr>
                             </tbody>
                         </asp:Panel>
                     </table>
@@ -638,7 +650,7 @@
                         <td align="Center" colspan="2">
                             <div id="scroller" style="overflow: auto; width: 96%; height: 125px" align="center">
                                 <asp:GridView ID="moGridView" runat="server" OnRowCreated="ItemCreated" OnRowCommand="ItemCommand"
-                                    AllowPaging="False" PageSize="50" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False"
+                                    AllowPaging="True" PageSize="50" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False"
                                     SkinID="DetailPageGridView">
                                     <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                                     <EditRowStyle Wrap="False"></EditRowStyle>

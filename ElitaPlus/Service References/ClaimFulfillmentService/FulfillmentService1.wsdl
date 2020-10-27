@@ -122,6 +122,24 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="CancelServiceOrder">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CancelServiceOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelServiceOrderAndUpdateAuthorization">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CancelServiceOrderAndUpdateAuthorization" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetAuthorizationDetails">
       <soap:operation soapAction="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/GetAuthorizationDetails" style="document" />
       <wsdl:input>
