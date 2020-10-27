@@ -42,30 +42,32 @@
                 var objTextID = splitObj[0] + "_" + splitObj[1] + "_" + splitObj[2] + "_" + splitObj[3] + "_" + "DefaultValueTextBox";
 
                 var objTextDefaultValue = document.getElementById(objTextID);
+                var objTableTextBox = document.getElementById("TableTextBox");
 
                 if (status != 'No') {
                     objTextDefaultValue.disabled = true;
-                    objTextDefaultValue.style.backgroundColor = "grey";
                     objTextDefaultValue.value = "";
+                    objTableTextBox.style.display = "none";
                 }
                 else {
                     objTextDefaultValue.disabled = false;
+                    objTableTextBox.style.display = "table";
                 }
-            }   
+            }
         }
     </script>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
-    <table id="TableFixed" border="0" style="width:70%;" class="searchGrid">
+    <table id="TableFixed" border="0" style="width: 70%;" class="searchGrid">
         <caption></caption>
         <tr>
             <th scope="col"></th>
         </tr>
         <tbody>
             <tr>
-                <td style="white-space:nowrap;">
+                <td style="white-space: nowrap;">
                     <span class="mandatory">*</span>
                     <asp:Label ID="LabelCertItemConfigCode" runat="server" Font-Bold="false">CERT_ITEM_CONFIG_CODE</asp:Label>
                 </td>
@@ -85,7 +87,7 @@
 <asp:Content ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:Panel runat="server" ID="WorkingPanel">
         <div class="dataContainer">
-            <table style="width:100%;" border="0" class="dataGrid">
+            <table style="width: 100%;" border="0" class="dataGrid">
                 <caption></caption>
                 <tr>
                     <th scope="col"></th>
@@ -106,7 +108,7 @@
                             <asp:ListItem Value="50">50</asp:ListItem>
                         </asp:DropDownList>
                     </td>
-                    <td style="text-align:right;" class="bor">
+                    <td style="text-align: right;" class="bor">
                         <asp:Label ID="lblRecordCount" runat="server"></asp:Label>
                         <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
                             runat="server" />
@@ -141,8 +143,14 @@
                                 <asp:Label runat="server" ID="DefaultValueLabel"></asp:Label>
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:TextBox runat="server" ID="DefaultValueTextBox">
-                                </asp:TextBox>
+                                <table id="TableTextBox" style="display:none;">
+                                    <tr>
+                                        <td>
+                                            <asp:TextBox runat="server" ID="DefaultValueTextBox">                                       
+                                            </asp:TextBox>
+                                        </td>
+                                    </tr>
+                                </table>
                             </EditItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="ALLOW_UPDATE" SortExpression="ALLOW_UPDATE">
@@ -171,10 +179,9 @@
         </div>
         <div class="btnZone">
             <asp:Button ID="btnAdd" runat="server" SkinID="AlternateLeftButton" Text="Add_New" />
-   
         </div>
         <div class="dataContainer">
-            <table id="TableConfig"  border="0" class="formGrid">
+            <table id="TableConfig" border="0">
                 <caption></caption>
                 <tr>
                     <th scope="col"></th>
@@ -189,9 +196,9 @@
                     </tr>
                     <tr>
                         <td>
-                            <asp:RadioButton ID="rdoCompanies" runat="server" Text="Company" Checked="True" AutoPostBack="false" GroupName="ConfigGroup"></asp:RadioButton>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <asp:RadioButton ID="rdoDealers" runat="server" Text="Dealer" AutoPostBack="false" GroupName="ConfigGroup"></asp:RadioButton>
+                            <asp:RadioButton ID="rdoCompanies" runat="server" Text="Company" Checked="True" AutoPostBack="false" GroupName="ConfigGroup" Font-Size="10pt"></asp:RadioButton>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <asp:RadioButton ID="rdoDealers" runat="server" Text="Dealer" AutoPostBack="false" GroupName="ConfigGroup" Font-Size="10pt"></asp:RadioButton>
                         </td>
                     </tr>
 
@@ -220,7 +227,8 @@
                 </div>
             </div>
             <div class="btnZone">
-                <asp:Button runat="server" ID="btnSaveConfig" Text="Save" SkinID="AlternateLeftButton" />
+                <asp:Button runat="server" ID="btnBack" Text="Back" SkinID="AlternateLeftButton"/>
+                <asp:Button runat="server" ID="btnSaveConfig" Text="Save" SkinID="PrimaryRightButton" />
             </div>
         </div>
     </asp:Panel>
