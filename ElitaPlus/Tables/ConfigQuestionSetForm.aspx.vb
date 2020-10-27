@@ -16,14 +16,13 @@ Namespace Tables
 #End Region
 
 #Region "Variables"
-        Private mbIsFirstPass As Boolean = True
+        Private _mbIsFirstPass As Boolean = True
 #End Region
 
 #Region "Page State"
         Class MyState
             Public MyBO As ConfigQuestionSet
-            Public ScreenSnapShotBO As ConfigQuestionSet
-
+            Public ScreenSnapShotBo As ConfigQuestionSet
             Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
             Public LastErrMsg As String
             Public HasDataChanged As Boolean
@@ -45,65 +44,64 @@ Namespace Tables
             Public LastOperation As DetailPageCommand
             Public EditingBo As ConfigQuestionSet
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As ConfigQuestionSet, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
-                Me.HasDataChanged = hasDataChanged
+            Public Sub New(lastOp As DetailPageCommand, curEditingBo As ConfigQuestionSet, hasDataChanged As Boolean)
+                LastOperation = lastOp
+                EditingBo = curEditingBo
+                HasDataChanged = hasDataChanged
             End Sub
         End Class
 
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End Sub
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-            If mbIsFirstPass = True Then
-                mbIsFirstPass = False
+        Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+            If _mbIsFirstPass = True Then
+                _mbIsFirstPass = False
             Else
                 ' Do not load again the Page that was already loaded
                 Return
             End If
 
-            Me.MasterPage.MessageController.Clear()
-            Me.UpdateBreadCrum()
+            MasterPage.MessageController.Clear()
+            UpdateBreadCrum()
 
             Try
                 txtProductCode.Visible = False
-                If Not Me.IsPostBack Then
-                    If Me.State.MyBO Is Nothing Then
-                        Me.State.MyBO = New ConfigQuestionSet
+                If Not IsPostBack Then
+                    If State.MyBO Is Nothing Then
+                        State.MyBO = New ConfigQuestionSet
                     End If
 
                     PopulateDropdowns()
                     PopulateFormFromBOs()
                     EnableDisableFields()
-                    AddLabelDecorations(Me.State.MyBO)
+                    AddLabelDecorations(State.MyBO)
                 End If
                 BindBoPropertiesToLabels()
                 CheckIfComingFromSaveConfirm()
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
                 CleanPopupInput()
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
-        Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
+        Private Sub Page_PageCall(callFromUrl As String, callingPar As Object) Handles MyBase.PageCall
             Try
-                If Not Me.CallingParameters Is Nothing Then
+                If Not CallingParameters Is Nothing Then
                     'Get the id from the parent
-                    Dim objID As Guid = CType(Me.CallingParameters, Guid)
-                    If objID <> Guid.Empty Then
-                        Me.State.MyBO = New ConfigQuestionSet(objID)
+                    Dim objId As Guid = CType(CallingParameters, Guid)
+                    If objId <> Guid.Empty Then
+                        State.MyBO = New ConfigQuestionSet(objId)
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-
         End Sub
 #End Region
 
@@ -111,10 +109,10 @@ Namespace Tables
 
         Private Sub CleanPopupInput()
             Try
-                If Not Me.State Is Nothing Then
+                If Not State Is Nothing Then
                     'Clean after consuming the action 
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                    Me.HiddenSaveChangesPromptResponse.Value = ""
+                    State.ActionInProgress = DetailPageCommand.Nothing_
+                    HiddenSaveChangesPromptResponse.Value = ""
                 End If
             Catch ex As Exception
 
@@ -134,56 +132,56 @@ Namespace Tables
                 BindBOPropertyToLabel(State.MyBO, "QuestionSetCode", lblQuestionSetCode)
                 ClearGridViewHeadersAndLabelsErrorSign()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Protected Sub CheckIfComingFromSaveConfirm()
             Try
-                Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-                Dim actionInProgress As ElitaPlusPage.DetailPageCommand = Me.State.ActionInProgress
+                Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+                Dim actionInProgress As DetailPageCommand = State.ActionInProgress
                 If Not confResponse Is Nothing AndAlso (confResponse = MSG_VALUE_YES OrElse confResponse.ToUpper = "OK") Then
-                    If actionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                        Me.State.MyBO.Save()
+                    If actionInProgress <> DetailPageCommand.BackOnErr Then
+                        State.MyBO.Save()
                         State.HasDataChanged = True
                     End If
-                    Select Case Me.State.ActionInProgress
-                        Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
-                        Case ElitaPlusPage.DetailPageCommand.New_
-                            Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
-                            Me.CreateNew()
-                        Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                            Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
-                            Me.CreateNewWithCopy()
-                        Case ElitaPlusPage.DetailPageCommand.Delete
+                    Select Case State.ActionInProgress
+                        Case DetailPageCommand.Back
+                            ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
+                        Case DetailPageCommand.New_
+                            MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                            CreateNew()
+                        Case DetailPageCommand.NewAndCopy
+                            MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                            CreateNewWithCopy()
+                        Case DetailPageCommand.Delete
                             Try
                                 Dim bal As New ConfigQuestionSet
-                                bal.DeleteConfiguration(Me.State.MyBO.Id)
-                                Me.ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
+                                bal.DeleteConfiguration(State.MyBO.Id)
+                                ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                             Catch ex As Exception
-                                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                                HandleErrors(ex, MasterPage.MessageController)
                             End Try
-                        Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                            Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                        Case DetailPageCommand.BackOnErr
+                            ReturnToCallingPage(New ReturnType(State.ActionInProgress, State.MyBO, State.HasDataChanged))
                     End Select
                 ElseIf Not confResponse Is Nothing AndAlso (confResponse = MSG_VALUE_NO OrElse confResponse.ToUpper = "CANCEL") Then
-                    Select Case Me.State.ActionInProgress
-                        Case ElitaPlusPage.DetailPageCommand.Back
-                            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
-                        Case ElitaPlusPage.DetailPageCommand.New_
-                            Me.CreateNew()
-                        Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                            Me.CreateNewWithCopy()
-                        Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                            Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                    Select Case State.ActionInProgress
+                        Case DetailPageCommand.Back
+                            ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
+                        Case DetailPageCommand.New_
+                            CreateNew()
+                        Case DetailPageCommand.NewAndCopy
+                            CreateNewWithCopy()
+                        Case DetailPageCommand.BackOnErr
+                            MasterPage.MessageController.AddErrorAndShow(State.LastErrMsg)
                     End Select
                 End If
                 'Clean after consuming the action
                 CleanPopupInput()
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -202,44 +200,44 @@ Namespace Tables
 
                 'Company
                 Dim oCompanyList = GetCompanyListByCompanyGroup(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
-                Me.ddlCompany.Populate(oCompanyList, New PopulateOptions() With
+                ddlCompany.Populate(oCompanyList, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
 
                 'Dealer Group
-                If Not Me.State Is Nothing Then
-                    If Not Me.State.MyBO Is Nothing Then
-                        If Not Me.State.MyBO.CompanyId = Nothing Then
-                            Dim oDealerGroupList = GetDealerGroupListByCompany(Me.State.MyBO.CompanyId)
-                            Me.ddlDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
+                If Not State Is Nothing Then
+                    If Not State.MyBO Is Nothing Then
+                        If Not State.MyBO.CompanyId = Nothing Then
+                            Dim oDealerGroupList = GetDealerGroupListByCompany(State.MyBO.CompanyId)
+                            ddlDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
                             {
                                 .AddBlankItem = True,
-                                .SortFunc = AddressOf .GetCode
+                                .SortFunc = AddressOf PopulateOptions.GetCode
                             })
                         Else
                             Dim oDealerGroupList = GetDealerGroupListByCompanyForUser()
-                            Me.ddlDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
+                            ddlDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
                             {
                                 .AddBlankItem = True,
-                                .SortFunc = AddressOf .GetCode
+                                .SortFunc = AddressOf PopulateOptions.GetCode
                             })
                         End If
                     End If
                 End If
 
                 'Dealer
-                If Not Me.State Is Nothing Then
-                    If Not Me.State.MyBO Is Nothing Then
-                        If Not Me.State.MyBO.CompanyId = Nothing Then
-                            Dim oDealerList = GetDealerListByCompany(Me.State.MyBO.CompanyId)
-                            Me.ddlDealer.Populate(oDealerList, New PopulateOptions() With
+                If Not State Is Nothing Then
+                    If Not State.MyBO Is Nothing Then
+                        If Not State.MyBO.CompanyId = Nothing Then
+                            Dim oDealerList = GetDealerListByCompany(State.MyBO.CompanyId)
+                            ddlDealer.Populate(oDealerList, New PopulateOptions() With
                             {
                                 .AddBlankItem = True
                             })
                         Else
                             Dim oDealerList = GetDealerListByCompanyForUser()
-                            Me.ddlDealer.Populate(oDealerList, New PopulateOptions() With
+                            ddlDealer.Populate(oDealerList, New PopulateOptions() With
                             {
                                 .AddBlankItem = True
                             })
@@ -248,19 +246,19 @@ Namespace Tables
                 End If
 
                 'ProductCode
-                Me.ddlProductCode.Populate(New ListItem(0) {}, New PopulateOptions() With
+                ddlProductCode.Populate(New ListItem(0) {}, New PopulateOptions() With
                     {
                         .AddBlankItem = True,
                         .TextFunc = textFun
                     })
                 ddlProductCode.Enabled = False
 
-                If Not Me.State Is Nothing Then
-                    If Not Me.State.MyBO Is Nothing Then
-                        If Not Me.State.MyBO.DealerId = Nothing Then
-                            Dim oProductCodeList = GetProductCodeListByDealer(Me.State.MyBO.DealerId)
-                            Me.ddlProductCode.Items.Clear()
-                            Me.ddlProductCode.Populate(oProductCodeList, New PopulateOptions() With
+                If Not State Is Nothing Then
+                    If Not State.MyBO Is Nothing Then
+                        If Not State.MyBO.DealerId = Nothing Then
+                            Dim oProductCodeList = GetProductCodeListByDealer(State.MyBO.DealerId)
+                            ddlProductCode.Items.Clear()
+                            ddlProductCode.Populate(oProductCodeList, New PopulateOptions() With
                             {
                                 .AddBlankItem = True,
                                 .TextFunc = textFun
@@ -271,22 +269,22 @@ Namespace Tables
                 End If
 
                 'Device Type
-                Me.ddlDeviceType.Populate(CommonConfigManager.Current.ListManager.GetList("DEVICE", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
+                ddlDeviceType.Populate(CommonConfigManager.Current.ListManager.GetList("DEVICE", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
 
                 'Coverage Type
-                Me.ddlCoverageType.Populate(CommonConfigManager.Current.ListManager.GetList("CTYP", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
+                ddlCoverageType.Populate(CommonConfigManager.Current.ListManager.GetList("CTYP", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
 
                 'Risk Type
-                Dim listcontext As ListContext = New ListContext()
+                Dim listContext As ListContext = New ListContext()
                 Dim compGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                listcontext.CompanyGroupId = compGroupId
-                Dim riskLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("RiskTypeByCompanyGroup", Authentication.CurrentUser.LanguageCode, listcontext)
+                listContext.CompanyGroupId = compGroupId
+                Dim riskLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("RiskTypeByCompanyGroup", Authentication.CurrentUser.LanguageCode, listContext)
                 ddlRiskType.Populate(riskLkl, New PopulateOptions() With
                 {
                     .AddBlankItem = True
@@ -298,33 +296,31 @@ Namespace Tables
                     .AddBlankItem = True,
                     .BlankItemValue = String.Empty,
                     .TextFunc = textFun,
-                    .ValueFunc = AddressOf .GetExtendedCode
+                    .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                 })
 
                 'QuestionSetCode
-                Me.ddlQuestionSetCode.Populate(CommonConfigManager.Current.ListManager.GetList("DcmQuestionSet", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
+                ddlQuestionSetCode.Populate(CommonConfigManager.Current.ListManager.GetList("DcmQuestionSet", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
                 {
                     .AddBlankItem = True,
                     .BlankItemValue = String.Empty,
-                    .ValueFunc = AddressOf .GetCode,
+                    .ValueFunc = AddressOf PopulateOptions.GetCode,
                     .TextFunc = textFun
                 })
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Function GetDealerListByCompanyForUser() As ListItem()
-            Dim Index As Integer
+            Dim index As Integer
             Dim oListContext As New ListContext
-
-            Dim UserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-
+            Dim userCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
             Dim oDealerList As New List(Of ListItem)
 
-            For Index = 0 To UserCompanies.Count - 1
-                oListContext.CompanyId = UserCompanies(Index)
+            For index = 0 To userCompanies.Count - 1
+                oListContext.CompanyId = userCompanies(index)
                 Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
                     If Not oDealerList Is Nothing Then
@@ -332,7 +328,6 @@ Namespace Tables
                     Else
                         oDealerList = oDealerListForCompany.Clone()
                     End If
-
                 End If
             Next
 
@@ -341,15 +336,13 @@ Namespace Tables
         End Function
 
         Private Function GetDealerGroupListByCompanyForUser() As ListItem()
-            Dim Index As Integer
+            Dim index As Integer
             Dim oListContext As New ListContext
+            Dim userCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
+            Dim oDealerGroupList As New List(Of ListItem)
 
-            Dim UserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-
-            Dim oDealerGroupList As New Collections.Generic.List(Of ListItem)
-
-            For Index = 0 To UserCompanies.Count - 1
-                oListContext.CompanyId = UserCompanies(Index)
+            For index = 0 To userCompanies.Count - 1
+                oListContext.CompanyId = userCompanies(index)
                 Dim oDealerGroupListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerGroupByCompany", context:=oListContext)
                 If oDealerGroupListForCompany.Count > 0 Then
                     If oDealerGroupList IsNot Nothing Then
@@ -357,7 +350,6 @@ Namespace Tables
                     Else
                         oDealerGroupList = oDealerGroupListForCompany.Clone()
                     End If
-
                 End If
             Next
 
@@ -365,101 +357,94 @@ Namespace Tables
 
         End Function
 
-        Private Function GetCompanyListByCompanyGroup(ByVal companyGroupId As Guid) As ListItem()
-            Dim listcontext As ListContext = New ListContext()
+        Private Function GetCompanyListByCompanyGroup(companyGroupId As Guid) As ListItem()
+            Dim listContext As ListContext = New ListContext()
 
-            listcontext.CompanyGroupId = companyGroupId
-            Dim companyListForCompanyGroup As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="GetCompanyByCompanyGroup", context:=listcontext)
+            listContext.CompanyGroupId = companyGroupId
+            Dim companyListForCompanyGroup As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="GetCompanyByCompanyGroup", context:=listContext)
 
             Return companyListForCompanyGroup.ToArray()
         End Function
 
-        Private Function GetProductCodeListByDealer(ByVal dealerId As Guid) As ListItem()
-            Dim listcontext As ListContext = New ListContext()
+        Private Function GetProductCodeListByDealer(dealerId As Guid) As ListItem()
+            Dim listContext As ListContext = New ListContext()
 
-            listcontext.DealerId = dealerId
-            Dim oProductCodeListForDealer As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.ProductCodeByDealer, Authentication.CurrentUser.LanguageCode, listcontext)
+            listContext.DealerId = dealerId
+            Dim oProductCodeListForDealer As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.ProductCodeByDealer, Authentication.CurrentUser.LanguageCode, listContext)
 
             Return oProductCodeListForDealer.ToArray()
         End Function
 
         Protected Sub CreateNew()
-            Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-            Me.State.MyBO = New ConfigQuestionSet
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            State.ScreenSnapShotBo = Nothing 'Reset the backup copy
+            State.MyBO = New ConfigQuestionSet
+            PopulateFormFromBOs()
+            EnableDisableFields()
         End Sub
 
         Protected Sub CreateNewWithCopy()
-
-            Me.PopulateBOsFromForm()
+            PopulateBOsFromForm()
 
             'create the backup copy
-            Me.State.ScreenSnapShotBO = New ConfigQuestionSet
-            Me.State.ScreenSnapShotBO.Clone(Me.State.MyBO)
+            State.ScreenSnapShotBo = New ConfigQuestionSet
+            State.ScreenSnapShotBo.Clone(State.MyBO)
 
             Dim newObj As New ConfigQuestionSet
+            newObj.CopyFrom(State.MyBO)
+            State.MyBO = newObj
 
-            newObj.CopyFrom(Me.State.MyBO)
-
-            Me.State.MyBO = newObj
-
-            Me.PopulateFormFromBOs()
-            Me.EnableDisableFields()
+            PopulateFormFromBOs()
+            EnableDisableFields()
         End Sub
 
         Protected Sub PopulateFormFromBOs()
-            Dim textFun As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
-                                                                        Return li.Code + " - " + li.Translation
-                                                                    End Function
-
-            With Me.State.MyBO
-                Me.PopulateControlFromBOProperty(ddlCompanyGroup, .CompanyGroupId)
-                Me.PopulateControlFromBOProperty(ddlCompany, .CompanyId)
-                Me.PopulateControlFromBOProperty(ddlDealerGroup, .DealerGroupId)
-                Me.PopulateControlFromBOProperty(ddlDealer, .DealerId)
-                Me.PopulateControlFromBOProperty(ddlDeviceType, .DeviceTypeId)
-                Me.PopulateControlFromBOProperty(ddlRiskType, .RiskTypeId)
-                Me.PopulateControlFromBOProperty(ddlCoverageType, .CoverageTypeId)
+            With State.MyBO
+                PopulateControlFromBOProperty(ddlCompanyGroup, .CompanyGroupId)
+                PopulateControlFromBOProperty(ddlCompany, .CompanyId)
+                PopulateControlFromBOProperty(ddlDealerGroup, .DealerGroupId)
+                PopulateControlFromBOProperty(ddlDealer, .DealerId)
+                PopulateControlFromBOProperty(ddlDeviceType, .DeviceTypeId)
+                PopulateControlFromBOProperty(ddlRiskType, .RiskTypeId)
+                PopulateControlFromBOProperty(ddlCoverageType, .CoverageTypeId)
 
                 If Not .PurposeXCD Is Nothing Then
-                    Me.ddlPurpose.Items.FindByValue(.PurposeXCD).Selected = True
-                    Me.ddlPurpose.Style.Remove("background")
+                    ddlPurpose.Items.FindByValue(.PurposeXCD).Selected = True
+                    ddlPurpose.Style.Remove("background")
                 Else
-                    Me.ddlPurpose.Items.FindByText(String.Empty).Selected = True
-                    Me.ddlPurpose.Style.Remove("background")
+                    ddlPurpose.Items.FindByText(String.Empty).Selected = True
+                    ddlPurpose.Style.Remove("background")
                 End If
 
                 If Not .QuestionSetCode Is Nothing Then
-                    Me.ddlQuestionSetCode.Items.FindByValue(.QuestionSetCode).Selected = True
-                    Me.ddlQuestionSetCode.Style.Remove("background")
+                    ddlQuestionSetCode.Items.FindByValue(.QuestionSetCode).Selected = True
+                    ddlQuestionSetCode.Style.Remove("background")
                 Else
-                    Me.ddlQuestionSetCode.Items.FindByText(String.Empty).Selected = True
-                    Me.ddlQuestionSetCode.Style.Remove("background")
+                    ddlQuestionSetCode.Items.FindByText(String.Empty).Selected = True
+                    ddlQuestionSetCode.Style.Remove("background")
                 End If
 
                 If (Not .ProductCodeId = Guid.Empty) Or (.ProductCode = String.Empty) Then
-                    Me.PopulateControlFromBOProperty(ddlProductCode, .ProductCodeId)
-                    Me.txtProductCode.Text = String.Empty
-                    Me.txtProductCode.Visible = False
-                    Me.ddlProductCode.Visible = True
+                    PopulateControlFromBOProperty(ddlProductCode, .ProductCodeId)
+                    txtProductCode.Text = String.Empty
+                    txtProductCode.Visible = False
+                    ddlProductCode.Visible = True
                 Else
-                    Me.txtProductCode.Text = .ProductCode
-                    Me.txtProductCode.Visible = True
-                    Me.ddlProductCode.Visible = False
+                    txtProductCode.Text = .ProductCode
+                    txtProductCode.Visible = True
+                    ddlProductCode.Visible = False
                 End If
 
                 If (.DealerGroupId <> Guid.Empty) And (.ProductCode <> String.Empty) Then
                     ddlDealerGroup.Enabled = True
-                    Me.txtProductCode.Visible = True
+                    txtProductCode.Visible = True
                     ddlDealer.SelectedIndex = BLANK_ITEM_SELECTED
                     ddlDealer.Enabled = False
                 End If
 
                 If (.DealerId <> Guid.Empty) And (.ProductCodeId <> Guid.Empty) Then
                     ddlDealer.Enabled = True
-                    Me.txtProductCode.Text = String.Empty
-                    Me.txtProductCode.Visible = False
+                    txtProductCode.Text = String.Empty
+                    txtProductCode.Visible = False
                     ddlDealerGroup.SelectedIndex = BLANK_ITEM_SELECTED
                     ddlDealerGroup.Enabled = False
                 End If
@@ -469,7 +454,7 @@ Namespace Tables
 
         Protected Sub EnableDisableFields()
 
-            If Me.State.MyBO.IsNew Then
+            If State.MyBO.IsNew Then
                 ControlMgr.SetEnableControl(Me, btnDelete_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnNew_WRITE, False)
                 ControlMgr.SetEnableControl(Me, btnCopy_WRITE, False)
@@ -482,21 +467,21 @@ Namespace Tables
         End Sub
 
         Protected Sub PopulateBOsFromForm()
-            With Me.State.MyBO
-                Me.PopulateBOProperty(Me.State.MyBO, "CompanyGroupId", Me.ddlCompanyGroup)
-                Me.PopulateBOProperty(Me.State.MyBO, "CompanyId", Me.ddlCompany)
-                Me.PopulateBOProperty(Me.State.MyBO, "DealerGroupId", Me.ddlDealerGroup)
-                Me.PopulateBOProperty(Me.State.MyBO, "DealerId", ddlDealer)
-                Me.PopulateBOProperty(Me.State.MyBO, "ProductCodeId", ddlProductCode)
-                Me.PopulateBOProperty(Me.State.MyBO, "DeviceTypeId", Me.ddlDeviceType)
-                Me.PopulateBOProperty(Me.State.MyBO, "CoverageTypeId", Me.ddlCoverageType)
-                Me.PopulateBOProperty(Me.State.MyBO, "RiskTypeId", Me.ddlRiskType)
-                Me.PopulateBOProperty(Me.State.MyBO, "PurposeXCD", Me.ddlPurpose, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "QuestionSetCode", Me.ddlQuestionSetCode, False, True)
-                Me.PopulateBOProperty(Me.State.MyBO, "ProductCode", Me.txtProductCode)
+            With State.MyBO
+                PopulateBOProperty(State.MyBO, "CompanyGroupId", ddlCompanyGroup)
+                PopulateBOProperty(State.MyBO, "CompanyId", ddlCompany)
+                PopulateBOProperty(State.MyBO, "DealerGroupId", ddlDealerGroup)
+                PopulateBOProperty(State.MyBO, "DealerId", ddlDealer)
+                PopulateBOProperty(State.MyBO, "ProductCodeId", ddlProductCode)
+                PopulateBOProperty(State.MyBO, "DeviceTypeId", ddlDeviceType)
+                PopulateBOProperty(State.MyBO, "CoverageTypeId", ddlCoverageType)
+                PopulateBOProperty(State.MyBO, "RiskTypeId", ddlRiskType)
+                PopulateBOProperty(State.MyBO, "PurposeXCD", ddlPurpose, False, True)
+                PopulateBOProperty(State.MyBO, "QuestionSetCode", ddlQuestionSetCode, False, True)
+                PopulateBOProperty(State.MyBO, "ProductCode", txtProductCode)
             End With
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
@@ -504,127 +489,126 @@ Namespace Tables
 #End Region
 
 #Region "Button event handlers"
-        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
                     If (Not State.MyBO.IsNew) OrElse (State.MyBO.IsNew AndAlso State.MyBO.DirtyColumns.Count > 1) Then
-                        Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                        Me.State.ActionInProgress = DetailPageCommand.Back
+                        DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                        State.ActionInProgress = DetailPageCommand.Back
                     Else
-                        Me.ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
+                        ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                     End If
                 Else
-                    Me.ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
+                    ReturnToCallingPage(New ReturnType(DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
                 End If
             Catch ex As ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, MasterPage.MessageController)
-                Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = DetailPageCommand.BackOnErr
-                Me.State.LastErrMsg = MasterPage.MessageController.Text
+                HandleErrors(ex, MasterPage.MessageController)
+                DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = DetailPageCommand.BackOnErr
+                State.LastErrMsg = MasterPage.MessageController.Text
             End Try
         End Sub
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(sender As Object, e As EventArgs) Handles btnCopy_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = DetailPageCommand.NewAndCopy
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = DetailPageCommand.NewAndCopy
                 Else
-                    Me.CreateNewWithCopy()
+                    CreateNewWithCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(sender As Object, e As EventArgs) Handles btnDelete_WRITE.Click
             Try
                 Try
-                    Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = DetailPageCommand.Delete
+                    DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = DetailPageCommand.Delete
                 Catch ex As ThreadAbortException
                 Catch ex As Exception
-                    Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                    HandleErrors(ex, MasterPage.MessageController)
                 End Try
-
             Catch ex As ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(sender As Object, e As EventArgs) Handles btnNew_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If (Me.State.MyBO.IsDirty) Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                PopulateBOsFromForm()
+                If (State.MyBO.IsDirty) Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = DetailPageCommand.New_
                 Else
-                    Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-                    Me.State.MyBO = New ConfigQuestionSet
+                    State.ScreenSnapShotBo = Nothing 'Reset the backup copy
+                    State.MyBO = New ConfigQuestionSet
                     PopulateDropdowns()
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
-                    AddLabelDecorations(Me.State.MyBO)
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
+                    AddLabelDecorations(State.MyBO)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnSave_WRITE_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+        Private Sub btnSave_WRITE_Click(sender As Object, e As EventArgs) Handles btnSave_WRITE.Click
             Try
-                Me.PopulateBOsFromForm()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.MyBO.Save()
-                    Me.State.HasDataChanged = True
-                    Me.PopulateFormFromBOs()
-                    Me.EnableDisableFields()
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                PopulateBOsFromForm()
+                If State.MyBO.IsDirty Then
+                    State.MyBO.Save()
+                    State.HasDataChanged = True
+                    PopulateFormFromBOs()
+                    EnableDisableFields()
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                 Else
-                    Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                    MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                With Me.State.MyBO
+                HandleErrors(ex, MasterPage.MessageController)
+                With State.MyBO
                     If Not .ProductCode Is Nothing Then
-                        Me.txtProductCode.Text = .ProductCode
-                        Me.txtProductCode.Visible = True
-                        Me.ddlProductCode.Visible = False
+                        txtProductCode.Text = .ProductCode
+                        txtProductCode.Visible = True
+                        ddlProductCode.Visible = False
                     Else
-                        Me.txtProductCode.Text = String.Empty
-                        Me.txtProductCode.Visible = False
-                        Me.ddlProductCode.Visible = True
+                        txtProductCode.Text = String.Empty
+                        txtProductCode.Visible = False
+                        ddlProductCode.Visible = True
                     End If
                 End With
             End Try
         End Sub
 
-        Private Sub btnUndo_Write_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
+        Private Sub btnUndo_Write_Click(sender As Object, e As EventArgs) Handles btnUndo_Write.Click
             Try
-                If Not Me.State.MyBO.IsNew Then
+                If Not State.MyBO.IsNew Then
                     'Reload from the DB
-                    Me.State.MyBO = New ConfigQuestionSet(Me.State.MyBO.Id)
-                ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
+                    State.MyBO = New ConfigQuestionSet(State.MyBO.Id)
+                ElseIf Not State.ScreenSnapShotBo Is Nothing Then
                     'It was a new with copy
-                    Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
+                    State.MyBO.Clone(State.ScreenSnapShotBo)
                 Else
-                    Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
-                    Me.State.MyBO = New ConfigQuestionSet
+                    State.ScreenSnapShotBo = Nothing 'Reset the backup copy
+                    State.MyBO = New ConfigQuestionSet
                 End If
 
-                Me.PopulateFormFromBOs()
-                Me.EnableDisableFields()
+                PopulateFormFromBOs()
+                EnableDisableFields()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub ddlCompany_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlCompany.SelectedIndexChanged
-            Dim textFun As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
+            Dim textFun As Func(Of ListItem, String) = Function(li As ListItem)
                                                                         Return li.Code + " - " + li.Translation
                                                                     End Function
 
@@ -636,21 +620,21 @@ Namespace Tables
 
                 'DealerGroup
                 Dim oDealerGroupList = GetDealerGroupListByCompany(Guid.Parse(ddlCompany.SelectedValue))
-                Me.ddlDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
+                ddlDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
                 {
                     .AddBlankItem = True,
-                    .SortFunc = AddressOf .GetCode
+                    .SortFunc = AddressOf PopulateOptions.GetCode
                 })
 
                 'Dealer
                 Dim oDealerList = GetDealerListByCompany(Guid.Parse(ddlCompany.SelectedValue))
-                Me.ddlDealer.Populate(oDealerList, New PopulateOptions() With
+                ddlDealer.Populate(oDealerList, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
 
                 'ProductCode
-                Me.ddlProductCode.Populate(New ListItem(0) {}, New PopulateOptions() With
+                ddlProductCode.Populate(New ListItem(0) {}, New PopulateOptions() With
                 {
                     .AddBlankItem = True,
                     .TextFunc = textFun
@@ -674,19 +658,19 @@ Namespace Tables
                     ddlDealer.Enabled = True
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub ddlDealer_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlDealer.SelectedIndexChanged
-            Dim textFun As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
+            Dim textFun As Func(Of ListItem, String) = Function(li As ListItem)
                                                                         Return li.Code + " - " + li.Translation
                                                                     End Function
 
             If ddlDealer.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                 If ddlDealer.SelectedIndex = BLANK_ITEM_SELECTED Then
                     'ProductCode
-                    Me.ddlProductCode.Populate(New ListItem(0) {}, New PopulateOptions() With
+                    ddlProductCode.Populate(New ListItem(0) {}, New PopulateOptions() With
                     {
                         .AddBlankItem = True,
                         .TextFunc = textFun
@@ -699,7 +683,7 @@ Namespace Tables
                     ddlProductCode.Enabled = True
                     ddlProductCode.Items.Clear()
                     Dim oProductCodeList = GetProductCodeListByDealer(Guid.Parse(ddlDealer.SelectedValue))
-                    Me.ddlProductCode.Populate(oProductCodeList, New PopulateOptions() With
+                    ddlProductCode.Populate(oProductCodeList, New PopulateOptions() With
                     {
                         .AddBlankItem = True,
                         .TextFunc = textFun
@@ -708,7 +692,7 @@ Namespace Tables
                     ddlDealerGroup.Enabled = False
                 End If
             Else
-                Me.ddlProductCode.Populate(New ListItem(0) {}, New PopulateOptions() With
+                ddlProductCode.Populate(New ListItem(0) {}, New PopulateOptions() With
                 {
                     .AddBlankItem = True,
                     .TextFunc = textFun
