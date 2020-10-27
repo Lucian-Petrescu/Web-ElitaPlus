@@ -8,17 +8,6 @@
 <asp:Content ContentPlaceHolderID="HeadPlaceHolder" runat="server">
     <script src="../Navigation/scripts/Common.js" type="text/javascript">
     </script>
-    <style type="text/css">
-        .myradioButton {
-            font-size: 13px;
-        }
-    </style>
-    <style type="text/css">
-        .highlight {
-            background-color: gray;
-            color: #eee;
-        }
-    </style>
     <script type="text/javascript">
         function changeSelection() {
 
@@ -207,9 +196,9 @@
                     </tr>
                     <tr>
                         <td>
-                            <asp:RadioButton ID="rdoCompanies" runat="server" CssClass="myradioButton" Text="Company" Checked="True" AutoPostBack="false" GroupName="ConfigGroup"></asp:RadioButton>
+                            <asp:RadioButton ID="rdoCompanies" runat="server" Text="Company" Checked="True" AutoPostBack="false" GroupName="ConfigGroup" Font-Size="10pt"></asp:RadioButton>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <asp:RadioButton ID="rdoDealers" runat="server" CssClass="myradioButton" Text="Dealer" AutoPostBack="false" GroupName="ConfigGroup"></asp:RadioButton>
+                            <asp:RadioButton ID="rdoDealers" runat="server" Text="Dealer" AutoPostBack="false" GroupName="ConfigGroup" Font-Size="10pt"></asp:RadioButton>
                         </td>
                     </tr>
 
