@@ -4184,11 +4184,20 @@ Partial Class ClaimForm
     Private Function getClaimKey(ByVal companyCode As String, ByVal claimNumber As String) As String
         Dim handler As New DynamicFulfillmentKeyHandler()
         Dim keys As New Dictionary(Of String, String)
-        Dim tenant As String = $"{ElitaConfig.Current.General.Environment.ToString()}-{ElitaConfig.Current.General.Hub.ToString()}"
+        Dim tenant As String = $"{GetTenant(ElitaConfig.Current.General.Environment)}-{ElitaConfig.Current.General.Hub.ToString()}"
         keys.Add("Tenant", tenant)
         keys.Add("CompanyCode", companyCode)
         keys.Add("ClaimNumber", claimNumber)
         Return handler.Encode(keys)
+    End Function
+
+    Private Function GetTenant(value As Environments) As String
+        Select Case value
+            Case Environments.Model
+                Return "Modl"
+            Case Else
+                Return value.ToString()
+        End Select
     End Function
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient

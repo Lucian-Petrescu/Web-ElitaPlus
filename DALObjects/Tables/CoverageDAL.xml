@@ -51,7 +51,8 @@
         tax_type_xcd,
         cn.dealer_markup_id,
         cov.fulfillment_profile_code,
-        cov.fulfillment_provider_xcd
+        cov.fulfillment_provider_xcd,
+        cov.device_expected_back_xcd
             FROM elp_coverage cov, elp_dealer edealer, elp_product_code pc, 
                  elp_item item, elp_risk_type risk, elp_contract cn
             WHERE
@@ -72,7 +73,7 @@
 				risk.DESCRIPTION RISK_TYPE, ITEM_NUMBER, TRANSLATION COVERAGE_TYPE,
 				CERTIFICATE_DURATION, COVERAGE_DURATION,
 				to_char(EFFECTIVE,'DD-Mon-YYYY') EFFECTIVE, to_char(EXPIRATION,'DD-Mon-YYYY') EXPIRATION,
-        EFFECTIVE EFFECTIVE_DATE_FORMAT, EXPIRATION EXPIRATION_DATE_FORMAT    
+        EFFECTIVE EFFECTIVE_DATE_FORMAT, EXPIRATION EXPIRATION_DATE_FORMAT
 			FROM
 				elp_coverage cov, elp_dealer edealer, elp_product_code pc, elp_item item,
 				elp_risk_type risk, elp_list_item li, elp_dict_item_translation trans, elp_company c
@@ -202,7 +203,8 @@
         liability_limit_per_incident = :liability_limit_per_incident,
         tax_type_xcd = :tax_type_xcd,
         fulfillment_profile_code = :fulfillment_profile_code,
-        fulfillment_provider_xcd = :fulfillment_provider_xcd
+        fulfillment_provider_xcd = :fulfillment_provider_xcd,
+        device_expected_back_xcd = :device_expected_back_xcd
 			WHERE
 				coverage_id = :coverage_id
 		]]>
@@ -246,7 +248,8 @@
     liability_limit_per_incident,
     tax_type_xcd,
     fulfillment_profile_code,
-    fulfillment_provider_xcd
+    fulfillment_provider_xcd,
+    device_expected_back_xcd
     )
     VALUES
     (
@@ -286,7 +289,8 @@
     :liability_limit_per_incident,
     :tax_type_xcd,
     :fulfillment_profile_code,
-    :fulfillment_provider_xcd
+    :fulfillment_provider_xcd,
+    :device_expected_back_xcd
     )
   </INSERT>
 	<DELETE>
