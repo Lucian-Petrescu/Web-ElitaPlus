@@ -442,6 +442,7 @@
     <Compile Include="Tables\ApsPublishingLogDAL.vb" />
     <Compile Include="Tables\BankMaintenanceDAL.vb" />
     <Compile Include="Tables\BenefitProductCodeDAL.vb" />
+    <Compile Include="Tables\CertExtendedItemFormDAL.vb" />
     <Compile Include="Tables\ClaimFulfillmentOrderDetailDAL.vb" />
     <Compile Include="Tables\ClaimBonusSettingsDAL.vb" />
     <Compile Include="Tables\ClaimStageDAL.vb" />
