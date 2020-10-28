@@ -1220,53 +1220,42 @@
                         <table border="0"></table>
                     </div>
                 </div>
-            <div class="dataContainer">
-                <table style="width:100%;">
-                    <caption></caption>
-                    <thead>
-                    <tr>
-                        <th style="border-right: 0px; border-bottom: 0px;"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td style="width:100%;">
-                            <h2 class="dataGridHeader">
-                                <asp:Label ID="lblLogisticStageAddress" runat="server">LOGISTIC_STAGE_ADDRESSES</asp:Label>
-                            </h2>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:100%;">
-                            <asp:Repeater ID="repAddress" runat="server" OnItemDataBound="repAddress_OnItemDataBound" Visible="True">
-                                <ItemTemplate>
-                                    <table class="dataRep" style="width: 65%; border-collapse: collapse; border: 0;">
-                                        <caption></caption>
-                                        <thead>
+                <div class="dataContainer">
+                    <table width="100%" style="border-collapse: collapse; border: 0;">
+                        <tr>
+                            <td>
+                                <h2 class="dataGridHeader">
+                                    <asp:Label ID="lblLogisticStageAddress" runat="server">LOGISTIC_STAGE_ADDRESSES</asp:Label>
+                                </h2>
+                                <div class="stepformZone">
+                                    <table class="formGrid" style="border-collapse: collapse; border: 0;">
                                         <tr>
-                                            <th style="border-right: 0px; border-bottom: 0px;"></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td style="width: 100%; text-align: left;">
-                                                <asp:Label ID="LogisticStage" runat="server" Font-Bold="true" /> :
+                                            <td>
+                                                <asp:Repeater ID="repAddress" runat="server" OnItemDataBound="repAddress_OnItemDataBound" Visible="True">
+                                                    <ItemTemplate>
+                                                        <table style="border-collapse: collapse; border: 0;">
+                                                            <tr>
+                                                                <td>
+                                                                    <asp:Label ID="LogisticStage" runat="server" />:
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <Elita:UserControlAddressInfo ID="moAddressController" runat="server" Visible="True"></Elita:UserControlAddressInfo>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td style="width: 100%;text-align: left;">
-                                                <Elita:UserControlAddressInfo ID="moAddressController" runat="server" Visible="True"></Elita:UserControlAddressInfo>
-                                            </td>
-                                        </tr>
-                                        </tbody>
                                     </table>
-                                </ItemTemplate>
-                            </asp:Repeater>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+             
                 <div id="modalClaimImages" class="overlay">
                     <div id="light" class="overlay_message_content" style="width: 1100px; left: 8%">
                         <p class="modalTitle">
