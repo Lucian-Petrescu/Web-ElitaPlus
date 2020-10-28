@@ -194,11 +194,8 @@ Namespace Certificates
             Try
                 If Not Me.State.MyCertInstallment Is Nothing Then
                     Me.moPremiumBankInfoController.PopulateBOFromControl()
-                    ''Me.State.MyBankInfo.Save()
 
-                    ' Dim endorsePolicyRequest As PolicyService.EndorsePolicyRequest = New PolicyService.EndorsePolicyRequest
-                    ' endorsePolicyRequest =
-                    BankEndorseRequest(Me.State.MyBankInfo)
+                    BankInfoEndorseRequest(Me.State.MyBankInfo)
 
                     Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                     PopulateFormFromBOs()
@@ -238,20 +235,17 @@ Namespace Certificates
 
             Return client
         End Function
-        Private Sub BankEndorseRequest(ByVal bankinfo As BankInfo)
+        Private Sub BankInfoEndorseRequest(ByVal bankinfo As BankInfo)
             Dim endorseRequest As PolicyService.EndorsePolicyRequest = New PolicyService.EndorsePolicyRequest
             Dim updateBankInfo As PolicyService.UpdateBankInfo = New PolicyService.UpdateBankInfo
             updateBankInfo.EndorsementReason = PolicyService.EndorsementPolicyReasons.BankFulfillment
 
             updateBankInfo.AccountOwnerName = bankinfo.Account_Name
-            ' updateBankInfo.AccountType = bankinfo.AccountTypeId
             updateBankInfo.BankSortCode = bankinfo.BankSortCode
             updateBankInfo.SwiftCode = bankinfo.SwiftCode
             updateBankInfo.BankLookupCode = bankinfo.BankLookupCode
             updateBankInfo.BankName = bankinfo.BankName
-            updateBankInfo.BranchNumber = bankinfo.BranchName
-            updateBankInfo.BankLookupCode = bankinfo.BankLookupCode
-            updateBankInfo.BankSortCode = bankinfo.BankSortCode
+            updateBankInfo.BranchNumber = bankinfo.BranchNumber
             updateBankInfo.IbanCode = bankinfo.IbanNumber
 
             endorseRequest.DealerCode = Me.State.MyCertificate.Dealer.Dealer
