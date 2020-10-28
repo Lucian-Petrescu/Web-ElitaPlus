@@ -57,6 +57,7 @@ Namespace Tables
             MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End Sub
 
+        <Obsolete>
         Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
             If _mbIsFirstPass = True Then
                 _mbIsFirstPass = False
@@ -185,6 +186,7 @@ Namespace Tables
             End Try
         End Sub
 
+        <Obsolete>
         Protected Sub PopulateDropdowns()
             Try
                 Dim textFun As Func(Of ListItem, String) = Function(li As ListItem)
@@ -313,6 +315,7 @@ Namespace Tables
             End Try
         End Sub
 
+        <Obsolete>
         Private Function GetDealerListByCompanyForUser() As ListItem()
             Dim index As Integer
             Dim oListContext As New ListContext
@@ -335,6 +338,7 @@ Namespace Tables
 
         End Function
 
+        <Obsolete>
         Private Function GetDealerGroupListByCompanyForUser() As ListItem()
             Dim index As Integer
             Dim oListContext As New ListContext

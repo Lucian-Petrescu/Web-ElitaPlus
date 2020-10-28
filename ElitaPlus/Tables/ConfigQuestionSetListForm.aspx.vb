@@ -200,6 +200,7 @@ Namespace Tables
 #End Region
 
 #Region "Helper Functions"
+        <Obsolete>
         Protected Sub PopulateSearchFieldsFromState()
             Try
                 Dim textFun As Func(Of ListItem, String) = Function(li As ListItem)
@@ -321,6 +322,7 @@ Namespace Tables
             Return companyListForCompanyGroup.ToArray()
         End Function
 
+        <Obsolete>
         Private Function GetDealerListByCompanyForUser() As ListItem()
             Dim index As Integer
             Dim oListContext As New ListContext
@@ -343,6 +345,7 @@ Namespace Tables
 
         End Function
 
+        <Obsolete>
         Private Function GetDealerGroupListByCompanyForUser() As ListItem()
             Dim index As Integer
             Dim oListContext As New ListContext
@@ -508,6 +511,7 @@ Namespace Tables
             End Try
         End Sub
 
+        <Obsolete>
         Private Sub ddlSearchCompany_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlSearchCompany.SelectedIndexChanged
 
             If ddlSearchCompany.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
