@@ -56,13 +56,13 @@
                 <asp:Label ID="lblModalTitle" runat="server" Text="CONFIRM"></asp:Label>
                 <a href="javascript:void(0)" onclick="hideModal('ModalCancel');">
                     <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                        width="16" height="18" style="vertical-align: middle;" class="floatR" alt="none" /></a>
+                        width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
-            <table class="formGrid" style="width: 98%; border: 0px; border-spacing: 0px; padding: 0px;" >
+            <table class="formGrid" width="98%" cellspacing="0" cellpadding="0" border="0">
                 <tbody>
                     <tr>
                         <td align="right">
-                            <img id="imgMsgIcon"  width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
+                            <img id="imgMsgIcon" name="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
                                 height="28" />
                         </td>
                         <td id="tdModalMessage" colspan="2" runat="server">
@@ -93,11 +93,11 @@
                     <img id="Img11" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
-            <table class="formGrid" style="width: 98%; border: 0px; border-spacing: 0px; padding: 0px;">
+            <table class="formGrid" width="98%" cellspacing="0" cellpadding="0" border="0">
                 <tbody>
                     <tr>
                         <td align="right">
-                            <img id="img12" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
+                            <img id="img12" name="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
                                 height="28" />
                         </td>
                         <td id="tdModalMessageServiceWarranty" colspan="2" runat="server">
