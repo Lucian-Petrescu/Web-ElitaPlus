@@ -182,7 +182,7 @@ Public Class ReactivateUploadForm
 
         panelResult.Visible = False
         lblHelpText.Visible = False
-        If ddlUploadType.SelectedValue <> "CLAIMUPDATE" Then
+        If ddlUploadType.SelectedValue <> "CLAIMUPDATE" OrElse ddlUploadType.SelectedValue <> "CERTITEMHISTORYUPDATE" Then
             btnExtract_Report.Visible = True
         End If
         State.extractFilename = InputFile.PostedFile.FileName.Trim
@@ -269,7 +269,9 @@ Public Class ReactivateUploadForm
     End Sub
 
     Protected Sub btnHelp_Click(sender As Object, e As EventArgs) Handles btnHelp.Click
-        lblHelpText.Text = TranslationBase.TranslateLabelOrMessage(commonUpload.getScreenHelp(FORMCODE))
+        Dim uploadType As String
+        uploadType = ddlUploadType.SelectedValue.Trim
+        lblHelpText.Text = TranslationBase.TranslateLabelOrMessage(commonUpload.getScreenHelp(FORMCODE, uploadType))
         lblHelpText.Visible = True
     End Sub
 #End Region
