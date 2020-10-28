@@ -68,6 +68,7 @@ Public Class CoverageDAL
     Public Const COL_NAME_PER_INCIDENT_LIABILITY_LIMIT_CAP As String = "liability_limit_per_incident"
     Public Const COL_NAME_TAX_TYPE_XCD As String = "tax_type_XCD"
     Public Const COL_NAME_DEALER_MARKUP As String = "dealer_markup_id"
+    Public Const COL_NAME_DEVICE_EXPECTED_BACK_XCD As String = "device_expected_back_xcd"
 #End Region
 
 #Region "Constructors"
