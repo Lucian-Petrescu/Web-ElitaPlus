@@ -229,10 +229,6 @@ Namespace Certificates
             Dim client = New PolicyService.PolicyServiceClient("CustomBinding_IPolicyService", oWebPasswd.Url)
             client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
             client.ClientCredentials.UserName.Password = oWebPasswd.Password
-            'Dim client = New PolicyService.PolicyServiceClient("CustomBinding_IPolicyService", "http://localhost/PolicyService/PolicyService.svc")
-            'client.ClientCredentials.UserName.UserName = "elita1" ' oWebPasswd.UserId
-            'client.ClientCredentials.UserName.Password = "elita1"
-
             Return client
         End Function
         Private Sub BankInfoEndorseRequest(ByVal bankinfo As BankInfo)
