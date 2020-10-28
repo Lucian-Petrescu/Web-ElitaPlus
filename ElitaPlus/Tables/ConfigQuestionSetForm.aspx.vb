@@ -331,7 +331,7 @@ Namespace Tables
                 End If
             Next
 
-            Return oDealerList.ToArray()
+            Return oDealerList.Distinct().ToArray()
 
         End Function
 
@@ -353,7 +353,7 @@ Namespace Tables
                 End If
             Next
 
-            Return oDealerGroupList.ToArray()
+            Return oDealerGroupList.Distinct().ToArray()
 
         End Function
 
@@ -701,14 +701,14 @@ Namespace Tables
             End If
         End Sub
 
-        Private Function GetDealerGroupListByCompany(ByVal companyId As Guid) As ListItem()
+        Private Function GetDealerGroupListByCompany(companyId As Guid) As ListItem()
             Dim oListContext As New ListContext
             oListContext.CompanyId = companyId
             Dim oDealerGroupListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerGroupByCompany", context:=oListContext)
             Return oDealerGroupListForCompany.ToArray()
         End Function
 
-        Private Function GetDealerListByCompany(ByVal companyId As Guid) As ListItem()
+        Private Function GetDealerListByCompany(companyId As Guid) As ListItem()
             Dim oListContext As New ListContext
             oListContext.CompanyId = companyId
             Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)

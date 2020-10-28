@@ -339,7 +339,7 @@ Namespace Tables
                 End If
             Next
 
-            Return oDealerList.ToArray()
+            Return oDealerList.Distinct().ToArray()
 
         End Function
 
@@ -361,7 +361,7 @@ Namespace Tables
                 End If
             Next
 
-            Return oDealerGroupList.ToArray()
+            Return oDealerGroupList.Distinct().ToArray()
 
         End Function
 
@@ -450,7 +450,7 @@ Namespace Tables
                 Grid.PageIndex = e.NewPageIndex
                 State.PageIndex = Grid.PageIndex
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -458,7 +458,7 @@ Namespace Tables
             Try
                 Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ", StringComparison.Ordinal)
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
                     If SortDirection.EndsWith(" ASC") Then
                         SortDirection = e.SortExpression + " DESC"
                     Else
