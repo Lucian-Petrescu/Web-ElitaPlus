@@ -58,7 +58,7 @@
                     <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" style="vertical-align: middle;" class="floatR" alt="none" /></a>
             </p>
-            <table class="formGrid" style="width: 98%; border: 0px; border-spacing: 0px; padding: 0px;" >
+            <table class="formGrid" style="width: 98%; border: 0px; border-spacing: 0px; padding: 0px;">
                 <tbody>
                     <tr>
                         <td align="right">
@@ -127,7 +127,7 @@
                     <img id="Img7" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
-            <table class="formGrid" width="98%" cellspacing="0" cellpadding="0" border="0">
+            <table class="formGrid" style="width: 98%; border: 0px; border-spacing: 0px; padding: 0px;">
                 <tbody>
                     <tr>
                         <td align="right">
@@ -157,7 +157,7 @@
     <div id="ModalMasterClaim" class="overlay">
         <div id="Div1" class="overlay_message_content" style="width: 650px; height: auto">
             <p class="modalTitle">
-                <table width="100%">
+                <table style="width: 100%;">
                     <tr>
                         <td align="left">
                             <asp:Label ID="modalHeaderLabel" Text="SELECT_MASTER_CLAIM_NUMBER" runat="server"></asp:Label></td>
@@ -205,7 +205,7 @@
                     <img id="Img9" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
-            <table width="100%" border="0" class="formGrid" cellpadding="0" cellspacing="0">
+            <table class="formGrid" style="width: 100%; border: 0px; border-spacing: 0px; padding: 0px;">
                 <tr>
                     <td>
                         <span class="mandatory">*</span><asp:Label ID="step3_lblDeniedReason" runat="server">Denied_Reason</asp:Label>
@@ -252,7 +252,7 @@
                     <img id="Img13" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR" alt="" />
                 </a>
             </p>
-            <table class="formGrid" width="98%">
+            <table class="formGrid" style="width: 98%;">
                 <tbody>
                     <tr>
                         <td>
@@ -286,7 +286,7 @@
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
             </p>
             <div class="dataContainer">
-                <table id="TableFixed" cellspacing="0" cellpadding="0" border="0" width="80%" class="summaryGrid">
+                <table id="TableFixed" style="width: 100%; border: 0px; border-spacing: 0px; padding: 0px;" class="summaryGrid">
                     <tbody>
                         <Elita:UserControlCertificateInfo ID="moCertificateInfoController" runat="server"></Elita:UserControlCertificateInfo>
                     </tbody>
@@ -322,7 +322,7 @@
                 <div class="dataContainer">
                     <h2 class="dataGridHeader">Incident Information</h2>
                     <div class="stepformZone">
-                        <table class="formGrid" cellspacing="0" cellpadding="0" border="0">
+                        <table class="formGrid" style="border: 0px; border-spacing: 0px; padding: 0px;">
                             <tbody>
                                 <tr>
                                     <td nowrap="nowrap" align="right">
@@ -357,7 +357,7 @@
                     <div class="dataContainer">
                         <h2 class="dataGridHeader">Select Eligible Coverage</h2>
                         <div class="stepformZone">
-                            <table class="formGrid" cellspacing="0" cellpadding="0" border="0">
+                            <table class="formGrid" style="border: 0px; border-spacing: 0px; padding: 0px;">
                                 <tbody>
                                     <tr id="step1_riskTypeTR" runat="server">
                                         <td nowrap="nowrap" align="right">
@@ -408,7 +408,7 @@
                     <h2 class="dataGridHeader">Coverage Details</h2>
                     <asp:Panel ID="EditPanel_WRITE" runat="server" Width="100%">
                         <div class="stepformZone">
-                            <table border="0" class="formGrid" cellpadding="0" cellspacing="0">
+                            <table class="formGrid" style="border: 0px; border-spacing: 0px; padding: 0px;">
                                 <tr>
                                     <td nowrap="nowrap" align="right">
                                         <asp:Label ID="step2_LabelBeginDate" runat="server" Font-Bold="False">Begin_Date</asp:Label>
@@ -561,7 +561,7 @@
                     <div class="dataContainer">
                         <h2 id="headerDeviceInfo" runat="server" class="dataGridHeader">DEVICE_INFORMATION</h2>
                         <div class="stepformZone">
-                            <table border="0" class="formGrid" cellpadding="0" cellspacing="0" width="100%">
+                            <table class="formGrid" style="width: 100%; border: 0px; border-spacing: 0px; padding: 0px;">
                                 <tr>
                                     <td nowrap="nowrap" align="right">&nbsp;
                                     </td>
@@ -669,7 +669,7 @@
                     <div class="dataContainer">
                         <h2 class="dataGridHeader">Vehicle Information</h2>
                         <div class="stepformZone">
-                            <table border="0" class="formGrid" cellpadding="0" cellspacing="0" width="100%">
+                            <table class="formGrid" style="width: 100%; border: 0px; border-spacing: 0px; padding: 0px;">
                                 <tr>
                                     <td nowrap="nowrap" align="right">
                                         <asp:Label ID="step2_LabelOdometer" runat="server" Font-Bold="False">ODOMETER:</asp:Label>
@@ -739,7 +739,7 @@
                         <asp:Label runat="server" ID="LabelNewClaimDtl">NEW_CLAIM_DETAILS</asp:Label>
                     </h2>
                     <div class="stepformZone">
-                        <table class="formGrid" cellspacing="0" cellpadding="0" border="0">
+                        <table class="formGrid" style="border: 0px; border-spacing: 0px; padding: 0px;">
                             <tbody>
                                 <tr>
                                     <td nowrap="nowrap" align="right">
@@ -927,7 +927,7 @@
                             <div id="tabClaimIssues">
                                 <div class="Page">
                                     <div id="dvGridPager" runat="server">
-                                        <table width="100%" class="dataGrid">
+                                        <table style="width: 100%;" class="dataGrid">
                                             <tr id="trPageSize" runat="server">
                                                 <td class="bor" align="left">
                                                     <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label><asp:Label ID="colonSepertor"
@@ -985,7 +985,7 @@
                                         <asp:Label runat="server" ID="AddImageHealder">ADD_IMAGE</asp:Label>
                                     </h2>
                                     <div class="stepformZone">
-                                        <table width="100%" class="formGrid" border="0" cellpadding="0" cellspacing="0">
+                                        <table class="formGrid" style="width: 100%; border: 0px; border-spacing: 0px; padding: 0px;">
                                             <tbody>
                                                 <tr>
                                                     <td align="right" nowrap="nowrap">
@@ -1094,7 +1094,7 @@
                             </div>
                             <div id="tabDeviceInformation">
                                 <div class="Page">
-                                    <table border="0" width="100%">
+                                    <table style="width: 100%; border: 0px; border-spacing: 0px; padding: 0px;">
                                         <tr>
                                             <td width="100%" align="left">
                                                 <Elita:UserControlClaimDeviceInfo ID="ucClaimDeviceInfo" runat="server"></Elita:UserControlClaimDeviceInfo>
@@ -1167,7 +1167,7 @@
                     </div>
                 </asp:Panel>
                 <div class="dataContainer">
-                    <table width="70%" cellspacing="0" cellpadding="0" border="0">
+                    <table style="width: 70%; border: 0px; border-spacing: 0px; padding: 0px;">
                         <tbody>
                             <tr>
                                 <td>
@@ -1175,7 +1175,7 @@
                                         <asp:Label ID="step3_LabelProblemDescription" runat="server">Problem_Description</asp:Label>
                                     </h2>
                                     <div class="stepformZone">
-                                        <table class="formGrid" cellspacing="0" cellpadding="0" border="0">
+                                        <table class="formGrid" style="border: 0px; border-spacing: 0px; padding: 0px;">
                                             <tbody>
                                                 <tr>
                                                     <td nowrap="nowrap" align="right">
@@ -1193,7 +1193,7 @@
                                         <asp:Label ID="step3_LabelSpecialInstruction" runat="server">Special_Instruction</asp:Label>
                                     </h2>
                                     <div class="stepformZone">
-                                        <table class="formGrid" cellspacing="0" cellpadding="0" border="0">
+                                        <table class="formGrid" style="border: 0px; border-spacing: 0px; padding: 0px;">
                                             <tbody>
                                                 <tr>
                                                     <td nowrap="nowrap" align="right">
@@ -1215,7 +1215,7 @@
                                 <Elita:UserControlContactInfo ID="moUserControlContactInfo" runat="server" Visible="false"></Elita:UserControlContactInfo>
                             </tbody>
                         </table>
-                        <table border="0"></table>
+                        <table style="border: 0px; border-spacing: 0px; padding: 0px;"></table>
                     </div>
                 </div>
                 <div id="modalClaimImages" class="overlay">
@@ -1247,7 +1247,7 @@
                                 </p>
                             </div>
                         </div>
-                        <table width="100%" border="0" class="formGrid" cellpadding="0" cellspacing="0">
+                        <table class="formGrid" style="width: 100%; border: 0px; border-spacing: 0px; padding: 0px;">
                             <tr>
                                 <td align="right">
                                     <asp:Label ID="lblIssueCode" runat="server" Text="ISSUE_CODE"></asp:Label>:
@@ -1318,7 +1318,7 @@
                                     width="16" height="18" align="middle" class="floatR" /></a>
                         </p>
                         <Elita:MessageController runat="server" ID="moModalCollectDivMsgController" />
-                        <table width="100%" border="0" class="formGrid" cellpadding="0" cellspacing="0">
+                        <table class="formGrid" style="width: 100%; border: 0px; border-spacing: 0px; padding: 0px;">
                             <tr>
                                 <td>
                                     <span class="mandatory">*</span><asp:Label ID="step3_lblDedCollMethod" runat="server">DED_COLL_METHOD</asp:Label>
@@ -1358,7 +1358,7 @@
                     <h2 class="dataGridHeader" runat="server" id="searchServiceCenterH2">
                         <asp:Label runat="server" ID="moSearchServiceCenterLabel" Text="SEARCH_SERVICE_CENTER" /></h2>
                     <div class="stepformZone">
-                        <table class="formGrid" border="0" cellpadding="0" cellspacing="0">
+                        <table class="formGrid" style="border: 0px; border-spacing: 0px; padding: 0px;">
                             <tbody>
                                 <tr>
                                     <td align="right" nowrap="nowrap">
@@ -1425,7 +1425,7 @@
             <div id="dvStep5" runat="server">
                 <div class="dataContainer">
                     <div class="stepformZone">
-                        <table class="formGrid" border="0" cellspacing="0" cellpadding="0">
+                        <table class="formGrid" style="border: 0px; border-spacing: 0px; padding: 0px;">
                             <tr>
                                 <td align="right" nowrap="nowrap">
                                     <asp:Label ID="step5_lblCertificate" runat="server" Font-Bold="false">CERTIFICATE</asp:Label>:
