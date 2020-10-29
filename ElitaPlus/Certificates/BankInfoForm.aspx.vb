@@ -1,10 +1,4 @@
-﻿Imports System.Collections.Generic
-Imports System.Threading
-Imports Assurant.Elita.ClientIntegration
-Imports Microsoft.VisualBasic
-Imports policyservice = Assurant.ElitaPlus.ElitaPlusWebApp.PolicyService
-
-Namespace Certificates
+﻿Namespace Certificates
     Public Class BankInfoForm
         Inherits ElitaPlusSearchPage
 
@@ -195,7 +189,7 @@ Namespace Certificates
                 If Not Me.State.MyCertInstallment Is Nothing Then
                     Me.moPremiumBankInfoController.PopulateBOFromControl()
 
-                    BankInfoEndorseRequest(Me.State.MyBankInfo)
+                    CommonBankInfo.BankInfoEndorseRequest(Me.State.MyCertificate.Dealer.Dealer, Me.State.MyCertificate.CertNumber, Me.State.MyBankInfo)
 
                     Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                     PopulateFormFromBOs()
@@ -223,43 +217,6 @@ Namespace Certificates
 
         End Sub
 #End Region
-#Region "Private Methods"
-        Private Function GetClient() As PolicyService.PolicyServiceClient
-            Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__SVC_CERT_ENROLL), False)
-            Dim client = New PolicyService.PolicyServiceClient("CustomBinding_IPolicyService", oWebPasswd.Url)
-            client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
-            client.ClientCredentials.UserName.Password = oWebPasswd.Password
-            Return client
-        End Function
-        Private Sub BankInfoEndorseRequest(ByVal bankinfo As BankInfo)
-            Dim endorseRequest As PolicyService.EndorsePolicyRequest = New PolicyService.EndorsePolicyRequest
-            Dim updateBankInfo As PolicyService.UpdateBankInfo = New PolicyService.UpdateBankInfo
-            updateBankInfo.EndorsementReason = PolicyService.EndorsementPolicyReasons.BankFulfillment
 
-            updateBankInfo.AccountOwnerName = bankinfo.Account_Name
-            updateBankInfo.BankSortCode = bankinfo.BankSortCode
-            updateBankInfo.SwiftCode = bankinfo.SwiftCode
-            updateBankInfo.BankLookupCode = bankinfo.BankLookupCode
-            updateBankInfo.BankName = bankinfo.BankName
-            updateBankInfo.BranchNumber = bankinfo.BranchNumber
-            updateBankInfo.IbanCode = bankinfo.IbanNumber
-
-            endorseRequest.DealerCode = Me.State.MyCertificate.Dealer.Dealer
-            endorseRequest.CertificateNumber = Me.State.MyCertificate.CertNumber
-            endorseRequest.Requests = New PolicyService.BasePolicyEndorseAction() {updateBankInfo}
-            Try
-                WcfClientHelper.Execute(Of PolicyService.PolicyServiceClient, PolicyService.IPolicyService, PolicyService.EndorseResponse)(
-                                                                            GetClient(),
-                                                                            New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                                                             Function(ByVal c As PolicyService.PolicyServiceClient)
-                                                                                 Return c.Endorse(endorseRequest)
-                                                                             End Function)
-            Catch ex As Exception
-                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_POLICYSERVICE_SERVICE_ERR, True)
-                Throw
-            End Try
-        End Sub
-
-#End Region
     End Class
 End Namespace
