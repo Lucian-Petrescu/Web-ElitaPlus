@@ -157,11 +157,10 @@ Public Class commonUploadDAL
         Dim sqlStmt As String
         sqlStmt = Me.Config("/SQL/PROCESS_SCREEN_HELP")
 
-
         Try
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter("p_InitResult", GetType(String), 500),
-                            New DBHelper.DBHelperParameter("p_ErrCode", GetType(Integer))}
+                            New DBHelper.DBHelperParameter("po_InitResult", GetType(String), 500),
+                            New DBHelper.DBHelperParameter("po_ErrCode", GetType(Integer))}
 
             Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
             Dim param As DBHelper.DBHelperParameter
