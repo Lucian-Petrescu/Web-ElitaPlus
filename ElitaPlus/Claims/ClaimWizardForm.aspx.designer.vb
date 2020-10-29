@@ -2165,15 +2165,6 @@ Partial Public Class ClaimWizardForm
     Protected WithEvents img3 As Global.System.Web.UI.HtmlControls.HtmlImage
 
     '''<summary>
-    '''pdfIframe control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents pdfIframe As Global.System.Web.UI.HtmlControls.HtmlIframe
-
-    '''<summary>
     '''Label1 control.
     '''</summary>
     '''<remarks>
