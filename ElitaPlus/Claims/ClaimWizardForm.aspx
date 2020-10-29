@@ -1226,7 +1226,7 @@
                                 <img id="img3" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                                     width="16" height="18" class="floatR" style="vertical-align:middle;" alt="none" /></a>
                         </p>
-                        <iframe class="pdfContainer"style="text-align:left" runat="server" id="pdfIframe"></iframe>
+                        <iframe class="pdfContainer" align="left" runat="server" id="pdfIframe"></iframe>
                     </div>
                     <div id="fade" class="black_overlay">
                     </div>
