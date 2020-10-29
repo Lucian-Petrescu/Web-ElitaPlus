@@ -4868,7 +4868,7 @@ Namespace Certificates
                         Try
                             CommonBankInfo.BankInfoEndorseRequest(Me.State.MyBO.Dealer.Dealer, Me.State.MyBO.CertNumber, Me.State.TheDirectDebitState.bankInfo)
                         Catch ex As Exception
-                            '///CHANGE THE MESSAGE CODE
+                            
                             MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_POLICYSERVICE_SERVICE_ERR, True)
                             Throw
                         End Try
