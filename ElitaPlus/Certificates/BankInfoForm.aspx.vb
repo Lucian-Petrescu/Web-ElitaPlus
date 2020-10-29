@@ -198,7 +198,8 @@
 
             Catch ex As ApplicationException
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
-
+            Catch ex As Exception
+                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_POLICYSERVICE_SERVICE_ERR, True)
             End Try
         End Sub
         Private Sub btnEdit_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEdit_WRITE.Click

@@ -4864,10 +4864,14 @@ Namespace Certificates
                     ElseIf Me.State.directDebitPayment AndAlso Me.State.TheDirectDebitState.bankInfo.IsDirty Then
                         Me.State.TheDirectDebitState.bankInfo.DomesticTransfer = False
                         Me.State.TheDirectDebitState.bankInfo.InternationalTransfer = False
-                        Me.State.TheDirectDebitState.bankInfo.InternationalTransfer = False
                         Me.State.TheDirectDebitState.bankInfo.SourceCountryID = Me.State.TheDirectDebitState.bankInfo.CountryID
-                        CommonBankInfo.BankInfoEndorseRequest(Me.State.MyBO.Dealer.Dealer, Me.State.MyBO.CertNumber, Me.State.TheDirectDebitState.bankInfo)
-
+                        Try
+                            CommonBankInfo.BankInfoEndorseRequest(Me.State.MyBO.Dealer.Dealer, Me.State.MyBO.CertNumber, Me.State.TheDirectDebitState.bankInfo)
+                        Catch ex As Exception
+                            '///CHANGE THE MESSAGE CODE
+                            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_POLICYSERVICE_SERVICE_ERR, True)
+                            Throw
+                        End Try
                     End If
 
                     If Me.State.BillingInformationChanged Then AdjustTheBillingStatus()

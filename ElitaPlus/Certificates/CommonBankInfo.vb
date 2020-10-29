@@ -31,12 +31,10 @@ Public Class CommonBankInfo
                                                                              Return c.Endorse(endorseRequest)
                                                                          End Function)
         Catch ex As Exception
-            '///CHANGE THE MESSAGE CODE
-            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_POLICYSERVICE_SERVICE_ERR, True)
             Throw
         End Try
     End Sub
-    Private Function GetClient() As PolicyService.PolicyServiceClient
+    Private Shared Function GetClient() As PolicyService.PolicyServiceClient
         Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__SVC_CERT_ENROLL), False)
         Dim client = New PolicyService.PolicyServiceClient("CustomBinding_IPolicyService", oWebPasswd.Url)
         client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
