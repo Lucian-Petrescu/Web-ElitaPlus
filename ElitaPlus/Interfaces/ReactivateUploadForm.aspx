@@ -12,7 +12,7 @@
         function showHelpButton() {
             var e = document.getElementById('<%=ddlUploadType.ClientID %>');
             var strUser = e.options[e.selectedIndex].value;
-            if (strUser == 'CLAIMUPDATE') {
+            if (strUser == 'CLAIMUPDATE' || strUser == 'CERTITEMHISTORYUPDATE') {
                 document.getElementById('<%=btnHelp.ClientID %>').style.visibility = "visible";
             }
             else {

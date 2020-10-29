@@ -3188,8 +3188,7 @@ Public Class ClaimRecordingForm
         wsResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, LogisticStagesResponse)
         Dim logisticsStage As LogisticStage
         logisticsStage = wsResponse.Stages(State.LogisticsStage)
-
-
+        
         If (e.Row.RowType = DataControlRowType.DataRow) Then
             Dim logisticsOptionItem As LogisticOption =
                     source.First(Function(f) f.Code = DirectCast(e.Row.DataItem, LogisticOption).Code)
