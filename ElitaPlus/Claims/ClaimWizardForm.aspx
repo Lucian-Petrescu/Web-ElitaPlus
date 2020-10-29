@@ -14,7 +14,7 @@
 <%@ Register TagPrefix="Elita" TagName="BestReplacementOption" Src="~/Interfaces/ReplacementOptions.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlConsequentialDamage" Src="UserControlConsequentialDamage.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlClaimDeviceInfo" Src="~/Interfaces/ClaimDeviceInformationController.ascx" %>
-<%@ Register TagPrefix="Elita" TagName="UserControlAddressInfo" Src="~/Common/UserControlAddress_New.ascx" %>
+<%@ Register TagPrefix="Elita" TagName="UserControlAddressInfo" Src="~/Common/UserControlLogisticStageAddresses.ascx" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
@@ -1220,40 +1220,8 @@
                         <table border="0"></table>
                     </div>
                 </div>
-                <div class="dataContainer">
-                    <table width="100%" style="border-collapse: collapse; border: 0;">
-                        <tr>
-                            <td>
-                                <h2 class="dataGridHeader">
-                                    <asp:Label ID="lblLogisticStageAddress" runat="server">LOGISTIC_STAGE_ADDRESSES</asp:Label>
-                                </h2>
-                                <div class="stepformZone">
-                                    <table class="formGrid" style="border-collapse: collapse; border: 0;">
-                                        <tr>
-                                            <td>
-                                                <asp:Repeater ID="repAddress" runat="server" OnItemDataBound="repAddress_OnItemDataBound" Visible="True">
-                                                    <ItemTemplate>
-                                                        <table style="border-collapse: collapse; border: 0;">
-                                                            <tr>
-                                                                <td>
-                                                                    <asp:Label ID="LogisticStage" runat="server" />:
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <Elita:UserControlAddressInfo ID="moAddressController" runat="server" Visible="True"></Elita:UserControlAddressInfo>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+                 <div class="dataContainer">
+                         <Elita:UserControlAddressInfo ID="repAddress" runat="server" Visible="True"></Elita:UserControlAddressInfo>
                 </div>
              
                 <div id="modalClaimImages" class="overlay">

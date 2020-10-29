@@ -395,14 +395,14 @@ Public Class ClaimWizardForm
     End Sub
 
     Private Shared Function GetClientClaimService() As ClaimServiceClient
-        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_SERVICE), False)
-        Dim client = New ClaimServiceClient("CustomBinding_IClaimService", oWebPasswd.Url)
-        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
-        client.ClientCredentials.UserName.Password = oWebPasswd.Password
+        'Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_SERVICE), False)
+        'Dim client = New ClaimServiceClient("CustomBinding_IClaimService", oWebPasswd.Url)
+        'client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+        'client.ClientCredentials.UserName.Password = oWebPasswd.Password
 
-        'Dim client = New ClaimServiceClient("CustomBinding_IClaimService", "http://localhost/ElitaClaimService/ClaimService.svc")
-        'client.ClientCredentials.UserName.UserName = "elita1"
-        'client.ClientCredentials.UserName.Password = "elita1"
+        Dim client = New ClaimServiceClient("CustomBinding_IClaimService", "http: //sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/test-p1/WebAppGateway/gateway")
+        client.ClientCredentials.UserName.UserName = "elita1"
+        client.ClientCredentials.UserName.Password = "elita1"
         Return client
     End Function
 
@@ -1140,18 +1140,17 @@ Public Class ClaimWizardForm
                 If Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
                    Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
 
-                    Dim logisticStages As New List(Of FulfillmentAddressBinding)
+                    Dim logisticStages As New List(Of LogisticStageAddresses)
 
-                    logisticStages = New List(Of FulfillmentAddressBinding)(
-                        From dr In Me.State.FulfillmentDetailsResponse.LogisticStages Select New FulfillmentAddressBinding() With {
-                                                                               .Address = dr.Address,
-                                                                               .LogisticStage = dr.Description
+                    logisticStages = New List(Of LogisticStageAddresses)(
+                        From dr In Me.State.FulfillmentDetailsResponse.LogisticStages Select New LogisticStageAddresses() With {
+                                                                               .LogisticStageAddress = ConvertToAddressControllerField(dr.Address),
+                                                                               .LogisticStageName = dr.Description
                                                                                }
                         )
-                    Dim filteredLogisticStages = logisticStages.Where(Function(item) item.Address.Address1 IsNot Nothing ).ToList()
-                    repAddress.DataSource = filteredLogisticStages
+                    Dim filteredLogisticStages = logisticStages.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing ).ToList()
+                    repAddress.ParentBusinessObject = filteredLogisticStages
                     repAddress.DataBind()
-
                 Else
                     repAddress.Visible = False
                 End If
