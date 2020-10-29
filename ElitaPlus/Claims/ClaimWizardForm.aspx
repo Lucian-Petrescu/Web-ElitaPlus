@@ -63,7 +63,7 @@
                     <tr>
                         <td style="text-align:right">
                             <img id="imgMsgIcon"  width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
-                                height="28" />
+                                height="28" alt="none" />
                         </td>
                         <td id="tdModalMessage" colspan="2" runat="server">
                             <asp:Label ID="lblCancelMessage" runat="server"></asp:Label>
@@ -91,14 +91,14 @@
                 <asp:Label ID="lblModalTitleServiceWarranty" runat="server" Text="CONFIRM"></asp:Label>
                 <a href="javascript:void(0)" onclick="hideModal('ModalServiceWarranty');">
                     <img id="Img11" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                        width="16" height="18" align="absmiddle" class="floatR" /></a>
+                        width="16" height="18" style="vertical-align: middle;" class="floatR" alt="none" /></a>
             </p>
             <table class="formGrid" style="width: 98%; border: 0px; border-spacing: 0px; padding: 0px;">
                 <tbody>
                     <tr>
                         <td style="text-align:right">
                             <img id="img12" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
-                                height="28" />
+                                height="28" alt="none" />
                         </td>
                         <td id="tdModalMessageServiceWarranty" colspan="2" runat="server">
                             <asp:Label ID="lblServiceWarrantyMessage" runat="server"></asp:Label>
@@ -125,14 +125,14 @@
                 <asp:Label ID="lblModalClaimCancelTitle" runat="server" Text="CONFIRM"></asp:Label>
                 <a href="javascript:void(0)" onclick="hideModal('ModalClaimCancel');">
                     <img id="Img7" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                        width="16" height="18" align="absmiddle" class="floatR" /></a>
+                        width="16" height="18" style="vertical-align: middle;" class="floatR" alt="none" /></a>
             </p>
             <table class="formGrid" style="width: 98%; border: 0px; border-spacing: 0px; padding: 0px;">
                 <tbody>
                     <tr>
                         <td style="text-align:right">
                             <img id="img8" name="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
-                                height="28" />
+                                height="28" alt="none" />
                         </td>
                         <td id="td1" colspan="2" runat="server">
                             <asp:Label ID="lblModalClaimCancel" runat="server"></asp:Label>
@@ -164,7 +164,7 @@
                         <td style="text-align:right">
                             <a href="javascript:void(0)" onclick="hideModal('ModalMasterClaim');">
                                 <img id="Img6" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                                    width="16" height="18" align="top" /></a>
+                                    width="16" height="18" style="vertical-align: top;" alt="none" /></a>
             </p>
             </td></tr></table>
             <div class="Page">
@@ -203,7 +203,7 @@
                 <asp:Label ID="Label2" Text="Deny_Claim" runat="server"></asp:Label>
                 <a href="javascript:void(0)" onclick="hideModal('ModalDenyClaim');">
                     <img id="Img9" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                        width="16" height="18" align="absmiddle" class="floatR" /></a>
+                        width="16" height="18" style="vertical-align:middle" class="floatR" alt="none" /></a>
             </p>
             <table class="formGrid" style="width: 100%; border: 0px; border-spacing: 0px; padding: 0px;">
                 <tr>
@@ -249,14 +249,14 @@
             <p class="modalTitle">
                 <asp:Label ID="lblTitle" runat="server" Text="CONFIRM"></asp:Label>
                 <a href="javascript:void(0)" onclick="hideModal('ModalBypassDoL');">
-                    <img id="Img13" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" align="absmiddle" class="floatR" alt="" />
+                    <img id="Img13" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server" width="16" height="18" style="vertical-align: middle" class="floatR" alt="none" />
                 </a>
             </p>
             <table class="formGrid" style="width: 98%;">
                 <tbody>
                     <tr>
                         <td>
-                            <img id="img14" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png" height="28" />
+                            <img id="img14" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png" height="28" alt="none"/>
                         </td>
                         <td id="tdModalBbDolMessage" colspan="2" runat="server">
                             <asp:Label ID="lblInvalidDoLMessage" runat="server">Bypass_Invalid_DoL</asp:Label>
@@ -283,7 +283,7 @@
                 <asp:Label ID="lbl" runat="server">Soft Questions</asp:Label>
                 <a href="javascript:void(0)" onclick="hideModal('ModalSoftQuestions');">
                     <img id="Img10" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                        width="16" height="18" align="absmiddle" class="floatR" /></a>
+                        width="16" height="18" style="vertical-align: middle;" class="floatR" alt="none" /></a>
             </p>
             <div class="dataContainer">
                 <table id="TableFixed" style="width: 100%; border: 0px; border-spacing: 0px; padding: 0px;" class="summaryGrid">
@@ -1224,7 +1224,7 @@
                             <asp:Label ID="lblClaimImage" runat="server" Text="CLAIM_IMAGE"></asp:Label>
                             <a href="javascript:void(0)" onclick="hideModal('modalClaimImages');">
                                 <img id="img3" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                                    width="16" height="18" align="absmiddle" class="floatR" /></a>
+                                    width="16" height="18" class="floatR" style="vertical-align:middle;" alt="none" /></a>
                         </p>
                         <iframe class="pdfContainer"style="text-align:left" runat="server" id="pdfIframe"></iframe>
                     </div>
@@ -1237,12 +1237,12 @@
                             <asp:Label ID="Label1" runat="server" Text="NEW_CLAIM_ISSUE"></asp:Label>
                             <a href="javascript:void(0)" onclick="HideErrorAndModal('ModalIssue');">
                                 <img id="img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                                    width="16" height="18" align="absmiddle" class="floatR" /></a>
+                                    width="16" height="18" class="floatR" style="vertical-align:middle;" alt="none" /></a>
                         </p>
                         <div class="dataContainer">
                             <div runat="server" id="modalMessageBox" class="errorMsg" style="display: none">
                                 <p>
-                                    <img id="imgIssueMsg" width="16" height="13" align="middle" runat="server" src="~/App_Themes/Default/Images/icon_error.png" />
+                                    <img id="imgIssueMsg" width="16" height="13" runat="server" src="~/App_Themes/Default/Images/icon_error.png" style="vertical-align:middle;" alt="none" />
                                     <asp:Literal runat="server" ID="MessageLiteral" />
                                 </p>
                             </div>
@@ -1270,7 +1270,7 @@
                             <tr>
                                 <td colspan="3" class="seperator">
                                     <img id="Img4" src="~/App_Themes/Default/Images/icon_dash.png" runat="server" width="6"
-                                        height="5" />
+                                        height="5" alt="none"/>
                                 </td>
                             </tr>
                             <tr>
@@ -1315,7 +1315,7 @@
                             <asp:Label ID="lblCollectDeductible" runat="server" Text="COLLECT_DEDUCTIBLE"></asp:Label>
                             <a href="javascript:void(0)" onclick="hideModal('modalCollectDeductible');">
                                 <img id="img5" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                                    width="16" height="18" align="middle" class="floatR" /></a>
+                                    width="16" height="18" class="floatR" style="vertical-align:middle;" alt="none" /></a>
                         </p>
                         <Elita:MessageController runat="server" ID="moModalCollectDivMsgController" />
                         <table class="formGrid" style="width: 100%; border: 0px; border-spacing: 0px; padding: 0px;">
