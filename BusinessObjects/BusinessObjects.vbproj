@@ -287,7 +287,7 @@
     <Compile Include="Claims\ClaimShipping.vb" />
     <Compile Include="Claims\ClaimStatusByUserRole.vb" />
     <Compile Include="Claims\IFulfillable.vb" />
-    <Compile Include="Claims\LogisticStageAddresses.vb" />
+    <Compile Include="Claims\LogisticStageAddress.vb" />
     <Compile Include="Claims\PreInvoice.vb" />
     <Compile Include="Claims\PreInvoiceDetails.vb" />
     <Compile Include="Common\ClaimCloseRules.vb" />

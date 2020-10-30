@@ -1140,48 +1140,27 @@ Public Class ClaimWizardForm
                 If Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
                    Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
 
-                    Dim logisticStages As New List(Of LogisticStageAddresses)
+                    Dim logisticStages As New List(Of LogisticStageAddress)
 
-                    logisticStages = New List(Of LogisticStageAddresses)(
-                        From dr In Me.State.FulfillmentDetailsResponse.LogisticStages Select New LogisticStageAddresses() With {
+                    logisticStages = New List(Of LogisticStageAddress)(
+                        From dr In Me.State.FulfillmentDetailsResponse.LogisticStages Select New LogisticStageAddress() With {
                                                                                .LogisticStageAddress = ConvertToAddressControllerField(dr.Address),
                                                                                .LogisticStageName = dr.Description
                                                                                }
                         )
                     Dim filteredLogisticStages = logisticStages.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing ).ToList()
 
-                    repAddress.ParentBusinessObject = filteredLogisticStages
-                    repAddress.DataBind()
+                    moLogisticStageAddressInfo.ParentBusinessObject = filteredLogisticStages
+                    moLogisticStageAddressInfo.DataBind()
                 Else
-                    repAddress.Visible = False
+                    moLogisticStageAddressInfo.Visible = False
                 End If
 
             End If
 
         Else
-            repAddress.Visible = False
+            moLogisticStageAddressInfo.Visible = False
         End If
-    End Sub
-
-    Public Class FulfillmentAddressBinding
-        Public Property LogisticStage As String
-
-        Public Property Address As FulfillmentAddress
-    End Class
-    Protected Sub RepAddress_OnItemDataBound(sender As Object, e As RepeaterItemEventArgs)
-        If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
-            Dim lbLogisticStage As Label = DirectCast(e.Item.FindControl("LogisticStage"), Label)
-            Dim addressControls As UserControlAddress_New = DirectCast(e.Item.FindControl("moAddressController"), UserControlAddress_New)
-            addressControls.TranslateAllLabelControl()
-
-            Dim logisticStage As Object = DataBinder.Eval(e.Item.DataItem, "LogisticStage")
-            Dim addressFulfill As Object = DataBinder.Eval(e.Item.DataItem, "Address")
-            Dim convertedAddress As BusinessObjectsNew.Address = ConvertToAddressControllerField(addressFulfill)
-            lbLogisticStage.Text = logisticStage
-            addressControls.Bind(convertedAddress)
-            addressControls.EnableControls(False, True)
-        End If
-
     End Sub
 
     Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As FulfillmentAddress) As BusinessObjectsNew.Address

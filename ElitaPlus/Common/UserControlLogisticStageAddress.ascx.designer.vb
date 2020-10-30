@@ -11,7 +11,7 @@ Option Strict On
 Option Explicit On
 
 
-Partial Public Class UserControlLogisticStageAddresses
+Partial Public Class UserControlLogisticStageAddress
 
     '''<summary>
     '''repLogisticStageAddress control.

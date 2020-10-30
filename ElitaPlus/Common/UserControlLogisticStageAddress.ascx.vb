@@ -1,7 +1,6 @@
 ﻿Imports System.Collections.Generic
-Imports Assurant.ElitaPlus.BusinessObjectsNew.VSCBrazilDBSCreditCardAuth
 
-Public Class UserControlLogisticStageAddresses
+Public Class UserControlLogisticStageAddress
     Inherits System.Web.UI.UserControl
 #Region "Constants"
 
@@ -19,7 +18,7 @@ Public Class UserControlLogisticStageAddresses
 
 #Region "Properties"
 
-    Public Property ParentBusinessObject As List(Of LogisticStageAddresses)
+    Public Property ParentBusinessObject As List(Of LogisticStageAddress)
     Public Property ProfileCode As String 
     Public Property ValidateAddress As Boolean
     

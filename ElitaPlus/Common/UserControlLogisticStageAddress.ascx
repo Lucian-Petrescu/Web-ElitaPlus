@@ -1,4 +1,4 @@
-﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="UserControlLogisticStageAddresses.ascx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlLogisticStageAddresses" %>
+﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="UserControlLogisticStageAddress.ascx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlLogisticStageAddress" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlAddressInfo" Src="~/Common/UserControlAddress_New.ascx" %>
 
 <table class="formGrid" style="border-collapse: collapse; border: 0;">

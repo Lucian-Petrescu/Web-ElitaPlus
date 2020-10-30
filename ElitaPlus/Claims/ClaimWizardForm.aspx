@@ -14,7 +14,7 @@
 <%@ Register TagPrefix="Elita" TagName="BestReplacementOption" Src="~/Interfaces/ReplacementOptions.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlConsequentialDamage" Src="UserControlConsequentialDamage.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlClaimDeviceInfo" Src="~/Interfaces/ClaimDeviceInformationController.ascx" %>
-<%@ Register TagPrefix="Elita" TagName="UserControlAddressInfo" Src="~/Common/UserControlLogisticStageAddresses.ascx" %>
+<%@ Register TagPrefix="Elita" TagName="UserControlLogisticStageAddressInfo" Src="~/Common/UserControlLogisticStageAddress.ascx" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
@@ -1220,20 +1220,19 @@
                         <table border="0"></table>
                     </div>
                 </div>
-                 <div class="dataContainer">
-                     <table style="width: 100%; border-collapse: collapse; border: 0;">
-                         <tr>
-                             <td>
-                                 <h2 class="dataGridHeader">
-                                     <asp:Label ID="lblLogisticStageAddress" runat="server">LOGISTIC_STAGE_ADDRESSES</asp:Label>
-                                 </h2>
-                                 <div class="stepformZone">
-                                     <Elita:UserControlAddressInfo ID="repAddress" runat="server" Visible="True"></Elita:UserControlAddressInfo>
-                                 </div>
-                             </td>
-                         </tr>
-                     </table>
-                        
+                <div class="dataContainer">
+                    <table style="width: 100%; border-collapse: collapse; border: 0;">
+                        <tr>
+                            <td>
+                                <h2 class="dataGridHeader">
+                                    <asp:Label ID="lblLogisticStageAddress" runat="server">LOGISTIC_STAGE_ADDRESSES</asp:Label>
+                                </h2>
+                                <div class="stepformZone">
+                                    <Elita:UserControlLogisticStageAddressInfo ID="moLogisticStageAddressInfo" runat="server" Visible="True"></Elita:UserControlLogisticStageAddressInfo>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
              
                 <div id="modalClaimImages" class="overlay">

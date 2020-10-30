@@ -1,5 +1,5 @@
 ﻿
-Public Class LogisticStageAddresses
+Public Class LogisticStageAddress
     Inherits BusinessObjectBase
 
     Public Property LogisticStageName As String
