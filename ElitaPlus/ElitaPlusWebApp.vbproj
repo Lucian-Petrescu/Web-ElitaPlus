@@ -40,7 +40,7 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -1098,6 +1098,13 @@
     </Compile>
     <Compile Include="Interfaces\AppleGBIFileFormDetail.aspx.vb">
       <DependentUpon>AppleGBIFileFormDetail.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Interfaces\ARInvoiceListForm.aspx.designer.vb">
+      <DependentUpon>ARInvoiceListForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\ARInvoiceListForm.aspx.vb">
+      <DependentUpon>ARInvoiceListForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Interfaces\ARInvoiceReconWrkForm.aspx.designer.vb">
@@ -5869,6 +5876,7 @@
     </Content>
     <Content Include="Interfaces\AppleGBIFileForm.aspx" />
     <Content Include="Interfaces\AppleGBIFileFormDetail.aspx" />
+    <Content Include="Interfaces\ARInvoiceListForm.aspx" />
     <Content Include="Interfaces\ARInvoiceReconWrkForm.aspx" />
     <Content Include="Interfaces\ARPaymentReconWrkForm.aspx" />
     <Content Include="Interfaces\ClaimDeviceInformationController.ascx" />
@@ -9090,7 +9098,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2550</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/ElitaPlus</IISUrl>
+          <IISUrl>http://localhost:81/ElitaPlus</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
