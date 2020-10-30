@@ -759,6 +759,7 @@
       <DependentUpon>CommentListForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Certificates\CommonBankInfo.vb" />
     <Compile Include="Certificates\CustomerProfileHistory.aspx.designer.vb">
       <DependentUpon>CustomerProfileHistory.aspx</DependentUpon>
     </Compile>
@@ -1447,6 +1448,11 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\GiftCardService\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\PolicyService\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -6333,10 +6339,84 @@
     <None Include="Service References\GiftCardService\GiftCardService3.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Service References\PolicyService\Assurant.ElitaPlus.ElitaPlusWebApp.PolicyService.CancelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Assurant.ElitaPlus.ElitaPlusWebApp.PolicyService.ComputeRefundResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Assurant.ElitaPlus.ElitaPlusWebApp.PolicyService.EndorseResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Assurant.ElitaPlus.ElitaPlusWebApp.PolicyService.EnrollResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Assurant.ElitaPlus.ElitaPlusWebApp.PolicyService.ExpireRegisteredItemResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Assurant.ElitaPlus.ElitaPlusWebApp.PolicyService.GetDetailsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Assurant.ElitaPlus.ElitaPlusWebApp.PolicyService.RegisterItemRespose.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Assurant.ElitaPlus.ElitaPlusWebApp.PolicyService.SearchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\PolicyService\Assurant.ElitaPlus.ElitaPlusWebApp.PolicyService.UpdateRegItemResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\PolicyService\PolicyService.wsdl" />
+    <None Include="Service References\PolicyService\PolicyService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PolicyService\PolicyService1.wsdl" />
+    <None Include="Service References\PolicyService\PolicyService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PolicyService\PolicyService10.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PolicyService\PolicyService11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PolicyService\PolicyService12.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PolicyService\PolicyService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PolicyService\PolicyService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PolicyService\PolicyService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PolicyService\PolicyService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PolicyService\PolicyService6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PolicyService\PolicyService7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PolicyService\PolicyService8.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PolicyService\PolicyService9.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\UtilityService\UtilityWcf.disco" />
     <None Include="Service References\UtilityService\configuration91.svcinfo" />
     <None Include="Service References\UtilityService\configuration.svcinfo" />
     <None Include="Service References\UtilityService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Service References\PolicyService\configuration91.svcinfo" />
+    <None Include="Service References\PolicyService\configuration.svcinfo" />
+    <None Include="Service References\PolicyService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
@@ -9069,6 +9149,7 @@
     <WCFMetadataStorage Include="Service References\GalaxyWcfRef\" />
     <WCFMetadataStorage Include="Service References\GiftCardService\" />
     <WCFMetadataStorage Include="Service References\OlitaWcfRef\" />
+    <WCFMetadataStorage Include="Service References\PolicyService\" />
     <WCFMetadataStorage Include="Service References\TestWcfRef\" />
     <WCFMetadataStorage Include="Service References\UtilityService\" />
   </ItemGroup>
