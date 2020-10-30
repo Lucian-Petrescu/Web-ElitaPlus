@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.assurant.com/PolicyService.Contracts/Faults" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/PolicyService.Contracts/Faults" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="EnrollFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EnrollFault" nillable="true" type="tns:EnrollFault" />
+  <xs:complexType name="BaseFault">
+    <xs:sequence>
+      <xs:element name="FaultCode" nillable="true" type="xs:string" />
+      <xs:element name="FaultMessage" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseFault" nillable="true" type="tns:BaseFault" />
+  <xs:complexType name="CompanyNotFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CompanyNotFoundFault" nillable="true" type="tns:CompanyNotFoundFault" />
+  <xs:complexType name="MultiplePrimaryCustomersFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="MultiplePrimaryCustomersFoundFault" nillable="true" type="tns:MultiplePrimaryCustomersFoundFault" />
+  <xs:complexType name="DuplicateIdentificationNumberFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DuplicateIdentificationNumberFoundFault" nillable="true" type="tns:DuplicateIdentificationNumberFoundFault" />
+  <xs:complexType name="BankAcOrCreditCardAllowedFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BankAcOrCreditCardAllowedFault" nillable="true" type="tns:BankAcOrCreditCardAllowedFault" />
+  <xs:complexType name="CardTypeFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CardTypeFault" nillable="true" type="tns:CardTypeFault" />
+  <xs:complexType name="CertificateNotFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CertificateNotFoundFault" nillable="true" type="tns:CertificateNotFoundFault" />
+  <xs:complexType name="InvalidCultureCodeFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InvalidCultureCodeFault" nillable="true" type="tns:InvalidCultureCodeFault" />
+  <xs:complexType name="DealerNotFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DealerNotFoundFault" nillable="true" type="tns:DealerNotFoundFault" />
+  <xs:complexType name="RegItemFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RegItemFault" nillable="true" type="tns:RegItemFault" />
+  <xs:complexType name="PullUpdateFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PullUpdateFault" nillable="true" type="tns:PullUpdateFault" />
+  <xs:complexType name="DataNotFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DataNotFoundFault" nillable="true" type="tns:DataNotFoundFault" />
+  <xs:complexType name="DealerGroupNotFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DealerGroupNotFoundFault" nillable="true" type="tns:DealerGroupNotFoundFault" />
+</xs:schema>

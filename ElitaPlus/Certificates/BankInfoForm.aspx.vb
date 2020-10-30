@@ -1,6 +1,4 @@
-﻿Imports Microsoft.VisualBasic
-
-Namespace Certificates
+﻿Namespace Certificates
     Public Class BankInfoForm
         Inherits ElitaPlusSearchPage
 
@@ -90,8 +88,6 @@ Namespace Certificates
                         State.MyCountry = New Country(State.MyCompany.CountryId)
                     End If
 
-
-
                 End If
             Catch ex As Exception
                 HandleErrors(ex, ErrControllerMaster, False)
@@ -178,7 +174,6 @@ Namespace Certificates
         End Sub
 #End Region
 
-
 #Region "Button Handlers"
         Protected Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try
@@ -191,22 +186,21 @@ Namespace Certificates
 
         Private Sub btnApply_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnApply_WRITE.Click
             Try
-                If State.MyCertInstallment IsNot Nothing Then
-                    moPremiumBankInfoController.PopulateBOFromControl()
-                    State.MyBankInfo.Save()
 
-                    State.MyCertInstallment.BankInfoId = State.MyBankInfo.Id
-                    State.MyCertInstallment.BillingStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_BILLING_STATUS, Codes.BILLING_STATUS__ACTIVE)
-                    State.MyCertInstallment.Save()
+                If Not Me.State.MyCertInstallment Is Nothing Then
+                    Me.moPremiumBankInfoController.PopulateBOFromControl()
 
-                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                    CommonBankInfo.BankInfoEndorseRequest(Me.State.MyCertificate.Dealer.Dealer, Me.State.MyCertificate.CertNumber, Me.State.MyBankInfo)
+
+                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                     PopulateFormFromBOs()
                     moPremiumBankInfoController.SwitchToReadOnlyView()
                 End If
 
             Catch ex As ApplicationException
-                HandleErrors(ex, MasterPage.MessageController)
-
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            Catch ex As Exception
+                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_POLICYSERVICE_SERVICE_ERR, True)
             End Try
         End Sub
         Private Sub btnEdit_WRITE_Click(sender As System.Object, e As System.EventArgs) Handles btnEdit_WRITE.Click
@@ -225,5 +219,6 @@ Namespace Certificates
 
         End Sub
 #End Region
+
     End Class
 End Namespace
