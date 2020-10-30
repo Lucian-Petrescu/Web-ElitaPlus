@@ -1149,6 +1149,7 @@ Public Class ClaimWizardForm
                                                                                }
                         )
                     Dim filteredLogisticStages = logisticStages.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing ).ToList()
+
                     repAddress.ParentBusinessObject = filteredLogisticStages
                     repAddress.DataBind()
                 Else

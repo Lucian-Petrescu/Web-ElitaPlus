@@ -1221,7 +1221,19 @@
                     </div>
                 </div>
                  <div class="dataContainer">
-                         <Elita:UserControlAddressInfo ID="repAddress" runat="server" Visible="True"></Elita:UserControlAddressInfo>
+                     <table style="width: 100%; border-collapse: collapse; border: 0;">
+                         <tr>
+                             <td>
+                                 <h2 class="dataGridHeader">
+                                     <asp:Label ID="lblLogisticStageAddress" runat="server">LOGISTIC_STAGE_ADDRESSES</asp:Label>
+                                 </h2>
+                                 <div class="stepformZone">
+                                     <Elita:UserControlAddressInfo ID="repAddress" runat="server" Visible="True"></Elita:UserControlAddressInfo>
+                                 </div>
+                             </td>
+                         </tr>
+                     </table>
+                        
                 </div>
              
                 <div id="modalClaimImages" class="overlay">

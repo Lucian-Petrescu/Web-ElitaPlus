@@ -1,4 +1,6 @@
 ﻿Imports System.Collections.Generic
+Imports Assurant.ElitaPlus.BusinessObjectsNew.VSCBrazilDBSCreditCardAuth
+
 Public Class UserControlLogisticStageAddresses
     Inherits System.Web.UI.UserControl
 #Region "Constants"
@@ -7,15 +9,20 @@ Public Class UserControlLogisticStageAddresses
      Private Const GridCtrlUcAddressController As String = "moAddressController"
      Private Const GridColDataLogisticStageName As String = "LogisticStageName"
      Private Const GridColDataLogisticStageAddress As String = "LogisticStageAddress"
+     Private Const ValidateAddressButton As String = "btnValidate_Address"
+
+#End Region
+
+#Region "Variables"
 
 #End Region
 
 #Region "Properties"
 
     Public Property ParentBusinessObject As List(Of LogisticStageAddresses)
-    Public Property ProfileCode As String
-    Public Property ValidateAddress As Boolean = false
-
+    Public Property ProfileCode As String 
+    Public Property ValidateAddress As Boolean
+    
 #End Region
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
@@ -31,6 +38,7 @@ Public Class UserControlLogisticStageAddresses
         If (ParentBusinessObject Is Nothing) Then
             Throw New BOInvalidOperationException("Value of ParentBusinessObject can not be null")
         End If
+
         repLogisticStageAddress.DataSource = ParentBusinessObject
         repLogisticStageAddress.DataBind()
 
@@ -43,10 +51,17 @@ Public Class UserControlLogisticStageAddresses
             Dim addressControls As UserControlAddress_New = DirectCast(e.Item.FindControl(GridCtrlUcAddresscontroller), UserControlAddress_New)
             Dim logisticStageName As Object = DataBinder.Eval(e.Item.DataItem, GridColDataLogisticstageName)
             Dim logisticStageAddressData As Object = DataBinder.Eval(e.Item.DataItem, GridColDataLogisticstageAddress)
+            Dim btnValidateAddress As Button = addressControls.FindControl(ValidateAddressButton)
             addressControls.TranslateAllLabelControl()
+          
+            if (ValidateAddress) Then
+                     btnValidateAddress.Visible = True
+                Else
+                    btnValidateAddress.Visible = False
+            End If
 
             lblLogisticStageName.Text = logisticStageName
-            addressControls.Bind(logisticStageAddressData)
+            addressControls.Bind(logisticStageAddressData, ProfileCode)
             addressControls.EnableControls(False, True)
 
         End If
