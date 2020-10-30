@@ -395,14 +395,14 @@ Public Class ClaimWizardForm
     End Sub
 
     Private Shared Function GetClientClaimService() As ClaimServiceClient
-        'Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_SERVICE), False)
-        'Dim client = New ClaimServiceClient("CustomBinding_IClaimService", oWebPasswd.Url)
-        'client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
-        'client.ClientCredentials.UserName.Password = oWebPasswd.Password
+        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_SERVICE), False)
+        Dim client = New ClaimServiceClient("CustomBinding_IClaimService", oWebPasswd.Url)
+        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+        client.ClientCredentials.UserName.Password = oWebPasswd.Password
 
-        Dim client = New ClaimServiceClient("CustomBinding_IClaimService", "http: //sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/test-p1/WebAppGateway/gateway")
-        client.ClientCredentials.UserName.UserName = "elita1"
-        client.ClientCredentials.UserName.Password = "elita1"
+        'Dim client = New ClaimServiceClient("CustomBinding_IClaimService", "http://localhost/ElitaClaimService/ClaimService.svc")
+        'client.ClientCredentials.UserName.UserName = "elita1"
+        'client.ClientCredentials.UserName.Password = "elita1"
         Return client
     End Function
 
