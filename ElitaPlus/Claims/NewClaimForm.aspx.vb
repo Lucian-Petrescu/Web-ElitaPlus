@@ -768,26 +768,26 @@ Partial Class NewClaimForm
                 If Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
                    Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
 
-                    Dim logisticStages As New List(Of FulfillmentAddressBinding)
+                    Dim logisticStages As New List(Of LogisticStageAddress)
 
-                    logisticStages = New List(Of FulfillmentAddressBinding)(
-                        From dr In Me.State.FulfillmentDetailsResponse.LogisticStages Select New FulfillmentAddressBinding() With {
-                                                                               .Address = dr.Address,
-                                                                               .LogisticStage = dr.Description
-                                                                               }
+                    logisticStages = New List(Of LogisticStageAddress)(
+                        From dr In Me.State.FulfillmentDetailsResponse.LogisticStages Select New LogisticStageAddress() With {
+                                                                          .LogisticStageAddress = ConvertToAddressControllerField(dr.Address),
+                                                                          .LogisticStageName = dr.Description
+                                                                          }
                         )
-                    Dim filteredLogisticStages = logisticStages.Where(Function(item) item.Address.Address1 IsNot Nothing).ToList()
-                    repAddress.DataSource = filteredLogisticStages
-                    repAddress.DataBind()
+                    Dim filteredLogisticStages = logisticStages.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing ).ToList()
 
+                    moLogisticStageAddressInfo.ParentBusinessObject = filteredLogisticStages
+                    moLogisticStageAddressInfo.DataBind()
                 Else
-                    repAddress.Visible = False
+                    moLogisticStageAddressInfo.Visible = False
                 End If
 
             End If
 
         Else
-            repAddress.Visible = False
+            moLogisticStageAddressInfo.Visible = False
         End If
     End Sub
 
@@ -835,11 +835,6 @@ Partial Class NewClaimForm
         End Get
     End Property
 
-    Public Class FulfillmentAddressBinding
-        Public Property LogisticStage As String
-
-        Public Property Address As FulfillmentAddress
-    End Class
 #End Region
 
 #Region "Controlling Logic"

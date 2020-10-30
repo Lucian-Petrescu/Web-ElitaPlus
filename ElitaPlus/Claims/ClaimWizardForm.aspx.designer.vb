@@ -2156,13 +2156,13 @@ Partial Public Class ClaimWizardForm
     Protected WithEvents lblLogisticStageAddress As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''repAddress control.
+    '''moLogisticStageAddressInfo control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents repAddress As Global.System.Web.UI.WebControls.Repeater
+    Protected WithEvents moLogisticStageAddressInfo As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlLogisticStageAddress
 
     '''<summary>
     '''lblClaimImage control.
