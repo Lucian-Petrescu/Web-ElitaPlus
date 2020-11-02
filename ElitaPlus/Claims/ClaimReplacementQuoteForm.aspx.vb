@@ -230,7 +230,7 @@ Namespace Claims
         Private Sub AddClaimExtendedStatus(oClaim As ClaimBase)
             Dim oClaimStatus As ClaimStatus, claimStatusByGroupId As Guid
             claimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(ClaimExtendedStatusCode)
-            If Not claimStatusByGroupId <> Guid.Empty Then
+            If claimStatusByGroupId <> Guid.Empty Then
                 oClaimStatus = New ClaimStatus With {
                     .ClaimId = oClaim.Id,
                     .ClaimStatusByGroupId = claimStatusByGroupId,
