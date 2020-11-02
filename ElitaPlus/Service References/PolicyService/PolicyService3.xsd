@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.assurant.com/Elita/PolicyService/Cancel" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/PolicyService/Cancel" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd1" namespace="http://elita.assurant.com/Elita/PolicyService" />
+  <xs:complexType name="CancelRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://elita.assurant.com/Elita/PolicyService" base="q1:BasePolicyRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BankInfo" nillable="true" type="q1:BankInfo" />
+          <xs:element minOccurs="0" name="CallerName" nillable="true" type="xs:string" />
+          <xs:element name="CancellationDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="CancellationReasonCode" nillable="true" type="xs:string" />
+          <xs:element name="CertificateNumber" nillable="true" type="xs:string" />
+          <xs:element name="DealerCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CancelRequest" nillable="true" type="tns:CancelRequest" />
+  <xs:complexType name="CancelResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://elita.assurant.com/Elita/PolicyService" base="q2:BasePolicyResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CancelResponse" nillable="true" type="tns:CancelResponse" />
+  <xs:complexType name="GetDetailsResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q3="http://elita.assurant.com/Elita/PolicyService" base="q3:BasePolicyResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Bank" nillable="true" type="q3:BankInfo" />
+          <xs:element minOccurs="0" name="CertificateDuration" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Coverages" nillable="true" type="q3:ArrayOfCoverageInfo" />
+          <xs:element minOccurs="0" name="CurrencyCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Customers" nillable="true" type="q3:ArrayOfCustomerInfo" />
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerCodeDescription" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ItemInfo" nillable="true" type="q3:ArrayOfItemInfo" />
+          <xs:element minOccurs="0" name="ItemRetailPrice" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="LastDateOfPayment" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="MaxNumberOfClaims" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaxNumberOfRepairClaims" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MaxNumberOfReplacementClaims" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="NextBillingDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="PaidThroughDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Payment" nillable="true" type="q3:PaymentInfo" />
+          <xs:element minOccurs="0" name="PaymentAmount" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PaymentInvoiceNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PaymentReferenceNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PolicyClaimLiabilityLimit" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PolicyLiabilityLimit" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductInfo" nillable="true" type="q3:ProductInfo" />
+          <xs:element minOccurs="0" name="RemainingPolicyClaimLiabilityLimit" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RemainingPolicyLiabilityLimit" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Statuscode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TotalGrossAmount" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="TotalTax" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ClaimWaitingPeriodDays" type="xs:int" />
+          <xs:element minOccurs="0" name="LoanCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ServiceLineNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CertificateExtendedItems" nillable="true" type="q3:ArrayOfCertificateExtendedData" />
+          <xs:element minOccurs="0" name="MembershipNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SubscriberStatusCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SubscriberStatusDescription" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SuspendedReasonCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SuspendedReasonDescription" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="GetDetailsResponse" nillable="true" type="tns:GetDetailsResponse" />
+  <xs:complexType name="ComputeRefundRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q4="http://elita.assurant.com/Elita/PolicyService" base="q4:BasePolicyRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CallerName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CancellationReasonCode" nillable="true" type="xs:string" />
+          <xs:element name="CertificateNumber" nillable="true" type="xs:string" />
+          <xs:element name="DealerCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ComputeRefundRequest" nillable="true" type="tns:ComputeRefundRequest" />
+  <xs:complexType name="ComputeRefundResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q5="http://elita.assurant.com/Elita/PolicyService" base="q5:BasePolicyResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="RefundAmount" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ComputeRefundResponse" nillable="true" type="tns:ComputeRefundResponse" />
+  <xs:complexType name="ArrayOfGetDetailsResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="GetDetailsResponse" nillable="true" type="tns:GetDetailsResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfGetDetailsResponse" nillable="true" type="tns:ArrayOfGetDetailsResponse" />
+</xs:schema>

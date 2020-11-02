@@ -45,16 +45,21 @@
         Return dal.LoadProcessingError(strUploadType).Tables(0).DefaultView
     End Function
 
+    Public Shared Function AddRemoveItemsBO(ByVal userid As Guid, ByVal languageid As Guid) As DataSet
+        Dim dal As New commonUploadDAL
+        Return dal.AddRemoveItemsDAL(userid, languageid)
+    End Function
+
     Public Shared Sub ExtractReport(strUploadType As String, ByVal strUserEmailAddress As String, ByVal strCompanyGroupCode As String, ByVal extractFile As String)
         Dim dal As New commonUploadDAL
         dal.ExtractReportFile(strUploadType, strUserEmailAddress, strCompanyGroupCode, extractFile)
 
     End Sub
-    Public Shared Function getScreenHelp(FormName As String)
+    Public Shared Function getScreenHelp(FormName As String, uploadType As String)
         Dim dal As New commonUploadDAL
         Dim helpData As String
 
-        helpData = dal.getScreenHelpData(FormName)
+        helpData = dal.getScreenHelpData(FormName, uploadType)
 
         If String.IsNullOrEmpty(helpData) Or helpData.Equals(Codes.ERROR_FLAG) Then
             helpData = Codes.NO_HELP_COMTS_FOUND
