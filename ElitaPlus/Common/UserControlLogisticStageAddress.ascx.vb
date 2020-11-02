@@ -46,18 +46,14 @@ Public Class UserControlLogisticStageAddress
     Protected Sub repLogisticStageAddress_OnItemDataBound(sender As Object, e As RepeaterItemEventArgs)
 
         If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
+
             Dim lblLogisticStageName As Label = DirectCast(e.Item.FindControl(GridCtrlLblLogisticStageName), Label)
             Dim addressControls As UserControlAddress_New = DirectCast(e.Item.FindControl(GridCtrlUcAddresscontroller), UserControlAddress_New)
             Dim logisticStageName As Object = DataBinder.Eval(e.Item.DataItem, GridColDataLogisticstageName)
             Dim logisticStageAddressData As Object = DataBinder.Eval(e.Item.DataItem, GridColDataLogisticstageAddress)
             Dim btnValidateAddress As Button = addressControls.FindControl(ValidateAddressButton)
             addressControls.TranslateAllLabelControl()
-          
-            if (ValidateAddress) Then
-                     btnValidateAddress.Visible = True
-                Else
-                    btnValidateAddress.Visible = False
-            End If
+            btnValidateAddress.Visible = If( ValidateAddress, "True", "False")
 
             lblLogisticStageName.Text = logisticStageName
             addressControls.Bind(logisticStageAddressData, ProfileCode)
