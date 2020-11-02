@@ -3188,8 +3188,7 @@ Public Class ClaimRecordingForm
         wsResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, LogisticStagesResponse)
         Dim logisticsStage As LogisticStage
         logisticsStage = wsResponse.Stages(State.LogisticsStage)
-
-
+        
         If (e.Row.RowType = DataControlRowType.DataRow) Then
             Dim logisticsOptionItem As LogisticOption =
                     source.First(Function(f) f.Code = DirectCast(e.Row.DataItem, LogisticOption).Code)
@@ -3210,30 +3209,23 @@ Public Class ClaimRecordingForm
                 Select Case logisticsOptionItem.Type
 
                     'Logistics Options - Address
-                    Case _
-                        LogisticOptionType.CustomerAddress OrElse
-                        logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress
-                        RowDataBoundAddress(e, logisticsOptionItem, rdoLogisticsOptions, isEnableControl, addressDetail,
-                                            logisticsStage, trServiceCenter, trBankInfo, trCheckInfo)
-
+                    Case LogisticOptionType.CustomerAddress OrElse logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress
+                        RowDataBoundAddress(e, logisticsOptionItem, rdoLogisticsOptions, isEnableControl, addressDetail, logisticsStage)
+                     
                         'Logistic Options - Service Center
                     Case LogisticOptionType.ServiceCenter
-                        RowDataBoundServiceCenter(e, isEnableControl, trShippingAddress, trServiceCenter,
-                                                  trDeliveryOptions, trBankInfo, trCheckInfo)
+                        RowDataBoundServiceCenter(e, isEnableControl, trShippingAddress, trServiceCenter, trDeliveryOptions, trBankInfo, trCheckInfo)
 
                         'Bank transfer 
                     Case LogisticOptionType.BankTransfer
-                        RowDataBoundBankTransfer(e, trShippingAddress, trServiceCenter, trDeliveryOptions, trBankInfo,
-                                                 trCheckInfo)
+                        RowDataBoundBankTransfer(e, trShippingAddress, trServiceCenter, trDeliveryOptions, trBankInfo,trCheckInfo)
 
                         'Customer Information for Check payment
                     Case LogisticOptionType.CheckCustomerMail
-                        RowDataBoundCustomerCheckPayment(e, trShippingAddress, trServiceCenter, trDeliveryOptions,
-                                                         trBankInfo, trCheckInfo)
+                        RowDataBoundCustomerCheckPayment(e, trShippingAddress, trServiceCenter, trDeliveryOptions, trBankInfo, trCheckInfo)
 
                     Case Else
-                        RowDataBoundDisableOptions(trServiceCenter, trShippingAddress, trDeliveryOptions, trBankInfo,
-                                                   trCheckInfo)
+                        RowDataBoundDisableOptions(trServiceCenter, trShippingAddress, trDeliveryOptions, trBankInfo, trCheckInfo)
                 End Select
 
                 'Delivery Options
@@ -3243,15 +3235,12 @@ Public Class ClaimRecordingForm
                 RowDataBoundQuestions(e, logisticsOptionItem)
 
             Else
-                RowDataBoundDisableOptions(trServiceCenter, trShippingAddress, trDeliveryOptions, trBankInfo,
-                                           trCheckInfo)
+                RowDataBoundDisableOptions(trServiceCenter, trShippingAddress, trDeliveryOptions, trBankInfo, trCheckInfo)
             End If
         End If
     End Sub
 
-    Private Sub RowDataBoundDisableOptions(trServiceCenter As HtmlTableRow, trShippingAddress As HtmlTableRow,
-                                           trDeliveryOptions As HtmlTableRow, trBankInfo As HtmlTableRow,
-                                           trCheckInfo As HtmlTableRow)
+    Private Sub RowDataBoundDisableOptions(trServiceCenter As HtmlTableRow, trShippingAddress As HtmlTableRow, trDeliveryOptions As HtmlTableRow, trBankInfo As HtmlTableRow, trCheckInfo As HtmlTableRow)
 
         'Logistics Options - Address
         If trShippingAddress Is Nothing Then Throw New ArgumentNullException("TableRow for Shipping Address not found")
@@ -3298,9 +3287,7 @@ Public Class ClaimRecordingForm
         End If
     End Sub
 
-    Private Sub RowDataBoundCustomerCheckPayment(e As GridViewRowEventArgs, trShippingAddress as HtmlTableRow,
-                                                 trServiceCenter As HtmlTableRow, trDeliveryOptions As HtmlTableRow,
-                                                 trBankInfo As HtmlTableRow, trCheckInfo As HtmlTableRow)
+    Private Sub RowDataBoundCustomerCheckPayment(e As GridViewRowEventArgs, trShippingAddress as HtmlTableRow, trServiceCenter As HtmlTableRow, trDeliveryOptions As HtmlTableRow, trBankInfo As HtmlTableRow, trCheckInfo As HtmlTableRow)
 
         Dim moCustomerAddressController As UserControlAddress_New =
                 CType(e.Row.FindControl(LogisticsOptionsCheckInfoCtrl), UserControlAddress_New)
@@ -3329,9 +3316,7 @@ Public Class ClaimRecordingForm
         moCustomerAddressController.EnableControls(False, True)
     End Sub
 
-    Private Sub RowDataBoundBankTransfer(e As GridViewRowEventArgs, trShippingAddress as HtmlTableRow,
-                                         trServiceCenter As HtmlTableRow, trDeliveryOptions As HtmlTableRow,
-                                         trBankInfo As HtmlTableRow, trCheckInfo As HtmlTableRow)
+    Private Sub RowDataBoundBankTransfer(e As GridViewRowEventArgs, trShippingAddress as HtmlTableRow, trServiceCenter As HtmlTableRow, trDeliveryOptions As HtmlTableRow, trBankInfo As HtmlTableRow, trCheckInfo As HtmlTableRow)
 
         Dim lblBankInfo As Label = CType(e.Row.FindControl(GridBankInfoLblCtrl), Label)
         lblBankInfo.Text = TranslationBase.TranslateLabelOrMessage("CUSTOMER_BANK_INFO")
@@ -3356,8 +3341,7 @@ Public Class ClaimRecordingForm
         moBankInfoController.EnableControlsBasedOnCountry(Me.State.BankInfoBO.CountryID)
     End Sub
 
-    Private Sub RowDataBoundDelivery(e As GridViewRowEventArgs, logisticsOptionItem As LogisticOption,
-                                     isEnableControl As Boolean, trDeliveryOptions As HtmlTableRow)
+    Private Sub RowDataBoundDelivery(e As GridViewRowEventArgs, logisticsOptionItem As LogisticOption, isEnableControl As Boolean, trDeliveryOptions As HtmlTableRow)
         If _
             logisticsOptionItem.DeliveryOptions IsNot Nothing AndAlso
             logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate Then
@@ -3374,10 +3358,7 @@ Public Class ClaimRecordingForm
         End If
     End Sub
 
-    Private Sub RowDataBoundServiceCenter(e As GridViewRowEventArgs, isEnableControl As Boolean,
-                                          trShippingAddress as HtmlTableRow, trServiceCenter As HtmlTableRow,
-                                          trDeliveryOptions As HtmlTableRow, trBankInfo As HtmlTableRow,
-                                          trCheckInfo As HtmlTableRow)
+    Private Sub RowDataBoundServiceCenter(e As GridViewRowEventArgs, isEnableControl As Boolean, trShippingAddress as HtmlTableRow, trServiceCenter As HtmlTableRow, trDeliveryOptions As HtmlTableRow, trBankInfo As HtmlTableRow, trCheckInfo As HtmlTableRow)
 
         ControlMgr.SetVisibleControl(Me, trShippingAddress, false)
         ControlMgr.SetVisibleControl(Me, trDeliveryOptions, False)
@@ -3427,16 +3408,16 @@ Public Class ClaimRecordingForm
         ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
     End Sub
 
-    Private Sub RowDataBoundAddress(e As GridViewRowEventArgs, logisticsOptionItem As LogisticOption,
-                                    rdoLogisticsOptions As RadioButton, isEnableControl As Boolean,
-                                    addressDetail As BusinessObjectsNew.Address, logisticsStage As LogisticStage,
-                                    trServiceCenter As HtmlTableRow, trBankInfo As HtmlTableRow,
-                                    trCheckInfo As HtmlTableRow)
+      Private Sub RowDataBoundAddress(e As GridViewRowEventArgs, logisticsOptionItem As LogisticOption, rdoLogisticsOptions As RadioButton, isEnableControl As Boolean, addressDetail As BusinessObjectsNew.Address, logisticsStage As LogisticStage)
 
         Dim lblLoShippingAddress As Label = CType(e.Row.FindControl(GridLoShippingAddressLblCtrl), Label)
 
         Dim addressController As UserControlAddress_New = CType(e.Row.FindControl(GridLoAddressCtrl),
                                                                 UserControlAddress_New)
+        Dim trBankInfo As HtmlTableRow = CType(e.Row.FindControl(GridLoBankInfoTr), HtmlTableRow)
+        Dim trCheckInfo As HtmlTableRow = CType(e.Row.FindControl(GridLoCheckInfoTr), HtmlTableRow)
+        Dim trServiceCenter As HtmlTableRow = CType(e.Row.FindControl(GridLoServiceCenterTr), HtmlTableRow)
+
         addressController.Visible = True
         ControlMgr.SetVisibleControl(Me, trServiceCenter, false)
         ControlMgr.SetVisibleControl(Me, trBankInfo, False)
@@ -3451,43 +3432,7 @@ Public Class ClaimRecordingForm
 
 
         Dim oCertificate As Certificate = New Certificate(State.CertificateId)
-
-        If logisticsOptionItem.Type = LogisticOptionType.CustomerAddress Then
-
-            lblLoShippingAddress.Text = TranslationBase.TranslateLabelOrMessage("CUSTOMER_ADDRESS")
-
-            If logisticsOptionItem.LogisticOptionInfo Is Nothing Then
-                If oCertificate.AddressChild IsNot Nothing Then
-                    addressDetail = oCertificate.AddressChild
-                End If
-            Else
-                Dim infoCustomerAddress As LogisticOptionInfoCustomerAddress
-                infoCustomerAddress = logisticsOptionItem.LogisticOptionInfo
-                If infoCustomerAddress.Address IsNot Nothing Then
-                    addressDetail = ConvertToAddressControllerField(infoCustomerAddress.Address)
-                End If
-            End If
-            Dim trStoreNumber As HtmlTableRow = CType(e.Row.FindControl("trStoreNumber"), HtmlTableRow)
-            trStoreNumber.Attributes("style") = "display: none"
-        ElseIf logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress Then
-
-            lblLoShippingAddress.Text = TranslationBase.TranslateLabelOrMessage("DEALER_BRANCH_ADDRESS")
-
-            Dim lblStoreNumber As Label = CType(e.Row.FindControl(GridLoStoreNumberLblCtrl), Label)
-            lblStoreNumber.Text = TranslationBase.TranslateLabelOrMessage("STORE_NUMBER")
-
-            Dim txtStoreNumber As TextBox = CType(e.Row.FindControl(GridLoStoreNumberTxtCtrl), TextBox)
-            ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
-
-            If logisticsOptionItem.LogisticOptionInfo IsNot Nothing Then
-                Dim infoStoreAddress As LogisticOptionInfoDealerBranchAddress
-                infoStoreAddress = logisticsOptionItem.LogisticOptionInfo
-                txtStoreNumber.Text = infoStoreAddress.BranchCode
-                If infoStoreAddress.Address IsNot Nothing Then
-                    addressDetail = ConvertToAddressControllerField(infoStoreAddress.Address)
-                End If
-            End If
-        End If
+        addressDetail = GetCustomerOrDealerBranchAddress(e, logisticsOptionItem, lblLoShippingAddress, oCertificate, isEnableControl, addressDetail)
 
         addressController.TranslateAllLabelControl()
 
@@ -3501,6 +3446,56 @@ Public Class ClaimRecordingForm
             addressController.EnableControls(True, True)
         End If
     End Sub
+
+      Private Function GetCustomerOrDealerBranchAddress(e As GridViewRowEventArgs, logisticsOptionItem As LogisticOption, lblLoShippingAddress As Label, oCertificate As Certificate, isEnableControl As Boolean, addressDetail As BusinessObjectsNew.Address) As BusinessObjectsNew.Address
+        If logisticsOptionItem.Type = LogisticOptionType.CustomerAddress Then
+            addressDetail = GetLogisticCustomerAddressDetails(logisticsOptionItem, lblLoShippingAddress, oCertificate, e, addressDetail)
+        ElseIf logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress Then
+            addressDetail = GetLogisticDealerBranchAddressDetails(logisticsOptionItem, lblLoShippingAddress, e, addressDetail, isEnableControl)
+        End If
+        Return addressDetail
+    End Function
+
+    Private Function GetLogisticDealerBranchAddressDetails(logisticsOptionItem As LogisticOption, lblLoShippingAddress As Label, e As GridViewRowEventArgs, addressDetail As BusinessObjectsNew.Address, isEnableControl As Boolean) As BusinessObjectsNew.Address
+
+        lblLoShippingAddress.Text = TranslationBase.TranslateLabelOrMessage("DEALER_BRANCH_ADDRESS")
+
+        Dim lblStoreNumber As Label = CType(e.Row.FindControl(GridLoStoreNumberLblCtrl), Label)
+        lblStoreNumber.Text = TranslationBase.TranslateLabelOrMessage("STORE_NUMBER")
+
+        Dim txtStoreNumber As TextBox = CType(e.Row.FindControl(GridLoStoreNumberTxtCtrl), TextBox)
+        ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
+
+        If logisticsOptionItem.LogisticOptionInfo IsNot Nothing Then
+            Dim infoStoreAddress As LogisticOptionInfoDealerBranchAddress
+            infoStoreAddress = logisticsOptionItem.LogisticOptionInfo
+            txtStoreNumber.Text = infoStoreAddress.BranchCode
+            If infoStoreAddress.Address IsNot Nothing Then
+                addressDetail = ConvertToAddressControllerField(infoStoreAddress.Address)
+            End If
+        End If
+        Return addressDetail
+    End Function
+
+    Private Function GetLogisticCustomerAddressDetails(logisticsOptionItem As LogisticOption, lblLoShippingAddress As Label, oCertificate As Certificate, e As GridViewRowEventArgs, addressDetail As BusinessObjectsNew.Address) As BusinessObjectsNew.Address
+
+        lblLoShippingAddress.Text = TranslationBase.TranslateLabelOrMessage("CUSTOMER_ADDRESS")
+        If logisticsOptionItem.LogisticOptionInfo Is Nothing Then
+            If oCertificate.AddressChild IsNot Nothing Then
+                addressDetail = oCertificate.AddressChild
+            End If
+        Else
+            Dim infoCustomerAddress As LogisticOptionInfoCustomerAddress
+            infoCustomerAddress = logisticsOptionItem.LogisticOptionInfo
+            If infoCustomerAddress.Address IsNot Nothing Then
+                addressDetail = ConvertToAddressControllerField(infoCustomerAddress.Address)
+            End If
+        End If
+        Dim trStoreNumber As HtmlTableRow = CType(e.Row.FindControl("trStoreNumber"), HtmlTableRow)
+        trStoreNumber.Attributes("style") = "display: none"
+        Return addressDetail
+    End Function
+
 
     Private Sub ServiceCenterSelectionHandler(userControl As UserControlServiceCenterSelection)
         userControl.TranslationFunc = Function(value As String)

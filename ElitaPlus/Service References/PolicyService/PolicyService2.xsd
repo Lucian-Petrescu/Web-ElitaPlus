@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.assurant.com/Elita/PolicyService/CustomerProfile" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/PolicyService/CustomerProfile" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="PullUpdateWithDobRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:PullUpdateBaseRequest">
+        <xs:sequence>
+          <xs:element name="Dob" type="xs:dateTime" />
+          <xs:element name="ServiceNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PullUpdateWithDobRequest" nillable="true" type="tns:PullUpdateWithDobRequest" />
+  <xs:complexType name="PullUpdateBaseRequest">
+    <xs:sequence>
+      <xs:element name="Dealer" nillable="true" type="xs:string" />
+      <xs:element name="DscEnrollmentId" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PullUpdateBaseRequest" nillable="true" type="tns:PullUpdateBaseRequest" />
+  <xs:complexType name="PullUpdateWithContactRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:PullUpdateBaseRequest">
+        <xs:sequence>
+          <xs:element name="DscContactId" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PullUpdateWithContactRequest" nillable="true" type="tns:PullUpdateWithContactRequest" />
+</xs:schema>

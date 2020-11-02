@@ -399,6 +399,7 @@
     <Compile Include="Tables\APSPublishingLog.vb" />
     <Compile Include="Tables\BasePermission.vb" />
     <Compile Include="Tables\BenefitProductCode.vb" />
+    <Compile Include="Tables\CertExtendedItemFormBO.vb" />
     <Compile Include="Tables\ClaimFulfillmentOrderDetail.vb" />
     <Compile Include="Tables\ClaimBonusSettings.vb" />
     <Compile Include="Tables\ClaimStage.vb" />
