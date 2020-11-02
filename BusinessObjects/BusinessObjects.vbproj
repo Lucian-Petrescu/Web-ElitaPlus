@@ -286,6 +286,8 @@
     <Compile Include="Claims\ClaimAgingDetails.vb" />
     <Compile Include="Claims\ClaimShipping.vb" />
     <Compile Include="Claims\ClaimStatusByUserRole.vb" />
+    <Compile Include="Claims\IFulfillable.vb" />
+    <Compile Include="Claims\LogisticStageAddress.vb" />
     <Compile Include="Claims\PreInvoice.vb" />
     <Compile Include="Claims\PreInvoiceDetails.vb" />
     <Compile Include="Common\ClaimCloseRules.vb" />
@@ -353,6 +355,11 @@
     <Compile Include="Security\SpUserClaimProperties.vb" />
     <Compile Include="Security\SpUserClaims.vb" />
     <Compile Include="Security\UserNotification.vb" />
+    <Compile Include="Service References\ClaimFulfillmentWebAppGatewayService\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\DRPSystem\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1381,6 +1388,41 @@
     <None Include="Service References\Auth\AuthorizationService65.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.ChangeServiceCenterResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.CustomerDecisionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentServicesCenter.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.GetDeliverySlotsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway.wsdl" />
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway.wsdl" />
     <None Include="Service References\DocAdmin\Assurant.ElitaPlus.BusinessObjectsNew.DocAdmin.DocumentFormat.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -1665,6 +1707,7 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\Auth\" />
+    <WCFMetadataStorage Include="Service References\ClaimFulfillmentWebAppGatewayService\" />
     <WCFMetadataStorage Include="Service References\DocAdmin\" />
     <WCFMetadataStorage Include="Service References\Doc\" />
     <WCFMetadataStorage Include="Service References\DRPSystem\" />
@@ -2158,6 +2201,12 @@
     <EmbeddedResource Include="..\ElitaPlus\Reports\ServiceOrder_APT.xslt">
       <Link>ServiceOrderXslt\ServiceOrder_APT.xslt</Link>
     </EmbeddedResource>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\configuration91.svcinfo" />
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\configuration.svcinfo" />
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
     <Content Include="Settings.xml">
       <SubType>Designer</SubType>
     </Content>

@@ -1,4 +1,5 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (11/2/2004)  ********************
+Imports System.Collections.Generic
 Imports Assurant.ElitaPlus.Common
 Imports Assurant.Common
 Imports System.Xml
@@ -8,11 +9,15 @@ Imports System.Data
 Imports System.Data.OleDb
 Imports System.Net
 Imports System.Reflection
+Imports System.Runtime.InteropServices.WindowsRuntime
 Imports System.Threading
+Imports Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService
 Imports Assurant.ElitaPlus.BusinessObjectsNew.LegacyBridgeService
+Imports Assurant.ElitaPlus.DataEntities
+Imports Microsoft.Web.Services3.Addressing
 
 Public NotInheritable Class Claim
-    Inherits ClaimBase : Implements IInvoiceable
+    Inherits ClaimBase : Implements IInvoiceable, IFullfillable
 
     Private Const XML_VERSION_AND_ENCODING As String = "<?xml version='1.0' encoding='utf-8' ?>"
 
@@ -3890,6 +3895,34 @@ Public NotInheritable Class Claim
         client.ClientCredentials.UserName.Password = oWebPasswd.Password
         Return client
     End Function
+
+    Public Function GetFulfillmentDetails(claimNumber As String, companyCode As String) As FulfillmentDetails Implements IFullfillable.GetFulfillmentDetails
+
+        Dim response As New FulfillmentDetails
+        response.Charges = {New Charge()}
+        response.Fees =  {New Fee()}
+        response.LogisticStages =  {New SelectedLogisticStage() With {
+                                                                                                .Address = New FulfillmentAddress With {.Address1 = ContactInfo.Address.Address1,
+                                                                                                     .Address2 = Me.ContactInfo.Address.Address2,
+                                                                                                     .Address3 = Me.ContactInfo.Address.Address3,
+                                                                                                     .City = Me.ContactInfo.Address.City,
+                                                                                                     .Country = Me.ContactInfo.Address.countryBO.Code,
+                                                                                                     .PostalCode = Me.ContactInfo.Address.PostalCode,
+                                                                                                     .State = LookupListNew.GetDescriptionFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS, False), Me.ContactInfo.Address.RegionId)
+                                                                                                                },
+                                                                        .OptionCode = Me.MethodOfRepairCode,
+                                                                        .OptionDescription = Me.MethodOfRepairDescription,
+                                                                        .Code = "FW",
+                                                                        .Description = "Forward Logistics",
+                                                                        .HandlingStore = New HandlingStore(),
+                                                                        .ServiceCenterCode = Me.ServiceCenterObject.Code,
+                                                                        .ServiceCenterDescription = Me.ServiceCenterObject.Description,
+                                                                        .Shipping = New ClaimFulfillmentWebAppGatewayService.ShippingInfo()
+            }}
+        
+        Return response
+    End Function
+
 #End Region
 
 End Class
