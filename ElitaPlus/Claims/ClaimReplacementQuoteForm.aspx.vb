@@ -30,10 +30,8 @@ Namespace Claims
             Public Claim As ClaimBase
             Public ReadOnly Property ClaimBO As ClaimBase
                 Get
-                    If (Me.Claim Is Nothing) Then
-                        If (Me.moParams.moClaimId <> Guid.Empty) Then
-                            Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.moParams.moClaimId)
-                        End If
+                    If (Me.Claim Is Nothing) AndAlso (Me.moParams.moClaimId <> Guid.Empty) Then
+                        Me.Claim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.moParams.moClaimId)
                     End If
                     Return Me.Claim
                 End Get
@@ -191,8 +189,7 @@ Namespace Claims
 
         Private Sub InitNewServiceCenterUserControl()
             'return if the control already initialized
-            If String.IsNullOrEmpty(ucSelectServiceCenter.MethodOfRepairXcd) = False Then Exit Sub
-
+            If Not (String.IsNullOrEmpty(ucSelectServiceCenter.MethodOfRepairXcd)) Then Return
             'Set up the service center start
             ucSelectServiceCenter.HostMessageController = MasterPage.MessageController
 
@@ -213,7 +210,8 @@ Namespace Claims
                                                             End Function
             'Set up the service center end
 
-            Dim oCountry As Country = New Country(State.ClaimBO.Company.CountryId)
+            Dim oCountry As New Country(State.ClaimBO.Company.CountryId)
+            Dim oAddress As New Address(State.ClaimBO.Certificate.AddressId)
 
             ucSelectServiceCenter.PageSize = 30
             ucSelectServiceCenter.CountryId = oCountry.Id
@@ -224,17 +222,20 @@ Namespace Claims
             ucSelectServiceCenter.RiskTypeEnglish = State.ClaimBO.RiskType
             ucSelectServiceCenter.MethodOfRepairXcd = MethodOfRepairXcd
             ucSelectServiceCenter.ShowControl = True
+            ucSelectServiceCenter.City = oAddress.City
+            ucSelectServiceCenter.PostalCode = oAddress.PostalCode
+
         End Sub
 
         Private Sub AddClaimExtendedStatus(oClaim As ClaimBase)
             Dim oClaimStatus As ClaimStatus, claimStatusByGroupId As Guid
             claimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(ClaimExtendedStatusCode)
-            If Not claimStatusByGroupId = Guid.Empty Then
+            If Not claimStatusByGroupId <> Guid.Empty Then
                 oClaimStatus = New ClaimStatus With {
                     .ClaimId = oClaim.Id,
                     .ClaimStatusByGroupId = claimStatusByGroupId,
                     .StatusDate = ApplicationDateTime.Now,
-                    .Comments = ucSelectServiceCenter.SelectedServiceCenter.ServiceCenterCode + " : " + New ServiceCenter(ucSelectServiceCenter.SelectedServiceCenter.ServiceCenterId).Description
+                    .Comments = ucSelectServiceCenter.SelectedServiceCenter.ServiceCenterCode & " : " & New ServiceCenter(ucSelectServiceCenter.SelectedServiceCenter.ServiceCenterId).Description
                 }
                 oClaimStatus.Save()
             End If
@@ -244,7 +245,7 @@ Namespace Claims
             lblNewSCError.Visible = True
             lblNewSCError.Text = String.Empty
             lblNewSCError.ForeColor = Color.Red
-            lblNewSCError.Text = TranslationBase.TranslateLabelOrMessage(strErrMsg) + ". "
+            lblNewSCError.Text = String.Format("{0}. ", TranslationBase.TranslateLabelOrMessage(strErrMsg))
         End Sub
 
 
