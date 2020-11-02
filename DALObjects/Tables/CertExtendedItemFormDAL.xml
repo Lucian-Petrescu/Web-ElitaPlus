@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <SQL>
   <LOAD>
-
+    <![CDATA[elp_utl_cert_item_config.LoadConfigByID]]>
   </LOAD>
+  <LOAD_LIST>
+    <![CDATA[elp_utl_cert_item_config.LoadConfigByCode]]>
+  </LOAD_LIST>
   <LOAD_CERT_EXTENDED_ITEM_LIST>
 
   </LOAD_CERT_EXTENDED_ITEM_LIST>
@@ -10,13 +13,13 @@
 
   </LOAD_TABLES>
   <INSERT>
-
+    <![CDATA[elp_utl_cert_item_config.AddCertItemConfig]]>
   </INSERT>
   <UPDATE>
-
+    <![CDATA[elp_utl_cert_item_config.ModifyCertItemConfig]]>
   </UPDATE>
   <DELETE>
- 
+    <![CDATA[elp_utl_cert_item_config.DeleteCertItemConfig]]>
   </DELETE>
   <LOAD_COMPANY_LIST>
   </LOAD_COMPANY_LIST>
