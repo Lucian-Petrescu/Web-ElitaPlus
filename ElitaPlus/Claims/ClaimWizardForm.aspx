@@ -413,7 +413,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelBeginDate" runat="server" Font-Bold="False">Begin_Date</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step2_TextboxBeginDate" TabIndex="2" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                     <td style="text-align:right;white-space: nowrap;">
@@ -428,7 +428,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelEndDate" runat="server" Font-Bold="False">End_Date</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step2_TextboxEndDate" TabIndex="5" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                     <td style="text-align:right;white-space: nowrap;">
@@ -442,7 +442,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelDateAdded" runat="server" Font-Bold="False">Date_Added</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step2_TextboxDateAdded" TabIndex="7" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                     <td style="text-align:right;white-space: nowrap;">
@@ -456,7 +456,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelRiskTypeId" runat="server" Font-Bold="False">Risk_Type</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:DropDownList ID="step2_cboRiskTypeId" runat="server" SkinID="MediumDropDown"
                                             TabIndex="9">
                                         </asp:DropDownList>
@@ -474,7 +474,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelCoverageType" runat="server" Font-Bold="False">Coverage_Type</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step2_TextboxCoverageType" runat="server" SkinID="MediumTextBox"
                                             TabIndex="11"></asp:TextBox>
                                     </td>
@@ -490,7 +490,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelMethodOfRepair" runat="server" Font-Bold="False">METHOD_OF_REPAIR</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:DropDownList ID="step2_cboMethodOfRepair" runat="server" AutoPostBack="true"
                                             TabIndex="13" SkinID="MediumDropDown">
                                         </asp:DropDownList>
@@ -505,7 +505,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelProductCode" runat="server" Font-Bold="False">Product_Code</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step2_TextboxProductCode" runat="server" SkinID="MediumTextBox"
                                             TabIndex="16"></asp:TextBox>
                                     </td>
@@ -518,7 +518,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelLiabilityLimit" runat="server" Font-Bold="False">LIABILITY_LIMIT</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step2_TextboxLiabilityLimit" runat="server" SkinID="MediumTextBox"
                                             TabIndex="19"></asp:TextBox>
                                     </td>
@@ -531,7 +531,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_labelRepairDiscountPct" runat="server" Font-Bold="False">REPAIR_DISCOUNT_PCT</asp:Label>:
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step2_TextboxRepairDiscountPct" runat="server" SkinID="SmallTextBox"
                                             TabIndex="19"></asp:TextBox>
                                     </td>
@@ -544,7 +544,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_labelReplacementDiscountPct" runat="server" Font-Bold="False">REPLACEMENT_DISCOUNT_PCT</asp:Label>:
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step2_TextboxReplacementDiscountPct" runat="server" SkinID="SmallTextBox"
                                             TabIndex="19"></asp:TextBox>
                                     </td>
@@ -565,13 +565,13 @@
                                 <tr>
                                     <td style="text-align:right;white-space: nowrap;">&nbsp;
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:Label ID="step2_lblEnrolledDeviceInfo" runat="server" Text="ENROLLED_DEVICE_INFO"
                                             Visible="false" Font-Bold="true"></asp:Label>
                                     </td>
-                                    <td style="text-align:right" nowrap="nowrap">&nbsp;
+                                    <td style="text-align: right;white-space: nowrap;">&nbsp;
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:Label ID="step2_lblClaimedEquipment" runat="server" Text="CLAIMED_DEVICE_INFO"
                                             Visible="false" Font-Bold="true"></asp:Label>
                                     </td>
@@ -580,12 +580,12 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelMakeId" runat="server" Font-Bold="False" Text="Make"></asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:DropDownList ID="step2_cboManufacturerId" TabIndex="3" runat="server" SkinID="MediumDropDown">
                                         </asp:DropDownList>
                                         <asp:TextBox ID="step2_TextboxManufacturer" TabIndex="4" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
-                                    <td style="text-align:right" nowrap="nowrap">
+                                    <td style="text-align: right;white-space: nowrap;">
                                         <asp:Label ID="step2_lblClaimedMake" runat="server" Text="MAKE" Visible="False"></asp:Label>
                                     </td>
                                     <td>
@@ -600,10 +600,10 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelModel" runat="server" Font-Bold="False" EnableTheming="True" Text="Model"></asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step2_TextboxModel" TabIndex="6" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
-                                    <td style="text-align:right" nowrap="nowrap">
+                                    <td style="text-align: right;white-space: nowrap;">
                                         <asp:Label ID="step2_lblClaimedModel" runat="server" Text="MODEL" Visible="False"></asp:Label>
                                     </td>
                                     <td>
@@ -615,11 +615,11 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelDealerItemDesc" runat="server" Font-Bold="False" Text="Description"></asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step2_TextboxDealerItemDesc" TabIndex="8" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                         &nbsp;
                                     </td>
-                                    <td style="text-align:right" nowrap="nowrap">
+                                    <td style="text-align: right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelClaimDesc" runat="server" Text="Description" Visible="False"></asp:Label>
                                     </td>
                                     <td>
@@ -628,13 +628,13 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="text-align:right" nowrap="nowrap">
+                                    <td style="text-align: right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelYear" runat="server" Font-Bold="False">Year:</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step2_TextboxYear" runat="server" SkinID="MediumTextBox" TabIndex="10"></asp:TextBox>
                                     </td>
-                                    <td style="text-align:right" nowrap="nowrap">
+                                    <td style="text-align: right;white-space: nowrap;">
                                         <asp:Label ID="step2_lblClaimedSKU" runat="server" Text="SKU_NUMBER" Visible="False"></asp:Label>
                                     </td>
                                     <td>
@@ -649,10 +649,10 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelSerialNumber" runat="server" Font-Bold="False" Width="124px">SERIAL_NUMBER</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step2_TextboxSerialNumber" TabIndex="12" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
-                                    <td style="text-align:right" nowrap="nowrap">
+                                    <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelClaimSerialNumber" runat="server" Text="SERIAL_NUMBER"
                                             Visible="False"></asp:Label>
                                     </td>
@@ -674,10 +674,10 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelOdometer" runat="server" Font-Bold="False">ODOMETER:</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step2_TextboxOdometer" runat="server" SkinID="MediumTextBox" TabIndex="20"></asp:TextBox>
                                     </td>
-                                    <td style="text-align:right" nowrap="nowrap">
+                                    <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelApplyDiscount0" runat="server" Font-Bold="false">Apply_Discount:</asp:Label>
                                     </td>
                                     <td>
@@ -690,10 +690,10 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelClassCode0" runat="server" Font-Bold="false">Class_Code:</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step2_TextboxClassCode" runat="server" SkinID="MediumTextBox" TabIndex="22"></asp:TextBox>
                                     </td>
-                                    <td style="text-align:right" nowrap="nowrap">
+                                    <td style="text-align: right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelDiscountAmt0" runat="server" Font-Bold="false">Discount_Amount:</asp:Label>
                                     </td>
                                     <td>
@@ -705,12 +705,12 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelClaimAllowed0" runat="server" Font-Bold="false">Claim_Allowed:</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:DropDownList ID="step2_cboCalimAllowed" runat="server" SkinID="MediumDropDown"
                                             TabIndex="24">
                                         </asp:DropDownList>
                                     </td>
-                                    <td style="text-align:right" nowrap="nowrap">
+                                    <td style="text-align: right;white-space: nowrap;">
                                         <asp:Label ID="step2_LabelDiscountPercent0" runat="server" Font-Bold="false">Discount_percentage:</asp:Label>
                                     </td>
                                     <td>
@@ -721,9 +721,9 @@
                                 <tr>
                                     <td style="text-align:right;white-space: nowrap;">&nbsp;
                                     </td>
-                                    <td nowrap="nowrap">&nbsp;
+                                    <td style="white-space: nowrap;">&nbsp;
                                     </td>
-                                    <td style="text-align:right" nowrap="nowrap">&nbsp;
+                                    <td style="text-align: right;white-space: nowrap;">&nbsp;
                                     </td>
                                     <td>&nbsp;
                                     </td>
@@ -745,7 +745,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_LabelCertificateNumber" runat="server" Font-Bold="false">Certificate</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step3_TextboxCertificateNumber" TabIndex="200" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
@@ -753,7 +753,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_LabelClaimNumber" runat="server">Claim_Number</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step3_TextboxClaimNumber" TabIndex="171" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
@@ -761,7 +761,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_LabelContactName" runat="server">Contact_Name</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:DropDownList ID="step3_cboContactSalutationId" TabIndex="64" runat="server">
                                         </asp:DropDownList>
                                         <asp:TextBox ID="step3_TextboxContactName" TabIndex="65" runat="server" SkinID="MediumTextBox"></asp:TextBox>
@@ -771,7 +771,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_LabelCallerName" runat="server">NAME_OF_CALLER</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:DropDownList ID="step3_cboCallerSalutationId" TabIndex="64" runat="server">
                                         </asp:DropDownList>
                                         <asp:TextBox ID="step3_TextboxCallerName" TabIndex="70" runat="server" SkinID="MediumTextBox"></asp:TextBox>
@@ -779,7 +779,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_LabelCALLER_TAX_NUMBER" runat="server">CALLER_TAX_NUMBER</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step3_TextboxCALLER_TAX_NUMBER" TabIndex="71" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
@@ -787,7 +787,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_LabelLossDate" runat="server">Date_Of_Loss</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step3_TextboxLossDate" TabIndex="73" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                         <asp:ImageButton ID="step3_ImageButtonLossDate" TabIndex="75" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg"
                                             ImageAlign="AbsMiddle"></asp:ImageButton>
@@ -795,7 +795,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_LabelLiabilityLimit" runat="server">Liability_Limit</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step3_TextboxLiabilityLimit" TabIndex="76" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
@@ -803,7 +803,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_LabelReportDate" runat="server">DATE_REPORTED</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step3_TextboxReportDate" TabIndex="73" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                         <asp:ImageButton ID="step3_ImageButtonReportDate" TabIndex="75" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg"
                                             ImageAlign="AbsMiddle"></asp:ImageButton>
@@ -811,7 +811,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_LabelDeductible" runat="server">Deductible</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step3_TextboxDeductible_WRITE" TabIndex="78" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
@@ -819,7 +819,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_LabelOutstandingPremAmt" runat="server">OUTSTANDING_PREMIUM_AMOUNT</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step3_TextboxOutstandingPremAmt" TabIndex="75" runat="server" ReadOnly="true"
                                             SkinID="MediumTextBox" ForeColor="Red" Font-Bold="True"></asp:TextBox>
                                     </td>
@@ -828,7 +828,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_LabelCauseOfLossId" runat="server">Cause_Of_Loss</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:DropDownList ID="step3_cboCauseOfLossId" TabIndex="77" runat="server" SkinID="MediumDropDown"
                                             AutoPostBack="True">
                                         </asp:DropDownList>
@@ -836,7 +836,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_LabelDiscount" runat="server">DISCOUNT</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step3_TextBoxDiscount" TabIndex="78" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
@@ -844,14 +844,14 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_LabelIsLawsuitId" runat="server" Font-Bold="false">Lawsuit</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:DropDownList ID="step3_cboLawsuitId" TabIndex="79" runat="server" SkinID="SmallDropDown">
                                         </asp:DropDownList>
                                     </td>
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_LabelPolicyNumber" runat="server">Policy_Number</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step3_TextboxPolicyNumber" TabIndex="80" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
@@ -859,7 +859,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_LabelUseShipAddress" runat="server" Visible="false">USE_SHIP_ADDRESS</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:DropDownList ID="step3_cboUseShipAddress" TabIndex="77" runat="server" SkinID="MediumDropDown"
                                             AutoPostBack="True" Visible="false">
                                         </asp:DropDownList>
@@ -867,7 +867,7 @@
                                     <td style="text-align:right;white-space: nowrap;">
                                         <asp:Label ID="step3_lblNewDeviceSKU" runat="server">NEW_DEVICE_SKU:</asp:Label>
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:TextBox ID="step3_txtNewDeviceSKU" TabIndex="86" runat="server" AutoPostBack="true"
                                             SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
@@ -876,7 +876,7 @@
                                 <td style="text-align:right;white-space: nowrap;">
                                     <asp:Label ID="step3_lblPickupDate" runat="server">PickUp_Date</asp:Label>
                                 </td>
-                                <td nowrap="nowrap">
+                                <td style="white-space: nowrap;">
                                     <asp:TextBox ID="step3_txtPickupDate" TabIndex="76" runat="server" AutoPostBack="true"
                                                  SkinID="MediumTextBox"></asp:TextBox>
                                 </td>
@@ -885,7 +885,7 @@
                                 <td style="text-align:right;white-space: nowrap;">
                                     <asp:Label ID="step3_lblVisitDate" runat="server">Visit_Date</asp:Label>
                                 </td>
-                                <td nowrap="nowrap">
+                                <td style="white-space: nowrap;">
                                     <asp:TextBox ID="step3_txtVisitDate" TabIndex="88" runat="server" AutoPostBack="true"
                                                  SkinID="MediumTextBox"></asp:TextBox>   
                                 </td>
@@ -988,33 +988,33 @@
                                         <table class="formGrid" style="width: 100%; border: 0px; border-spacing: 0px; padding: 0px;">
                                             <tbody>
                                                 <tr>
-                                                    <td style="text-align:right" nowrap="nowrap">
+                                                    <td style="text-align: right;white-space: nowrap;">
                                                         <asp:Label runat="server" ID="DocumentTypeLabel" Text="DOCUMENT_TYPE"></asp:Label>
                                                     </td>
-                                                    <td nowrap="nowrap">
+                                                    <td style="white-space: nowrap;">
                                                         <asp:DropDownList runat="server" ID="DocumentTypeDropDown" SkinID="MediumDropDown" />
                                                     </td>
-                                                    <td style="text-align:right" nowrap="nowrap">
+                                                    <td style="text-align: right;white-space: nowrap;">
                                                         <asp:Label runat="server" ID="ScanDateLabel" Text="SCAN_DATE"></asp:Label>
                                                     </td>
-                                                    <td nowrap="nowrap">
+                                                    <td style="white-space: nowrap;">
                                                         <asp:TextBox runat="server" ID="ScanDateTextBox" ReadOnly="true" SkinID="MediumTextBox" />
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="text-align:right" nowrap="nowrap">
+                                                    <td style="text-align: right;white-space: nowrap;">
                                                         <asp:Label runat="server" ID="FileNameLabel" Text="FileName"></asp:Label>
                                                     </td>
-                                                    <td colspan="3" nowrap="nowrap">
+                                                    <td colspan="3" style="white-space: nowrap;">
                                                         <input id="ImageFileUpload" style="width: 80%" type="file" name="ImageFileUpload"
                                                             runat="server" />
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="text-align:right" nowrap="nowrap">
+                                                    <td style="text-align: right;white-space: nowrap;">
                                                         <asp:Label runat="server" ID="CommentLabel" Text="COMMENT"></asp:Label>
                                                     </td>
-                                                    <td colspan="3" nowrap="nowrap">
+                                                    <td colspan="3" style="white-space: nowrap;">
                                                         <asp:TextBox runat="server" ID="CommentTextBox" Width="80%" Rows="4" TextMode="MultiLine"></asp:TextBox>
                                                     </td>
                                                 </tr>
@@ -1361,39 +1361,39 @@
                         <table class="formGrid" style="border: 0px; border-spacing: 0px; padding: 0px;">
                             <tbody>
                                 <tr>
-                                    <td style="text-align:right" nowrap="nowrap">
+                                    <td style="text-align: right;white-space: nowrap;">
                                         <asp:Label runat="server" ID="step4_moSearchByLabel" Text="SEARCH_BY" />
                                         :
                                     </td>
-                                    <td style="text-align:left" nowrap="nowrap">
+                                    <td style="text-align:left;white-space: nowrap;" >
                                         <asp:RadioButton ID="step4_RadioButtonByZip" runat="server" AutoPostBack="True" Text="BY_ZIP"
                                             GroupName="SEARCH_TYPE"></asp:RadioButton>
                                     </td>
-                                    <td style="text-align:left" nowrap="nowrap">
+                                    <td style="text-align:left;white-space: nowrap;">
                                         <asp:RadioButton ID="step4_RadioButtonByCity" runat="server" AutoPostBack="True"
                                             Text="BY_CITY" GroupName="SEARCH_TYPE"></asp:RadioButton>
                                     </td>
-                                    <td style="text-align:left" nowrap="nowrap">
+                                    <td style="text-align:left;white-space: nowrap;">
                                         <asp:RadioButton ID="step4_RadioButtonAll" runat="server" AutoPostBack="True" Text="ALL"
                                             GroupName="SEARCH_TYPE"></asp:RadioButton>
                                     </td>
-                                    <td style="text-align:left" nowrap="nowrap">
+                                    <td style="text-align:left;white-space: nowrap;">
                                         <asp:RadioButton ID="step4_RadioButtonNO_SVC_OPTION" runat="server" AutoPostBack="True" Text="NO_SVC_OPTION" GroupName="SEARCH_TYPE"></asp:RadioButton>
                                     </td>
-                                    <td class="padLeft60" nowrap="nowrap" runat="server" id="step4_tdCountryLabel">
+                                    <td class="padLeft60" style="white-space: nowrap;" runat="server" id="step4_tdCountryLabel">
                                         <asp:Label runat="server" ID="moCountryLabel" Text="COUNTRY" />
                                         :
                                     </td>
-                                    <td nowrap="nowrap">
+                                    <td style="white-space: nowrap;">
                                         <asp:DropDownList ID="step4_moCountryDrop" runat="server" SkinID="SmallDropDown"
                                             AutoPostBack="True">
                                         </asp:DropDownList>
                                     </td>
-                                    <td nowrap="nowrap" runat="server" id="step4_tdCityLabel">
+                                    <td style="white-space: nowrap;" runat="server" id="step4_tdCityLabel">
                                         <asp:Label runat="server" ID="step4_moCityLabel" Text="CITY" />
                                         :
                                     </td>
-                                    <td nowrap="nowrap" runat="server" id="step4_tdCityTextBox">
+                                    <td style="white-space: nowrap;" runat="server" id="step4_tdCityTextBox">
                                         <asp:TextBox ID="step4_TextboxCity" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
 
@@ -1427,55 +1427,55 @@
                     <div class="stepformZone">
                         <table class="formGrid" style="border: 0px; border-spacing: 0px; padding: 0px;">
                             <tr>
-                                <td style="text-align:right" nowrap="nowrap">
+                                <td style="text-align: right;white-space: nowrap;">
                                     <asp:Label ID="step5_lblCertificate" runat="server" Font-Bold="false">CERTIFICATE</asp:Label>:
                                 </td>
-                                <td nowrap="nowrap" colspan="2">
+                                <td style="white-space: nowrap;" colspan="2">
                                     <asp:TextBox ID="step5_TextboxCertificate" runat="server" SkinID="MediumTextBox"
                                         ReadOnly="true"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align:right" nowrap="nowrap">
+                                <td style="text-align: right; white-space: nowrap;">
                                     <asp:Label ID="step5_LabelDealer" runat="server" Font-Bold="false">DEALER</asp:Label>:
                                 </td>
-                                <td nowrap="nowrap" colspan="2">
+                                <td style="white-space: nowrap;" colspan="2">
                                     <asp:TextBox ID="step5_TextboxDealer" runat="server" SkinID="MediumTextBox" ReadOnly="true"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align:right" nowrap="nowrap">
+                                <td style="text-align: right; white-space: nowrap;">
                                     <asp:Label ID="step5_LabelDateTime" runat="server" Font-Bold="false">DATE_TIME</asp:Label>
                                 </td>
-                                <td nowrap="nowrap" colspan="2">
+                                <td style="white-space: nowrap;" colspan="2">
                                     <asp:TextBox ID="step5_TextboxDateTime" runat="server" SkinID="MediumTextBox" ReadOnly="true"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align:right" nowrap="nowrap">
+                                <td style="text-align: right; white-space: nowrap;">
                                     <asp:Label ID="step5_LabelCallerName" runat="server" Font-Bold="false">NAME_OF_CALLER</asp:Label>
                                 </td>
-                                <td nowrap="nowrap" colspan="2">
+                                <td style="white-space: nowrap;" colspan="2">
                                     <asp:TextBox ID="step5_TextboxCallerName" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align:right" nowrap="nowrap" colspan="3" />
+                                <td style="text-align: right; white-space: nowrap;" colspan="3" />
                             </tr>
                             <tr>
-                                <td style="text-align:right" nowrap="nowrap">
+                                <td style="text-align: right; white-space: nowrap;">
                                     <asp:Label ID="step5_LabelCommentType" runat="server" Font-Bold="false">COMMENT_TYPE</asp:Label>
                                 </td>
-                                <td nowrap="nowrap" colspan="2">
+                                <td style="white-space: nowrap;" colspan="2">
                                     <asp:DropDownList ID="step5_cboCommentType" runat="server" SkinID="MediumDropDown">
                                     </asp:DropDownList>
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align:right" nowrap="nowrap">
+                                <td style="text-align: right;white-space: nowrap;">
                                     <asp:Label ID="step5_LabelComment" runat="server" Font-Bold="false">COMMENT</asp:Label>:
                                 </td>
-                                <td nowrap="nowrap" colspan="2">
+                                <td style="white-space: nowrap;" colspan="2">
                                     <asp:TextBox ID="step5_TextboxCommentText" runat="server" TextMode="MultiLine" Rows="5"
                                         Columns="45" SkinID="MediumTextBox"></asp:TextBox>
                                 </td>
@@ -1520,7 +1520,7 @@
     <input id="hdnDealerId" type="hidden" name="hdnDealerId" runat="server" />
     <input id="hdnSelectedClaimedSku" type="hidden" name="hdnSelectedClaimedSku" runat="server" />
     <input id="hdnSelectedEnrolledSku" type="hidden" name="hdnSelectedEnrolledSku" runat="server" />
-    <script language="jscript" type="text/jscript">
+    <script type="text/jscript">
         function SelectServiceCenter(theID) {
             var selectedServiceCenterId = '<%=hdnSelectedServiceCenterId.ClientID%>';;
             document.getElementById(selectedServiceCenterId).value = theID;
