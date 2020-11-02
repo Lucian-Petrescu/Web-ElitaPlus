@@ -8,6 +8,7 @@
 <%@ Register TagPrefix="Elita" TagName="BestReplacementOption" Src="~/Interfaces/ReplacementOptions.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlLogisticalInfo" Src="~/Claims/UserControlLogisticalInfo.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlClaimDeviceInfo" Src="~/Interfaces/ClaimDeviceInformationController.ascx" %>
+<%@ Register TagPrefix="Elita" TagName="UserControlLogisticStageAddressInfo" Src="~/Common/UserControlLogisticStageAddress.ascx" %>
 
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="NewClaimForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.NewClaimForm" Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
@@ -1707,6 +1708,21 @@
                 <uc1:UserControlContactInfo ID="moUserControlContactInfo" runat="server" Visible="false"></uc1:UserControlContactInfo>
             </tbody>
         </table>
+        <div class="dataContainer">
+            <table style="width: 100%; border-collapse: collapse; border: 0;">
+                <tr>
+                    <td>
+                        <h2 class="dataGridHeader">
+                            <asp:Label ID="lblLogisticStageAddress" runat="server">LOGISTIC_STAGE_ADDRESSES</asp:Label>
+                        </h2>
+                        <div class="stepformZone">
+                            <Elita:UserControlLogisticStageAddressInfo ID="moLogisticStageAddressInfo" runat="server" Visible="True"></Elita:UserControlLogisticStageAddressInfo>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
         <table border="0"></table>
     </asp:Panel>
     <div class="btnZone">
