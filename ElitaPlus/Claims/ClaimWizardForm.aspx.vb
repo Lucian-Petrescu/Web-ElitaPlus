@@ -37,20 +37,20 @@ Public Class ClaimWizardForm
 
         Dim serializer As JavaScriptSerializer = New JavaScriptSerializer
         Dim lstSkuNumbers As List(Of String)
-        Dim skuNumberJSONArray As String
+        Dim skuNumberJsonArray As String
 
         Dim dv As DataView = CertItem.LoadSku(equipmentId, dealer.Id)
-
-        If Not dv Is Nothing Then
+       
+        If  dv IsNot Nothing Then
             lstSkuNumbers = New List(Of String)
 
             For Each row As DataRowView In dv
                 lstSkuNumbers.Add(CType(row(0), String))
             Next
         End If
-        skuNumberJSONArray = serializer.Serialize(lstSkuNumbers)
+        skuNumberJsonArray = serializer.Serialize(lstSkuNumbers)
 
-        Return skuNumberJSONArray
+        Return skuNumberJsonArray
 
     End Function
 
@@ -189,17 +189,17 @@ Public Class ClaimWizardForm
     Protected Shadows ReadOnly Property State() As MyState
         Get
             Dim retState As MyState = CType(MyBase.State, MyState)
-            Session(Me.SESSION_KEY_CLAIM_WIZARD_BACKUP_STATE) = retState
+            Session(SESSION_KEY_CLAIM_WIZARD_BACKUP_STATE) = retState
             Return retState
         End Get
     End Property
-
+   
     Private Sub Page_PageCall(ByVal callFromUrl As String, ByVal callingPar As Object) Handles MyBase.PageCall
         Try
             If callFromUrl.Contains(ClaimRecordingForm.Url2) Then
                 MyBase.SetPageOutOfNavigation()
             End If
-            If Not Me.CallingParameters Is Nothing Then
+            If CallingParameters IsNot Nothing Then
                 Me.State.InputParameters = CType(Me.CallingParameters, Parameters)
                 Me.State.StepName = Me.State.InputParameters.StepNumber
                 Me.State.EntryStep = Me.State.StepName
@@ -210,14 +210,14 @@ Public Class ClaimWizardForm
         End Try
     End Sub
 
-    Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+    Private Sub Page_PageReturn() Handles MyBase.PageReturn
         If (Me.CalledUrl = ClaimIssueDetailForm.URL OrElse Me.CalledUrl = ClaimDeductibleRefundForm.URL) Then
 
-            If (Not Me.State.ClaimBO.Id.Equals(Guid.Empty)) Then
+            If Not Me.State.ClaimBO.Id.Equals(Guid.Empty) Then
                 Me.State.ClaimBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.State.ClaimBO.Id)
                 If (Not Me.State.ClaimBO Is Nothing) Then
 
-                    If (Me.State.ClaimBO.Status = BasicClaimStatus.Active OrElse Me.State.ClaimBO.Status = BasicClaimStatus.Denied) Then
+                    If Me.State.ClaimBO.Status = BasicClaimStatus.Active OrElse Me.State.ClaimBO.Status = BasicClaimStatus.Denied Then
                         '//TO-DO: Navigate to Claim Details page (ClaimForm.aspx)                        
                         Me.callPage(ClaimForm.URL, New ClaimForm.Parameters(Me.State.ClaimBO.Id, Me.State.IsCallerAuthenticated))
                     End If
@@ -234,14 +234,14 @@ Public Class ClaimWizardForm
         Public EditingBo As Certificate
         Public BoChanged As Boolean = False
         Public IsCallerAuthenticated As Boolean = False
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Certificate, Optional ByVal boChanged As Boolean = False, Optional ByVal IsCallerAuthenticated As Boolean = False)
-            Me.LastOperation = LastOp
+        Public Sub New(ByVal lastOp As DetailPageCommand, ByVal curEditingBo As Certificate, Optional ByVal boChanged As Boolean = False, Optional ByVal isCallerAuthenticated As Boolean = False)
+            Me.LastOperation = lastOp
             Me.EditingBo = curEditingBo
             Me.BoChanged = boChanged
-            Me.IsCallerAuthenticated = IsCallerAuthenticated
+            Me.IsCallerAuthenticated = isCallerAuthenticated
         End Sub
-        Public Sub New(ByVal LastOp As DetailPageCommand)
-            Me.LastOperation = LastOp
+        Public Sub New(ByVal lastOp As DetailPageCommand)
+            Me.LastOperation = lastOp
         End Sub
     End Class
 #End Region
@@ -257,7 +257,13 @@ Public Class ClaimWizardForm
         Public claimId As Guid = Guid.Empty
         Public IsCallerAuthenticated As Boolean = False
 
-        Public Sub New(ByVal stepNumber As ClaimWizardSteps, ByVal certificateId As Guid, ByVal claimId As Guid, ByVal claim As ClaimBase, Optional ByVal showWizard As Boolean = False, Optional ByVal comingFromDenyClaim As Boolean = False, Optional IsCallerAuthenticated As Boolean = False)
+        Public Sub New(ByVal stepNumber As ClaimWizardSteps, 
+                       ByVal certificateId As Guid, 
+                       ByVal claimId As Guid, 
+                       ByVal claim As ClaimBase,
+                       Optional ByVal showWizard As Boolean = False, 
+                       Optional ByVal comingFromDenyClaim As Boolean = False,
+                       Optional isCallerAuthenticated As Boolean = False)
             Me.StepNumber = stepNumber
             Me.CertificateId = certificateId
             Me.ShowWizard = showWizard
@@ -351,14 +357,14 @@ Public Class ClaimWizardForm
             If Not step1_cboRiskType.SelectedValue.Equals(Guid.Empty.ToString) Then
                 Me.State.RiskTypeId = New Guid(step1_cboRiskType.SelectedValue)
                 ' Me.BindListControlToDataView(Me.step1_cboCoverageType, LookupListNew.LoadCoverageTypes(Me.State.CertBO.Id, New Guid(step1_cboRiskType.SelectedValue), ElitaPlusIdentity.Current.ActiveUser.LanguageId, State.DateOfLoss))
-                Dim listcontextForcoveragetypes As ListContext = New ListContext()
-                listcontextForcoveragetypes.CertId = Me.State.CertBO.Id
-                listcontextForcoveragetypes.CertItemId = New Guid(step1_cboRiskType.SelectedValue)
-                listcontextForcoveragetypes.LanguageId = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-                listcontextForcoveragetypes.DateOfLoss = State.DateOfLoss
+                Dim listContextForCoverageTypes As ListContext = New ListContext()
+                listContextForCoverageTypes.CertId = Me.State.CertBO.Id
+                listContextForCoverageTypes.CertItemId = New Guid(step1_cboRiskType.SelectedValue)
+                listContextForCoverageTypes.LanguageId = ElitaPlusIdentity.Current.ActiveUser.LanguageId
+                listContextForCoverageTypes.DateOfLoss = State.DateOfLoss
 
-                Dim CoverageTypeList As ListItem() = CommonConfigManager.Current.ListManager.GetList("CoverageTypeByCertificate", Thread.CurrentPrincipal.GetLanguageCode(), listcontextForcoveragetypes)
-                step1_cboCoverageType.Populate(CoverageTypeList, New PopulateOptions() With
+                Dim coverageTypeList As ListItem() = CommonConfigManager.Current.ListManager.GetList("CoverageTypeByCertificate", Thread.CurrentPrincipal.GetLanguageCode(), listcontextForcoveragetypes)
+                step1_cboCoverageType.Populate(coverageTypeList, New PopulateOptions() With
                                                   {
                                                   .AddBlankItem = True
                                                   })
@@ -404,6 +410,7 @@ Public Class ClaimWizardForm
         Return client
     End Function
 
+    
     Protected Sub btn_Continue_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnContinue.Click, btnClaimOverride_Write.Click
 
         Try
@@ -421,21 +428,21 @@ Public Class ClaimWizardForm
                         If Me.State.CertItemCoverageBO.IsPossibleWarrantyClaim(msg) Then
                             Me.lblServiceWarrantyMessage.Text = TranslationBase.TranslateLabelOrMessage(msg)
                             Dim x As String = "<script language='JavaScript'> revealModal('ModalServiceWarranty'); </script>"
-                            Me.RegisterStartupScript("Startup", x)
+                            ClientScript.RegisterStartupScript(Me.GetType(), "Startup", x, True)
                             Exit Sub
                         End If
                         If ((Me.State.CertBO.getMasterclaimProcFlag = Codes.MasterClmProc_ANYMC Or Me.State.CertBO.getMasterclaimProcFlag = Codes.MasterClmProc_BYDOL) AndAlso
-                            Me.State.CertItemCoverageBO.GetAllClaims(Me.State.CertItemCoverageBO.Id).Count > 0) Then
+                            State.CertItemCoverageBO.GetAllClaims(Me.State.CertItemCoverageBO.Id).Count > 0) Then
                             Me.PopulateMasterClaimGrid()
                             Dim x As String = "<script language='JavaScript'> revealModal('ModalMasterClaim'); </script>"
-                            Me.RegisterStartupScript("Startup", x)
+                            ClientScript.RegisterStartupScript(Me.GetType(), "Startup", x, True)
                             Exit Sub
                         End If
                     Case ClaimWizardSteps.Step3
                         CreateClaim()
                         If (Me.State.DealerBO.DeductibleCollectionId = Me.State.yesId) Then
                             Dim x As String = "<script language='JavaScript'> revealModal('modalCollectDeductible') </script>"
-                            Me.RegisterStartupScript("Startup", x)
+                            ClientScript.RegisterStartupScript(Me.GetType(), "Startup", x, True)
                             Exit Sub
                         End If
                     Case ClaimWizardSteps.Step4
@@ -457,13 +464,13 @@ Public Class ClaimWizardForm
 
                         Me.State.DoesActiveTradeInExistForIMEI = DoesAcceptedOfferExistForIMEI()
                         If Me.State.ClaimBO.IsNew And Me.State.DoesActiveTradeInExistForIMEI Then
-                            Me.State.ClaimBO.StatusCode = Codes.CLAIM_STATUS__DENIED
+                            State.ClaimBO.StatusCode = Codes.CLAIM_STATUS__DENIED
                             Me.State.CommentBO.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED)
                         End If
                     Case ClaimWizardSteps.Step5
                         ' Bug 178224 - REQ- 6156 
-                        Dim attvalue As AttributeValue = State.ClaimBO.Dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.DLR_ATTR_SKIP_SERVICE_CENTER_SCREEN).FirstOrDefault
-                        If Not attvalue Is Nothing AndAlso attvalue.Value = Codes.YESNO_Y Then
+                        Dim attValue As AttributeValue = State.ClaimBO.Dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.DLR_ATTR_SKIP_SERVICE_CENTER_SCREEN).FirstOrDefault
+                        If Not attValue Is Nothing AndAlso attValue.Value = Codes.YESNO_Y Then
                             If (Me.State.ClaimBO.Status = BasicClaimStatus.Active) Then
                                 For Each claimAuth As ClaimAuthorization In Me.State.ClaimBO.ClaimAuthorizationChildren
                                     'below line is to skip voiding or deleting authorizations if they are of claim deductible refund related
