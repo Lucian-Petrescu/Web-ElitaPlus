@@ -15,6 +15,30 @@ Public Class CertExtendedItemFormBO
     Public Const COL_NAME_CERT_EXTENDED_ITEM_ID As String = CertExtendedItemFormDAL.COL_NAME_CERT_EXTENDED_ITEM_ID
     Public Const COL_NAME_DEFAULT_VALUE As String = CertExtendedItemFormDAL.COL_NAME_DEFAULT_VALUE
 #End Region
+#Region "BankNameSearchDV"
+    Public Class CertExtendedItemSearchDV
+        Inherits DataView
+
+#Region "Constants"
+        Public Const COL_CERT_EXT_CONFIG_ID As String = "cert_ext_item_id"
+        Public Const COL_CODE As String = "code"
+        Public Const COL_DESCRIPTION As String = "description"
+        Public Const COL_FIELD_NAME As String = "field_name"
+        Public Const COL_IN_ENROLLMENT As String = "in_enrollment"
+        Public Const COL_DEFAULT_VALUE As String = "default_value"
+        Public Const COL_ALLOW_UPDATE As String = "allow_update"
+#End Region
+
+        Public Sub New()
+            MyBase.New()
+        End Sub
+
+        Public Sub New(ByVal table As DataTable)
+            MyBase.New(table)
+        End Sub
+
+    End Class
+#End Region
 
 #Region "Constructors"
 
@@ -28,8 +52,8 @@ Public Class CertExtendedItemFormBO
     'New BO
     Public Sub New()
         MyBase.New()
-        'Me.Dataset = New DataSet
-        'Me.Load()
+        Me.Dataset = New DataSet
+        Me.Load()
     End Sub
 
     'Exiting BO attaching to a BO family
@@ -51,7 +75,32 @@ Public Class CertExtendedItemFormBO
         Me.Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
+    Public Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As CertExtendedItemSearchDV
 
+        Dim dt As DataTable
+        dt = dv.Table
+        Dim newrow As DataRow = dt.NewRow
+
+        newrow(CertExtendedItemFormDal.COL_NAME_CERT_EXTENDED_ITEM_ID) = id.ToByteArray
+        newrow(CertExtendedItemFormDal.COL_NAME_CODE) = String.Empty
+        newrow(CertExtendedItemFormDal.COL_NAME_DESCRIPTION) = String.Empty
+        newrow(CertExtendedItemFormDal.COL_NAME_FIELD_NAME) = String.Empty
+        newrow(CertExtendedItemFormDal.COL_NAME_IN_ENROLLMENT) = "Y"
+        newrow(CertExtendedItemFormDal.COL_NAME_DEFAULT_VALUE) = String.Empty
+        newrow(CertExtendedItemFormDal.COL_NAME_ALLOW_UPDATE) = "Y"
+        dt.Rows.Add(newrow)
+        Me.Row = newrow
+        Return New CertExtendedItemSearchDV(dt)
+
+    End Function
+    Public Shared Function GetList(ByVal codeMask As String) As CertExtendedItemSearchDV
+        Try
+            Dim dal As New CertExtendedItemFormDal
+            Return New CertExtendedItemSearchDV(dal.LoadList(codeMask).Tables(0))
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
     Protected Sub Load()
         Try
             Dim dal As New CertExtendedItemFormDal
@@ -61,8 +110,8 @@ Public Class CertExtendedItemFormBO
             Dim newRow As DataRow = Dataset.Tables(CertExtendedItemFormDal.TABLE_NAME).NewRow
             Dataset.Tables(CertExtendedItemFormDal.TABLE_NAME).Rows.Add(newRow)
             Row = newRow
-            Row(CertExtendedItemFormDal.TABLE_KEY_NAME) = Guid.NewGuid
-            'SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
+            'Row(CertExtendedItemFormDal.TABLE_KEY_NAME) = Guid.NewGuid
+            SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -104,12 +153,12 @@ Public Class CertExtendedItemFormBO
 
 #Region "DataView Retrieveing Methods"
 
-    Shared Function GetData() As DataSet
-        Dim dal As New CertExtendedItemFormDAL
-        Dim ds As DataSet
-        ds = dal.LoadList()
-        Return ds
-    End Function
+    'Shared Function GetData() As DataSet
+    '    Dim dal As New CertExtendedItemFormDAL
+    '    Dim ds As DataSet
+    '    ds = dal.LoadList()
+    '    Return ds
+    'End Function
 
 #End Region
 
@@ -121,27 +170,27 @@ Public Class CertExtendedItemFormBO
             If Row(CertExtendedItemFormDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(CertExtendedItemFormDal.COL_NAME_CERT_EXTENDED_ITEM_ID), Guid)
+                Return New Guid(CType(Row(CertExtendedItemFormDal.COL_NAME_CERT_EXTENDED_ITEM_ID), Byte()))
             End If
         End Get
     End Property
-    <ValueMandatory(""), ValidStringLength("", Max:=30)>
-    Public Property TableName() As String
-        Get
-            CheckDeleted()
-            If Row(CertExtendedItemFormDAL.COL_NAME_TABLE_NAME) Is DBNull.Value Then
-                Return Nothing
-            Else
-                Return CType(Row(CertExtendedItemFormDAL.COL_NAME_TABLE_NAME), String)
-            End If
-        End Get
-        Set(ByVal value As String)
-            CheckDeleted()
-            Me.SetValue(CertExtendedItemFormDal.COL_NAME_TABLE_NAME, value)
-        End Set
-    End Property
+    '<ValueMandatory(""), ValidStringLength("", Max:=30)>
+    'Public Property TableName() As String
+    '    Get
+    '        CheckDeleted()
+    '        If Row(CertExtendedItemFormDAL.COL_NAME_TABLE_NAME) Is DBNull.Value Then
+    '            Return Nothing
+    '        Else
+    '            Return CType(Row(CertExtendedItemFormDAL.COL_NAME_TABLE_NAME), String)
+    '        End If
+    '    End Get
+    '    Set(ByVal value As String)
+    '        CheckDeleted()
+    '        Me.SetValue(CertExtendedItemFormDal.COL_NAME_TABLE_NAME, value)
+    '    End Set
+    'End Property
 
-    <ValueMandatory(""), ValidStringLength("", Max:=255), CheckDuplicateCertExtendedItem("")>
+    <ValueMandatory(""), ValidStringLength("", Max:=255)>
     Public Property FieldName() As String
         Get
             CheckDeleted()
@@ -156,7 +205,38 @@ Public Class CertExtendedItemFormBO
             Me.SetValue(CertExtendedItemFormDAL.COL_NAME_FIELD_NAME, value)
         End Set
     End Property
-    <ValueMandatory(""), ValidStringLength("", Max:=1)>
+    <ValueMandatory(""), ValidStringLength("", Max:=50)>
+    Public Property Code() As String
+        Get
+            CheckDeleted()
+            If Row(CertExtendedItemFormDal.COL_NAME_CODE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CertExtendedItemFormDal.COL_NAME_CODE), String)
+            End If
+        End Get
+        Set(ByVal value As String)
+            CheckDeleted()
+            Me.SetValue(CertExtendedItemFormDal.COL_NAME_CODE, value)
+        End Set
+    End Property
+    '<ValueMandatory(""), ValidStringLength("", Max:=255)>
+    Public Property Description() As String
+        Get
+            CheckDeleted()
+            If Row(CertExtendedItemFormDal.COL_NAME_DESCRIPTION) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CertExtendedItemFormDal.COL_NAME_DESCRIPTION), String)
+            End If
+        End Get
+        Set(ByVal value As String)
+            CheckDeleted()
+            Me.SetValue(CertExtendedItemFormDal.COL_NAME_DESCRIPTION, value)
+        End Set
+    End Property
+
+    <ValueMandatory(""), ValidStringLength("", Max:=3)>
     Public Property InEnrollment() As String
         Get
             CheckDeleted()
@@ -172,7 +252,7 @@ Public Class CertExtendedItemFormBO
         End Set
     End Property
 
-    <ValueMandatory(""), ValidStringLength("", Max:=255), CheckDuplicateCertExtendedItem("")>
+    '<ValueMandatory(""), ValidStringLength("", Max:=255)>
     Public Property DefaultValue() As String
         Get
             CheckDeleted()
@@ -188,19 +268,19 @@ Public Class CertExtendedItemFormBO
         End Set
     End Property
 
-    <ValueMandatory(""), ValidStringLength("", Max:=1)>
+    <ValueMandatory(""), ValidStringLength("", Max:=3)>
     Public Property AllowUpdate() As String
         Get
             CheckDeleted()
-            If Row(CertExtendedItemFormDAL.COL_NAME_ALLOW_UPDATE) Is DBNull.Value Then
+            If Row(CertExtendedItemFormDal.COL_NAME_ALLOW_UPDATE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(CertExtendedItemFormDAL.COL_NAME_ALLOW_UPDATE), String)
+                Return CType(Row(CertExtendedItemFormDal.COL_NAME_ALLOW_UPDATE), String)
             End If
         End Get
         Set(ByVal value As String)
             CheckDeleted()
-            Me.SetValue(CertExtendedItemFormDAL.COL_NAME_ALLOW_UPDATE, value)
+            Me.SetValue(CertExtendedItemFormDal.COL_NAME_ALLOW_UPDATE, value)
         End Set
     End Property
 
@@ -209,18 +289,27 @@ Public Class CertExtendedItemFormBO
 
 #Region "Public Members"
     Public Overrides Sub Save()
+        'Try
+        '    MyBase.Save()
+        '    If Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+        '       Dim dal As New CertExtendedItemFormDal
+        '       dal.Update(Me.Dataset)
+        '        'Reload the Data from the DB
+        '        If Me.Row.RowState <> DataRowState.Detached Then
+        '            Dim objId As Guid = Me.Id
+        '            Me.Dataset = New DataSet
+        '            Me.Row = Nothing
+        '            Me.Load(objId)
+        '        End If
+        '    End If
+        'Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+        '    Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        'End Try
         Try
             MyBase.Save()
-            If Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
-                Dim dal As New AttributeDAL
-                dal.Update(Me.Dataset)
-                'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
-                End If
+            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+                Dim dal As New CertExtendedItemFormDal
+                dal.Update(Me.Row)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)

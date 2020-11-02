@@ -6,17 +6,21 @@ Public Class CertExtendedItemFormDal
 
 #Region "Constants"
     Private Const supportChangesFilter As DataRowState = DataRowState.Added Or DataRowState.Modified Or DataRowState.Deleted
-    Public Const TABLE_NAME As String = "ELP_CERT_EXTENDED_ITEM"
+    Public Const TABLE_NAME As String = "ELP_CERT_EXT_ITEM_CONFIG_TEMP"
     Public Const TABLE_KEY_NAME As String = COL_NAME_CERT_EXTENDED_ITEM_ID
 
-    Public Const COL_NAME_CERT_EXTENDED_ITEM_ID As String = "cert_extended_item_id"
+    Public Const COL_NAME_CERT_EXTENDED_ITEM_ID As String = "cert_ext_item_id"
+    Public Const COL_NAME_CODE As String = "code"
+    Public Const COL_NAME_DESCRIPTION As String = "description"
     Public Const COL_NAME_FIELD_NAME As String = "field_name"
     Public Const COL_NAME_IN_ENROLLMENT As String = "in_enrollment"
     Public Const COL_NAME_DEFAULT_VALUE As String = "default_value"
     Public Const COL_NAME_ALLOW_UPDATE As String = "allow_update"
-    Public Const COL_NAME_TABLE_NAME As String = "ELP_CERT_EXTENDED_ITEM"
+    Public Const COL_NAME_TABLE_NAME As String = "ELP_CERT_EXT_ITEM_CONFIG_TEMP"
 
-    Public Const PAR_I_NAME_CERT_EXTENDED_ITEM_ID As String = "pi_cert_extended_item_id"
+    Public Const PAR_I_NAME_CERT_EXTENDED_ITEM_ID As String = "pi_cert_ext_item_id"
+    Public Const PAR_I_NAME_CODE As String = "pi_code"
+    Public Const PAR_I_NAME_DESCRIPTION As String = "pi_description"
     Public Const PAR_I_NAME_FIELD_NAME As String = "pi_field_name"
     Public Const PAR_I_NAME_IN_ENROLLMENT As String = "pi_in_enrollment"
     Public Const PAR_I_NAME_DEFAULT_VALUE As String = "pi_default_value"
@@ -39,44 +43,55 @@ Public Class CertExtendedItemFormDal
 
     Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
         Try
-            'Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD"))
-            '    cmd.AddParameter(PAR_I_NAME_CERT_EXTENDED_ITEM_ID, OracleDbType.Raw, id.ToByteArray())
-            '    cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-            '    OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
-            'End Using
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD"))
+                cmd.AddParameter(PAR_I_NAME_CERT_EXTENDED_ITEM_ID, OracleDbType.Raw, id.ToByteArray())
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+            End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-
-    Public Function LoadList() As DataSet
+    Public Function LoadList(ByVal codeMask As String) As DataSet
         Try
-            'Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_LIST"))
-            '    cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-            '    Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
-            'End Using
-            Dim table As New DataTable(TABLE_NAME)
-
-            With table
-                ' Create four typed columns in the DataTable.
-                .Columns.Add("cert_extended_item_id", GetType(Guid))
-                .Columns.Add("field_name", GetType(String))
-                .Columns.Add("in_enrollment", GetType(String))
-                .Columns.Add("default_value", GetType(String))
-                .Columns.Add("allow_update", GetType(String))
-
-                ' Add 1 rows with those columns filled in the DataTable.
-                .Rows.Add(Guid.NewGuid, "FieldName1", "Y", "", "Y")
-            End With
-            Dim ds As New DataSet
-
-            ds.Tables.Add(table)
-
-            Return ds
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_LIST"))
+                cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, codeMask)
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+            End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
+    'Public Function LoadList() As DataSet
+    '    Try
+    '        'Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_LIST"))
+    '        '    cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+    '        '    Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+    '        'End Using
+    '        Dim table As New DataTable(TABLE_NAME)
+
+    '        With table
+    '            ' Create four typed columns in the DataTable.
+    '            .Columns.Add("cert_extended_item_id", GetType(Guid))
+    '            .Columns.Add("code", GetType(String))
+    '            .Columns.Add("description", GetType(String))
+    '            .Columns.Add("field_name", GetType(String))
+    '            .Columns.Add("in_enrollment", GetType(String))
+    '            .Columns.Add("default_value", GetType(String))
+    '            .Columns.Add("allow_update", GetType(String))
+    '            ' Add 1 rows with those columns filled in the DataTable.
+    '            '.Rows.Add(Guid.NewGuid, "FieldName1", "Y", "", "Y")
+    '        End With
+    '        Dim ds As New DataSet
+
+    '        ds.Tables.Add(table)
+
+    '        Return ds
+    '    Catch ex As Exception
+    '        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+    '    End Try
+    'End Function
 
     Public Function GetAvailableCompany() As DataView
         Dim selectStmt As String = Me.Config("/SQL/LOAD_COMPANY_LIST")
@@ -109,11 +124,13 @@ Public Class CertExtendedItemFormDal
     Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
         With command
             .AddParameter(PAR_I_NAME_CERT_EXTENDED_ITEM_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_CERT_EXTENDED_ITEM_ID)
-            .AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Raw, sourceColumn:=COL_NAME_FIELD_NAME)
-            .AddParameter(PAR_I_NAME_CREATED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY)
+            .AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE.ToUpper().Trim())
+            .AddParameter(PAR_I_NAME_DESCRIPTION, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DESCRIPTION)
+            .AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Varchar2, sourceColumn:=COL_NAME_FIELD_NAME)
             .AddParameter(PAR_I_NAME_IN_ENROLLMENT, OracleDbType.Varchar2, sourceColumn:=COL_NAME_IN_ENROLLMENT)
             .AddParameter(PAR_I_NAME_DEFAULT_VALUE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DEFAULT_VALUE)
             .AddParameter(PAR_I_NAME_ALLOW_UPDATE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_ALLOW_UPDATE)
+            .AddParameter(PAR_I_NAME_CREATED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY)
         End With
 
     End Sub
@@ -121,11 +138,13 @@ Public Class CertExtendedItemFormDal
     Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
         With command
             .AddParameter(PAR_I_NAME_CERT_EXTENDED_ITEM_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_CERT_EXTENDED_ITEM_ID)
-            .AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Raw, sourceColumn:=COL_NAME_FIELD_NAME)
-            .AddParameter(PAR_I_NAME_MODIFIED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY)
+            .AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE.ToUpper().Trim())
+            .AddParameter(PAR_I_NAME_DESCRIPTION, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DESCRIPTION)
+            .AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Varchar2, sourceColumn:=COL_NAME_FIELD_NAME)
             .AddParameter(PAR_I_NAME_IN_ENROLLMENT, OracleDbType.Varchar2, sourceColumn:=COL_NAME_IN_ENROLLMENT)
             .AddParameter(PAR_I_NAME_DEFAULT_VALUE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DEFAULT_VALUE)
             .AddParameter(PAR_I_NAME_ALLOW_UPDATE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_ALLOW_UPDATE)
+            .AddParameter(PAR_I_NAME_MODIFIED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY)
         End With
 
     End Sub
