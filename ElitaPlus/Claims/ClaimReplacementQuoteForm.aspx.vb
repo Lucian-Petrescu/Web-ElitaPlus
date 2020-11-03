@@ -211,7 +211,6 @@ Namespace Claims
             'Set up the service center end
 
             Dim oCountry As New Country(State.ClaimBO.Company.CountryId)
-            Dim oAddress As New Address(State.ClaimBO.Certificate.AddressId)
 
             ucSelectServiceCenter.PageSize = 30
             ucSelectServiceCenter.CountryId = oCountry.Id
@@ -222,8 +221,8 @@ Namespace Claims
             ucSelectServiceCenter.RiskTypeEnglish = State.ClaimBO.RiskType
             ucSelectServiceCenter.MethodOfRepairXcd = MethodOfRepairXcd
             ucSelectServiceCenter.ShowControl = True
-            ucSelectServiceCenter.City = oAddress.City
-            ucSelectServiceCenter.PostalCode = oAddress.PostalCode
+            ucSelectServiceCenter.City =  State.ClaimBO.ContactInfo.Address.City
+            ucSelectServiceCenter.PostalCode = State.ClaimBO.ContactInfo.Address.PostalCode
 
         End Sub
 
