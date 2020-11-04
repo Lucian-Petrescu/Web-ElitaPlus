@@ -465,15 +465,15 @@ Public Class ClaimWizardForm
                         'Me.State.ClaimBO.AddClaimAuthorization(Me.State.SelectedServiceCenterId)
 
                         Me.State.DoesActiveTradeInExistForIMEI = DoesAcceptedOfferExistForIMEI()
-                        If Me.State.ClaimBO.IsNew And Me.State.DoesActiveTradeInExistForIMEI Then
+                        If State.ClaimBO.IsNew AndAlso Me.State.DoesActiveTradeInExistForIMEI Then
                             State.ClaimBO.StatusCode = Codes.CLAIM_STATUS__DENIED
                             Me.State.CommentBO.CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__CLAIM_DENIED)
                         End If
                     Case ClaimWizardSteps.Step5
                         ' Bug 178224 - REQ- 6156 
                         Dim attValue As AttributeValue = State.ClaimBO.Dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.DLR_ATTR_SKIP_SERVICE_CENTER_SCREEN).FirstOrDefault
-                        If Not attValue Is Nothing AndAlso attValue.Value = Codes.YESNO_Y Then
-                            If (Me.State.ClaimBO.Status = BasicClaimStatus.Active) Then
+                        If attValue IsNot Nothing AndAlso attValue.Value = Codes.YESNO_Y Then
+                            If State.ClaimBO.Status = BasicClaimStatus.Active Then
                                 For Each claimAuth As ClaimAuthorization In Me.State.ClaimBO.ClaimAuthorizationChildren
                                     'below line is to skip voiding or deleting authorizations if they are of claim deductible refund related
                                     If Not claimAuth.IsAuthorizationDeductibleRefund Then
@@ -636,7 +636,7 @@ Public Class ClaimWizardForm
                     Return lc.BenefitClaimPreCheck(GuidControl.ByteArrayToGuid(caseRecord(0)("case_Id")).ToString())
                 End Function)
 
-            If (Not benefitCheckResponse Is Nothing) Then
+            If benefitCheckResponse IsNot Nothing Then
                 Me.State.ClaimBO.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
                 If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
                     Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECKFAIL")
@@ -689,22 +689,22 @@ Public Class ClaimWizardForm
 
     Protected Sub btnDedCollContinue_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDedCollContinue.Click
 
-        If Not step3_cboDedCollMethod.SelectedIndex > BLANK_ITEM_SELECTED Then
-            Me.moModalCollectDivMsgController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.GUI_DED_COLL_METHD_REQD)
+        If step3_cboDedCollMethod.SelectedIndex < BLANK_ITEM_SELECTED Then
+            moModalCollectDivMsgController.AddError (Assurant.ElitaPlus.Common.ErrorCodes.GUI_DED_COLL_METHD_REQD)
             Dim x As String = "<script language='JavaScript'> revealModal('modalCollectDeductible') </script>"
-            Me.RegisterStartupScript("Startup", x)
+            ClientScript.RegisterStartupScript(Me.GetType(), "Startup", x, True)
             Exit Sub
         Else
             If GetSelectedItem(step3_cboDedCollMethod) = LookupListNew.GetIdFromCode(LookupListCache.LK_DED_COLL_METHOD, Codes.DED_COLL_METHOD_CR_CARD) AndAlso
                step3_txtDedCollAuthCode.Text.Length <> CInt(Codes.DED_COLL_CR_AUTH_CODE_LEN) Then 'Allow exact length of Auth Code
-                Me.moModalCollectDivMsgController.AddErrorAndShow(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AUTH_CODE_FOR_CC)
+                moModalCollectDivMsgController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AUTH_CODE_FOR_CC)
                 Dim x As String = "<script language='JavaScript'> revealModal('modalCollectDeductible') </script>"
-                Me.RegisterStartupScript("Startup", x)
+                ClientScript.RegisterStartupScript(Me.GetType(), "Startup", x, True)
                 Exit Sub
             End If
         End If
 
-        Dim c As Comment
+        
         Dim oldStatus As String = Me.State.ClaimBO.StatusCode
         Try
             PopulateBOFromForm(Me.State.StepName)
@@ -712,7 +712,7 @@ Public Class ClaimWizardForm
             Me.State.ClaimBO.CheckForRules()
             GoToNextStep()
         Catch ex As Exception
-            Me.State.ClaimBO.StatusCode = oldStatus
+            State.ClaimBO.StatusCode = oldStatus
             Throw ex
         End Try
 
@@ -727,7 +727,7 @@ Public Class ClaimWizardForm
             Me.step3_txtDedCollAuthCode.Enabled = False
         End If
         Dim x As String = "<script language='JavaScript'> revealModal('modalCollectDeductible') </script>"
-        Me.RegisterStartupScript("Startup", x)
+        ClientScript.RegisterStartupScript(Me.GetType(), "Startup", x, True)
     End Sub
 
     Private Sub btnSearchServiceCenter_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles step4_btnSearch.Click
@@ -772,13 +772,13 @@ Public Class ClaimWizardForm
 
     Private Sub RadioButtonAll_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles step4_RadioButtonAll.CheckedChanged
         Try
-            Me.EnableDisableWizardControls(ClaimWizardSteps.Step4)
-            If Me.step4_RadioButtonAll.Checked Then
-                Me.State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.All
-                Dim address As New Address(Me.State.CertBO.AddressId)
-                Dim SelectedCountry As New ArrayList
-                SelectedCountry.Add(Me.GetSelectedItem(step4_moCountryDrop))
-                PopulateCountryDropdown(SelectedCountry)
+            EnableDisableWizardControls(ClaimWizardSteps.Step4)
+            If step4_RadioButtonAll.Checked Then
+                State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.All
+                'Dim address As New Address(Me.State.CertBO.AddressId)
+                Dim selectedCountry As New ArrayList
+                selectedCountry.Add(GetSelectedItem(step4_moCountryDrop))
+                PopulateCountryDropdown(selectedCountry)
             End If
 
         Catch ex As Exception
@@ -786,7 +786,7 @@ Public Class ClaimWizardForm
         End Try
     End Sub
 
-    Private Sub RadioButtonNO_SVC_OPTION_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles step4_RadioButtonNO_SVC_OPTION.CheckedChanged
+    Private Sub RadioButtonNOSVCOPTIONCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles step4_RadioButtonNO_SVC_OPTION.CheckedChanged
         Try
             Me.EnableDisableWizardControls(ClaimWizardSteps.Step4)
             If Me.step4_RadioButtonNO_SVC_OPTION.Checked Then
@@ -808,11 +808,11 @@ Public Class ClaimWizardForm
                 Me.EnableDisableWizardControls(ClaimWizardSteps.Step4)
                 Me.State.LocateServiceCenterSearchType = LocateServiceCenterSearchType.All
 
-                Dim address As New Address(Me.State.CertBO.AddressId)
-                Dim SelectedCountry As New ArrayList
-                SelectedCountry.Add(Me.GetSelectedItem(step4_moCountryDrop))
+                'Dim address As New Address(Me.State.CertBO.AddressId)
+                Dim selectedCountry As New ArrayList
+                selectedCountry.Add(GetSelectedItem(step4_moCountryDrop))
 
-                PopulateCountryDropdown(SelectedCountry)
+                PopulateCountryDropdown(selectedCountry)
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -828,7 +828,7 @@ Public Class ClaimWizardForm
         End Try
     End Sub
 
-    Private Sub btnEdit(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnEdit_WRITE.Click
+    Private Sub BtnEdit(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnEdit_WRITE.Click
         Try
             Me.State.IsEditMode = True
             Me.EnableDisableWizardControls(Me.State.StepName)
@@ -838,39 +838,39 @@ Public Class ClaimWizardForm
         End Try
     End Sub
 
-    Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
+    Private Sub BtnSaveWriteClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
-            Me.ClearMessageControllers()
-            Me.PopulateBOFromForm(Me.State.StepName)
-            ' Me.ClearMessageControllers()
+            ClearMessageControllers()
+            PopulateBOFromForm(State.StepName)
+            ' ClearMessageControllers()
 
-            Select Case Me.State.StepName
+            Select Case State.StepName
                 Case ClaimWizardSteps.Step2
-                    If (Me.ValidateInputs(Me.State.StepName)) Then
-                        If Me.State.CertItemBO.IsFamilyDirty OrElse Me.State.CertItemCoverageBO.IsFamilyDirty _
-                           OrElse (Not Me.State.step2_claimEquipmentBO Is Nothing And Me.State.step2_claimEquipmentBO.IsDirty) Then
-                            If (Me.State.CertItemBO.IsFamilyDirty OrElse Me.State.CertItemCoverageBO.IsFamilyDirty) Then
-                                If (Me.State.CertItemCoverageBO.IsFamilyDirty) Then
-                                    Me.State.CertItemCoverageBO.Save()
+                    If (ValidateInputs(State.StepName)) Then
+                        If State.CertItemBO.IsFamilyDirty OrElse State.CertItemCoverageBO.IsFamilyDirty _
+                           OrElse (Not State.step2_claimEquipmentBO IsNot Nothing AndAlso State.step2_claimEquipmentBO.IsDirty) Then
+                            If (State.CertItemBO.IsFamilyDirty OrElse State.CertItemCoverageBO.IsFamilyDirty) Then
+                                If (State.CertItemCoverageBO.IsFamilyDirty) Then
+                                    State.CertItemCoverageBO.Save()
                                 End If
-                                If (Me.State.CertItemBO.IsFamilyDirty) Then
-                                    Me.State.CertItemBO.Save()
+                                If (State.CertItemBO.IsFamilyDirty) Then
+                                    State.CertItemBO.Save()
                                 End If
-                                Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                                MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                             End If
-                            Me.PopulateFormFromBO(Me.State.StepName)
-                            Me.State.IsEditMode = False
-                            Me.EnableDisableWizardControls(Me.State.StepName)
+                            PopulateFormFromBO(State.StepName)
+                            State.IsEditMode = False
+                            EnableDisableWizardControls(State.StepName)
                         Else
-                            If Not Me.State.CertItemBO.IsEquipmentRequired Then
-                                Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED, True)
+                            If Not State.CertItemBO.IsEquipmentRequired Then
+                                MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED, True)
                             End If
                         End If
                     End If
             End Select
-            HandleButtons(Me.State.StepName)
+            HandleButtons(State.StepName)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -902,7 +902,7 @@ Public Class ClaimWizardForm
             ControlMgr.SetVisibleControl(Me, moCertificateInfoController, True)
             moCertificateInfoController.InitController(Me.State.CertBO.Id, , Me.State.CompanyBO.Code)
             Dim x As String = "<script language='JavaScript'> revealModal('ModalSoftQuestions') </script>"
-            Me.RegisterStartupScript("Startup", x)
+            ClientScript.RegisterStartupScript(Me.GetType(), "Startup", x, True)
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -930,7 +930,7 @@ Public Class ClaimWizardForm
             End If
 
             Dim x As String = "<script language='JavaScript'> revealModal('ModalDenyClaim') </script>"
-            Me.RegisterStartupScript("Startup", x)
+            ClientScript.RegisterStartupScript(Me.GetType(), "Startup", x, True)
         Catch ex As Threading.ThreadAbortException
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         Catch ex As Assurant.ElitaPlus.BusinessObjectsNew.BOValidationException
@@ -940,7 +940,7 @@ Public Class ClaimWizardForm
                (Me.State.ClaimBO.LossDate.Value > Me.State.ClaimBO.CertificateItemCoverage.EndDate.Value Or
                 Me.State.ClaimBO.LossDate.Value < Me.State.ClaimBO.CertificateItemCoverage.BeginDate.Value) Then
                 Dim bypassMdl As String = "<script language='JavaScript'> revealModal('ModalBypassDoL') </script>"
-                Me.RegisterStartupScript("BpQtn", bypassMdl)
+                ClientScript.RegisterStartupScript(Me.GetType(), "Startup", bypassMdl, True)
             Else
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End If
@@ -972,7 +972,7 @@ Public Class ClaimWizardForm
 
     Protected Sub btnModalBbDolYes_Click(sender As Object, e As EventArgs) Handles btnModalBbDolYes.Click
         Dim x As String = "<script language='JavaScript'>hideModal('ModalBypassDoL'); revealModal('ModalDenyClaim'); </script>"
-        Me.RegisterStartupScript("Startup", x)
+        ClientScript.RegisterStartupScript(Me.GetType(), "Startup", x, True)
         Dim DndId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED__INCORRECT_DEVICE_SELECTED)
         Me.step3_cboDeniedReason.SelectedIndex = Me.step3_cboDeniedReason.Items.IndexOf(Me.step3_cboDeniedReason.Items.FindByValue(DndId.ToString()))
         Me.step3_cboDeniedReason.Items.FindByValue(Me.step3_cboDeniedReason.SelectedValue).Selected = True
@@ -1063,7 +1063,7 @@ Public Class ClaimWizardForm
             e.Node.ChildNodes.Add(newNode)
         Next
         Dim x As String = "<script language='JavaScript'> revealModal('ModalSoftQuestions') </script>"
-        Me.RegisterStartupScript("Startup", x)
+        ClientScript.RegisterStartupScript(Me.GetType(), "Startup", x, True)
     End Sub
 
     Private Sub btnModalServiceWarrantyYes_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnModalServiceWarrantyYes.Click
@@ -3711,7 +3711,7 @@ Public Class ClaimWizardForm
                 'lblClaimImage.Text = String.Format("{0}: {1}", TranslationBase.TranslateLabelOrMessage("CLAIM_IMAGE"), e.CommandArgument.ToString())
                 'pdfIframe.Attributes(ATTRIB_SRC) = PDF_URL + e.CommandArgument.ToString()
                 Dim x As String = "<script language='JavaScript'> revealModal('modalClaimImages') </script>"
-                Me.RegisterStartupScript("Startup", x)
+                ClientScript.RegisterStartupScript(Me.GetType(), "Startup", x, True)
             End If
         End If
     End Sub
