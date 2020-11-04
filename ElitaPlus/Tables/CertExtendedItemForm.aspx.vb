@@ -17,30 +17,35 @@ Public Class CertExtendedItemForm
 
     Private Const GRID_COL_ID_IDX As Integer = 0
     Private Const GRID_COL_FIELD_NAME_IDX As Integer = 1
-    Private Const GRID_COL_IN_ENROLLMENT_IDX As Integer = 2
-    Private Const GRID_COL_DEFAULT_VALUE_IDX As Integer = 3
-    Private Const GRID_COL_ALLOW_UPDATE_IDX As Integer = 4
+    'Private Const GRID_COL_IN_ENROLLMENT_IDX As Integer = 2
+    Private Const GRID_COL_DEFAULT_VALUE_IDX As Integer = 2
+    Private Const GRID_COL_ALLOW_UPDATE_IDX As Integer = 3
+    Private Const GRID_COL_ALLOW_DISPLAY_IDX As Integer = 4
 
     Private Const MSG_RECORD_DELETED_OK As String = "MSG_RECORD_DELETED_OK"
     Private Const MSG_RECORD_SAVED_OK As String = "MSG_RECORD_SAVED_OK"
     Private Const MSG_RECORD_NOT_SAVED As String = "MSG_RECORD_NOT_SAVED"
 
     Private Const FIELD_NAME_LABEL_NAME As String = "FieldNameLabel"
-    Private Const IN_ENROLLMENT_LABEL_NAME As String = "InEnrollmentLabel"
+    'Private Const IN_ENROLLMENT_LABEL_NAME As String = "InEnrollmentLabel"
     Private Const DEFAULT_VALUE_LABEL_NAME As String = "DefaultValueLabel"
     Private Const ALLOW_UPDATE_LABEL_NAME As String = "AllowUpdateLabel"
+    Private Const ALLOW_DISPLAY_LABEL_NAME As String = "AllowDisplayLabel"
     Private Const EDIT_BUTTON_NAME As String = "EditButton"
     Private Const DELETE_BUTTON_NAME As String = "DeleteButton"
 
     Private Const FIELD_NAME_TEXTBOX_NAME As String = "FieldNameTextBox"
-    Private Const IN_ENROLLMENT_DROPDOWN_NAME As String = "InEnrollmentDropDown"
+    'Private Const IN_ENROLLMENT_DROPDOWN_NAME As String = "InEnrollmentDropDown"
     Private Const DEFAULT_VALUE_TEXTBOX_NAME As String = "DefaultValueTextBox"
     Private Const ALLOW_UPDATE_DROPDOWN_NAME As String = "AllowUpdateDropDown"
+    Private Const ALLOW_DISPLAY_DROPDOWN_NAME As String = "AllowDisplayDropDown"
     Private Const CANCEL_LINK_BUTTON_NAME As String = "CancelLinkButton"
     Private Const SAVE_BUTTON_NAME As String = "SaveButton"
 
-    Private Const FIELD_NAME_TEXTBOX_MAX_LENGTH As Integer = 100
-    Private Const DEFAULT_VALUE_TEXTBOX_MAX_LENGTH As Integer = 10
+    Private Const FIELD_NAME_TEXTBOX_MAX_LENGTH As Integer = 25
+    Private Const DEFAULT_VALUE_TEXTBOX_MAX_LENGTH As Integer = 20
+    Private Const CODE_TEXTBOX_MAX_LENGTH As Integer = 9
+    Private Const DESCRIPTION_TEXTBOX_MAX_LENGTH As Integer = 50
 
     Private Const ADMIN As String = "Admin"
     Private Const CERTITEMEXTENDEDCONTROL As String = "Certificate Extended Item Control"
@@ -85,7 +90,7 @@ Public Class CertExtendedItemForm
             ReturnToCallingPage()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            'Me.HandleErrors(ex, Me.MasterPage.MessageController)
             Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
             Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
             Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
@@ -196,9 +201,9 @@ Public Class CertExtendedItemForm
         End Try
     End Sub
 
-    Public Sub GridViewCertItemConfig_OnPageIndexChanging(ByVal sender As Object, ByVal e As GridViewPageEventArgs) Handles GridViewCertItemConfig.PageIndexChanging
+    Public Sub GridViewCertItemConfig_PageIndexChanged(ByVal sender As Object, ByVal e As GridViewPageEventArgs) Handles GridViewCertItemConfig.PageIndexChanging
         Try
-            Me.GridViewCertItemConfig.PageIndex = e.NewPageIndex
+            Me.State.PageIndex = e.NewPageIndex
             Me.PopulateGrid()
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -207,9 +212,10 @@ Public Class CertExtendedItemForm
 
     Protected Sub BindBoPropertiesToGridHeaders()
         Me.BindBOPropertyToGridHeader(Me.State.MyBO, "FieldName", Me.GridViewCertItemConfig.Columns(GRID_COL_FIELD_NAME_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "InEnrollment", Me.GridViewCertItemConfig.Columns(GRID_COL_IN_ENROLLMENT_IDX))
+        'Me.BindBOPropertyToGridHeader(Me.State.MyBO, "InEnrollment", Me.GridViewCertItemConfig.Columns(GRID_COL_IN_ENROLLMENT_IDX))
         Me.BindBOPropertyToGridHeader(Me.State.MyBO, "DefaultValue", Me.GridViewCertItemConfig.Columns(GRID_COL_DEFAULT_VALUE_IDX))
         Me.BindBOPropertyToGridHeader(Me.State.MyBO, "AllowUpdate", Me.GridViewCertItemConfig.Columns(GRID_COL_ALLOW_UPDATE_IDX))
+        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "AllowDisplay", Me.GridViewCertItemConfig.Columns(GRID_COL_ALLOW_DISPLAY_IDX))
         Me.ClearGridViewHeadersAndLabelsErrorSign()
     End Sub
 
@@ -224,41 +230,37 @@ Public Class CertExtendedItemForm
         End With
     End Sub
     Protected Sub PopulateUserConctrols()
+        UserControlAvailableSelectedCompanies.SetAvailableData(Me.State.MyBO.GetAvailableCompanies(), "Description", "COMPANY_ID")
+        UserControlAvailableSelectedCompanies.SetSelectedData(Me.State.MyBO.GetSelectedCompanies(Me.State.CodeMask), "Description", "ID")
+        UserControlAvailableSelectedCompanies.BackColor = "#d5d6e4"
+        UserControlAvailableSelectedCompanies.RemoveSelectedFromAvailable()
 
-        ''UserControlAvailableSelectedDealers
-        'UserControlAvailableSelectedDealers.SetAvailableData(Me.State.MyBO.GetAvailableDealers(), "Description", "ID")
-        'UserControlAvailableSelectedDealers.SetSelectedData(Me.State.MyBO.GetDealerRuleListSelectionView, "Description", "DEALER_ID")
-        'UserControlAvailableSelectedDealers.BackColor = "#d5d6e4"
-        'UserControlAvailableSelectedDealers.RemoveSelectedFromAvailable()
-
-        ''UserControlAvailableSelectedCompanies
-        'Me.State.MyBO.GetAvailableCompanys()
-        'PopulateCompaniesDropDown
-        'UserControlAvailableSelectedCompanies.SetAvailableData(PopulateSelectedAssignedCompanies, "Description", "COMPANY_ID")
-        'UserControlAvailableSelectedCompanies.SetSelectedData(Me.State.MyBO.GetCompanyRuleListSelectionView, "Description", "COMPANY_ID")
-        'UserControlAvailableSelectedCompanies.BackColor = "#d5d6e4"
-        'UserControlAvailableSelectedCompanies.RemoveSelectedFromAvailable()
-
-
+        UserControlAvailableSelectedDealers.SetAvailableData(Me.State.MyBO.GetAvailableDealers(), "Description", "ID")
+        UserControlAvailableSelectedDealers.SetSelectedData(Me.State.MyBO.GetSelectedDealers(Me.State.CodeMask), "Description", "ID")
+        UserControlAvailableSelectedDealers.BackColor = "#d5d6e4"
+        UserControlAvailableSelectedDealers.RemoveSelectedFromAvailable()
     End Sub
     Public Sub GridViewCertItemConfig_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles GridViewCertItemConfig.RowCommand
         Try
             Dim nIndex As Integer
-            nIndex = CInt(e.CommandArgument)
+
             Select Case e.CommandName
                 Case ElitaPlusSearchPage.CANCEL_COMMAND_NAME
                     Me.GridViewCertItemConfig.EditIndex = NO_ITEM_SELECTED_INDEX
                     Me.EndEdit(ElitaPlusPage.DetailPageCommand.Cancel)
                 Case ElitaPlusSearchPage.DELETE_COMMAND_NAME
+                    nIndex = CInt(e.CommandArgument)
                     Me.State.CertExtConfigID = New Guid(GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_ID_IDX).Text)
                     Me.BeginEdit(Me.State.CertExtConfigID)
                     Me.EndEdit(ElitaPlusPage.DetailPageCommand.Delete)
                 Case ElitaPlusSearchPage.SAVE_COMMAND_NAME
+                    nIndex = CInt(e.CommandArgument)
                     Me.PopulateBoFromControls(GridViewCertItemConfig.Rows(nIndex))
                     'Check if fieldName / code is duplicated
                     ValidateConfigRecords()
                     Me.EndEdit(ElitaPlusPage.DetailPageCommand.OK)
                 Case ElitaPlusSearchPage.EDIT_COMMAND_NAME
+                    nIndex = CInt(e.CommandArgument)
                     Me.GridViewCertItemConfig.SelectedIndex = nIndex
                     Me.GridViewCertItemConfig.EditIndex = nIndex
                     Me.State.CertExtConfigID = New Guid(GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_ID_IDX).Text)
@@ -293,16 +295,15 @@ Public Class CertExtendedItemForm
                 Dim attribute As CertExtendedItemFormBO = New CertExtendedItemFormBO(dvRow.Row)
                 Dim rowState As DataControlRowState = CType(e.Row.RowState, DataControlRowState)
 
-                'Dim CurrentCertConfigID As Guid = New Guid(attribute.Id)
-
                 e.Row.Cells(GRID_COL_ID_IDX).Text = attribute.Id.ToString()
 
                 If (rowState And DataControlRowState.Edit) = DataControlRowState.Edit Then
 
-                    Dim inEnrollmentDropDown As DropDownList = CType(e.Row.FindControl(IN_ENROLLMENT_DROPDOWN_NAME), DropDownList)
+                    'Dim inEnrollmentDropDown As DropDownList = CType(e.Row.FindControl(IN_ENROLLMENT_DROPDOWN_NAME), DropDownList)
                     Dim defaultValueTextBox As TextBox = CType(e.Row.FindControl(DEFAULT_VALUE_TEXTBOX_NAME), TextBox)
                     Dim fieldNameTextBox As TextBox = CType(e.Row.FindControl(FIELD_NAME_TEXTBOX_NAME), TextBox)
                     Dim allowUpdateDropDown As DropDownList = CType(e.Row.FindControl(ALLOW_UPDATE_DROPDOWN_NAME), DropDownList)
+                    Dim allowDisplayDropDown As DropDownList = CType(e.Row.FindControl(ALLOW_DISPLAY_DROPDOWN_NAME), DropDownList)
 
                     Dim populateOptions = New PopulateOptions() With
                                             {
@@ -310,13 +311,15 @@ Public Class CertExtendedItemForm
                                             }
 
 
-                    inEnrollmentDropDown.Populate(yesNoList.ToArray(), populateOptions)
+                    'inEnrollmentDropDown.Populate(yesNoList.ToArray(), populateOptions)
                     allowUpdateDropDown.Populate(yesNoList.ToArray(), populateOptions)
+                    allowDisplayDropDown.Populate(yesNoList.ToArray(), populateOptions)
 
                     Dim defaultSelectedCodeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
 
-                    SetSelectedItem(inEnrollmentDropDown, defaultSelectedCodeId)
+                    'SetSelectedItem(inEnrollmentDropDown, defaultSelectedCodeId)
                     SetSelectedItem(allowUpdateDropDown, defaultSelectedCodeId)
+                    SetSelectedItem(allowDisplayDropDown, defaultSelectedCodeId)
 
                     If attribute.FieldName IsNot Nothing Then
                         fieldNameTextBox.Text = attribute.FieldName
@@ -328,27 +331,34 @@ Public Class CertExtendedItemForm
                     End If
                     defaultValueTextBox.MaxLength = DEFAULT_VALUE_TEXTBOX_MAX_LENGTH
 
-                    If attribute.InEnrollment IsNot Nothing Then
-                        defaultSelectedCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, attribute.InEnrollment)
-                        SetSelectedItem(inEnrollmentDropDown, defaultSelectedCodeId)
-                    End If
+                    'If attribute.InEnrollment IsNot Nothing Then
+                    '    defaultSelectedCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, attribute.InEnrollment)
+                    '    SetSelectedItem(inEnrollmentDropDown, defaultSelectedCodeId)
+                    'End If
 
                     If attribute.AllowUpdate IsNot Nothing Then
                         defaultSelectedCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, attribute.AllowUpdate)
                         SetSelectedItem(allowUpdateDropDown, defaultSelectedCodeId)
                     End If
+
+                    If attribute.AllowDisplay IsNot Nothing Then
+                        defaultSelectedCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, attribute.AllowDisplay)
+                        SetSelectedItem(allowDisplayDropDown, defaultSelectedCodeId)
+                    End If
                 Else
                     _YesNoDataView = LookupListNew.GetYesNoLookupList(LookupListNew.GetIdFromCode(LookupListNew.LK_LANGUAGES, languageCode), False)
 
                     Dim fieldNameLabel As Label = CType(e.Row.FindControl(FIELD_NAME_LABEL_NAME), Label)
-                    Dim inEnrollmentLabel As Label = CType(e.Row.FindControl(IN_ENROLLMENT_LABEL_NAME), Label)
+                    'Dim inEnrollmentLabel As Label = CType(e.Row.FindControl(IN_ENROLLMENT_LABEL_NAME), Label)
                     Dim defaultValueLabel As Label = CType(e.Row.FindControl(DEFAULT_VALUE_LABEL_NAME), Label)
                     Dim allowUpdateLabel As Label = CType(e.Row.FindControl(ALLOW_UPDATE_LABEL_NAME), Label)
+                    Dim allowDisplayLabel As Label = CType(e.Row.FindControl(ALLOW_DISPLAY_LABEL_NAME), Label)
 
                     fieldNameLabel.Text = attribute.FieldName
-                    inEnrollmentLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.InEnrollment)
+                    'inEnrollmentLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.InEnrollment)
                     defaultValueLabel.Text = attribute.DefaultValue
                     allowUpdateLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.AllowUpdate)
+                    allowDisplayLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.AllowDisplay)
 
                     Me.TextboxCertItemConfigCode.Text = attribute.Code
                     Me.TextboxCertItemConfigDesc.Text = attribute.Description
@@ -368,7 +378,7 @@ Public Class CertExtendedItemForm
     End Sub
 #End Region
     Private Sub SetStateProperties()
-        Me.State.CodeMask = TextboxCertItemConfigCode.Text.Trim()
+        Me.State.CodeMask = TextboxCertItemConfigCode.Text.ToUpper().Trim()
     End Sub
 
 #Region "Page Events"
@@ -380,13 +390,13 @@ Public Class CertExtendedItemForm
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         'Put user code to initialize the page here
         Me.MasterPage.MessageController.Clear_Hide()
-        Me.SetStateProperties()
         Try
             Me.MasterPage.MessageController.Clear()
             Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(ADMIN)
             Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(CERTITEMEXTENDEDCONTROL)
             Me.UpdateBreadCrum()
             If Not Me.IsPostBack Then
+                Me.SetStateProperties()
                 Me.SetGridItemStyleColor(GridViewCertItemConfig)
                 Me.TranslateGridHeader(GridViewCertItemConfig)
                 Me.ShowMissingTranslations(Me.MasterPage.MessageController)
@@ -396,12 +406,15 @@ Public Class CertExtendedItemForm
                 If Me.State.MyBO Is Nothing Then
                     Me.State.MyBO = New CertExtendedItemFormBO
                 End If
+                'Me.PopulateGrid()
                 Me.PopulateBOFromForm()
                 Me.PopulateFormFromBOs()
                 rdoDealers.Attributes.Add("onClick", "javascript:changeSelection()")
                 rdoCompanies.Attributes.Add("onClick", "javascript:changeSelection()")
                 hrefCompany.Attributes.Add("onClick", "javascript:changeSelectionCompany()")
                 hrefDealer.Attributes.Add("onClick", "javascript:changeSelectionDealer()")
+                Me.TextboxCertItemConfigCode.MaxLength = CODE_TEXTBOX_MAX_LENGTH
+                Me.TextboxCertItemConfigDesc.MaxLength = DESCRIPTION_TEXTBOX_MAX_LENGTH
             Else
                 BindBoPropertiesToGridHeaders()
             End If
@@ -430,6 +443,7 @@ Public Class CertExtendedItemForm
         SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.CertExtConfigID, Me.GridViewCertItemConfig, Me.State.PageIndex, Me.State.IsRowBeingEdited)
         Me.SortAndBindGrid()
         Me.State.HasDataChanged = False
+        ' PopulateUserConctrols()
     End Sub
     Private Sub SortAndBindGrid()
         Me.State.PageIndex = Me.GridViewCertItemConfig.PageIndex
@@ -489,10 +503,14 @@ Public Class CertExtendedItemForm
         End Try
     End Sub
     Sub PopulateEmptyGrid()
+        Session("recCount") = 0
         GridViewCertItemConfig.EditIndex = -1
         ' Bind Data to Grid
         Me.GridViewCertItemConfig.DataSource = New ArrayList()
         Me.GridViewCertItemConfig.DataBind()
+        If Me.GridViewCertItemConfig.Visible Then
+            Me.lblRecordCount.Text = Session("recCount").ToString & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        End If
     End Sub
 #End Region
     Private Sub PopulateBoFromControls(ByVal gridViewRow As GridViewRow)
@@ -504,11 +522,14 @@ Public Class CertExtendedItemForm
                 Dim txtDefaultValue As TextBox = CType(gridViewRow.FindControl(DEFAULT_VALUE_TEXTBOX_NAME), TextBox)
                 Me.PopulateBOProperty(.MyBO, "DefaultValue", txtDefaultValue.Text.Trim())
 
-                Dim ddInEnrollment As DropDownList = CType(gridViewRow.FindControl(IN_ENROLLMENT_DROPDOWN_NAME), DropDownList)
-                Me.PopulateBOProperty(.MyBO, "InEnrollment", ddInEnrollment.SelectedItem.Text.Substring(0, 1).Trim())
+                'Dim ddInEnrollment As DropDownList = CType(gridViewRow.FindControl(IN_ENROLLMENT_DROPDOWN_NAME), DropDownList)
+                'Me.PopulateBOProperty(.MyBO, "InEnrollment", ddInEnrollment.SelectedItem.Text.Substring(0, 1).Trim())
 
                 Dim ddAllowUpdate As DropDownList = CType(gridViewRow.FindControl(ALLOW_UPDATE_DROPDOWN_NAME), DropDownList)
                 Me.PopulateBOProperty(.MyBO, "AllowUpdate", ddAllowUpdate.SelectedItem.Text.Substring(0, 1).Trim())
+
+                Dim ddAllowDisplay As DropDownList = CType(gridViewRow.FindControl(ALLOW_DISPLAY_DROPDOWN_NAME), DropDownList)
+                Me.PopulateBOProperty(.MyBO, "AllowDisplay", ddAllowDisplay.SelectedItem.Text.Substring(0, 1).Trim())
 
                 Me.PopulateBOProperty(.MyBO, "Code", Me.TextboxCertItemConfigCode.Text.Trim())
                 Me.PopulateBOProperty(.MyBO, "Description", Me.TextboxCertItemConfigDesc.Text.Trim())
@@ -524,13 +545,17 @@ Public Class CertExtendedItemForm
             Throw New GUIException(Message.MSG_CERT_EXT_CODE_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_CODE_VALUE_REQUIRED)
         End If
 
+        If (String.IsNullOrEmpty(Me.State.MyBO.Description)) Then
+            Throw New GUIException(Message.MSG_CERT_EXT_DESC_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_DESC_VALUE_REQUIRED)
+        End If
+
         If (String.IsNullOrEmpty(Me.State.MyBO.FieldName)) Then
             Throw New GUIException(Message.MSG_CERT_EXT_FIELD_NAME_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_FIELD_NAME_REQUIRED)
         End If
 
-        If Not (String.IsNullOrEmpty(Me.State.MyBO.InEnrollment)) AndAlso (Me.State.MyBO.InEnrollment.Substring(0, 1)) = Codes.YESNO_N AndAlso (String.IsNullOrEmpty(Me.State.MyBO.DefaultValue)) Then
-            Throw New GUIException(Message.MSG_CERT_EXT_DEFAULT_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_DEFAULT_VALUE_REQUIRED)
-        End If
+        'If Not (String.IsNullOrEmpty(Me.State.MyBO.InEnrollment)) AndAlso (Me.State.MyBO.InEnrollment.Substring(0, 1)) = Codes.YESNO_N AndAlso (String.IsNullOrEmpty(Me.State.MyBO.DefaultValue)) Then
+        '    Throw New GUIException(Message.MSG_CERT_EXT_DEFAULT_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_DEFAULT_VALUE_REQUIRED)
+        'End If
 
         Dim dvCertConfigDV As CertExtendedItemFormBO.CertExtendedItemSearchDV = CertExtendedItemFormBO.GetList(Me.State.MyBO.Code)
         If Not dvCertConfigDV Is Nothing AndAlso dvCertConfigDV.Count > 0 Then
@@ -544,5 +569,56 @@ Public Class CertExtendedItemForm
             Next
         End If
     End Function
+    Protected Sub PopulateBOsFormFrom()
+        'populate selection of rule, dealer and company to children
+        Me.State.MyBO.PopulateDealerList(UserControlAvailableSelectedDealers.SelectedList)
+        Me.State.MyBO.PopulateCompanyList(UserControlAvailableSelectedCompanies.SelectedList)
 
+        If Me.ErrCollection.Count > 0 Then
+            Throw New PopulateBOErrorException
+        End If
+    End Sub
+    Protected Sub btnSaveConfig_Click(sender As Object, e As EventArgs) Handles btnSaveConfig.Click
+        Try
+
+            Me.PopulateBOsFormFrom()
+            'Me.State.MyBO.Validate()
+            'If Me.CheckRuleListOverlap() Then
+            '    If Me.CheckExistingFutureRuleOverlap() Then
+            '        Throw New GUIException(Message.MSG_GUI_OVERLAPPING_RULES, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_LIST_CODE_OVERLAPPED)
+            '    End If
+            '    Me.DisplayMessage(Message.MSG_GUI_OVERLAPPING_RECORDS, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+            '    Me.State.ActionInProgress = DetailPageCommand.Accept
+            '    Me.State.OverlapExists = True
+            '    Exit Sub
+            'End If
+
+            If Me.State.MyBO.IsDirty Then
+                Me.State.MyBO.Save()
+                Me.State.HasDataChanged = False
+                'Me.PopulateFormFromBOs()
+                Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+            Else
+                Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
+            End If
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Protected Sub TextboxCertItemConfigCode_TextChanged(sender As Object, e As EventArgs) Handles TextboxCertItemConfigCode.TextChanged
+        Try
+            If Me.btnAdd.Enabled = True AndAlso Not Me.State.CodeMask.Equals(TextboxCertItemConfigCode.Text.ToUpper().Trim()) Then
+                Me.SetStateProperties()
+                Me.TextboxCertItemConfigDesc.Text = ""
+                Me.State.HasDataChanged = True
+                Me.State.IsGridVisible = True
+                'Me.State.CertExtConfigID = Guid.Empty
+                'Me.BeginEdit(Guid.Empty)
+                PopulateGrid()
+            End If
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
 End Class
