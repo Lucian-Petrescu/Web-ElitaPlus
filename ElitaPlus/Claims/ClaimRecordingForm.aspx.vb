@@ -934,7 +934,7 @@ Public Class ClaimRecordingForm
                 End If
             Catch ex As FaultException
                 ThrowWsFaultExceptions(ex)
-                Exit Sub
+                Return
             End Try
             If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing Then
                 If Not String.IsNullOrEmpty(callerinfo.FirstName) OrElse Not String.IsNullOrEmpty(callerinfo.LastName) Then
@@ -997,7 +997,8 @@ Public Class ClaimRecordingForm
             '    Dim oCase As CaseBase = New CaseBase(State.caseId)
             '    NavController.Navigate(Me, FlowEvents.EVENT_DENIED_CASE_CRATED, New CaseDetailsForm.Parameters(oCase))
             Dim errMsg As List(Of String) = New List(Of String)
-            If Not State.CertificateId.Equals(Guid.Empty) Then
+            If  Not State.CertificateId.Equals(Guid.Empty) Then
+            
                 Dim policyRequest As CreateCaseRequest = New CreateCaseRequest()
                 policyRequest.PurposeCode = moPurposecode.SelectedValue
                 If (String.IsNullOrEmpty(policyRequest.PurposeCode)) Then
@@ -1054,19 +1055,24 @@ Public Class ClaimRecordingForm
                     Return
                 End Try
 
-                If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing Then
-                    If Not String.IsNullOrEmpty(callerinfo.FirstName) OrElse Not String.IsNullOrEmpty(callerinfo.LastName) Then
-                        Dim callerName As String = callerinfo.FirstName & " " & callerinfo.LastName
-                        moProtectionEvtDtl.CallerName = callerName.Trim
-                    End If
-                    DisplayNextView()
-                End If
-            ElseIf Not State.CaseId.Equals(Guid.Empty) Then
-                CaseContinue()
-            End If
+                ProcessCallerResponse(callerinfo.FirstName,callerinfo.LastName)
+               
+        ElseIf Not State.CaseId.Equals(Guid.Empty) Then
+            CaseContinue()
+        End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
+    End Sub
+
+    Private Sub ProcessCallerResponse(callerFirstName As string, callerLastName as string )
+        If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing Then
+            If Not String.IsNullOrEmpty(CallerFirstName) OrElse Not String.IsNullOrEmpty(callerLastName) Then
+                Dim callerName As String = CallerFirstName & " " & callerLastName
+                moProtectionEvtDtl.CallerName = callerName.Trim
+            End If
+            DisplayNextView()
+        End If
     End Sub
     Private Sub CheckCallerInfoErrors(ByRef callerInfo As PhoneCaller, ByRef errMessage As List(Of string))
 
@@ -1116,7 +1122,7 @@ Public Class ClaimRecordingForm
                 For Each gridItem As GridViewRow In GridItems.Rows
                     If gridItem.RowType <> DataControlRowType.Header AndAlso gridItem.RowType <> DataControlRowType.Footer Then
                         rdoDevice = DirectCast(gridItem.FindControl("rdoItems"), RadioButton)
-                        If rdoDevice IsNot Nothing AndAlso checked = False AndAlso Not IsDeviceExpired(gridItem) Then
+                        If rdoDevice IsNot Nothing AndAlso Not checked  AndAlso Not IsDeviceExpired(gridItem) Then
                             rdoDevice.Checked = True
                             checked = True
                         End If
@@ -1269,36 +1275,37 @@ Public Class ClaimRecordingForm
         Dim rdoSelect As RadioButton
        
         Try
-            If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing AndAlso State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(ItemSelectionResponse) Then
-               
-                Dim claimDevice As New DeviceInfo()
-                Dim enrolledDevice As New DeviceInfo()
-                Dim itemSelectionRequest As DeviceSelectionRequest = New DeviceSelectionRequest()
-
-                For Each row In GridItems.Rows
-                    rdoSelect = DirectCast(row.FindControl("rdoItems"), RadioButton)
-                    If rdoSelect IsNot Nothing  AndAlso rdoSelect.Checked Then
-                        If (State.EnableModifyClaimedDevice) Then
-                            claimdevice = GetClaimDevice(row)
-                            enrolledDevice = GetEnrolledDevice(row)
-                            itemSelectionRequest.ClaimedDevice = claimdevice
-                            itemSelectionRequest.EnrolledDevice = enrolleddevice
-                        else
-                            claimdevice = GetClaimDevice(row)
-                            itemSelectionRequest.ClaimedDevice = claimdevice
-                            itemSelectionRequest.EnrolledDevice = claimdevice
-                        End If
-                       
-                        If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
-                            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
-                            return
-                        End If
-
-                    End If
-                Next
-                SubmitDeviceSelectionRequest(itemSelectionRequest)
+            If State.SubmitWsBaseClaimRecordingResponse Is Nothing AndAlso State.SubmitWsBaseClaimRecordingResponse.GetType() IsNot GetType(ItemSelectionResponse) Then
+                Return
             End If
-        Catch ex As Exception
+               
+            Dim claimDevice As New DeviceInfo()
+            Dim enrolledDevice As New DeviceInfo()
+            Dim itemSelectionRequest As DeviceSelectionRequest = New DeviceSelectionRequest()
+
+            For Each row In GridItems.Rows
+                rdoSelect = DirectCast(row.FindControl("rdoItems"), RadioButton)
+                If rdoSelect IsNot Nothing  AndAlso rdoSelect.Checked Then
+                    If (State.EnableModifyClaimedDevice) Then
+                        claimdevice = GetClaimDevice(row)
+                        enrolledDevice = GetEnrolledDevice(row)
+                        itemSelectionRequest.ClaimedDevice = claimdevice
+                        itemSelectionRequest.EnrolledDevice = enrolleddevice
+                    else
+                        claimdevice = GetClaimDevice(row)
+                        itemSelectionRequest.ClaimedDevice = claimdevice
+                        itemSelectionRequest.EnrolledDevice = claimdevice
+                    End If
+                   
+                    If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
+                        MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
+                        return
+                    End If
+
+                End If
+            Next
+            SubmitDeviceSelectionRequest(itemSelectionRequest)
+           Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
@@ -1374,53 +1381,56 @@ Public Class ClaimRecordingForm
         Dim deviceSubmitobj As ItemSelectionResponse
 
         Try
-            If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing AndAlso State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(ItemSelectionResponse) Then
-                deviceSubmitobj = DirectCast(State.SubmitWsBaseClaimRecordingResponse, ItemSelectionResponse)
-                Dim itemSelectionRequest As DeviceSelectionRequest = New DeviceSelectionRequest()
-                Dim claimdevice As New DeviceInfo()
-                Dim enrolleddevice As New DeviceInfo()
-
-                For Each row In GridItems.Rows
-                    rdoSelect = DirectCast(row.FindControl("rdoItems"), RadioButton)
-                    If rdoSelect IsNot Nothing AndAlso rdoSelect.Checked Then
-
-                        claimdevice = GetClaimDevice(row)
-                        enrolledDevice = GetEnrolledDevice(row)
-
-                        If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
-
-                            claimdevice.Manufacturer = moProtectionEvtDtl.EnrolledMake
-                        End If
-                       
-                        itemSelectionRequest.ClaimedDevice = claimdevice
-                        itemSelectionRequest.EnrolledDevice = enrolleddevice
-
-                    End If
-                Next
-
-                If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
-                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
-                    return
-                End If
-
-                If itemSelectionRequest.ClaimedDevice IsNot Nothing Then
-                    itemSelectionRequest.CompanyCode = deviceSubmitobj.CompanyCode
-                    itemSelectionRequest.CaseNumber = deviceSubmitobj.CaseNumber
-                    itemSelectionRequest.InteractionNumber = deviceSubmitobj.InteractionNumber
-                    Try
-                        WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService)(
-                            GetClient(),
-                            New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                            Sub(ByVal c As ClaimRecordingServiceClient)
-                                c.Save(itemSelectionRequest)
-                            End Sub)
-                    Catch ex As FaultException
-                        ThrowWsFaultExceptions(ex)
-                        Return
-                    End Try
-                    ReturnBackToCallingPage()
-                End If
+            If State.SubmitWsBaseClaimRecordingResponse Is Nothing AndAlso State.SubmitWsBaseClaimRecordingResponse.GetType() IsNot GetType(ItemSelectionResponse) Then
+                Return
             End If
+
+            deviceSubmitobj = DirectCast(State.SubmitWsBaseClaimRecordingResponse, ItemSelectionResponse)
+            Dim itemSelectionRequest As DeviceSelectionRequest = New DeviceSelectionRequest()
+            Dim claimdevice As New DeviceInfo()
+            Dim enrolleddevice As New DeviceInfo()
+
+            For Each row In GridItems.Rows
+                rdoSelect = DirectCast(row.FindControl("rdoItems"), RadioButton)
+                If rdoSelect IsNot Nothing AndAlso rdoSelect.Checked Then
+
+                    claimdevice = GetClaimDevice(row)
+                    enrolledDevice = GetEnrolledDevice(row)
+
+                    If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
+
+                        claimdevice.Manufacturer = moProtectionEvtDtl.EnrolledMake
+                    End If
+                   
+                    itemSelectionRequest.ClaimedDevice = claimdevice
+                    itemSelectionRequest.EnrolledDevice = enrolleddevice
+
+                End If
+            Next
+
+            If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
+                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
+                return
+            End If
+
+            If itemSelectionRequest.ClaimedDevice IsNot Nothing Then
+                itemSelectionRequest.CompanyCode = deviceSubmitobj.CompanyCode
+                itemSelectionRequest.CaseNumber = deviceSubmitobj.CaseNumber
+                itemSelectionRequest.InteractionNumber = deviceSubmitobj.InteractionNumber
+                Try
+                    WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService)(
+                        GetClient(),
+                        New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                        Sub(ByVal c As ClaimRecordingServiceClient)
+                            c.Save(itemSelectionRequest)
+                        End Sub)
+                Catch ex As FaultException
+                    ThrowWsFaultExceptions(ex)
+                    Return
+                End Try
+                ReturnBackToCallingPage()
+            End If
+            
        Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -1677,7 +1687,7 @@ Public Class ClaimRecordingForm
     Private Sub ShowShippingAddressView()
         mvClaimsRecording.ActiveViewIndex = ClaimRecordingViewIndexShippingAddress
         PopulateBoPolicyAddress()
-        If Not UserControlAddress Is Nothing AndAlso State.PolicyAddressBo IsNot Nothing Then
+        If UserControlAddress IsNot Nothing AndAlso State.PolicyAddressBo IsNot Nothing Then
             UserControlAddress.Bind(State.PolicyAddressBo)
             UserControlAddress.EnableControls(True)
         End If
@@ -1880,7 +1890,7 @@ Public Class ClaimRecordingForm
         If webResponse IsNot Nothing Then
             State.SubmitWsBaseClaimRecordingResponse = webResponse
             State.serviceCentreCity = city
-            State.serviceCentrePostalCode = PostalCode
+            State.serviceCentrePostalCode = postalCode
         End If
     End Sub
 
@@ -2225,7 +2235,7 @@ Public Class ClaimRecordingForm
 
 
     Protected Sub rep_OnItemDataBound(sender As Object, e As RepeaterItemEventArgs)
-        If Not e.Item.ItemType = ListItemType.Item OrElse Not e.Item.ItemType = ListItemType.AlternatingItem Then
+        If e.Item.ItemType <> ListItemType.Item OrElse  e.Item.ItemType <> ListItemType.AlternatingItem Then
             Return
         End if
             Dim panelCurrentDevice As Panel = DirectCast(e.Item.FindControl("panelCurrentDevice"), Panel)
@@ -2342,8 +2352,7 @@ Public Class ClaimRecordingForm
     End Sub
 
     Private Sub ShowFulfillmentOptionsView()
-        If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing Then
-            If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(FulfillmentOptionsResponse) Then
+        If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing  AndAlso State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(FulfillmentOptionsResponse) Then
                 Dim wsResponse As FulfillmentOptionsResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, FulfillmentOptionsResponse)
                 If  wsResponse IsNot Nothing AndAlso  wsResponse.ClaimRecordingMessages IsNot Nothing Then
                     DisplayWsErrorMessage(wsResponse.ClaimRecordingMessages)
@@ -2354,7 +2363,6 @@ Public Class ClaimRecordingForm
                 ShowFulfillmentOptionQuestionSet(wsResponse)
 
                 mvClaimsRecording.ActiveViewIndex = ClaimRecordingViewIndexFulfillmentOptions
-            End If
         End If
     End Sub
 
@@ -2641,7 +2649,7 @@ Public Class ClaimRecordingForm
     Private Sub SetDeliveryAndServiceCenterOption(logisticsOptionItem As LogisticOption, gridViewTarget as GridView, gridRowNumber As Integer,isEnableControl As Boolean)
 
         If logisticsOptionItem IsNot Nothing _
-           AndAlso Not logisticsOptionItem.DeliveryOptions Is Nothing _
+           AndAlso logisticsOptionItem.DeliveryOptions IsNot Nothing _
            AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate Then
 
             Dim btnEstimateDeliveryDate As Button = CType(gridViewTarget.Rows(gridRowNumber).FindControl(GridLoEstimateDeliveryDateBtnCtrl), Button)
@@ -2789,75 +2797,77 @@ Public Class ClaimRecordingForm
         Return True
     End Function
 
-    Private Function ProcessUserSelectedLogisticOptions(lOption as LogisticOption,gvr As GridViewRow ) as Boolean
-         If lOption IsNot Nothing _
-                   AndAlso (lOption.Type = LogisticOptionType.DealerBranchAddress OrElse lOption.Type = LogisticOptionType.CustomerAddress) Then
+    Private Function ProcessUserSelectedLogisticOptions(ByRef lOption as LogisticOption,gvr As GridViewRow ) as Boolean
 
-                    Dim addressSelected As ClaimRecordingService.Address = PopulateAddressFromAddressController(CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ucAddressControllerLogisticsOptions"), UserControlAddress_New))
-                    Dim postalCodeOld As String
-                    Dim countryCodeOld As String
+        If lOption Is Nothing _
+                   AndAlso Not (lOption.Type = LogisticOptionType.DealerBranchAddress OrElse lOption.Type = LogisticOptionType.CustomerAddress) Then
+             Return True
+         End If
 
-                    If addressSelected.Address1 Is Nothing OrElse addressSelected.Address1.Trim() = String.Empty Then
-                        MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS1_FIELD_IS_REQUIRED, True)
-                        Return False
-                    End If
+        Dim addressSelected As ClaimRecordingService.Address = PopulateAddressFromAddressController(CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ucAddressControllerLogisticsOptions"), UserControlAddress_New))
+        Dim postalCodeOld As String
+        Dim countryCodeOld As String
 
-                    If lOption.Type = LogisticOptionType.DealerBranchAddress Then
-                        Dim storeNumber As String = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(GridLoStoreNumberTxtCtrl), TextBox).Text
-                        If String.IsNullOrWhiteSpace(storeNumber) Then
-                            MasterPage.MessageController.AddError(Message.MSG_ERR_STORE_NUMBER_MANDATORY, True)
+        If addressSelected.Address1 Is Nothing OrElse addressSelected.Address1.Trim() = String.Empty Then
+            MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS1_FIELD_IS_REQUIRED, True)
+            Return False
+        End If
+
+        If lOption.Type = LogisticOptionType.DealerBranchAddress Then
+            Dim storeNumber As String = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(GridLoStoreNumberTxtCtrl), TextBox).Text
+            If String.IsNullOrWhiteSpace(storeNumber) Then
+                MasterPage.MessageController.AddError(Message.MSG_ERR_STORE_NUMBER_MANDATORY, True)
+                Return False
+            End If
+            If lOption.LogisticOptionInfo IsNot Nothing _
+           AndAlso  CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address IsNot Nothing Then
+                postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.PostalCode
+                countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.Country
+            End If
+            CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).BranchCode = storeNumber
+            CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address = addressSelected
+
+        ElseIf lOption.Type = LogisticOptionType.CustomerAddress Then
+            If  lOption.LogisticOptionInfo IsNot Nothing _
+           AndAlso CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address IsNot Nothing Then
+                postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.PostalCode
+                countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.Country
+            End If
+
+            CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address = addressSelected
+        End If
+
+        If  lOption IsNot Nothing _
+        AndAlso  lOption.DeliveryOptions IsNot Nothing _
+        AndAlso lOption.DeliveryOptions.DisplayEstimatedDeliveryDate Then
+
+            If (Not String.IsNullOrWhiteSpace(countryCodeOld) AndAlso addressSelected.Country <> countryCodeOld) _
+           OrElse (Not String.IsNullOrWhiteSpace(postalCodeOld) AndAlso addressSelected.PostalCode <> postalCodeOld) Then
+                MasterPage.MessageController.AddError(Message.MSG_ERR_GET_DELIVERY_DATE, True)
+                Return False
+            End If
+
+            Dim ucDeliverySlots As UserControlDeliverySlot = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(LogisticsOptionsEstimateDeliveryDateCtrl), UserControlDeliverySlot)
+            Dim selectedDeliveryDate As Nullable(Of Date) = ucDeliverySlots.DeliveryDate
+
+            State.DeliveryDate = ucDeliverySlots.DeliveryDate
+            State.DefaultDeliveryDay = ucDeliverySlots.DefaultDeliveryDay
+            State.DeliverySlotTimeSpan = If(ucDeliverySlots.DeliverySlotTimeSpan Is Nothing, TimeSpan.Zero, ucDeliverySlots.DeliverySlotTimeSpan)
+
+            If lOption.DeliveryOptions.DesiredDeliveryDateMandatory AndAlso Not selectedDeliveryDate.HasValue Then
+                MasterPage.MessageController.AddError(Message.MSG_ERR_DELIVERY_DATE_MANDATORY, True)
+                Return False
+            Else
+                If  lOption.LogisticOptionInfo IsNot Nothing  AndAlso State.LogisticsOption.Code.ToUpper().Equals("X") Then
+                        If Not State.IsExpeditedBtnClicked Then
+                            MasterPage.MessageController.AddError(Message.MSG_ERR_SELECT_EXPEDITED_DELIVERY_BUTTON, True)
                             Return False
                         End If
-                        If lOption.LogisticOptionInfo IsNot Nothing _
-                       AndAlso  CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address IsNot Nothing Then
-                            postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.PostalCode
-                            countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.Country
-                        End If
-                        CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).BranchCode = storeNumber
-                        CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address = addressSelected
-
-                    ElseIf lOption.Type = LogisticOptionType.CustomerAddress Then
-                        If  lOption.LogisticOptionInfo IsNot Nothing _
-                       AndAlso CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address IsNot Nothing Then
-                            postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.PostalCode
-                            countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.Country
-                        End If
-
-                        CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address = addressSelected
-                    End If
-
-                    If  lOption IsNot Nothing _
-                   AndAlso  lOption.DeliveryOptions IsNot Nothing _
-                   AndAlso lOption.DeliveryOptions.DisplayEstimatedDeliveryDate Then
-
-                        If (Not String.IsNullOrWhiteSpace(countryCodeOld) AndAlso addressSelected.Country <> countryCodeOld) _
-                       OrElse (Not String.IsNullOrWhiteSpace(postalCodeOld) AndAlso addressSelected.PostalCode <> postalCodeOld) Then
-                            MasterPage.MessageController.AddError(Message.MSG_ERR_GET_DELIVERY_DATE, True)
-                            Return False
-                        End If
-
-                        Dim ucDeliverySlots As UserControlDeliverySlot = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(LogisticsOptionsEstimateDeliveryDateCtrl), UserControlDeliverySlot)
-                        Dim selectedDeliveryDate As Nullable(Of Date) = ucDeliverySlots.DeliveryDate
-
-                        State.DeliveryDate = ucDeliverySlots.DeliveryDate
-                        State.DefaultDeliveryDay = ucDeliverySlots.DefaultDeliveryDay
-                        State.DeliverySlotTimeSpan = If(ucDeliverySlots.DeliverySlotTimeSpan Is Nothing, TimeSpan.Zero, ucDeliverySlots.DeliverySlotTimeSpan)
-
-                        If lOption.DeliveryOptions.DesiredDeliveryDateMandatory AndAlso Not selectedDeliveryDate.HasValue Then
-                            MasterPage.MessageController.AddError(Message.MSG_ERR_DELIVERY_DATE_MANDATORY, True)
-                            Return False
-                        Else
-                            If  lOption.LogisticOptionInfo IsNot Nothing  AndAlso State.LogisticsOption.Code.ToUpper().Equals("X") Then
-                                    If Not State.IsExpeditedBtnClicked Then
-                                        MasterPage.MessageController.AddError(Message.MSG_ERR_SELECT_EXPEDITED_DELIVERY_BUTTON, True)
-                                        Return False
-                                    End If
-                                lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = selectedDeliveryDate
-                            End If
-                        End If
-                    End If
-
+                    lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = selectedDeliveryDate
                 End If
+            End If
+        End If
+
         Return True
     End Function
     Private Function ValidateServiceCenterSelection(lOption As LogisticOption,gvr as GridViewRow, ByRef logisticStage As LogisticStage) As Boolean
@@ -2963,8 +2973,7 @@ Public Class ClaimRecordingForm
         End Try
     End Sub
 
-    <Obsolete>
-    Private Sub GetEstimatedDeliveryDate(ByRef ucDeliverySlots As UserControlDeliverySlot, ByVal deliveryAddress As ClaimRecordingService.Address, ByVal deliveryOptions As DeliveryOptions)
+   Private Sub GetEstimatedDeliveryDate(ByRef ucDeliverySlots As UserControlDeliverySlot, ByVal deliveryAddress As ClaimRecordingService.Address, ByVal deliveryOptions As DeliveryOptions)
         Try
             'get the service center
             Dim serviceCenterCode As String = String.Empty
