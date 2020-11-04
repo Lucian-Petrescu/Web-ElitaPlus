@@ -213,13 +213,12 @@ Public Class ClaimWizardForm
     Private Sub Page_PageReturn() Handles MyBase.PageReturn
         If (Me.CalledUrl = ClaimIssueDetailForm.URL OrElse Me.CalledUrl = ClaimDeductibleRefundForm.URL) Then
 
-            If Not Me.State.ClaimBO.Id.Equals(Guid.Empty) Then
+            If Not State.ClaimBO.Id.Equals(Guid.Empty) Then
                 Me.State.ClaimBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.State.ClaimBO.Id)
-                If (Not Me.State.ClaimBO Is Nothing) Then
-
-                    If Me.State.ClaimBO.Status = BasicClaimStatus.Active OrElse Me.State.ClaimBO.Status = BasicClaimStatus.Denied Then
+                If  State.ClaimBO IsNot Nothing Then
+                    If ((State.ClaimBO.Status = BasicClaimStatus.Active) OrElse (State.ClaimBO.Status = BasicClaimStatus.Denied)) Then
                         '//TO-DO: Navigate to Claim Details page (ClaimForm.aspx)                        
-                        Me.callPage(ClaimForm.URL, New ClaimForm.Parameters(Me.State.ClaimBO.Id, Me.State.IsCallerAuthenticated))
+                        callPage(ClaimForm.URL, New ClaimForm.Parameters(Me.State.ClaimBO.Id, Me.State.IsCallerAuthenticated))
                     End If
                 End If
             End If
@@ -330,6 +329,7 @@ Public Class ClaimWizardForm
             BindBoPropertiesToLabels(Me.State.StepName)
             PopulateClaimedEnrolledDetails()
         Catch ex As Threading.ThreadAbortException
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -384,6 +384,7 @@ Public Class ClaimWizardForm
                 Me.State.IsEditMode = False
             End If
         Catch ex As Threading.ThreadAbortException
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         Catch ex As Exception
             Me.HandleErrors(ex, Me.ErrControllerMaster)
         End Try
@@ -393,6 +394,7 @@ Public Class ClaimWizardForm
         Try
             Me.ReturnBackToCallingPage()
         Catch ex As Threading.ThreadAbortException
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         Catch ex As Exception
             Me.HandleErrors(ex, Me.ErrControllerMaster)
         End Try
@@ -930,6 +932,7 @@ Public Class ClaimWizardForm
             Dim x As String = "<script language='JavaScript'> revealModal('ModalDenyClaim') </script>"
             Me.RegisterStartupScript("Startup", x)
         Catch ex As Threading.ThreadAbortException
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         Catch ex As Assurant.ElitaPlus.BusinessObjectsNew.BOValidationException
             'Allow bypassing LossDate validation denying an expired item claim
             If ex.ValidationErrorList.Count = 1 And
@@ -961,6 +964,7 @@ Public Class ClaimWizardForm
             Me.State.ClaimBO.IsUpdatedComment = True
             GoToNextStep()
         Catch ex As Threading.ThreadAbortException
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -983,6 +987,7 @@ Public Class ClaimWizardForm
             Me.State.ClaimBO.Save()
             Me.GoToNextStep()
         Catch ex As Threading.ThreadAbortException
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -1105,6 +1110,7 @@ Public Class ClaimWizardForm
             Me.ClearForm()
             Me.PopulateClaimImagesGrid()
         Catch ex As Threading.ThreadAbortException
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         Catch ex As BOValidationException
             ' Remove Mandatory Fields Validations for Hash, File Type and File Name
             Dim removeProperties As String() = New String() {"FileType", "FileName", "HashValue"}
@@ -3501,6 +3507,7 @@ Public Class ClaimWizardForm
                 End If
             End If
         Catch ex As Threading.ThreadAbortException
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -3638,6 +3645,7 @@ Public Class ClaimWizardForm
                 End If
             End If
         Catch ex As Threading.ThreadAbortException
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         Catch ex As Exception
             If (TypeOf ex Is System.Reflection.TargetInvocationException) AndAlso
                (TypeOf ex.InnerException Is Threading.ThreadAbortException) Then Return
