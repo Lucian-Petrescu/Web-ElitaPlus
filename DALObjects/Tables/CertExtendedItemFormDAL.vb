@@ -20,6 +20,8 @@ Public Class CertExtendedItemFormDal
     Public Const COL_NAME_TABLE_NAME As String = "ELP_CRT_EXT_FIELDS_CONFIG"
 
     Public Const PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID As String = "pi_crt_ext_fields_config_id"
+    Public Const PAR_I_NAME_REFERENCE_ID As String = "pi_reference_id"
+    Public Const PAR_I_NAME_REFERENCE As String = "pi_reference"
     Public Const PAR_I_NAME_CODE As String = "pi_code"
     Public Const PAR_I_NAME_DESCRIPTION As String = "pi_description"
     Public Const PAR_I_NAME_FIELD_NAME As String = "pi_field_name"
@@ -87,36 +89,6 @@ Public Class CertExtendedItemFormDal
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
-    'Public Function LoadList() As DataSet
-    '    Try
-    '        'Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_LIST"))
-    '        '    cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-    '        '    Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
-    '        'End Using
-    '        Dim table As New DataTable(TABLE_NAME)
-
-    '        With table
-    '            ' Create four typed columns in the DataTable.
-    '            .Columns.Add("cert_extended_item_id", GetType(Guid))
-    '            .Columns.Add("code", GetType(String))
-    '            .Columns.Add("description", GetType(String))
-    '            .Columns.Add("field_name", GetType(String))
-    '            .Columns.Add("in_enrollment", GetType(String))
-    '            .Columns.Add("default_value", GetType(String))
-    '            .Columns.Add("allow_update", GetType(String))
-    '            ' Add 1 rows with those columns filled in the DataTable.
-    '            '.Rows.Add(Guid.NewGuid, "FieldName1", "Y", "", "Y")
-    '        End With
-    '        Dim ds As New DataSet
-
-    '        ds.Tables.Add(table)
-
-    '        Return ds
-    '    Catch ex As Exception
-    '        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-    '    End Try
-    'End Function
-
     Public Function GetAvailableCompany() As DataView
         Dim selectStmt As String = Me.Config("/SQL/LOAD_COMPANY_LIST")
         Try
@@ -126,7 +98,34 @@ Public Class CertExtendedItemFormDal
         End Try
     End Function
 #End Region
-
+#Region "Dealer Company List"
+    Public Sub SaveDealerCompanyList(ByVal code As String, ByVal reference As String, ByVal id As Guid)
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/SAVE_DEALER_COMPANY_LIST"))
+                cmd.AddParameter(PAR_I_NAME_REFERENCE, OracleDbType.Varchar2, reference)
+                cmd.AddParameter(PAR_I_NAME_REFERENCE_ID, OracleDbType.Raw, id.ToByteArray())
+                cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, code)
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
+    Public Sub DeleteDealerCompanyList(ByVal code As String, ByVal reference As String, ByVal id As Guid)
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/DELETE_DEALER_COMPANY_LIST"))
+                cmd.AddParameter(PAR_I_NAME_REFERENCE, OracleDbType.Varchar2, reference)
+                cmd.AddParameter(PAR_I_NAME_REFERENCE_ID, OracleDbType.Raw, id.ToByteArray())
+                cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, code)
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
+#End Region
 #Region "Overloaded Methods"
     Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
         If ds Is Nothing Then

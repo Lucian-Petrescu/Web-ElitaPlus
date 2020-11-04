@@ -7,10 +7,8 @@
     <![CDATA[elp_utl_cert_item_config.LoadConfigByCode]]>
   </LOAD_LIST>
   <LOAD_CERT_EXTENDED_ITEM_LIST>
-
   </LOAD_CERT_EXTENDED_ITEM_LIST>
   <LOAD_TABLES>
-
   </LOAD_TABLES>
   <INSERT>
     <![CDATA[elp_utl_cert_item_config.AddCertItemConfig]]>
@@ -29,4 +27,10 @@
   <LOAD_SELECTED_DEALERS_LIST>
     <![CDATA[elp_utl_cert_item_config.LoadDealersByCode]]>
   </LOAD_SELECTED_DEALERS_LIST>
+  <SAVE_DEALER_COMPANY_LIST>
+    <![CDATA[elp_utl_cert_item_config.SaveDealerCompanyConfig]]>
+  </SAVE_DEALER_COMPANY_LIST>
+  <DELETE_DEALER_COMPANY_LIST>
+    <![CDATA[elp_utl_cert_item_config.DeleteDealerCompanyConfig]]>
+  </DELETE_DEALER_COMPANY_LIST>
 </SQL>

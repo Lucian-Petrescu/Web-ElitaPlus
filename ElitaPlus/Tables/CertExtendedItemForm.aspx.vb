@@ -225,11 +225,10 @@ Public Class CertExtendedItemForm
         End If
     End Sub
     Protected Sub PopulateFormFromBOs()
-        With Me.State.MyBO
-            PopulateUserConctrols()
-        End With
+        PopulateUserConctrols()
     End Sub
     Protected Sub PopulateUserConctrols()
+        Me.State.MyBO.RDO_SELECTED_VALUE = 0
         UserControlAvailableSelectedCompanies.SetAvailableData(Me.State.MyBO.GetAvailableCompanies(), "Description", "COMPANY_ID")
         UserControlAvailableSelectedCompanies.SetSelectedData(Me.State.MyBO.GetSelectedCompanies(Me.State.CodeMask), "Description", "ID")
         UserControlAvailableSelectedCompanies.BackColor = "#d5d6e4"
@@ -239,6 +238,12 @@ Public Class CertExtendedItemForm
         UserControlAvailableSelectedDealers.SetSelectedData(Me.State.MyBO.GetSelectedDealers(Me.State.CodeMask), "Description", "ID")
         UserControlAvailableSelectedDealers.BackColor = "#d5d6e4"
         UserControlAvailableSelectedDealers.RemoveSelectedFromAvailable()
+
+        If Me.State.MyBO.RDO_SELECTED_VALUE = 0 Then
+            Me.rdoCompanies.Checked = True
+        Else
+            Me.rdoDealers.Checked = True
+        End If
     End Sub
     Public Sub GridViewCertItemConfig_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles GridViewCertItemConfig.RowCommand
         Try
@@ -345,7 +350,7 @@ Public Class CertExtendedItemForm
                         defaultSelectedCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, attribute.AllowDisplay)
                         SetSelectedItem(allowDisplayDropDown, defaultSelectedCodeId)
                     End If
-                Else
+                ElseIf Not IsEmpty(attribute.Id) Then
                     _YesNoDataView = LookupListNew.GetYesNoLookupList(LookupListNew.GetIdFromCode(LookupListNew.LK_LANGUAGES, languageCode), False)
 
                     Dim fieldNameLabel As Label = CType(e.Row.FindControl(FIELD_NAME_LABEL_NAME), Label)
@@ -443,7 +448,7 @@ Public Class CertExtendedItemForm
         SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.CertExtConfigID, Me.GridViewCertItemConfig, Me.State.PageIndex, Me.State.IsRowBeingEdited)
         Me.SortAndBindGrid()
         Me.State.HasDataChanged = False
-        ' PopulateUserConctrols()
+        PopulateUserConctrols()
     End Sub
     Private Sub SortAndBindGrid()
         Me.State.PageIndex = Me.GridViewCertItemConfig.PageIndex
@@ -531,7 +536,7 @@ Public Class CertExtendedItemForm
                 Dim ddAllowDisplay As DropDownList = CType(gridViewRow.FindControl(ALLOW_DISPLAY_DROPDOWN_NAME), DropDownList)
                 Me.PopulateBOProperty(.MyBO, "AllowDisplay", ddAllowDisplay.SelectedItem.Text.Substring(0, 1).Trim())
 
-                Me.PopulateBOProperty(.MyBO, "Code", Me.TextboxCertItemConfigCode.Text.Trim())
+                Me.PopulateBOProperty(.MyBO, "Code", Me.TextboxCertItemConfigCode.Text.ToUpper().Trim())
                 Me.PopulateBOProperty(.MyBO, "Description", Me.TextboxCertItemConfigDesc.Text.Trim())
 
             End With
@@ -569,11 +574,13 @@ Public Class CertExtendedItemForm
             Next
         End If
     End Function
-    Protected Sub PopulateBOsFormFrom()
+    Protected Sub SaveDealerCompanyList()
         'populate selection of rule, dealer and company to children
-        Me.State.MyBO.PopulateDealerList(UserControlAvailableSelectedDealers.SelectedList)
-        Me.State.MyBO.PopulateCompanyList(UserControlAvailableSelectedCompanies.SelectedList)
-
+        If Me.rdoDealers.Checked Then
+            Me.State.MyBO.SaveDealerList(UserControlAvailableSelectedDealers.SelectedList, Me.State.CodeMask)
+        Else
+            Me.State.MyBO.SaveCompanyList(UserControlAvailableSelectedCompanies.SelectedList, Me.State.CodeMask)
+        End If
         If Me.ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
@@ -581,20 +588,11 @@ Public Class CertExtendedItemForm
     Protected Sub btnSaveConfig_Click(sender As Object, e As EventArgs) Handles btnSaveConfig.Click
         Try
 
-            Me.PopulateBOsFormFrom()
+            Me.SaveDealerCompanyList()
             'Me.State.MyBO.Validate()
-            'If Me.CheckRuleListOverlap() Then
-            '    If Me.CheckExistingFutureRuleOverlap() Then
-            '        Throw New GUIException(Message.MSG_GUI_OVERLAPPING_RULES, Assurant.ElitaPlus.Common.ErrorCodes.EQUIPMENT_LIST_CODE_OVERLAPPED)
-            '    End If
-            '    Me.DisplayMessage(Message.MSG_GUI_OVERLAPPING_RECORDS, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            '    Me.State.ActionInProgress = DetailPageCommand.Accept
-            '    Me.State.OverlapExists = True
-            '    Exit Sub
-            'End If
 
             If Me.State.MyBO.IsDirty Then
-                Me.State.MyBO.Save()
+                'Me.State.MyBO.Save()
                 Me.State.HasDataChanged = False
                 'Me.PopulateFormFromBOs()
                 Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
