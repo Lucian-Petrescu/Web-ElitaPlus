@@ -175,6 +175,7 @@ Public Class ClaimWizardForm
 
         Public IsCallerAuthenticated As Boolean = False
         Public FulfillmentDetailsResponse As BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails = Nothing
+        Public FilteredLogistics As List(Of LogisticStageAddress) = Nothing
     End Class
 
     Public Enum LocateServiceCenterSearchType
@@ -1149,7 +1150,8 @@ Public Class ClaimWizardForm
                                                                                }
                         )
                     Dim filteredLogisticStages = logisticStages.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing ).ToList()
-
+                    Me.State.FilteredLogistics = filteredLogisticStages
+                    ValidateShippingAddressButtonControl()
                     moLogisticStageAddressInfo.ParentBusinessObject = filteredLogisticStages
                     moLogisticStageAddressInfo.DataBind()
                 Else
@@ -1160,6 +1162,24 @@ Public Class ClaimWizardForm
 
         Else
             moLogisticStageAddressInfo.Visible = False
+        End If
+    End Sub
+
+    Private Sub ValidateShippingAddressButtonControl()
+
+        Dim oCertificate As Certificate = New Certificate(Me.State.CertBO.Id)
+
+        If Me.State.FilteredLogistics IsNot Nothing AndAlso oCertificate.Dealer.Validate_Address = Codes.EXT_YESNO_Y Then
+            If Not String.IsNullOrWhiteSpace(oCertificate.Product.ClaimProfile) Then
+                If Not String.IsNullOrWhiteSpace(BO.Address.ClaimProfileData(oCertificate.Product.ClaimProfile).Url) Then
+                    moLogisticStageAddressInfo.ValidateAddress = True
+                    moLogisticStageAddressInfo.ProfileCode = oCertificate.Product.ClaimProfile
+                Else
+                    Me.MasterPage.MessageController.AddWarning(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_PROFILE_NOT_CONFIGURED))
+                End If
+            Else
+                Me.MasterPage.MessageController.AddWarning(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_URL_NOT_CONFIGURED))
+            End If
         End If
     End Sub
 

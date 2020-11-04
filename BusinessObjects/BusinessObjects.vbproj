@@ -137,6 +137,9 @@
       <HintPath>..\packages\Elita.Assurant.Common.Validation.2.0.0\lib\net462\Assurant.Common.Validation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Assurant.Elita.AddressValidationProvider">
+      <HintPath>..\..\..\Users\ed3339\source\repos\Lib-AddressValidationProvider\AddressValidationProvider\bin\Debug\Assurant.Elita.AddressValidationProvider.dll</HintPath>
+    </Reference>
     <Reference Include="Assurant.Elita.Base.DataAccess, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.8\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
     </Reference>
@@ -149,6 +152,10 @@
     </Reference>
     <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.13.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.13\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
+    </Reference>
+    <Reference Include="Assurant.Elita.CommonConfiguration.Claim, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Users\ed3339\source\repos\Lib-CommonConfiguration.Claim\CommonConfiguration.Claim\bin\Debug\Assurant.Elita.CommonConfiguration.Claim.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Configuration, Version=5.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Configuration.5.0.3\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
@@ -290,6 +297,7 @@
     <Compile Include="Claims\LogisticStageAddress.vb" />
     <Compile Include="Claims\PreInvoice.vb" />
     <Compile Include="Claims\PreInvoiceDetails.vb" />
+    <Compile Include="Common\AddressValidationSettings.vb" />
     <Compile Include="Common\ClaimCloseRules.vb" />
     <Compile Include="Common\DealerInflation.vb" />
     <Compile Include="Common\InvoiceRegionTax.vb" />
