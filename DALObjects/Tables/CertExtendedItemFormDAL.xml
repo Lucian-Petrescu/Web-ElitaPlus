@@ -23,4 +23,10 @@
   </DELETE>
   <LOAD_COMPANY_LIST>
   </LOAD_COMPANY_LIST>
+  <LOAD_SELECTED_COMPANIES_LIST>
+    <![CDATA[elp_utl_cert_item_config.LoadCompaniesByCode]]>
+  </LOAD_SELECTED_COMPANIES_LIST>
+  <LOAD_SELECTED_DEALERS_LIST>
+    <![CDATA[elp_utl_cert_item_config.LoadDealersByCode]]>
+  </LOAD_SELECTED_DEALERS_LIST>
 </SQL>

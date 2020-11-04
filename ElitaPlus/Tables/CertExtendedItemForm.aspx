@@ -33,7 +33,7 @@
             rdoComapany.checked = true;
         }
     </script>
-    <script type="text/javascript">    
+    <%--<script type="text/javascript">    
         function InEnrollment_SelectedIndexChanged(obj) {
             var ddlYesNO = document.getElementById(obj);
             if (ddlYesNO.selectedIndex >= 0) {
@@ -55,7 +55,7 @@
                 }
             }
         }
-    </script>
+    </script>--%>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
@@ -72,7 +72,7 @@
                     <asp:Label ID="LabelCertItemConfigCode" runat="server" Font-Bold="false">CERT_ITEM_CONFIG_CODE</asp:Label>
                 </td>
                 <td>
-                    <asp:TextBox ID="TextboxCertItemConfigCode" TabIndex="1" runat="server" SkinID="MediumTextBox"></asp:TextBox>
+                    <asp:TextBox ID="TextboxCertItemConfigCode" TabIndex="1" runat="server" SkinID="MediumTextBox" OnTextChanged="TextboxCertItemConfigCode_TextChanged" AutoPostBack="true"></asp:TextBox>
                 </td>
                 <td>
                     <asp:Label ID="LabelCertItemConfigDesc" runat="server">CERT_ITEM_CONFIG_DESC</asp:Label>
@@ -130,7 +130,7 @@
                                 </asp:TextBox>
                             </EditItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="IN_ENROLLMENT">
+                       <%-- <asp:TemplateField HeaderText="IN_ENROLLMENT">
                             <ItemTemplate>
                                 <asp:Label runat="server" ID="InEnrollmentLabel"></asp:Label>
                             </ItemTemplate>
@@ -138,20 +138,20 @@
                                 <asp:DropDownList runat="server" ID="InEnrollmentDropDown" onchange="InEnrollment_SelectedIndexChanged(this.id);">
                                 </asp:DropDownList>
                             </EditItemTemplate>
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField HeaderText="DEFAULT_VALUE" SortExpression="DEFAULT_VALUE">
                             <ItemTemplate>
                                 <asp:Label runat="server" ID="DefaultValueLabel"></asp:Label>
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <table id="TableTextBox" style="display:none;">
+                                <%--<table id="TableTextBox" style="display:none;">
                                     <tr>
-                                        <td>
+                                        <td>--%>
                                             <asp:TextBox runat="server" ID="DefaultValueTextBox">                                       
                                             </asp:TextBox>
-                                        </td>
+                                        <%--</td>
                                     </tr>
-                                </table>
+                                </table>--%>
                             </EditItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="ALLOW_UPDATE" SortExpression="ALLOW_UPDATE">
@@ -160,6 +160,15 @@
                             </ItemTemplate>
                             <EditItemTemplate>
                                 <asp:DropDownList runat="server" ID="AllowUpdateDropDown">
+                                </asp:DropDownList>
+                            </EditItemTemplate>
+                        </asp:TemplateField>
+                         <asp:TemplateField HeaderText="ALLOW_DISPLAY" SortExpression="ALLOW_DISPLAY">
+                            <ItemTemplate>
+                                <asp:Label runat="server" ID="AllowDisplayLabel"></asp:Label>
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:DropDownList runat="server" ID="AllowDisplayDropDown">
                                 </asp:DropDownList>
                             </EditItemTemplate>
                         </asp:TemplateField>

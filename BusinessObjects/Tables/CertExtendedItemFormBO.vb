@@ -12,7 +12,7 @@ Public Class CertExtendedItemFormBO
     Public Const COL_NAME_CERT_EXTENDED_ITEM_COUNT As String = "cert_extended_item_count"
     Public Const COL_NAME_TABLE_NAME As String = "table_name"
     Public Const COL_NAME_FIELD_NAME As String = CertExtendedItemFormDAL.COL_NAME_FIELD_NAME
-    Public Const COL_NAME_CERT_EXTENDED_ITEM_ID As String = CertExtendedItemFormDAL.COL_NAME_CERT_EXTENDED_ITEM_ID
+    Public Const COL_NAME_CERT_EXTENDED_ITEM_ID As String = CertExtendedItemFormDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID
     Public Const COL_NAME_DEFAULT_VALUE As String = CertExtendedItemFormDAL.COL_NAME_DEFAULT_VALUE
 #End Region
 #Region "BankNameSearchDV"
@@ -20,13 +20,14 @@ Public Class CertExtendedItemFormBO
         Inherits DataView
 
 #Region "Constants"
-        Public Const COL_CERT_EXT_CONFIG_ID As String = "cert_ext_item_id"
+        Public Const COL_CERT_EXT_CONFIG_ID As String = "crt_ext_fields_config_id"
         Public Const COL_CODE As String = "code"
         Public Const COL_DESCRIPTION As String = "description"
         Public Const COL_FIELD_NAME As String = "field_name"
-        Public Const COL_IN_ENROLLMENT As String = "in_enrollment"
+        'Public Const COL_IN_ENROLLMENT As String = "in_enrollment"
         Public Const COL_DEFAULT_VALUE As String = "default_value"
         Public Const COL_ALLOW_UPDATE As String = "allow_update"
+        Public Const COL_ALLOW_DISPLAY As String = "allow_display"
 #End Region
 
         Public Sub New()
@@ -81,13 +82,14 @@ Public Class CertExtendedItemFormBO
         dt = dv.Table
         Dim newrow As DataRow = dt.NewRow
 
-        newrow(CertExtendedItemFormDal.COL_NAME_CERT_EXTENDED_ITEM_ID) = id.ToByteArray
+        newrow(CertExtendedItemFormDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID) = id.ToByteArray
         newrow(CertExtendedItemFormDal.COL_NAME_CODE) = String.Empty
         newrow(CertExtendedItemFormDal.COL_NAME_DESCRIPTION) = String.Empty
         newrow(CertExtendedItemFormDal.COL_NAME_FIELD_NAME) = String.Empty
-        newrow(CertExtendedItemFormDal.COL_NAME_IN_ENROLLMENT) = "Y"
+        'newrow(CertExtendedItemFormDal.COL_NAME_IN_ENROLLMENT) = "Y"
         newrow(CertExtendedItemFormDal.COL_NAME_DEFAULT_VALUE) = String.Empty
         newrow(CertExtendedItemFormDal.COL_NAME_ALLOW_UPDATE) = "Y"
+        newrow(CertExtendedItemFormDal.COL_NAME_ALLOW_DISPLAY) = "Y"
         dt.Rows.Add(newrow)
         Me.Row = newrow
         Return New CertExtendedItemSearchDV(dt)
@@ -110,7 +112,6 @@ Public Class CertExtendedItemFormBO
             Dim newRow As DataRow = Dataset.Tables(CertExtendedItemFormDal.TABLE_NAME).NewRow
             Dataset.Tables(CertExtendedItemFormDal.TABLE_NAME).Rows.Add(newRow)
             Row = newRow
-            'Row(CertExtendedItemFormDal.TABLE_KEY_NAME) = Guid.NewGuid
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -144,10 +145,11 @@ Public Class CertExtendedItemFormBO
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        InEnrollment = Codes.YESNO_Y
+        'InEnrollment = Codes.YESNO_Y
         AllowUpdate = Codes.YESNO_Y
         FieldName = String.Empty
         DefaultValue = String.Empty
+        AllowDisplay = Codes.YESNO_Y
     End Sub
 #End Region
 
@@ -161,6 +163,136 @@ Public Class CertExtendedItemFormBO
     'End Function
 
 #End Region
+    Public Function GetAvailableCompanies() As DataView
+        Try
+            Dim dv As DataView = BusinessObjectsNew.User.GetUserCompanies(Authentication.CurrentUser.Id)
+            Return dv
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+    Public Function GetSelectedCompanies(ByVal codeMask As String) As DataView
+
+        Try
+            Dim dal As New CertExtendedItemFormDal
+            Return dal.LoadSelectedCompaniesList(codeMask).Tables(0).DefaultView
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+    Public Function GetSelectedDealers(ByVal codeMask As String) As DataView
+
+        Try
+            Dim dal As New CertExtendedItemFormDal
+            Return dal.LoadSelectedDealersList(codeMask).Tables(0).DefaultView
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+
+
+    Public Function GetAvailableDealers() As DataView
+        Try
+            Dim dvMain As DataView = BusinessObjectsNew.User.GetUserCompanies(Authentication.CurrentUser.Id)
+            Dim dv As DataView
+            Dim dsMerge = New DataSet()
+            For Each rowView As DataRowView In dvMain
+                Dim ds = New DataSet()
+                Dim row As DataRow = rowView.Row
+                Dim currentCompanyID As Guid = New Guid(CType(row("COMPANY_ID"), Byte()))
+                dv = LookupListNew.GetDealerLookupList(currentCompanyID)
+                ds.Tables.Add(dv.ToTable())
+                dsMerge.Merge(ds)
+            Next
+            Return dsMerge.Tables(0).DefaultView()
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+    Sub PopulateCompanyList(ByVal companylist As ArrayList)
+        Try
+            'compare with what we have and what is there in the user control
+            'user control will always have the final selection so remove from our list what we don't find
+            'For Each companyrule As CompanyRuleList In Me.CompanyRuleChildren
+            '    Dim dFound As Boolean = False
+            '    For Each Str As String In companylist
+            '        Dim company_id As Guid = New Guid(Str)
+            '        If companyrule.CompanyId = company_id Then
+            '            dFound = True : Exit For
+            '        End If
+            '    Next
+            '    If Not dFound Then
+            '        companyrule.BeginEdit()
+            '        companyrule.Delete()
+            '        companyrule.EndEdit()
+            '        companyrule.Save()
+            '        dFound = True
+            '    End If
+            'Next
+            'next now add those items which are there in user control but we don't have it
+            'For Each Str As String In companylist
+            '    Dim dFound As Boolean = False
+            '    For Each companyrule As CompanyRuleList In Me.CompanyRuleChildren
+            '        Dim company_id As Guid = New Guid(Str)
+            '        If companyrule.CompanyId = company_id Then
+            '            dFound = True : Exit For
+            '        End If
+            '    Next
+            '    If Not dFound Then
+            '        Dim newCompanyrule As CompanyRuleList = Me.GetNewRCompanyRuleListChild()
+            '        newCompanyrule.BeginEdit()
+            '        newCompanyrule.CompanyId = New Guid(Str)
+            '        newCompanyrule.EndEdit()
+            '        newCompanyrule.Save()
+            '    End If
+            'Next
+
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
+    Sub PopulateDealerList(ByVal dealerlist As ArrayList)
+        Try
+            'compare with what we have and what is there in the user control
+            'user control will always have the final selection so remove from our list what we don't find
+            'For Each dealerrule As DealerRuleList In Me.DealerRuleChildren
+            '    Dim dFound As Boolean = False
+            '    For Each Str As String In dealerlist
+            '        Dim dealer_id As Guid = New Guid(Str)
+            '        If dealerrule.DealerId = dealer_id Then
+            '            dFound = True : Exit For
+            '        End If
+            '    Next
+            '    If Not dFound Then
+            '        dealerrule.BeginEdit()
+            '        dealerrule.Delete()
+            '        dealerrule.EndEdit()
+            '        dealerrule.Save()
+            '        dFound = True
+            '    End If
+            'Next
+            'next now add those items which are there in user control but we don't have it
+            'For Each Str As String In dealerlist
+            '    Dim dFound As Boolean = False
+            '    For Each dealerrule As DealerRuleList In Me.DealerRuleChildren
+            '        Dim dealer_id As Guid = New Guid(Str)
+            '        If dealerrule.DealerId = dealer_id Then
+            '            dFound = True : Exit For
+            '        End If
+            '    Next
+            '    If Not dFound Then
+            '        Dim newDealerrule As DealerRuleList = Me.GetNewRDealerRuleListChild()
+            '        newDealerrule.BeginEdit()
+            '        newDealerrule.DealerId = New Guid(Str)
+            '        newDealerrule.EndEdit()
+            '        newDealerrule.Save()
+            '    End If
+            'Next
+
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
 
 #Region "Properties"
 
@@ -170,7 +302,7 @@ Public Class CertExtendedItemFormBO
             If Row(CertExtendedItemFormDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(Row(CertExtendedItemFormDal.COL_NAME_CERT_EXTENDED_ITEM_ID), Byte()))
+                Return New Guid(CType(Row(CertExtendedItemFormDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID), Byte()))
             End If
         End Get
     End Property
@@ -236,21 +368,21 @@ Public Class CertExtendedItemFormBO
         End Set
     End Property
 
-    <ValueMandatory(""), ValidStringLength("", Max:=3)>
-    Public Property InEnrollment() As String
-        Get
-            CheckDeleted()
-            If Row(CertExtendedItemFormDAL.COL_NAME_IN_ENROLLMENT) Is DBNull.Value Then
-                Return Nothing
-            Else
-                Return CType(Row(CertExtendedItemFormDAL.COL_NAME_IN_ENROLLMENT), String)
-            End If
-        End Get
-        Set(ByVal value As String)
-            CheckDeleted()
-            Me.SetValue(CertExtendedItemFormDAL.COL_NAME_IN_ENROLLMENT, value)
-        End Set
-    End Property
+    '<ValueMandatory(""), ValidStringLength("", Max:=3)>
+    'Public Property InEnrollment() As String
+    '    Get
+    '        CheckDeleted()
+    '        If Row(CertExtendedItemFormDAL.COL_NAME_IN_ENROLLMENT) Is DBNull.Value Then
+    '            Return Nothing
+    '        Else
+    '            Return CType(Row(CertExtendedItemFormDAL.COL_NAME_IN_ENROLLMENT), String)
+    '        End If
+    '    End Get
+    '    Set(ByVal value As String)
+    '        CheckDeleted()
+    '        Me.SetValue(CertExtendedItemFormDAL.COL_NAME_IN_ENROLLMENT, value)
+    '    End Set
+    'End Property
 
     '<ValueMandatory(""), ValidStringLength("", Max:=255)>
     Public Property DefaultValue() As String
@@ -284,27 +416,27 @@ Public Class CertExtendedItemFormBO
         End Set
     End Property
 
+    <ValueMandatory(""), ValidStringLength("", Max:=3)>
+    Public Property AllowDisplay() As String
+        Get
+            CheckDeleted()
+            If Row(CertExtendedItemFormDal.COL_NAME_ALLOW_DISPLAY) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CertExtendedItemFormDal.COL_NAME_ALLOW_DISPLAY), String)
+            End If
+        End Get
+        Set(ByVal value As String)
+            CheckDeleted()
+            Me.SetValue(CertExtendedItemFormDal.COL_NAME_ALLOW_DISPLAY, value)
+        End Set
+    End Property
+
 
 #End Region
 
 #Region "Public Members"
     Public Overrides Sub Save()
-        'Try
-        '    MyBase.Save()
-        '    If Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
-        '       Dim dal As New CertExtendedItemFormDal
-        '       dal.Update(Me.Dataset)
-        '        'Reload the Data from the DB
-        '        If Me.Row.RowState <> DataRowState.Detached Then
-        '            Dim objId As Guid = Me.Id
-        '            Me.Dataset = New DataSet
-        '            Me.Row = Nothing
-        '            Me.Load(objId)
-        '        End If
-        '    End If
-        'Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-        '    Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
-        'End Try
         Try
             MyBase.Save()
             If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
