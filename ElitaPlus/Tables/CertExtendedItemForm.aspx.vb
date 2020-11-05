@@ -221,15 +221,6 @@ Public Class CertExtendedItemForm
         Me.BindBOPropertyToGridHeader(Me.State.MyBO, "AllowDisplay", Me.GridViewCertItemConfig.Columns(GRID_COL_ALLOW_DISPLAY_IDX))
         Me.ClearGridViewHeadersAndLabelsErrorSign()
     End Sub
-
-    'Private Sub PopulateBOFromForm()
-    '    If Me.ErrCollection.Count > 0 Then
-    '        Throw New PopulateBOErrorException
-    '    End If
-    'End Sub
-    'Protected Sub PopulateFormFromBOs()
-    '    PopulateUserConctrols()
-    'End Sub
     Protected Sub PopulateUserConctrols()
         UserControlAvailableSelectedCompanies.ClearLists()
         UserControlAvailableSelectedCompanies.SetAvailableData(Me.State.MyBO.GetAvailableCompanies(), "Description", "COMPANY_ID")
@@ -425,8 +416,6 @@ Public Class CertExtendedItemForm
                 If Me.State.MyBO Is Nothing Then
                     Me.State.MyBO = New CertExtendedItemFormBO
                 End If
-                'Me.PopulateGrid()
-                'Me.PopulateBOFromForm()
                 Me.PopulateUserConctrols()
                 rdoDealers.Attributes.Add("onClick", "javascript:changeSelection()")
                 rdoCompanies.Attributes.Add("onClick", "javascript:changeSelection()")
@@ -515,8 +504,6 @@ Public Class CertExtendedItemForm
                 .searchDV = Nothing
                 Me.ChangeEnabledProperty(Me.btnAdd, True)
             End With
-            'PopulateBankNamesDropDown()
-            'Me.PopulateGrid()
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -606,22 +593,14 @@ Public Class CertExtendedItemForm
         Dim dv As DataView
         'Dettach comapnies from fields if nothing selected from CompanyList
         dv = Me.State.MyBO.GetSelectedCompanies(Me.State.CodeMask)
-        If dv.Count > 0 AndAlso rdoDealers.Checked Then
+        If dv.Count > 0 AndAlso (rdoDealers.Checked OrElse (UserControlAvailableSelectedCompanies.SelectedList.Count) <= 0) Then
             Me.State.MyBO.ClearCompanyList(Me.State.CodeMask)
-            'If rdoCompanies.Checked Then
-
-            'End If
             Return True
         End If
-        '(UserControlAvailableSelectedCompanies.SelectedList.Count) <= 0
-        '(UserControlAvailableSelectedDealers.SelectedList.Count) <= 0
         'Dettach dealers from fields if nothing selected from DealerList
         dv = Me.State.MyBO.GetSelectedDealers(Me.State.CodeMask)
-        If dv.Count > 0 AndAlso rdoCompanies.Checked Then
+        If dv.Count > 0 AndAlso (rdoCompanies.Checked OrElse (UserControlAvailableSelectedDealers.SelectedList.Count) <= 0) Then
             Me.State.MyBO.ClearDealerList(Me.State.CodeMask)
-            'If rdoDealers.Checked Then
-
-            'End If
             Return True
         End If
     End Function
