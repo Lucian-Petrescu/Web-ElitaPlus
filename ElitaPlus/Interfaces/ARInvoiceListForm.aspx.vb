@@ -455,6 +455,10 @@ Public Class ArInvoiceListForm
         End Try
 
     End Sub
+
+    Private Sub ddlCompany_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlCompany.SelectedIndexChanged
+        PopulateDealerDropdown()
+    End Sub
 #End Region
 
 
@@ -612,6 +616,8 @@ Public Class ArInvoiceListForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
+
+    
 
 #End Region
 End Class
