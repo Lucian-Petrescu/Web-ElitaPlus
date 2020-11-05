@@ -213,7 +213,6 @@ Partial Class NewClaimForm
         Public CaseQuestionAnswerListDV As CaseQuestionAnswer.CaseQuestionAnswerDV = Nothing
         Public ClaimActionListDV As CaseAction.CaseActionDV = Nothing
         Public FulfillmentDetailsResponse As BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails = Nothing
-        Public CertBO As Certificate
         Public FilteredLogistics As List(Of LogisticStageAddress) = Nothing
     End Class
 
@@ -797,7 +796,7 @@ Partial Class NewClaimForm
 
     Private Sub ValidateShippingAddressButtonControl()
 
-        Dim oCertificate As Certificate = New Certificate(Me.State.CertBO.Id)
+        Dim oCertificate As Certificate = New Certificate(Me.State.MyBO.CertificateId)
 
         If Me.State.FilteredLogistics IsNot Nothing AndAlso oCertificate.Dealer.Validate_Address = Codes.EXT_YESNO_Y Then
             If Not String.IsNullOrWhiteSpace(oCertificate.Product.ClaimProfile) Then
