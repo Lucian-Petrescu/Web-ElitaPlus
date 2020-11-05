@@ -128,6 +128,7 @@
                             <EditItemTemplate>
                                 <asp:TextBox runat="server" ID="FieldNameTextBox">
                                 </asp:TextBox>
+                                <asp:Label runat="server" ID="FieldNameLabelEdit" Visible="false"></asp:Label>
                             </EditItemTemplate>
                         </asp:TemplateField>
                        <%-- <asp:TemplateField HeaderText="IN_ENROLLMENT">
