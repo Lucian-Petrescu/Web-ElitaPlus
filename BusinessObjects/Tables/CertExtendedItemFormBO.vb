@@ -15,9 +15,6 @@ Public Class CertExtendedItemFormBO
     Public Const COL_NAME_CERT_EXTENDED_ITEM_ID As String = CertExtendedItemFormDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID
     Public Const COL_NAME_DEFAULT_VALUE As String = CertExtendedItemFormDal.COL_NAME_DEFAULT_VALUE
 #End Region
-#Region "Public Member"
-    Public RDO_SELECTED_VALUE As Integer = 0
-#End Region
 #Region "BankNameSearchDV"
     Public Class CertExtendedItemSearchDV
         Inherits DataView
@@ -168,9 +165,6 @@ Public Class CertExtendedItemFormBO
         Try
             Dim dal As New CertExtendedItemFormDal
             Dim dv As DataView = dal.LoadSelectedCompaniesList(codeMask).Tables(0).DefaultView
-            If dv.Count > 0 Then
-                RDO_SELECTED_VALUE = 0
-            End If
             Return dv
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
@@ -181,9 +175,6 @@ Public Class CertExtendedItemFormBO
         Try
             Dim dal As New CertExtendedItemFormDal
             Dim dv As DataView = dal.LoadSelectedDealersList(codeMask).Tables(0).DefaultView
-            If dv.Count > 0 Then
-                RDO_SELECTED_VALUE = 1
-            End If
             Return dv
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
@@ -209,6 +200,23 @@ Public Class CertExtendedItemFormBO
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
+    Sub ClearCompanyList(ByVal codeMask As String)
+        Try
+            Dim dv As DataView
+            dv = GetSelectedCompanies(codeMask)
+            'compare with what we have and what is there in the user control
+            'user control will always have the final selection so remove from our list what we don't find
+            For Each rowView As DataRowView In dv
+                Dim dFound As Boolean = False
+                Dim row As DataRow = rowView.Row
+                Dim currentCompanyID As Guid = New Guid(CType(row("ID"), Byte()))
+                Dim dal = New CertExtendedItemFormDal
+                dal.DeleteDealerCompanyList(codeMask, "ELP_COMPANY", currentCompanyID)
+            Next
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
     Sub SaveCompanyList(ByVal companylist As ArrayList, ByVal codeMask As String)
         Try
             Dim dv As DataView
@@ -247,6 +255,25 @@ Public Class CertExtendedItemFormBO
                     Dim company_id As Guid = New Guid(Str)
                     dal.SaveDealerCompanyList(codeMask, "ELP_COMPANY", company_id)
                 End If
+            Next
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
+    Sub ClearDealerList(ByVal codeMask As String)
+        Try
+            Dim dv As DataView
+            dv = GetSelectedDealers(codeMask)
+            'compare with what we have and what is there in the user control
+            'user control will always have the final selection so remove from our list what we don't find
+            For Each rowView As DataRowView In dv
+                Dim dFound As Boolean = False
+                Dim row As DataRow = rowView.Row
+                Dim currentDealerID As Guid = New Guid(CType(row("ID"), Byte()))
+
+                Dim dal = New CertExtendedItemFormDal
+                dal.DeleteDealerCompanyList(codeMask, "ELP_DEALER", currentDealerID)
+                dFound = True
             Next
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)

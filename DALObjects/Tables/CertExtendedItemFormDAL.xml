@@ -1,36 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <SQL>
   <LOAD>
-    <![CDATA[elp_utl_cert_item_config.LoadConfigByID]]>
+    <![CDATA[elp_tbl_crt_ext_fields_config.loadconfigbyid]]>
   </LOAD>
   <LOAD_LIST>
-    <![CDATA[elp_utl_cert_item_config.LoadConfigByCode]]>
+    <![CDATA[elp_tbl_crt_ext_fields_config.loadconfigbycode]]>
   </LOAD_LIST>
   <LOAD_CERT_EXTENDED_ITEM_LIST>
   </LOAD_CERT_EXTENDED_ITEM_LIST>
   <LOAD_TABLES>
   </LOAD_TABLES>
   <INSERT>
-    <![CDATA[elp_utl_cert_item_config.AddCertItemConfig]]>
+    <![CDATA[elp_tbl_crt_ext_fields_config.addcertextconfig]]>
   </INSERT>
   <UPDATE>
-    <![CDATA[elp_utl_cert_item_config.ModifyCertItemConfig]]>
+    <![CDATA[elp_tbl_crt_ext_fields_config.modifycertextconfig]]>
   </UPDATE>
   <DELETE>
-    <![CDATA[elp_utl_cert_item_config.DeleteCertItemConfig]]>
+    <![CDATA[elp_tbl_crt_ext_fields_config.deletecertextconfig]]>
   </DELETE>
   <LOAD_COMPANY_LIST>
   </LOAD_COMPANY_LIST>
   <LOAD_SELECTED_COMPANIES_LIST>
-    <![CDATA[elp_utl_cert_item_config.LoadCompaniesByCode]]>
+    <![CDATA[elp_tbl_crt_ext_fields_config.loadcompaniesbycode]]>
   </LOAD_SELECTED_COMPANIES_LIST>
   <LOAD_SELECTED_DEALERS_LIST>
-    <![CDATA[elp_utl_cert_item_config.LoadDealersByCode]]>
+    <![CDATA[elp_tbl_crt_ext_fields_config.loaddealersbycode]]>
   </LOAD_SELECTED_DEALERS_LIST>
   <SAVE_DEALER_COMPANY_LIST>
-    <![CDATA[elp_utl_cert_item_config.SaveDealerCompanyConfig]]>
+    <![CDATA[elp_tbl_crt_ext_fields_config.savedealercompanyconfig]]>
   </SAVE_DEALER_COMPANY_LIST>
   <DELETE_DEALER_COMPANY_LIST>
-    <![CDATA[elp_utl_cert_item_config.DeleteDealerCompanyConfig]]>
+    <![CDATA[elp_tbl_crt_ext_fields_config.deletedealercompanyconfig]]>
   </DELETE_DEALER_COMPANY_LIST>
 </SQL>
