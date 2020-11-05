@@ -378,8 +378,6 @@
     <Compile Include="Tables\Accounting\AccountPayable\ApInvoiceMatching.vb" />
     <Compile Include="Tables\Accounting\AccountPayable\ApPaymentBatch.vb" />
     <Compile Include="Tables\Accounting\AccountPayable\PoAdjustment.vb" />
-    <Compile Include="Tables\Accounting\AccountReceivable\ArInvoiceHeader.vb" />
-    <Compile Include="Tables\Accounting\AccountReceivable\ArInvoiceLine.vb" />
     <Compile Include="Tables\Accounting\AcctEventDetailIncExc.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrc.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrcMapping.vb" />
@@ -1294,9 +1292,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Tables\Accounting\StyleSheets\Account.xslt" />
     <EmbeddedResource Include="Tables\Accounting\StyleSheets\Address.xslt" />
-    <EmbeddedResource Include="Tables\Accounting\StyleSheets\Journal.xslt">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\Accounting\StyleSheets\Journal.xslt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Tables\Accounting\StyleSheets\BankDetails.xslt" />

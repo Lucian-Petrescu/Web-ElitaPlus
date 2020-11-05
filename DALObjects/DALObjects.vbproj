@@ -429,8 +429,6 @@
     <Compile Include="Tables\Accounting\AccountPayable\ApInvoiceMatchingDAL.vb" />
     <Compile Include="Tables\Accounting\AccountPayable\ApPaymentBatchDAL.vb" />
     <Compile Include="Tables\Accounting\AccountPayable\PoAdjustmentDAL.vb" />
-    <Compile Include="Tables\Accounting\AccountReceivable\ArInvoiceHeaderDal.vb" />
-    <Compile Include="Tables\Accounting\AccountReceivable\ArInvoiceLineDal.vb" />
     <Compile Include="Tables\Accounting\AcctEventDetailIncexcDAL.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrcDAL.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrcMappingDAL.vb" />
@@ -1502,8 +1500,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tables\CommPlanDAL.xml" />
     <EmbeddedResource Include="Tables\CommPlanDistributionDAL.xml" />
-    <EmbeddedResource Include="Tables\Accounting\AccountReceivable\ArInvoiceHeaderDal.xml" />
-    <EmbeddedResource Include="Tables\Accounting\AccountReceivable\ArInvoiceLineDal.xml" />
     <Content Include="Tables\CoverageMfgDAL.xml" />
     <EmbeddedResource Include="Tables\ProductSpecialServiceDAL.xml" />
     <EmbeddedResource Include="Tables\SpecialServiceDAL.xml">
