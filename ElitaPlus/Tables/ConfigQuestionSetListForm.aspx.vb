@@ -1,8 +1,5 @@
-﻿Imports System.Globalization
-Imports Assurant.Elita.CommonConfiguration
+﻿Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
-Imports System.Threading
-Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 
 Namespace Tables
@@ -16,35 +13,32 @@ Namespace Tables
         Public Const PAGETAB As String = "TABLES"
         Public Const SUMMARYTITLE As String = "SEARCH"
 
-        Private Const GRID_COL_CONFIG_QUESTION_SET_ID_IDX As Integer = 0
-
-        Private Const GRID_CTRL_NAME_LABLE_CONFIG_QUESTION_SET_ID As String = "lblConfigQuestionSetID"
-
-        Private Const SELECT_COMMAND As String = "SelectAction"
-        Private Const NO_ROW_SELECTED_INDEX As Integer = -1
+        Private Const GridColConfigQuestionSetIdIdx As Integer = 0
+        Private Const GridCtrlNameLableConfigQuestionSetId As String = "lblConfigQuestionSetID"
+        Private Const SelectCommand As String = "SelectAction"
 #End Region
 
 #Region "Page State"
-        Private IsReturningFromChild As Boolean = False
-        Private ChildMessage As String = String.Empty
+        Private _isReturningFromChild As Boolean = False
+        Private ReadOnly _childMessage As String = String.Empty
         Class MyState
-            Public QuestionSetConfigID As Guid
+            Public QuestionSetConfigId As Guid
             Public PageIndex As Integer = 0
             Public PageSize As Integer = DEFAULT_NEW_UI_PAGE_SIZE
-            Public searchDV As ConfigQuestionSet.ConfigQuestionSetSearchDV = Nothing
+            Public SearchDv As ConfigQuestionSet.ConfigQuestionSetSearchDV = Nothing
             Public HasDataChanged As Boolean
             Public IsGridVisible As Boolean = False
-            Public bnoRow As Boolean = False
+            Public BnoRow As Boolean = False
             Public SortExpression As String = ConfigQuestionSet.ConfigQuestionSetSearchDV.COL_QUESTION_SET_CODE
-            Public searchCompanyGrp As Guid = Guid.Empty
-            Public searchCompany As Guid = Guid.Empty
-            Public searchDealerGrp As Guid = Guid.Empty
-            Public searchDealer As Guid = Guid.Empty
-            Public searchProductCode As String = String.Empty
-            Public searchRiskType As Guid = Guid.Empty
-            Public searchCoverageType As Guid = Guid.Empty
-            Public searchQuestionSetCode As String = String.Empty
-            Public searchPurposeCode As String = String.Empty
+            Public SearchCompanyGrp As Guid = Guid.Empty
+            Public SearchCompany As Guid = Guid.Empty
+            Public SearchDealerGrp As Guid = Guid.Empty
+            Public SearchDealer As Guid = Guid.Empty
+            Public SearchProductCode As String = String.Empty
+            Public SearchRiskType As Guid = Guid.Empty
+            Public SearchCoverageType As Guid = Guid.Empty
+            Public SearchQuestionSetCode As String = String.Empty
+            Public SearchPurposeCode As String = String.Empty
 
             Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
         End Class
@@ -75,169 +69,170 @@ Namespace Tables
 
 #Region "Page event"
         Private Sub UpdateBreadCrum()
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(SUMMARYTITLE)
-            Me.MasterPage.UsePageTabTitleInBreadCrum = False
-            Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(PAGETAB)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(SUMMARYTITLE)
+            MasterPage.UsePageTabTitleInBreadCrum = False
+            MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(PAGETAB) + ElitaBase.Sperator + TranslationBase.TranslateLabelOrMessage(PAGETITLE)
         End Sub
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
             Try
-                Me.MasterPage.MessageController.Clear()
-                If Not Me.IsPostBack Then
-                    Me.SortDirection = Me.State.SortExpression
+                MasterPage.MessageController.Clear()
+                If Not IsPostBack Then
+                    SortDirection = State.SortExpression
 
                     UpdateBreadCrum()
 
-                    SetDefaultButton(Me.ddlSearchCompanyGroup, btnSearch)
-                    SetDefaultButton(Me.ddlSearchCompany, btnSearch)
-                    SetDefaultButton(Me.ddlSearchDealerGroup, btnSearch)
-                    SetDefaultButton(Me.ddlSearchDealer, btnSearch)
-                    SetDefaultButton(Me.txtSearchProductCode, btnSearch)
-                    SetDefaultButton(Me.ddlSearchRiskType, btnSearch)
-                    SetDefaultButton(Me.ddlSearchCoverageType, btnSearch)
-                    SetDefaultButton(Me.ddlSearchQuestionSetCode, btnSearch)
-                    SetDefaultButton(Me.ddlSearchPurposeCode, btnSearch)
+                    SetDefaultButton(ddlSearchCompanyGroup, btnSearch)
+                    SetDefaultButton(ddlSearchCompany, btnSearch)
+                    SetDefaultButton(ddlSearchDealerGroup, btnSearch)
+                    SetDefaultButton(ddlSearchDealer, btnSearch)
+                    SetDefaultButton(txtSearchProductCode, btnSearch)
+                    SetDefaultButton(ddlSearchRiskType, btnSearch)
+                    SetDefaultButton(ddlSearchCoverageType, btnSearch)
+                    SetDefaultButton(ddlSearchQuestionSetCode, btnSearch)
+                    SetDefaultButton(ddlSearchPurposeCode, btnSearch)
 
                     ControlMgr.SetVisibleControl(Me, moSearchResults, False)
                     PopulateSearchFieldsFromState()
-                    Me.TranslateGridHeader(Grid)
-                    cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
-                    Grid.PageSize = Me.State.PageSize
+                    TranslateGridHeader(Grid)
+                    cboPageSize.SelectedValue = CType(State.PageSize, String)
+                    Grid.PageSize = State.PageSize
 
-                    If Me.State.IsGridVisible Then
-                        Me.PopulateGrid()
+                    If State.IsGridVisible Then
+                        PopulateGrid()
                     End If
-                    Me.SetGridItemStyleColor(Me.Grid)
+                    SetGridItemStyleColor(Grid)
 
-                    If IsReturningFromChild AndAlso ChildMessage.Trim <> String.Empty Then
-                        Me.MasterPage.MessageController.AddSuccess(ChildMessage)
+                    If _isReturningFromChild AndAlso _childMessage.Trim <> String.Empty Then
+                        MasterPage.MessageController.AddSuccess(_childMessage)
                     End If
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
-        Private Sub Page_PageReturn(ByVal ReturnFromUrl As String, ByVal ReturnPar As Object) Handles MyBase.PageReturn
+        Private Sub Page_PageReturn(returnFromUrl As String, returnPar As Object) Handles MyBase.PageReturn
             Try
-                Me.MenuEnabled = True
-                Me.IsReturningFromChild = True
-                Dim retObj As ConfigQuestionSetForm.ReturnType = CType(ReturnPar, ConfigQuestionSetForm.ReturnType)
-                Me.State.HasDataChanged = retObj.HasDataChanged
+                MenuEnabled = True
+                _isReturningFromChild = True
+                Dim retObj As ConfigQuestionSetForm.ReturnType = CType(returnPar, ConfigQuestionSetForm.ReturnType)
+                State.HasDataChanged = retObj.HasDataChanged
                 If Not retObj Is Nothing AndAlso retObj.HasDataChanged Then
-                    Me.State.searchDV = Nothing
+                    State.SearchDv = Nothing
                 End If
 
                 Select Case retObj.LastOperation
-                    Case ElitaPlusPage.DetailPageCommand.Back
+                    Case DetailPageCommand.Back
                         If Not retObj Is Nothing Then
                             If Not retObj.EditingBo.IsNew Then
-                                Me.State.QuestionSetConfigID = retObj.EditingBo.Id
+                                State.QuestionSetConfigId = retObj.EditingBo.Id
                             End If
                         End If
                 End Select
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
 
 #Region "Button Clicks "
-        Private Sub btnNew_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew.Click
+        Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
             callPage(ConfigQuestionSetForm.URL)
         End Sub
 
-        Private Sub btnClearSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClearSearch.Click
+        Private Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
             Try
-                Me.ddlSearchCompanyGroup.SelectedIndex = -1
-                Me.ddlSearchCompany.SelectedIndex = -1
-                Me.ddlSearchDealerGroup.SelectedIndex = -1
-                Me.ddlSearchDealer.SelectedIndex = -1
-                Me.ddlSearchRiskType.SelectedIndex = -1
-                Me.ddlSearchCoverageType.SelectedIndex = -1
-                Me.ddlSearchPurposeCode.SelectedIndex = -1
-                Me.txtSearchProductCode.Text = String.Empty
-                Me.ddlSearchQuestionSetCode.SelectedIndex = -1
+                ddlSearchCompanyGroup.SelectedIndex = -1
+                ddlSearchCompany.SelectedIndex = -1
+                ddlSearchDealerGroup.SelectedIndex = -1
+                ddlSearchDealer.SelectedIndex = -1
+                ddlSearchRiskType.SelectedIndex = -1
+                ddlSearchCoverageType.SelectedIndex = -1
+                ddlSearchPurposeCode.SelectedIndex = -1
+                txtSearchProductCode.Text = String.Empty
+                ddlSearchQuestionSetCode.SelectedIndex = -1
 
                 Grid.EditIndex = NO_ITEM_SELECTED_INDEX
 
                 With State
-                    .QuestionSetConfigID = Guid.Empty
-                    .searchCompanyGrp = Guid.Empty
-                    .searchCompany = Guid.Empty
-                    .searchDealerGrp = Guid.Empty
-                    .searchDealer = Guid.Empty
-                    .searchProductCode = String.Empty
-                    .searchCoverageType = Guid.Empty
-                    .searchQuestionSetCode = String.Empty
-                    .searchPurposeCode = String.Empty
+                    .QuestionSetConfigId = Guid.Empty
+                    .SearchCompanyGrp = Guid.Empty
+                    .SearchCompany = Guid.Empty
+                    .SearchDealerGrp = Guid.Empty
+                    .SearchDealer = Guid.Empty
+                    .SearchProductCode = String.Empty
+                    .SearchCoverageType = Guid.Empty
+                    .SearchQuestionSetCode = String.Empty
+                    .SearchPurposeCode = String.Empty
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnSearch.Click
+        Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
             Try
                 With State
                     .PageIndex = 0
-                    .QuestionSetConfigID = Guid.Empty
+                    .QuestionSetConfigId = Guid.Empty
                     .IsGridVisible = True
-                    .searchDV = Nothing
+                    .SearchDv = Nothing
                     .HasDataChanged = False
                     'get search control value
-                    .searchCompanyGrp = GetSelectedItem(ddlSearchCompanyGroup)
-                    .searchCompany = GetSelectedItem(ddlSearchCompany)
-                    .searchDealerGrp = GetSelectedItem(ddlSearchDealerGroup)
-                    .searchDealer = GetSelectedItem(ddlSearchDealer)
-                    .searchProductCode = txtSearchProductCode.Text
-                    .searchCoverageType = GetSelectedItem(ddlSearchCoverageType)
-                    .searchQuestionSetCode = GetSelectedValue(ddlSearchQuestionSetCode)
-                    .searchPurposeCode = GetSelectedValue(ddlSearchPurposeCode)
+                    .SearchCompanyGrp = GetSelectedItem(ddlSearchCompanyGroup)
+                    .SearchCompany = GetSelectedItem(ddlSearchCompany)
+                    .SearchDealerGrp = GetSelectedItem(ddlSearchDealerGroup)
+                    .SearchDealer = GetSelectedItem(ddlSearchDealer)
+                    .SearchProductCode = txtSearchProductCode.Text
+                    .SearchCoverageType = GetSelectedItem(ddlSearchCoverageType)
+                    .SearchQuestionSetCode = GetSelectedValue(ddlSearchQuestionSetCode)
+                    .SearchPurposeCode = GetSelectedValue(ddlSearchPurposeCode)
                 End With
-                Me.PopulateGrid()
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
 
 #Region "Helper Functions"
+        <Obsolete>
         Protected Sub PopulateSearchFieldsFromState()
             Try
-                Dim textFun As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
+                Dim textFun As Func(Of ListItem, String) = Function(li As ListItem)
                                                                             Return li.Code + " - " + li.Translation
                                                                         End Function
 
                 'CompanyGroup
                 Dim dv As DataView = LookupListNew.GetUserCompanyGroupList()
-                ddlSearchCompanyGroup.Items.Add(New System.Web.UI.WebControls.ListItem("", Guid.Empty.ToString))
+                ddlSearchCompanyGroup.Items.Add(New WebControls.ListItem("", Guid.Empty.ToString))
 
                 If dv.Count > 0 Then
-                    ddlSearchCompanyGroup.Items.Add(New System.Web.UI.WebControls.ListItem(dv(0)("DESCRIPTION").ToString, New Guid(CType(dv(0)("ID"), Byte())).ToString))
+                    ddlSearchCompanyGroup.Items.Add(New WebControls.ListItem(dv(0)("DESCRIPTION").ToString, New Guid(CType(dv(0)("ID"), Byte())).ToString))
                 End If
 
                 'Company
                 Dim oCompanyList = GetCompanyListByCompanyGroup(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
-                Me.ddlSearchCompany.Populate(oCompanyList, New PopulateOptions() With
+                ddlSearchCompany.Populate(oCompanyList, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
 
                 'DealerGroup
                 Dim oDealerGroupList = GetDealerGroupListByCompanyForUser()
-                Me.ddlSearchDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
+                ddlSearchDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
                 {
                     .AddBlankItem = True,
-                    .SortFunc = AddressOf .GetCode
+                    .SortFunc = AddressOf PopulateOptions.GetCode
                 })
 
                 'Dealer
                 Dim oDealerList = GetDealerListByCompanyForUser()
-                Me.ddlSearchDealer.Populate(oDealerList, New PopulateOptions() With
+                ddlSearchDealer.Populate(oDealerList, New PopulateOptions() With
                 {
                     .AddBlankItem = True
                 })
@@ -249,10 +244,10 @@ Namespace Tables
                 })
 
                 'Risk Type
-                Dim listcontext As ListContext = New ListContext()
+                Dim listContext As ListContext = New ListContext()
                 Dim compGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                listcontext.CompanyGroupId = compGroupId
-                Dim riskLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("RiskTypeByCompanyGroup", Authentication.CurrentUser.LanguageCode, listcontext)
+                listContext.CompanyGroupId = compGroupId
+                Dim riskLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("RiskTypeByCompanyGroup", Authentication.CurrentUser.LanguageCode, listContext)
                 ddlSearchRiskType.Populate(riskLkl, New PopulateOptions() With
                 {
                     .AddBlankItem = True
@@ -264,79 +259,78 @@ Namespace Tables
                     .BlankItemValue = String.Empty,
                     .AddBlankItem = True,
                     .TextFunc = textFun,
-                    .ValueFunc = AddressOf .GetExtendedCode
+                    .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                 })
 
                 'Question Set Code
-                Me.ddlSearchQuestionSetCode.Populate(CommonConfigManager.Current.ListManager.GetList("DcmQuestionSet", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
+                ddlSearchQuestionSetCode.Populate(CommonConfigManager.Current.ListManager.GetList("DcmQuestionSet", Authentication.CurrentUser.LanguageCode), New PopulateOptions() With
                 {
                     .BlankItemValue = String.Empty,
                     .AddBlankItem = True,
-                    .ValueFunc = AddressOf .GetCode,
+                    .ValueFunc = AddressOf PopulateOptions.GetCode,
                     .TextFunc = textFun
                 })
 
-                If Me.State.searchCompanyGrp <> Guid.Empty Then
-                    SetSelectedItem(ddlSearchCompanyGroup, Me.State.searchCompanyGrp)
+                If State.SearchCompanyGrp <> Guid.Empty Then
+                    SetSelectedItem(ddlSearchCompanyGroup, State.SearchCompanyGrp)
                 End If
 
-                If Me.State.searchCompany <> Guid.Empty Then
-                    SetSelectedItem(ddlSearchCompany, Me.State.searchCompany)
+                If State.SearchCompany <> Guid.Empty Then
+                    SetSelectedItem(ddlSearchCompany, State.SearchCompany)
                 End If
 
-                If Me.State.searchDealerGrp <> Guid.Empty Then
-                    SetSelectedItem(ddlSearchDealerGroup, Me.State.searchDealerGrp)
+                If State.SearchDealerGrp <> Guid.Empty Then
+                    SetSelectedItem(ddlSearchDealerGroup, State.SearchDealerGrp)
                 End If
 
-                If Me.State.searchDealer <> Guid.Empty Then
-                    SetSelectedItem(ddlSearchDealer, Me.State.searchDealer)
+                If State.SearchDealer <> Guid.Empty Then
+                    SetSelectedItem(ddlSearchDealer, State.SearchDealer)
                 End If
 
-                If Me.State.searchProductCode <> String.Empty Then
-                    txtSearchProductCode.Text = Me.State.searchProductCode
+                If State.SearchProductCode <> String.Empty Then
+                    txtSearchProductCode.Text = State.SearchProductCode
                 End If
 
-                If Me.State.searchCoverageType <> Guid.Empty Then
-                    SetSelectedItem(ddlSearchCoverageType, Me.State.searchCoverageType)
+                If State.SearchCoverageType <> Guid.Empty Then
+                    SetSelectedItem(ddlSearchCoverageType, State.SearchCoverageType)
                 End If
 
-                If Me.State.searchRiskType <> Guid.Empty Then
-                    SetSelectedItem(ddlSearchRiskType, Me.State.searchRiskType)
+                If State.SearchRiskType <> Guid.Empty Then
+                    SetSelectedItem(ddlSearchRiskType, State.SearchRiskType)
                 End If
 
-                If Me.State.searchPurposeCode <> String.Empty Then
-                    SetSelectedItem(ddlSearchPurposeCode, Me.State.searchPurposeCode)
+                If State.SearchPurposeCode <> String.Empty Then
+                    SetSelectedItem(ddlSearchPurposeCode, State.SearchPurposeCode)
                 End If
 
-                If Me.State.searchQuestionSetCode <> String.Empty Then
-                    SetSelectedItem(ddlSearchQuestionSetCode, Me.State.searchQuestionSetCode)
+                If State.SearchQuestionSetCode <> String.Empty Then
+                    SetSelectedItem(ddlSearchQuestionSetCode, State.SearchQuestionSetCode)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
         End Sub
 
-        Private Function GetCompanyListByCompanyGroup(ByVal companyGroupId As Guid) As ListItem()
-            Dim listcontext As ListContext = New ListContext()
+        Private Function GetCompanyListByCompanyGroup(companyGroupId As Guid) As ListItem()
+            Dim listContext As ListContext = New ListContext()
 
-            listcontext.CompanyGroupId = companyGroupId
-            Dim companyListForCompanyGroup As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="GetCompanyByCompanyGroup", context:=listcontext)
+            listContext.CompanyGroupId = companyGroupId
+            Dim companyListForCompanyGroup As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="GetCompanyByCompanyGroup", context:=listContext)
 
             Return companyListForCompanyGroup.ToArray()
         End Function
 
+        <Obsolete>
         Private Function GetDealerListByCompanyForUser() As ListItem()
-            Dim Index As Integer
+            Dim index As Integer
             Dim oListContext As New ListContext
-
-            Dim UserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-
+            Dim userCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
             Dim oDealerList As New Collections.Generic.List(Of ListItem)
 
-            For Index = 0 To UserCompanies.Count - 1
-                oListContext.CompanyId = UserCompanies(Index)
+            For index = 0 To userCompanies.Count - 1
+                oListContext.CompanyId = userCompanies(index)
                 Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
                 If oDealerListForCompany.Count > 0 Then
                     If Not oDealerList Is Nothing Then
@@ -347,20 +341,19 @@ Namespace Tables
                 End If
             Next
 
-            Return oDealerList.ToArray()
+            Return oDealerList.Distinct().ToArray()
 
         End Function
 
+        <Obsolete>
         Private Function GetDealerGroupListByCompanyForUser() As ListItem()
-            Dim Index As Integer
+            Dim index As Integer
             Dim oListContext As New ListContext
-
-            Dim UserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-
+            Dim userCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
             Dim oDealerGroupList As New Collections.Generic.List(Of ListItem)
 
-            For Index = 0 To UserCompanies.Count - 1
-                oListContext.CompanyId = UserCompanies(Index)
+            For index = 0 To userCompanies.Count - 1
+                oListContext.CompanyId = userCompanies(index)
                 Dim oDealerGroupListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerGroupByCompany", context:=oListContext)
                 If oDealerGroupListForCompany.Count > 0 Then
                     If oDealerGroupList IsNot Nothing Then
@@ -371,7 +364,7 @@ Namespace Tables
                 End If
             Next
 
-            Return oDealerGroupList.ToArray()
+            Return oDealerGroupList.Distinct().ToArray()
 
         End Function
 
@@ -389,176 +382,166 @@ Namespace Tables
             Return oDealerListForCompany.ToArray()
         End Function
 
-        Private Function GetProductListByCompany() As ListItem()
-            Dim oListContext As New ListContext
-            oListContext.CompanyId = Guid.Parse(ddlSearchCompany.SelectedValue)
-            Dim oProductListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByCompany", context:=oListContext)
-            Return oProductListForCompany.ToArray()
-        End Function
-
         Public Sub PopulateGrid()
             Dim blnNewSearch As Boolean = False
             With State
-                If ((.searchDV Is Nothing) OrElse (.HasDataChanged)) Then
-                    .searchDV = ConfigQuestionSet.getList(CompGrpID:= .searchCompanyGrp, CompanyID:= .searchCompany, DealerGrpID:= .searchDealerGrp, DealerID:= .searchDealer,
-                                                  ProductCode:= .searchProductCode, CoverageTypeID:= .searchCoverageType,
-                                                  RiskTypeID:= .searchRiskType, strPurposeXCD:= .searchPurposeCode, strQuestionSetCode:= .searchQuestionSetCode)
+                If ((.SearchDv Is Nothing) OrElse (.HasDataChanged)) Then
+                    .SearchDv = ConfigQuestionSet.getList(CompGrpID:= .SearchCompanyGrp, CompanyID:= .SearchCompany, DealerGrpID:= .SearchDealerGrp, DealerID:= .SearchDealer,
+                                                  ProductCode:= .SearchProductCode, CoverageTypeID:= .SearchCoverageType,
+                                                  RiskTypeID:= .SearchRiskType, strPurposeXCD:= .SearchPurposeCode, strQuestionSetCode:= .SearchQuestionSetCode)
                     blnNewSearch = True
                 End If
-                If Not (.searchDV Is Nothing) Then
-                    .searchDV.Sort = Me.SortDirection
-                    Me.Grid.AutoGenerateColumns = False
-                    SetPageAndSelectedIndexFromGuid(.searchDV, .QuestionSetConfigID, Me.Grid, Me.State.PageIndex)
-                    Me.SortAndBindGrid(blnNewSearch)
+                If Not (.SearchDv Is Nothing) Then
+                    .SearchDv.Sort = SortDirection
+                    Grid.AutoGenerateColumns = False
+                    SetPageAndSelectedIndexFromGuid(.SearchDv, .QuestionSetConfigId, Grid, State.PageIndex)
+                    SortAndBindGrid(blnNewSearch)
                 End If
             End With
         End Sub
 
         Private Sub SortAndBindGrid(Optional ByVal blnShowErr As Boolean = True)
-            Me.State.PageIndex = Me.Grid.PageIndex
+            State.PageIndex = Grid.PageIndex
 
-            If (Me.State.searchDV.Count = 0) Then
-                Me.State.bnoRow = True
-                Me.State.searchDV = Nothing
+            If (State.SearchDv.Count = 0) Then
+                State.BnoRow = True
+                State.SearchDv = Nothing
                 Dim objNew As ConfigQuestionSet = New ConfigQuestionSet
-                ConfigQuestionSet.AddNewRowToSearchDV(Me.State.searchDV, objNew)
-                Me.Grid.DataSource = Me.State.searchDV
-                Me.Grid.DataBind()
-                Me.Grid.Rows(0).Visible = False
-                Me.State.IsGridVisible = False
+                ConfigQuestionSet.AddNewRowToSearchDV(State.SearchDv, objNew)
+                Grid.DataSource = State.SearchDv
+                Grid.DataBind()
+                Grid.Rows(0).Visible = False
+                State.IsGridVisible = False
                 If blnShowErr Then
-                    Me.MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
+                    MasterPage.MessageController.AddInformation(Message.MSG_NO_RECORDS_FOUND, True)
                 End If
             Else
                 State.IsGridVisible = True
-                Me.State.bnoRow = False
-                Me.Grid.Enabled = True
-                Me.Grid.DataSource = Me.State.searchDV
-                HighLightSortColumn(Grid, Me.SortDirection, True)
-                Me.Grid.DataBind()
+                State.BnoRow = False
+                Grid.Enabled = True
+                Grid.DataSource = State.SearchDv
+                HighLightSortColumn(Grid, SortDirection, True)
+                Grid.DataBind()
             End If
 
             If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
-            ControlMgr.SetVisibleControl(Me, moSearchResults, Me.State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, moSearchResults, State.IsGridVisible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.SearchDv.Count
 
-            If Me.State.IsGridVisible Then
-                Me.lblRecordCount.Text = Me.State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If State.IsGridVisible Then
+                lblRecordCount.Text = State.SearchDv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
 
         End Sub
 #End Region
 
 #Region "Grid related"
-        Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+        Private Sub Grid_PageIndexChanged(sender As Object, e As EventArgs) Handles Grid.PageIndexChanged
             Try
-                Me.State.PageIndex = Grid.PageIndex
-                Me.State.QuestionSetConfigID = Guid.Empty
-                Me.PopulateGrid()
+                State.PageIndex = Grid.PageIndex
+                State.QuestionSetConfigId = Guid.Empty
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+        Private Sub Grid_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
             Try
                 Grid.PageIndex = e.NewPageIndex
                 State.PageIndex = Grid.PageIndex
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub Grid_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles Grid.Sorting
+        Private Sub Grid_Sorting(sender As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ", StringComparison.Ordinal)
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
 
-                Me.State.PageIndex = 0
-                Me.PopulateGrid()
+                State.PageIndex = 0
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Protected Sub cboPageSize_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Protected Sub cboPageSize_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 State.PageSize = CType(cboPageSize.SelectedValue, Integer)
-                Me.State.PageIndex = NewCurrentPageIndex(Grid, State.searchDV.Count, State.PageSize)
-                Me.Grid.PageIndex = Me.State.PageIndex
-                Me.PopulateGrid()
+                State.PageIndex = NewCurrentPageIndex(Grid, State.SearchDv.Count, State.PageSize)
+                Grid.PageIndex = State.PageIndex
+                PopulateGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub RowCreated(sender As Object, e As GridViewRowEventArgs)
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Public Sub RowCommand(source As Object, e As GridViewCommandEventArgs)
             Try
                 Dim index As Integer
-                If (e.CommandName = SELECT_COMMAND) Then
+                If (e.CommandName = SelectCommand) Then
                     index = CInt(e.CommandArgument)
 
-                    Me.State.QuestionSetConfigID = New Guid(CType(Me.Grid.Rows(index).Cells(GRID_COL_CONFIG_QUESTION_SET_ID_IDX).FindControl(GRID_CTRL_NAME_LABLE_CONFIG_QUESTION_SET_ID), Label).Text)
-                    Me.callPage(ConfigQuestionSetForm.URL, Me.State.QuestionSetConfigID)
+                    State.QuestionSetConfigId = New Guid(CType(Grid.Rows(index).Cells(GridColConfigQuestionSetIdIdx).FindControl(GridCtrlNameLableConfigQuestionSetId), Label).Text)
+                    callPage(ConfigQuestionSetForm.URL, State.QuestionSetConfigId)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
+        <Obsolete>
         Private Sub ddlSearchCompany_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlSearchCompany.SelectedIndexChanged
-
-            Dim textFun As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
-                                                                        Return li.Code + " - " + li.Translation
-                                                                    End Function
 
             If ddlSearchCompany.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                 If ddlSearchCompany.SelectedIndex = BLANK_ITEM_SELECTED Then
                     'DealerGroup
                     Dim oDealerGroupList = GetDealerGroupListByCompanyForUser()
-                    Me.ddlSearchDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
+                    ddlSearchDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
                     {
                         .AddBlankItem = True,
-                        .SortFunc = AddressOf .GetCode
+                        .SortFunc = AddressOf PopulateOptions.GetCode
                     })
 
                     'Dealer
                     Dim oDealerList = GetDealerListByCompanyForUser()
-                    Me.ddlSearchDealer.Populate(oDealerList, New PopulateOptions() With
+                    ddlSearchDealer.Populate(oDealerList, New PopulateOptions() With
                     {
                         .AddBlankItem = True
                     })
                 Else
                     'DealerGroup
                     Dim oDealerGroupList = GetDealerGroupListByCompany()
-                    Me.ddlSearchDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
+                    ddlSearchDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
                     {
                         .AddBlankItem = True,
-                        .SortFunc = AddressOf .GetCode
+                        .SortFunc = AddressOf PopulateOptions.GetCode
                     })
 
                     'Dealer
                     Dim oDealerList = GetDealerListByCompany()
-                    Me.ddlSearchDealer.Populate(oDealerList, New PopulateOptions() With
+                    ddlSearchDealer.Populate(oDealerList, New PopulateOptions() With
                     {
                         .AddBlankItem = True
                     })
