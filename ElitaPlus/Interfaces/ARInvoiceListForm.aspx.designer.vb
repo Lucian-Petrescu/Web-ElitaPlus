@@ -176,13 +176,13 @@ Partial Public Class ArInvoiceListForm
     Protected WithEvents ddlReference As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
-    '''TextBox2 control.
+    '''txtReferenceNumber control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents TextBox2 As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtReferenceNumber As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''ddlDocType control.
