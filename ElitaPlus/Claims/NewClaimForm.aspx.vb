@@ -2910,23 +2910,6 @@ Partial Class NewClaimForm
 
         End Select
     End Sub
-
-    Protected Sub RepAddress_OnItemDataBound(sender As Object, e As RepeaterItemEventArgs)
-        If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
-            Dim lbLogisticStage As Label = DirectCast(e.Item.FindControl("LogisticStage"), Label)
-            Dim addressControls As UserControlAddress_New = DirectCast(e.Item.FindControl("moAddressController"), UserControlAddress_New)
-            addressControls.TranslateAllLabelControl()
-
-            Dim logisticStage As Object = DataBinder.Eval(e.Item.DataItem, "LogisticStage")
-            Dim addressFulfill As Object = DataBinder.Eval(e.Item.DataItem, "Address")
-            Dim convertedAddress As BusinessObjectsNew.Address = ConvertToAddressControllerField(addressFulfill)
-            lbLogisticStage.Text = logisticStage
-            addressControls.Bind(convertedAddress)
-            addressControls.EnableControls(False, True)
-        End If
-
-    End Sub
-
     Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As FulfillmentAddress) As BusinessObjectsNew.Address
 
         Dim convertAddress As New BusinessObjectsNew.Address With {
