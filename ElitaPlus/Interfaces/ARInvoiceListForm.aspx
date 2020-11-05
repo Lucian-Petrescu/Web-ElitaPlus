@@ -24,7 +24,7 @@
     <script language="JavaScript" type="text/javascript">
         window.latestClick = '';
         function isNotDblClick() {
-            if (window.latestClick != "clicked") {
+            if (window.latestClick !== "clicked") {
                 window.latestClick = "clicked";
                 return true;
             } else {
@@ -49,6 +49,22 @@
             }
                 
         }
+
+        var referenceNumCtlId = '<%=txtReferenceNumber.ClientId%>';
+
+        function EnableDisableReferenceNum(referenceSelection) {
+            if (referenceSelection !== "") {
+                $('#' + referenceNumCtlId).removeAttr("disabled");
+                return;
+            } else {
+                $('#' + referenceNumCtlId).attr('disabled', 'disabled');
+                $('#' + referenceNumCtlId).val('');
+            }
+        }
+
+        $(function () {
+            EnableDisableReferenceNum('<%=ddlReference.SelectedValue%>');
+        });
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
@@ -71,10 +87,10 @@
                     </tr>
                     <tr>
                         <td>
-                            <asp:DropDownList runat="server" id="ddlCompany" AutoPostBack="False" SkinID="LargeDropDown"/>
+                            <asp:DropDownList runat="server" id="ddlCompany" AutoPostBack="False" SkinID="MediumDropDown"/>
                         </td>
                         <td>
-                            <asp:DropDownList runat="server" id="ddlDealer" AutoPostBack="False" SkinID="LargeDropDown"/>
+                            <asp:DropDownList runat="server" id="ddlDealer" AutoPostBack="False" SkinID="MediumDropDown"/>
                         </td>
                         <td>
                             <asp:TextBox ID="txtSource" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
@@ -97,11 +113,11 @@
                             <asp:TextBox ID="txtInvoiceNumber" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
                         </td>
                         <td>
-                            <asp:TextBox ID="txtInvoiceDate" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
+                            <asp:TextBox ID="txtInvoiceDate" runat="server" SkinID="SmallTextBox" AutoPostBack="False"></asp:TextBox>
                             <asp:ImageButton ID="ImageInvoiceDate" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png" style="vertical-align:bottom"></asp:ImageButton>
                         </td>
                         <td>
-                            <asp:DropDownList runat="server" id="ddlStatus" AutoPostBack="False" SkinID="LargeDropDown"/>
+                            <asp:DropDownList runat="server" id="ddlStatus" AutoPostBack="False" SkinID="SmallDropDown"/>
                         </td>
                     </tr>
                     <tr>
@@ -117,21 +133,14 @@
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <asp:DropDownList runat="server" id="ddlReference" AutoPostBack="False" SkinID="LargeDropDown">
-                                <asp:ListItem Value="" Selected="True"></asp:ListItem>
-                                <asp:ListItem Value="ELP_CERT">CERTIFICATE</asp:ListItem>
-                                <asp:ListItem Value="ELP_CLAIM">CLAIM</asp:ListItem>
-                                <asp:ListItem Value="ELP_CLAIM_AUTHORIZATION">CLAIM_AUTHORIZATION</asp:ListItem>
+                            <asp:DropDownList runat="server" id="ddlReference" AutoPostBack="False" SkinID="SmallDropDown" onchange="EnableDisableReferenceNum(this.value);">
                             </asp:DropDownList>
                         </td>
                         <td >
-                            <asp:TextBox ID="TextBox2" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
+                            <asp:TextBox ID="txtReferenceNumber" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
                         </td>
                         <td>
-                            <asp:DropDownList runat="server" id="ddlDocType" AutoPostBack="False" SkinID="LargeDropDown">
-                                <asp:ListItem Value="" Selected="True"></asp:ListItem>
-                                <asp:ListItem Value="INV">INVOICE</asp:ListItem>
-                                <asp:ListItem Value="CM">CREDIT_MEMO</asp:ListItem>
+                            <asp:DropDownList runat="server" id="ddlDocType" AutoPostBack="False" SkinID="SmallDropDown">
                             </asp:DropDownList>
                         </td>
                     </tr>
@@ -190,7 +199,7 @@
         </div>
         <div style="width: 100%">
             <asp:GridView ID="Grid" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True"
-                SkinID="DetailPageGridView" AllowSorting="false">
+                SkinID="DetailPageGridView" AllowSorting="True">
                 <SelectedRowStyle Wrap="True" />
                 <EditRowStyle Wrap="True" />
                 <AlternatingRowStyle Wrap="True" />
@@ -204,7 +213,7 @@
                             <asp:CheckBox ID="checkBoxSelected" runat="server" onclick="unCheckSelectAll(this);" />
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="DEALER">
+                    <asp:TemplateField HeaderText="DEALER" SortExpression="dealer_code">
                         <ItemTemplate>
                             <%# Eval("dealer_code") + " - " + Eval("dealer_name")%>
                         </ItemTemplate>
@@ -214,22 +223,14 @@
                             <asp:LinkButton ID="btnInvoiceDetails" runat="server" OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:BoundField DataField="invoice_date" HeaderText="INVOICE_DATE" HtmlEncode="false"></asp:BoundField>
+                    <asp:BoundField SortExpression="invoice_date" DataField="invoice_date" HeaderText="INVOICE_DATE" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField DataField="invoice_amount" HeaderText="INVOICE_AMOUNT" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField DataField="doc_type" HeaderText="DOCUMENT_TYPE" HtmlEncode="false"></asp:BoundField>
-                    <asp:TemplateField HeaderText="INVOICE_NUMBER">
-                        <ItemTemplate>
-                            <asp:Label runat="server" ID="lblInvoiceReference"></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="STATUS">
-                        <ItemTemplate>
-                            <asp:Label runat="server" ID="lblInvoiceStatus"></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
+                    <asp:BoundField DataField="reference" HeaderText="REFERENCE" HtmlEncode="false"></asp:BoundField>
+                    <asp:BoundField DataField="status_xcd" HeaderText="STATUS" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField DataField="source" HeaderText="SOURCE" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField DataField="doc_unique_identifier" HeaderText="DOCUMENT_UNIQUE_ID" HtmlEncode="false"></asp:BoundField>
-                    <asp:BoundField Visible="False" DataField="ap_invoice_header_id"></asp:BoundField> 
+                    <asp:BoundField Visible="False" DataField="invoice_header_id"></asp:BoundField> 
                 </Columns>
                 <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
                 <PagerStyle />
