@@ -87,7 +87,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <asp:DropDownList runat="server" id="ddlCompany" AutoPostBack="False" SkinID="MediumDropDown"/>
+                            <asp:DropDownList runat="server" id="ddlCompany" AutoPostBack="True" SkinID="MediumDropDown"/>
                         </td>
                         <td>
                             <asp:DropDownList runat="server" id="ddlDealer" AutoPostBack="False" SkinID="MediumDropDown"/>
