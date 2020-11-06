@@ -8,11 +8,11 @@ Public Class CertExtendedItemForm
     Inherits ElitaPlusSearchPage
 
 #Region "Private Variables and Properties"
-    Private _YesNoDataView As DataView
+    Private _yesNoDataView As DataView
 #End Region
 
 #Region "Constants"
-    Public Const URL As String = "CertExtendedItemForm.aspx"
+    Public Const Url As String = "CertExtendedItemForm.aspx"
     Private Const DEFAULT_SORT As String = "FIELD_NAME ASC"
 
     Private Const GRID_COL_ID_IDX As Integer = 0
@@ -58,15 +58,15 @@ Public Class CertExtendedItemForm
         Public SortExpression As String = DEFAULT_SORT
         Public PageIndex As Integer
         Public Count As Integer
-        Public MyBO As CertExtendedItemFormBO
+        Public MyBo As CertExtendedItem
         Public DataSet As DataSet
-        Public dv As DataView
+        Public Dv As DataView
         Public ActionInProgress As DetailPageCommand
         Public LastErrMsg As String
-        Public CertExtConfigID As Guid = Guid.Empty
+        Public CertExtConfigId As Guid = Guid.Empty
         Public HasDataChanged As Boolean
         Public IsRowBeingEdited As Boolean = False
-        Public searchDV As CertExtendedItemFormBO.CertExtendedItemSearchDV = Nothing
+        Public SearchDv As CertExtendedItem.CertExtendedItemSearchDV = Nothing
         Public IsGridVisible As Boolean
         Public BnoRow As Boolean = False
         Public IsRowEdit As Boolean = False
@@ -84,79 +84,79 @@ Public Class CertExtendedItemForm
 #End Region
 
 #Region "Button-Events"
-    Public Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+    Public Sub BtnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
         Try
             ReturnToCallingPage()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            'Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            Me.DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+            'HandleErrors(ex, MasterPage.MessageController)
+            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+            State.LastErrMsg = MasterPage.MessageController.Text
         End Try
     End Sub
-    Public Sub btnAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnAdd.Click
+    Public Sub BtnAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnAdd.Click
         Try
-            Me.State.IsGridVisible = True
-            Me.State.CertExtConfigID = Guid.Empty
-            Me.State.IsRowEdit = False
-            Me.BeginEdit(Guid.Empty)
+            State.IsGridVisible = True
+            State.CertExtConfigId = Guid.Empty
+            State.IsRowEdit = False
+            BeginEdit(Guid.Empty)
             PopulateGrid()
-            Me.State.ActionInProgress = DetailPageCommand.New_
+            State.ActionInProgress = DetailPageCommand.New_
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub BeginEdit(ByVal CurrentCertExtConfigID As Guid)
+    Private Sub BeginEdit(ByVal currentCertExtConfigId As Guid)
         Try
-            Me.State.IsRowBeingEdited = True
-            With Me.State
-                If Not CurrentCertExtConfigID.Equals(Guid.Empty) Then
-                    .MyBO = New CertExtendedItemFormBO(CurrentCertExtConfigID)
+            State.IsRowBeingEdited = True
+            With State
+                If Not currentCertExtConfigId.Equals(Guid.Empty) Then
+                    .MyBo = New CertExtendedItem(currentCertExtConfigId)
                 Else
-                    .MyBO = New CertExtendedItemFormBO()
-                    .CertExtConfigID = Me.State.MyBO.Id
-                    If .searchDV Is Nothing Then
-                        .searchDV = .MyBO.GetNewDataViewRow(CertExtendedItemFormBO.GetList(Me.State.CodeMask.ToUpper().Trim()), .CertExtConfigID)
+                    .MyBo = New CertExtendedItem()
+                    .CertExtConfigId = State.MyBo.Id
+                    If .SearchDv Is Nothing Then
+                        .SearchDv = .MyBo.GetNewDataViewRow(CertExtendedItem.GetList(State.CodeMask.ToUpper().Trim()), .CertExtConfigId)
                     Else
-                        .searchDV = .MyBO.GetNewDataViewRow(.searchDV, .CertExtConfigID)
+                        .SearchDv = .MyBo.GetNewDataViewRow(.SearchDv, .CertExtConfigId)
                     End If
                 End If
             End With
-            Me.ChangeEnabledProperty(Me.btnAdd, False)
+            ChangeEnabledProperty(btnAdd, False)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
     Private Sub SetGridViewButtonsVisibility(ByVal gridrow As GridViewRow, ByVal bEditButtonVisible As Boolean, ByVal bDeleteButtonVisible As Boolean, ByVal bSaveButtonVisible As Boolean, ByVal bCancelButtonVisible As Boolean)
         Try
-            Dim EditButton As ImageButton = CType(gridrow.Cells(EDIT_COL).FindControl(EDIT_CONTROL_NAME), ImageButton)
-            If (Not EditButton Is Nothing) Then
-                EditButton.Enabled = bEditButtonVisible
-                EditButton.Visible = bEditButtonVisible
+            Dim editButton As ImageButton = CType(gridrow.Cells(EDIT_COL).FindControl(EDIT_CONTROL_NAME), ImageButton)
+            If (Not editButton Is Nothing) Then
+                editButton.Enabled = bEditButtonVisible
+                editButton.Visible = bEditButtonVisible
             End If
 
-            Dim DeleteButton As ImageButton = CType(gridrow.Cells(EDIT_COL).FindControl(DELETE_CONTROL_NAME), ImageButton)
-            If (Not DeleteButton Is Nothing) Then
-                DeleteButton.Enabled = bDeleteButtonVisible
-                DeleteButton.Visible = bDeleteButtonVisible
+            Dim deleteButton As ImageButton = CType(gridrow.Cells(EDIT_COL).FindControl(DELETE_CONTROL_NAME), ImageButton)
+            If (Not deleteButton Is Nothing) Then
+                deleteButton.Enabled = bDeleteButtonVisible
+                deleteButton.Visible = bDeleteButtonVisible
             End If
 
-            Dim SaveButton As Button = CType(gridrow.Cells(EDIT_COL).FindControl(SAVE_CONTROL_NAME), Button)
-            If (Not SaveButton Is Nothing) Then
-                SaveButton.Enabled = bSaveButtonVisible
-                SaveButton.Visible = bSaveButtonVisible
+            Dim saveButton As Button = CType(gridrow.Cells(EDIT_COL).FindControl(SAVE_CONTROL_NAME), Button)
+            If (Not saveButton Is Nothing) Then
+                saveButton.Enabled = bSaveButtonVisible
+                saveButton.Visible = bSaveButtonVisible
             End If
 
-            Dim CancelButton As Button = CType(gridrow.Cells(EDIT_COL).FindControl(CANCEL_CONTROL_NAME), Button)
-            If (Not CancelButton Is Nothing) Then
-                CancelButton.Enabled = bCancelButtonVisible
-                CancelButton.Visible = bCancelButtonVisible
+            Dim cancelButton As Button = CType(gridrow.Cells(EDIT_COL).FindControl(CANCEL_CONTROL_NAME), Button)
+            If (Not cancelButton Is Nothing) Then
+                cancelButton.Enabled = bCancelButtonVisible
+                cancelButton.Visible = bCancelButtonVisible
             End If
 
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
@@ -164,10 +164,10 @@ Public Class CertExtendedItemForm
     Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             GridViewCertItemConfig.PageIndex = NewCurrentPageIndex(GridViewCertItemConfig, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-            Me.State.SelectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-            Me.PopulateGrid()
+            State.SelectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -182,58 +182,58 @@ Public Class CertExtendedItemForm
 
     Public Sub GridViewCertItemConfig_Sorting(ByVal source As Object, ByVal e As GridViewSortEventArgs) Handles GridViewCertItemConfig.Sorting
         Try
-            Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ")
+            Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ")
 
-            If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                If Me.SortDirection.EndsWith(" ASC") Then
-                    Me.SortDirection = e.SortExpression & " DESC"
+            If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If SortDirection.EndsWith(" ASC") Then
+                    SortDirection = e.SortExpression & " DESC"
                 Else
-                    Me.SortDirection = e.SortExpression & " ASC"
+                    SortDirection = e.SortExpression & " ASC"
                 End If
             Else
-                Me.SortDirection = e.SortExpression & " ASC"
+                SortDirection = e.SortExpression & " ASC"
             End If
-            Me.State.SortExpression = Me.SortDirection
-            Me.State.PageIndex = 0
-            Me.PopulateGrid()
+            State.SortExpression = SortDirection
+            State.PageIndex = 0
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Public Sub GridViewCertItemConfig_PageIndexChanged(ByVal sender As Object, ByVal e As GridViewPageEventArgs) Handles GridViewCertItemConfig.PageIndexChanging
         Try
-            Me.State.PageIndex = e.NewPageIndex
-            Me.PopulateGrid()
+            State.PageIndex = e.NewPageIndex
+            PopulateGrid()
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Protected Sub BindBoPropertiesToGridHeaders()
-        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "FieldName", Me.GridViewCertItemConfig.Columns(GRID_COL_FIELD_NAME_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "DefaultValue", Me.GridViewCertItemConfig.Columns(GRID_COL_DEFAULT_VALUE_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "AllowUpdate", Me.GridViewCertItemConfig.Columns(GRID_COL_ALLOW_UPDATE_IDX))
-        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "AllowDisplay", Me.GridViewCertItemConfig.Columns(GRID_COL_ALLOW_DISPLAY_IDX))
-        Me.ClearGridViewHeadersAndLabelsErrorSign()
+        BindBOPropertyToGridHeader(State.MyBo, "FieldName", GridViewCertItemConfig.Columns(GRID_COL_FIELD_NAME_IDX))
+        BindBOPropertyToGridHeader(State.MyBo, "DefaultValue", GridViewCertItemConfig.Columns(GRID_COL_DEFAULT_VALUE_IDX))
+        BindBOPropertyToGridHeader(State.MyBo, "AllowUpdate", GridViewCertItemConfig.Columns(GRID_COL_ALLOW_UPDATE_IDX))
+        BindBOPropertyToGridHeader(State.MyBo, "AllowDisplay", GridViewCertItemConfig.Columns(GRID_COL_ALLOW_DISPLAY_IDX))
+        ClearGridViewHeadersAndLabelsErrorSign()
     End Sub
     Protected Sub PopulateUserConctrols()
         UserControlAvailableSelectedCompanies.ClearLists()
-        UserControlAvailableSelectedCompanies.SetAvailableData(Me.State.MyBO.GetAvailableCompanies(), "Description", "COMPANY_ID")
-        UserControlAvailableSelectedCompanies.SetSelectedData(Me.State.MyBO.GetSelectedCompanies(Me.State.CodeMask), "Description", "ID")
+        UserControlAvailableSelectedCompanies.SetAvailableData(State.MyBo.GetAvailableCompanies(), "Description", "COMPANY_ID")
+        UserControlAvailableSelectedCompanies.SetSelectedData(State.MyBo.GetSelectedCompanies(State.CodeMask), "Description", "ID")
         UserControlAvailableSelectedCompanies.BackColor = "#d5d6e4"
         UserControlAvailableSelectedCompanies.RemoveSelectedFromAvailable()
 
         UserControlAvailableSelectedDealers.ClearLists()
-        UserControlAvailableSelectedDealers.SetAvailableData(Me.State.MyBO.GetAvailableDealers(), "Description", "ID")
-        UserControlAvailableSelectedDealers.SetSelectedData(Me.State.MyBO.GetSelectedDealers(Me.State.CodeMask), "Description", "ID")
+        UserControlAvailableSelectedDealers.SetAvailableData(State.MyBo.GetAvailableDealers(), "Description", "ID")
+        UserControlAvailableSelectedDealers.SetSelectedData(State.MyBo.GetSelectedDealers(State.CodeMask), "Description", "ID")
         UserControlAvailableSelectedDealers.BackColor = "#d5d6e4"
         UserControlAvailableSelectedDealers.RemoveSelectedFromAvailable()
 
         If UserControlAvailableSelectedDealers.SelectedList.Count > 0 Then
-            Me.rdoDealers.Checked = True
+            rdoDealers.Checked = True
         Else
-            Me.rdoCompanies.Checked = True
+            rdoCompanies.Checked = True
         End If
     End Sub
     Public Sub GridViewCertItemConfig_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles GridViewCertItemConfig.RowCommand
@@ -242,44 +242,44 @@ Public Class CertExtendedItemForm
 
             Select Case e.CommandName
                 Case ElitaPlusSearchPage.CANCEL_COMMAND_NAME
-                    Me.GridViewCertItemConfig.EditIndex = NO_ITEM_SELECTED_INDEX
-                    Me.EndEdit(ElitaPlusPage.DetailPageCommand.Cancel)
-                    Me.State.IsRowEdit = False
+                    GridViewCertItemConfig.EditIndex = NO_ITEM_SELECTED_INDEX
+                    EndEdit(ElitaPlusPage.DetailPageCommand.Cancel)
+                    State.IsRowEdit = False
                 Case ElitaPlusSearchPage.DELETE_COMMAND_NAME
                     nIndex = CInt(e.CommandArgument)
-                    Me.State.CertExtConfigID = New Guid(GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_ID_IDX).Text)
-                    Me.BeginEdit(Me.State.CertExtConfigID)
-                    Me.EndEdit(ElitaPlusPage.DetailPageCommand.Delete)
+                    State.CertExtConfigId = New Guid(GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_ID_IDX).Text)
+                    BeginEdit(State.CertExtConfigId)
+                    EndEdit(ElitaPlusPage.DetailPageCommand.Delete)
                     DisableFields()
                 Case ElitaPlusSearchPage.SAVE_COMMAND_NAME
                     nIndex = CInt(e.CommandArgument)
-                    Me.PopulateBoFromControls(GridViewCertItemConfig.Rows(nIndex))
+                    PopulateBoFromControls(GridViewCertItemConfig.Rows(nIndex))
                     'Check if fieldName / code is duplicated
                     ValidateConfigRecords()
-                    Me.EndEdit(ElitaPlusPage.DetailPageCommand.OK)
+                    EndEdit(ElitaPlusPage.DetailPageCommand.OK)
                     DisableFields()
-                    Me.State.IsRowEdit = False
+                    State.IsRowEdit = False
                 Case ElitaPlusSearchPage.EDIT_COMMAND_NAME
                     nIndex = CInt(e.CommandArgument)
-                    Me.GridViewCertItemConfig.SelectedIndex = nIndex
-                    Me.GridViewCertItemConfig.EditIndex = nIndex
-                    Me.State.CertExtConfigID = New Guid(GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_ID_IDX).Text)
-                    Me.BeginEdit(Me.State.CertExtConfigID)
+                    GridViewCertItemConfig.SelectedIndex = nIndex
+                    GridViewCertItemConfig.EditIndex = nIndex
+                    State.CertExtConfigId = New Guid(GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_ID_IDX).Text)
+                    BeginEdit(State.CertExtConfigId)
                     DisableFields()
-                    Me.State.IsRowEdit = True
+                    State.IsRowEdit = True
             End Select
-            Me.PopulateGrid()
+            PopulateGrid()
         Catch ex As Oracle.ManagedDataAccess.Client.OracleException
             Select Case ex.Number
                 Case 20005
-                    Me.MasterPage.MessageController.AddInformation(TranslationBase.TranslateLabelOrMessage("FIELDNAME_CANNOT_BE_ADDED"), True)
+                    MasterPage.MessageController.AddInformation(TranslationBase.TranslateLabelOrMessage("FIELDNAME_CANNOT_BE_ADDED"), True)
                 Case 20006
-                    Me.MasterPage.MessageController.AddInformation(TranslationBase.TranslateLabelOrMessage("FIELDNAME_CANNOT_BE_MODIFIED"), True)
+                    MasterPage.MessageController.AddInformation(TranslationBase.TranslateLabelOrMessage("FIELDNAME_CANNOT_BE_MODIFIED"), True)
                 Case 20007
-                    Me.MasterPage.MessageController.AddInformation(TranslationBase.TranslateLabelOrMessage("FIELDNAME_CANNOT_BE_DELETED"), True)
+                    MasterPage.MessageController.AddInformation(TranslationBase.TranslateLabelOrMessage("FIELDNAME_CANNOT_BE_DELETED"), True)
             End Select
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
     Public Sub GridViewCertItemConfig_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles GridViewCertItemConfig.RowDataBound
@@ -294,7 +294,7 @@ Public Class CertExtendedItemForm
                                                                        languageCode:=languageCode)
 
             If (rowType = DataControlRowType.DataRow) AndAlso (dvRow IsNot Nothing) Then
-                Dim attribute As CertExtendedItemFormBO = New CertExtendedItemFormBO(dvRow.Row)
+                Dim attribute As CertExtendedItem = New CertExtendedItem(dvRow.Row)
                 Dim rowState As DataControlRowState = CType(e.Row.RowState, DataControlRowState)
 
                 e.Row.Cells(GRID_COL_ID_IDX).Text = attribute.Id.ToString()
@@ -339,7 +339,7 @@ Public Class CertExtendedItemForm
                         SetSelectedItem(allowDisplayDropDown, defaultSelectedCodeId)
                     End If
                 ElseIf Not IsEmpty(attribute.Id) Then
-                    _YesNoDataView = LookupListNew.GetYesNoLookupList(LookupListNew.GetIdFromCode(LookupListNew.LK_LANGUAGES, languageCode), False)
+                    _yesNoDataView = LookupListNew.GetYesNoLookupList(LookupListNew.GetIdFromCode(LookupListNew.LK_LANGUAGES, languageCode), False)
 
                     Dim fieldNameLabel As Label = CType(e.Row.FindControl(FIELD_NAME_LABEL_NAME), Label)
                     Dim defaultValueLabel As Label = CType(e.Row.FindControl(DEFAULT_VALUE_LABEL_NAME), Label)
@@ -348,15 +348,15 @@ Public Class CertExtendedItemForm
 
                     fieldNameLabel.Text = attribute.FieldName
                     defaultValueLabel.Text = attribute.DefaultValue
-                    allowUpdateLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.AllowUpdate)
-                    allowDisplayLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.AllowDisplay)
+                    allowUpdateLabel.Text = LookupListNew.GetDescriptionFromCode(_yesNoDataView, attribute.AllowUpdate)
+                    allowDisplayLabel.Text = LookupListNew.GetDescriptionFromCode(_yesNoDataView, attribute.AllowDisplay)
 
-                    Me.TextboxCertItemConfigCode.Text = attribute.Code
-                    Me.TextboxCertItemConfigDesc.Text = attribute.Description
+                    TextboxCertItemConfigCode.Text = attribute.Code
+                    TextboxCertItemConfigDesc.Text = attribute.Description
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
@@ -364,59 +364,58 @@ Public Class CertExtendedItemForm
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region
     Private Sub SetStateProperties()
-        Me.State.CodeMask = TextboxCertItemConfigCode.Text.ToUpper().Trim()
+        State.CodeMask = TextboxCertItemConfigCode.Text.ToUpper().Trim()
     End Sub
 
 #Region "Page Events"
 
     Private Sub UpdateBreadCrum()
-        Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator & CERTITEMEXTENDEDCONTROL
+        MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & CERTITEMEXTENDEDCONTROL
     End Sub
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         'Put user code to initialize the page here
-        Me.MasterPage.MessageController.Clear_Hide()
+        MasterPage.MessageController.Clear_Hide()
         Try
-            Me.MasterPage.MessageController.Clear()
-            Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(ADMIN)
-            Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(CERTITEMEXTENDEDCONTROL)
-            Me.UpdateBreadCrum()
-            If Not Me.IsPostBack Then
-                Me.SetStateProperties()
-                Me.SetGridItemStyleColor(GridViewCertItemConfig)
-                Me.TranslateGridHeader(GridViewCertItemConfig)
-                Me.ShowMissingTranslations(Me.MasterPage.MessageController)
-                Me.MenuEnabled = False
-                Me.SortDirection = DEFAULT_SORT
-                Me.PopulateEmptyGrid()
-                If Me.State.MyBO Is Nothing Then
-                    Me.State.MyBO = New CertExtendedItemFormBO
+            MasterPage.MessageController.Clear()
+            MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage(ADMIN)
+            MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(CERTITEMEXTENDEDCONTROL)
+            UpdateBreadCrum()
+            If Not IsPostBack Then
+                SetStateProperties()
+                SetGridItemStyleColor(GridViewCertItemConfig)
+                TranslateGridHeader(GridViewCertItemConfig)
+                ShowMissingTranslations(MasterPage.MessageController)
+                MenuEnabled = False
+                SortDirection = DEFAULT_SORT
+                PopulateEmptyGrid()
+                If State.MyBo Is Nothing Then
+                    State.MyBo = New CertExtendedItem
                 End If
-                Me.PopulateUserConctrols()
+                PopulateUserConctrols()
                 rdoDealers.Attributes.Add("onClick", "javascript:changeSelection()")
                 rdoCompanies.Attributes.Add("onClick", "javascript:changeSelection()")
                 hrefCompany.Attributes.Add("onClick", "javascript:changeSelectionCompany()")
                 hrefDealer.Attributes.Add("onClick", "javascript:changeSelectionDealer()")
-                Me.TextboxCertItemConfigCode.MaxLength = CODE_TEXTBOX_MAX_LENGTH
-                Me.TextboxCertItemConfigDesc.MaxLength = DESCRIPTION_TEXTBOX_MAX_LENGTH
+                TextboxCertItemConfigCode.MaxLength = CODE_TEXTBOX_MAX_LENGTH
+                TextboxCertItemConfigDesc.MaxLength = DESCRIPTION_TEXTBOX_MAX_LENGTH
             Else
                 BindBoPropertiesToGridHeaders()
             End If
 
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
-        Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
     Private Sub CertExtendedItemForm_PageCall() Handles Me.PageCall
-        If (Me.State.DataSet Is Nothing) Then
-            'Me.State.DataSet = CertExtendedItemFormBO.GetList(Me.State.CodeMask)
+        If (State.DataSet Is Nothing) Then
         End If
     End Sub
 
@@ -424,129 +423,129 @@ Public Class CertExtendedItemForm
 
 #Region "Controlling Logic"
     Public Sub PopulateGrid()
-        If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
-            Me.State.searchDV = CertExtendedItemFormBO.GetList(Me.State.CodeMask)
+        If ((State.SearchDv Is Nothing) OrElse (State.HasDataChanged)) Then
+            State.SearchDv = CertExtendedItem.GetList(State.CodeMask)
         End If
-        Me.State.searchDV.Sort = Me.SortDirection
-        Me.GridViewCertItemConfig.AutoGenerateColumns = False
-        SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.CertExtConfigID, Me.GridViewCertItemConfig, Me.State.PageIndex, Me.State.IsRowBeingEdited)
-        Me.SortAndBindGrid()
-        Me.State.HasDataChanged = False
+        State.SearchDv.Sort = SortDirection
+        GridViewCertItemConfig.AutoGenerateColumns = False
+        SetPageAndSelectedIndexFromGuid(State.SearchDv, State.CertExtConfigId, GridViewCertItemConfig, State.PageIndex, State.IsRowBeingEdited)
+        SortAndBindGrid()
+        State.HasDataChanged = False
     End Sub
     Private Sub SortAndBindGrid()
-        Me.State.PageIndex = Me.GridViewCertItemConfig.PageIndex
+        State.PageIndex = GridViewCertItemConfig.PageIndex
 
-        If (Me.State.searchDV Is Nothing OrElse Me.State.searchDV.Count = 0) Then
+        If (State.SearchDv Is Nothing OrElse State.SearchDv.Count = 0) Then
             Session("recCount") = 0
-            Me.State.searchDV.AddNew()
-            Me.State.searchDV(0)(0) = Guid.Empty.ToByteArray
-            GridViewCertItemConfig.DataSource = Me.State.searchDV
+            State.SearchDv.AddNew()
+            State.SearchDv(0)(0) = Guid.Empty.ToByteArray
+            GridViewCertItemConfig.DataSource = State.SearchDv
             GridViewCertItemConfig.DataBind()
             GridViewCertItemConfig.Rows(0).Visible = False
             GridViewCertItemConfig.Rows(0).Controls.Clear()
-            Me.State.BnoRow = True
+            State.BnoRow = True
         Else
-            Session("recCount") = Me.State.searchDV.Count
-            Me.State.BnoRow = False
-            Me.GridViewCertItemConfig.Enabled = True
-            Me.GridViewCertItemConfig.DataSource = Me.State.searchDV
-            HighLightSortColumn(GridViewCertItemConfig, Me.SortDirection)
-            Me.GridViewCertItemConfig.DataBind()
+            Session("recCount") = State.SearchDv.Count
+            State.BnoRow = False
+            GridViewCertItemConfig.Enabled = True
+            GridViewCertItemConfig.DataSource = State.SearchDv
+            HighLightSortColumn(GridViewCertItemConfig, SortDirection)
+            GridViewCertItemConfig.DataBind()
         End If
         If Not GridViewCertItemConfig.BottomPagerRow.Visible Then GridViewCertItemConfig.BottomPagerRow.Visible = True
 
-        ControlMgr.SetVisibleControl(Me, GridViewCertItemConfig, Me.State.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me, GridViewCertItemConfig, State.IsGridVisible)
 
-        ControlMgr.SetVisibleControl(Me, trPageSize, Me.GridViewCertItemConfig.Visible)
+        ControlMgr.SetVisibleControl(Me, trPageSize, GridViewCertItemConfig.Visible)
 
-        If Me.GridViewCertItemConfig.Visible Then
-            Me.lblRecordCount.Text = Session("recCount").ToString & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        If GridViewCertItemConfig.Visible Then
+            lblRecordCount.Text = Session("recCount").ToString & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
         End If
 
     End Sub
     Private Sub EndEdit(ByVal detailPageCommand As DetailPageCommand)
         Try
-            With Me.State
+            With State
                 Select Case detailPageCommand
                     Case ElitaPlusPage.DetailPageCommand.OK
-                        .MyBO.Save()
-                        .MyBO.EndEdit()
-                        Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                        .MyBo.Save()
+                        .MyBo.EndEdit()
+                        MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                     Case ElitaPlusPage.DetailPageCommand.Delete
-                        .MyBO.Delete()
-                        .MyBO.Save()
-                        Me.MasterPage.MessageController.AddSuccess(Message.DELETE_RECORD_CONFIRMATION, True)
+                        .MyBo.Delete()
+                        .MyBo.Save()
+                        MasterPage.MessageController.AddSuccess(Message.DELETE_RECORD_CONFIRMATION, True)
                 End Select
                 PopulateUserConctrols()
-                .MyBO = Nothing
-                .CertExtConfigID = Guid.Empty
+                .MyBo = Nothing
+                .CertExtConfigId = Guid.Empty
                 .HasDataChanged = True
                 .IsRowBeingEdited = False
-                .searchDV = Nothing
-                Me.ChangeEnabledProperty(Me.btnAdd, True)
+                .SearchDv = Nothing
+                ChangeEnabledProperty(btnAdd, True)
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
     Sub PopulateEmptyGrid()
         Session("recCount") = 0
         GridViewCertItemConfig.EditIndex = -1
         ' Bind Data to Grid
-        Me.GridViewCertItemConfig.DataSource = New ArrayList()
-        Me.GridViewCertItemConfig.DataBind()
-        If Me.GridViewCertItemConfig.Visible Then
-            Me.lblRecordCount.Text = Session("recCount").ToString & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+        GridViewCertItemConfig.DataSource = New ArrayList()
+        GridViewCertItemConfig.DataBind()
+        If GridViewCertItemConfig.Visible Then
+            lblRecordCount.Text = Session("recCount").ToString & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
         End If
     End Sub
 #End Region
     Private Sub PopulateBoFromControls(ByVal gridViewRow As GridViewRow)
         Try
-            With Me.State
+            With State
                 Dim txtFieldName As TextBox = CType(gridViewRow.FindControl(FIELD_NAME_TEXTBOX_NAME), TextBox)
-                Me.PopulateBOProperty(.MyBO, "FieldName", txtFieldName.Text.Trim())
+                PopulateBOProperty(.MyBo, "FieldName", txtFieldName.Text.Trim())
 
                 Dim txtDefaultValue As TextBox = CType(gridViewRow.FindControl(DEFAULT_VALUE_TEXTBOX_NAME), TextBox)
-                Me.PopulateBOProperty(.MyBO, "DefaultValue", txtDefaultValue.Text.Trim())
+                PopulateBOProperty(.MyBo, "DefaultValue", txtDefaultValue.Text.Trim())
 
                 Dim ddAllowUpdate As DropDownList = CType(gridViewRow.FindControl(ALLOW_UPDATE_DROPDOWN_NAME), DropDownList)
-                Me.PopulateBOProperty(.MyBO, "AllowUpdate", ddAllowUpdate.SelectedItem.Text.Substring(0, 1).Trim())
+                PopulateBOProperty(.MyBo, "AllowUpdate", ddAllowUpdate.SelectedItem.Text.Substring(0, 1).Trim())
 
                 Dim ddAllowDisplay As DropDownList = CType(gridViewRow.FindControl(ALLOW_DISPLAY_DROPDOWN_NAME), DropDownList)
-                Me.PopulateBOProperty(.MyBO, "AllowDisplay", ddAllowDisplay.SelectedItem.Text.Substring(0, 1).Trim())
+                PopulateBOProperty(.MyBo, "AllowDisplay", ddAllowDisplay.SelectedItem.Text.Substring(0, 1).Trim())
 
-                Me.PopulateBOProperty(.MyBO, "Code", Me.TextboxCertItemConfigCode.Text.ToUpper().Trim())
-                Me.PopulateBOProperty(.MyBO, "Description", Me.TextboxCertItemConfigDesc.Text.Trim())
+                PopulateBOProperty(.MyBo, "Code", TextboxCertItemConfigCode.Text.ToUpper().Trim())
+                PopulateBOProperty(.MyBo, "Description", TextboxCertItemConfigDesc.Text.Trim())
 
             End With
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
     Private Function ValidateConfigRecords() As Boolean
 
-        If (String.IsNullOrEmpty(Me.State.MyBO.Code)) Then
+        If (String.IsNullOrEmpty(State.MyBo.Code)) Then
             Throw New GUIException(Message.MSG_CERT_EXT_CODE_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_CODE_VALUE_REQUIRED)
         End If
 
-        If (String.IsNullOrEmpty(Me.State.MyBO.FieldName)) Then
+        If (String.IsNullOrEmpty(State.MyBo.FieldName)) Then
             Throw New GUIException(Message.MSG_CERT_EXT_FIELD_NAME_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_FIELD_NAME_REQUIRED)
         End If
 
-        Dim dvCertConfigDV As CertExtendedItemFormBO.CertExtendedItemSearchDV = CertExtendedItemFormBO.GetList(Me.State.MyBO.Code)
-        If Not dvCertConfigDV Is Nothing AndAlso dvCertConfigDV.Count > 0 Then
-            For Each certItemConfig As DataRow In dvCertConfigDV.Table.Rows
+        Dim dvCertConfigDv As CertExtendedItem.CertExtendedItemSearchDV = CertExtendedItem.GetList(State.MyBo.Code)
+        If Not dvCertConfigDv Is Nothing AndAlso dvCertConfigDv.Count > 0 Then
+            For Each certItemConfig As DataRow In dvCertConfigDv.Table.Rows
                 'For Template Fields
-                Dim currentCertConfigID As Guid = New Guid(CType(certItemConfig(CertExtendedItemFormBO.CertExtendedItemSearchDV.COL_CERT_EXT_CONFIG_ID), Byte()))
+                Dim currentCertConfigId As Guid = New Guid(CType(certItemConfig(CertExtendedItem.CertExtendedItemSearchDV.COL_CERT_EXT_CONFIG_ID), Byte()))
 
-                If Not currentCertConfigID.Equals(Me.State.MyBO.Id) AndAlso certItemConfig(CertExtendedItemFormBO.CertExtendedItemSearchDV.COL_FIELD_NAME).ToString().ToUpper() = Me.State.MyBO.FieldName.ToUpper() AndAlso Me.State.IsRowEdit = False Then
+                If Not currentCertConfigId.Equals(State.MyBo.Id) AndAlso certItemConfig(CertExtendedItem.CertExtendedItemSearchDV.COL_FIELD_NAME).ToString().ToUpper() = State.MyBo.FieldName.ToUpper() AndAlso State.IsRowEdit = False Then
                     Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME)
                 End If
             Next
         End If
 
         Dim dv As DataView
-        dv = CertExtendedItemFormBO.GetFieldConfigExist(Me.State.MyBO.Code, Me.State.MyBO.FieldName)
+        dv = CertExtendedItem.GetFieldConfigExist(State.MyBo.Code, State.MyBo.FieldName)
 
         If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
             Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY)
@@ -554,52 +553,52 @@ Public Class CertExtendedItemForm
 
     End Function
     Private Function ValidateDealerCompanyRecords() As Boolean
-        'First Validate Dealer or Comapny list already exits against someother code and field combination
+        'First Validate Dealer or Company list already exits against some other code and field combination
         DealerCompanyConfigExist()
 
-        'Clear Dealer or Company List if option choosen vice-versa
+        'Clear Dealer or Company List if option chosen vice-versa
         Dim clearList As Boolean
         clearList = ClearDealerCompanyList()
         If clearList Then
             Return True
         End If
-        If Me.rdoCompanies.Checked AndAlso (UserControlAvailableSelectedCompanies.SelectedList.Count) < 1 Then
+        If rdoCompanies.Checked AndAlso (UserControlAvailableSelectedCompanies.SelectedList.Count) < 1 Then
             Throw New GUIException(Message.MSG_EMPTY_SELECTED_COMPANY_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EMPTY_SELECTED_COMPANY_REQUIRED)
         End If
-        If Me.rdoDealers.Checked AndAlso (UserControlAvailableSelectedDealers.SelectedList.Count) < 1 Then
+        If rdoDealers.Checked AndAlso (UserControlAvailableSelectedDealers.SelectedList.Count) < 1 Then
             Throw New GUIException(Message.MSG_EMPTY_SELECTED_DEALER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EMPTY_SELECTED_DEALER_REQUIRED)
         End If
         Return True
     End Function
     Private Function ClearDealerCompanyList() As Boolean
         Dim dv As DataView
-        'Dettach comapnies from fields if nothing selected from CompanyList
-        dv = Me.State.MyBO.GetSelectedCompanies(Me.State.CodeMask)
+        'Detach companies from fields if nothing selected from CompanyList
+        dv = State.MyBo.GetSelectedCompanies(State.CodeMask)
         If dv.Count > 0 AndAlso (rdoDealers.Checked OrElse (UserControlAvailableSelectedCompanies.SelectedList.Count) <= 0) Then
-            Me.State.MyBO.ClearCompanyList(Me.State.CodeMask)
+            State.MyBo.ClearCompanyList(State.CodeMask)
             Return True
         End If
-        'Dettach dealers from fields if nothing selected from DealerList
-        dv = Me.State.MyBO.GetSelectedDealers(Me.State.CodeMask)
+        'Detach dealers from fields if nothing selected from DealerList
+        dv = State.MyBo.GetSelectedDealers(State.CodeMask)
         If dv.Count > 0 AndAlso (rdoCompanies.Checked OrElse (UserControlAvailableSelectedDealers.SelectedList.Count) <= 0) Then
-            Me.State.MyBO.ClearDealerList(Me.State.CodeMask)
+            State.MyBo.ClearDealerList(State.CodeMask)
             Return True
         End If
     End Function
     Private Function DealerCompanyConfigExist() As Boolean
         Dim dv As DataView
-        If Me.rdoCompanies.Checked Then
-            For Each Str As String In UserControlAvailableSelectedCompanies.SelectedList
-                Dim company_id As Guid = New Guid(Str)
-                dv = CertExtendedItemFormBO.GetDealerCompanyConfigExist(Me.State.CodeMask, "ELP_COMPANY", company_id)
+        If rdoCompanies.Checked Then
+            For Each str As String In UserControlAvailableSelectedCompanies.SelectedList
+                Dim companyId As Guid = New Guid(str)
+                dv = CertExtendedItem.GetDealerCompanyConfigExist(State.CodeMask, "ELP_COMPANY", companyId)
                 If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
                     Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY)
                 End If
             Next
-        ElseIf Me.rdoDealers.Checked Then
+        ElseIf rdoDealers.Checked Then
             For Each Str As String In UserControlAvailableSelectedDealers.SelectedList
-                Dim dealer_id As Guid = New Guid(Str)
-                dv = CertExtendedItemFormBO.GetDealerCompanyConfigExist(Me.State.CodeMask, "ELP_DEALER", dealer_id)
+                Dim dealerId As Guid = New Guid(Str)
+                dv = CertExtendedItem.GetDealerCompanyConfigExist(State.CodeMask, "ELP_DEALER", dealerId)
                 If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
                     Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY)
                 End If
@@ -608,50 +607,50 @@ Public Class CertExtendedItemForm
     End Function
     Protected Sub SaveDealerCompanyList()
         'populate selection of rule, dealer and company to children
-        If Me.rdoDealers.Checked AndAlso ((UserControlAvailableSelectedDealers.SelectedList.Count) > 0) Then
-            Me.State.MyBO.SaveDealerList(UserControlAvailableSelectedDealers.SelectedList, Me.State.CodeMask)
-        ElseIf Me.rdoCompanies.Checked AndAlso ((UserControlAvailableSelectedCompanies.SelectedList.Count) > 0) Then
-            Me.State.MyBO.SaveCompanyList(UserControlAvailableSelectedCompanies.SelectedList, Me.State.CodeMask)
+        If rdoDealers.Checked AndAlso ((UserControlAvailableSelectedDealers.SelectedList.Count) > 0) Then
+            State.MyBo.SaveDealerList(UserControlAvailableSelectedDealers.SelectedList, State.CodeMask)
+        ElseIf rdoCompanies.Checked AndAlso ((UserControlAvailableSelectedCompanies.SelectedList.Count) > 0) Then
+            State.MyBo.SaveCompanyList(UserControlAvailableSelectedCompanies.SelectedList, State.CodeMask)
         End If
         PopulateUserConctrols()
-        If Me.ErrCollection.Count > 0 Then
+        If ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
     End Sub
     Sub DisableFields()
-        Me.TextboxCertItemConfigCode.Enabled = False
+        TextboxCertItemConfigCode.Enabled = False
     End Sub
-    Protected Sub btnSaveConfig_Click(sender As Object, e As EventArgs) Handles btnSaveConfig.Click
+    Protected Sub BtnSaveConfig_Click(sender As Object, e As EventArgs) Handles btnSaveConfig.Click
         Try
-            Me.State.MyBO = New CertExtendedItemFormBO()
-            If Not String.IsNullOrEmpty(Me.TextboxCertItemConfigCode.Text) AndAlso Me.GridViewCertItemConfig.Rows.Count > 0 AndAlso ValidateDealerCompanyRecords() Then
-                Me.SaveDealerCompanyList()
-                If Me.State.MyBO.IsDirty Then
-                    Me.State.HasDataChanged = False
-                    Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
+            State.MyBo = New CertExtendedItem()
+            If Not String.IsNullOrEmpty(TextboxCertItemConfigCode.Text) AndAlso GridViewCertItemConfig.Rows.Count > 0 AndAlso ValidateDealerCompanyRecords() Then
+                SaveDealerCompanyList()
+                If State.MyBo.IsDirty Then
+                    State.HasDataChanged = False
+                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                     DisableFields()
                 Else
-                    Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
                 End If
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Protected Sub TextboxCertItemConfigCode_TextChanged(sender As Object, e As EventArgs) Handles TextboxCertItemConfigCode.TextChanged
+    Protected Sub TextBoxCertItemConfigCode_TextChanged(sender As Object, e As EventArgs) Handles TextboxCertItemConfigCode.TextChanged
         Try
-            If Me.btnAdd.Enabled = True AndAlso Not Me.State.CodeMask.Equals(TextboxCertItemConfigCode.Text.ToUpper().Trim()) Then
-                Me.SetStateProperties()
-                Me.TextboxCertItemConfigDesc.Text = ""
-                Me.State.HasDataChanged = True
-                Me.State.IsGridVisible = True
-                Me.State.MyBO = New CertExtendedItemFormBO
+            If btnAdd.Enabled = True AndAlso Not State.CodeMask.Equals(TextboxCertItemConfigCode.Text.ToUpper().Trim()) Then
+                SetStateProperties()
+                TextboxCertItemConfigDesc.Text = ""
+                State.HasDataChanged = True
+                State.IsGridVisible = True
+                State.MyBo = New CertExtendedItem
                 PopulateUserConctrols()
                 PopulateGrid()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 End Class

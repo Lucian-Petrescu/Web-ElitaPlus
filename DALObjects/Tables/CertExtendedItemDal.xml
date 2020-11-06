@@ -10,7 +10,7 @@
     <![CDATA[elp_tbl_crt_ext_flds_config.addcertextconfig]]>
   </INSERT>
   <UPDATE>
-    <![CDATA[elp_tbl_crt_ext_flds_config.modifycertextconfig]]>
+    <![CDATA[elp_tbl_crt_ext_flds_config.modifycrtcodefld]]>
   </UPDATE>
   <DELETE>
     <![CDATA[elp_tbl_crt_ext_flds_config.deletecertextfldconfig]]>

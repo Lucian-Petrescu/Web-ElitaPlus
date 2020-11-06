@@ -72,7 +72,7 @@
                     <asp:Label ID="LabelCertItemConfigCode" runat="server" Font-Bold="false">CERT_ITEM_CONFIG_CODE</asp:Label>
                 </td>
                 <td>
-                    <asp:TextBox ID="TextboxCertItemConfigCode" TabIndex="1" runat="server" SkinID="MediumTextBox" OnTextChanged="TextboxCertItemConfigCode_TextChanged" AutoPostBack="true"></asp:TextBox>
+                    <asp:TextBox ID="TextboxCertItemConfigCode" TabIndex="1" runat="server" SkinID="MediumTextBox" OnTextChanged="TextBoxCertItemConfigCode_TextChanged" AutoPostBack="true"></asp:TextBox>
                 </td>
                 <td>
                     <asp:Label ID="LabelCertItemConfigDesc" runat="server">CERT_ITEM_CONFIG_DESC</asp:Label>

@@ -1,7 +1,7 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject v2.cst (6/9/2015)********************
 
 
-Public Class CertExtendedItemFormDal
+Public Class CertExtendedItemDal
     Inherits OracleDALBase
 
 #Region "Constants"
@@ -43,12 +43,12 @@ Public Class CertExtendedItemFormDal
         Load(ds, Guid.Empty)
     End Sub
 
-    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
+    Public Sub Load(ByVal familyDs As DataSet, ByVal id As Guid)
         Try
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD"))
                 cmd.AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME, familyDs)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -59,7 +59,7 @@ Public Class CertExtendedItemFormDal
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_LIST"))
                 cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, codeMask)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -70,7 +70,7 @@ Public Class CertExtendedItemFormDal
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_SELECTED_COMPANIES_LIST"))
                 cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, codeMask)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -81,7 +81,7 @@ Public Class CertExtendedItemFormDal
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_SELECTED_DEALERS_LIST"))
                 cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, codeMask)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -105,7 +105,7 @@ Public Class CertExtendedItemFormDal
                 cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, code)
                 cmd.AddParameter(PAR_I_NAME_CREATED_BY, OracleDbType.Varchar2, created_by)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -118,7 +118,7 @@ Public Class CertExtendedItemFormDal
                 cmd.AddParameter(PAR_I_NAME_REFERENCE_ID, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, code)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -133,7 +133,7 @@ Public Class CertExtendedItemFormDal
                 cmd.AddParameter(PAR_I_NAME_REFERENCE_ID, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, code)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -145,7 +145,7 @@ Public Class CertExtendedItemFormDal
                 cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, code)
                 cmd.AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Varchar2, fieldName)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
