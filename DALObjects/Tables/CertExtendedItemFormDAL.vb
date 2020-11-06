@@ -9,7 +9,8 @@ Public Class CertExtendedItemFormDal
     Public Const TABLE_NAME As String = "ELP_CRT_EXT_FIELDS_CONFIG"
     Public Const TABLE_KEY_NAME As String = COL_NAME_CRT_EXT_FIELDS_CONFIG_ID
 
-    Public Const COL_NAME_CRT_EXT_FIELDS_CONFIG_ID As String = "crt_ext_fields_config_id"
+    'Public Const COL_NAME_CRT_EXT_FIELDS_CONFIG_ID As String = "crt_ext_fields_config_id"
+    Public Const COL_NAME_CRT_EXT_FIELDS_CONFIG_ID As String = "id"
     Public Const COL_NAME_CODE As String = "code"
     Public Const COL_NAME_DESCRIPTION As String = "description"
     Public Const COL_NAME_FIELD_NAME As String = "field_name"
@@ -151,7 +152,7 @@ Public Class CertExtendedItemFormDal
 
     Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
         With command
-            .AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_CRT_EXT_FIELDS_CONFIG_ID)
+            '.AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_CRT_EXT_FIELDS_CONFIG_ID)
             .AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE.ToUpper().Trim())
             .AddParameter(PAR_I_NAME_DESCRIPTION, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DESCRIPTION)
             .AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Varchar2, sourceColumn:=COL_NAME_FIELD_NAME)

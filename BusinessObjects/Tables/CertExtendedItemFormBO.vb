@@ -20,7 +20,8 @@ Public Class CertExtendedItemFormBO
         Inherits DataView
 
 #Region "Constants"
-        Public Const COL_CERT_EXT_CONFIG_ID As String = "crt_ext_fields_config_id"
+        'Public Const COL_CERT_EXT_CONFIG_ID As String = "crt_ext_fields_config_id"
+        Public Const COL_CERT_EXT_CONFIG_ID As String = "id"
         Public Const COL_CODE As String = "code"
         Public Const COL_DESCRIPTION As String = "description"
         Public Const COL_FIELD_NAME As String = "field_name"
@@ -100,12 +101,11 @@ Public Class CertExtendedItemFormBO
         Dim dt As DataTable
         dt = dv.Table
         Dim newrow As DataRow = dt.NewRow
-
-        'newrow(CertExtendedItemFormDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID) = id.ToByteArray
+        'newrow(CertExtendedItemFormDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID) = Id.ToByteArray
+        newrow(CertExtendedItemFormDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID) = String.Empty
         newrow(CertExtendedItemFormDal.COL_NAME_CODE) = String.Empty
         newrow(CertExtendedItemFormDal.COL_NAME_DESCRIPTION) = String.Empty
-        newrow(CertExtendedItemFormDal.COL_NAME_FIELD_NAME) = " "
-        'newrow(CertExtendedItemFormDal.COL_NAME_IN_ENROLLMENT) = "Y"
+        newrow(CertExtendedItemFormDal.COL_NAME_FIELD_NAME) = String.Empty
         newrow(CertExtendedItemFormDal.COL_NAME_DEFAULT_VALUE) = String.Empty
         newrow(CertExtendedItemFormDal.COL_NAME_ALLOW_UPDATE) = "Y"
         newrow(CertExtendedItemFormDal.COL_NAME_ALLOW_DISPLAY) = "Y"
@@ -131,8 +131,9 @@ Public Class CertExtendedItemFormBO
             Dim newRow As DataRow = Dataset.Tables(CertExtendedItemFormDal.TABLE_NAME).NewRow
             Dataset.Tables(CertExtendedItemFormDal.TABLE_NAME).Rows.Add(newRow)
             Row = newRow
-            SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
-            'SetValue(dal.COL_NAME_FIELD_NAME, " ")
+            'SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
+            Randomize()
+            SetValue(dal.TABLE_KEY_NAME, Rnd().ToString())
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -347,31 +348,24 @@ Public Class CertExtendedItemFormBO
 #Region "Properties"
 
     'Key Property
-    Public ReadOnly Property Id() As Guid
+    'Public ReadOnly Property Id() As Guid
+    '    Get
+    '        If Row(CertExtendedItemFormDAL.TABLE_KEY_NAME) Is DBNull.Value Then
+    '            Return Nothing
+    '        Else
+    '            Return New Guid(CType(Row(CertExtendedItemFormDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID), Byte()))
+    '        End If
+    '    End Get
+    'End Property
+    Public ReadOnly Property Id() As String
         Get
-            If Row(CertExtendedItemFormDAL.TABLE_KEY_NAME) Is DBNull.Value Then
+            If Row(CertExtendedItemFormDal.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(Row(CertExtendedItemFormDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID), Byte()))
+                Return CType(Row(CertExtendedItemFormDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID), String)
             End If
         End Get
     End Property
-    '<ValueMandatory(""), ValidStringLength("", Max:=30)>
-    'Public Property TableName() As String
-    '    Get
-    '        CheckDeleted()
-    '        If Row(CertExtendedItemFormDAL.COL_NAME_TABLE_NAME) Is DBNull.Value Then
-    '            Return Nothing
-    '        Else
-    '            Return CType(Row(CertExtendedItemFormDAL.COL_NAME_TABLE_NAME), String)
-    '        End If
-    '    End Get
-    '    Set(ByVal value As String)
-    '        CheckDeleted()
-    '        Me.SetValue(CertExtendedItemFormDal.COL_NAME_TABLE_NAME, value)
-    '    End Set
-    'End Property
-
     <ValueMandatory(""), ValidStringLength("", Max:=255)>
     Public Property FieldName() As String
         Get

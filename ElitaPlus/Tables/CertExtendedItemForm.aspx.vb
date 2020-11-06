@@ -15,12 +15,12 @@ Public Class CertExtendedItemForm
     Public Const URL As String = "CertExtendedItemForm.aspx"
     Private Const DEFAULT_SORT As String = "FIELD_NAME ASC"
 
-    'Private Const GRID_COL_ID_IDX As Integer = 0
-    Private Const GRID_COL_FIELD_NAME_IDX As Integer = 0
+    Private Const GRID_COL_ID_IDX As Integer = 0
+    Private Const GRID_COL_FIELD_NAME_IDX As Integer = 1
     'Private Const GRID_COL_IN_ENROLLMENT_IDX As Integer = 2
-    Private Const GRID_COL_DEFAULT_VALUE_IDX As Integer = 1
-    Private Const GRID_COL_ALLOW_UPDATE_IDX As Integer = 2
-    Private Const GRID_COL_ALLOW_DISPLAY_IDX As Integer = 3
+    Private Const GRID_COL_DEFAULT_VALUE_IDX As Integer = 2
+    Private Const GRID_COL_ALLOW_UPDATE_IDX As Integer = 3
+    Private Const GRID_COL_ALLOW_DISPLAY_IDX As Integer = 4
 
     Private Const MSG_RECORD_DELETED_OK As String = "MSG_RECORD_DELETED_OK"
     Private Const MSG_RECORD_SAVED_OK As String = "MSG_RECORD_SAVED_OK"
@@ -273,7 +273,7 @@ Public Class CertExtendedItemForm
                 Case ElitaPlusSearchPage.DELETE_COMMAND_NAME
                     nIndex = CInt(e.CommandArgument)
                     'Me.State.CertExtConfigID = New Guid(GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_ID_IDX).Text)
-                    Me.State.FieldName = GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_FIELD_NAME_IDX).Text.ToUpper().Trim()
+                    Me.State.FieldName = GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_ID_IDX).Text.ToUpper().Trim()
                     'Me.BeginEdit(Me.State.CertExtConfigID)
                     Me.BeginEdit(Me.State.FieldName)
                     Me.EndEdit(ElitaPlusPage.DetailPageCommand.Delete)
@@ -292,7 +292,7 @@ Public Class CertExtendedItemForm
                     Me.GridViewCertItemConfig.EditIndex = nIndex
                     'Me.State.CertExtConfigID = New Guid(GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_ID_IDX).Text)
                     'Me.BeginEdit(Me.State.CertExtConfigID)
-                    Me.State.FieldName = GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_FIELD_NAME_IDX).Text.ToUpper().Trim()
+                    Me.State.FieldName = GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_ID_IDX).Text.ToUpper().Trim()
                     Me.BeginEdit(Me.State.FieldName)
                     DisableFields()
                     Me.State.IsRowEdit = True
@@ -326,9 +326,9 @@ Public Class CertExtendedItemForm
                 Dim attribute As CertExtendedItemFormBO = New CertExtendedItemFormBO(dvRow.Row)
                 Dim rowState As DataControlRowState = CType(e.Row.RowState, DataControlRowState)
 
-                'e.Row.Cells(GRID_COL_ID_IDX).Text = attribute.Id.ToString()
+                e.Row.Cells(GRID_COL_ID_IDX).Text = attribute.Id.ToString()
 
-                e.Row.Cells(GRID_COL_FIELD_NAME_IDX).Text = attribute.FieldName.ToString()
+                'e.Row.Cells(GRID_COL_FIELD_NAME_IDX).Text = attribute.FieldName.ToString()
 
                 If (rowState And DataControlRowState.Edit) = DataControlRowState.Edit Then
 
@@ -385,13 +385,13 @@ Public Class CertExtendedItemForm
                 ElseIf Not String.IsNullOrEmpty(attribute.FieldName) Then
                     _YesNoDataView = LookupListNew.GetYesNoLookupList(LookupListNew.GetIdFromCode(LookupListNew.LK_LANGUAGES, languageCode), False)
 
-                    'Dim fieldNameLabel As Label = CType(e.Row.FindControl(FIELD_NAME_LABEL_NAME), Label)
+                    Dim fieldNameLabel As Label = CType(e.Row.FindControl(FIELD_NAME_LABEL_NAME), Label)
                     'Dim inEnrollmentLabel As Label = CType(e.Row.FindControl(IN_ENROLLMENT_LABEL_NAME), Label)
                     Dim defaultValueLabel As Label = CType(e.Row.FindControl(DEFAULT_VALUE_LABEL_NAME), Label)
                     Dim allowUpdateLabel As Label = CType(e.Row.FindControl(ALLOW_UPDATE_LABEL_NAME), Label)
                     Dim allowDisplayLabel As Label = CType(e.Row.FindControl(ALLOW_DISPLAY_LABEL_NAME), Label)
 
-                    'fieldNameLabel.Text = attribute.FieldName
+                    fieldNameLabel.Text = attribute.FieldName
                     'inEnrollmentLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.InEnrollment)
                     defaultValueLabel.Text = attribute.DefaultValue
                     allowUpdateLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.AllowUpdate)
