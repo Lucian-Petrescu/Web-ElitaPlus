@@ -33,13 +33,13 @@
             rdoComapany.checked = true;
         }
     </script>
-    <script type="text/javascript">    
+    <%--<script type="text/javascript">    
         function InEnrollment_SelectedIndexChanged(obj) {
             var ddlYesNO = document.getElementById(obj);
-            if (ddlYesNO.selectedIndex > 0) {
+            if (ddlYesNO.selectedIndex >= 0) {
                 var status = ddlYesNO.options[ddlYesNO.selectedIndex].text;
                 var splitObj = obj.split("_");
-                var objTextID = splitObj[0] + "_" + splitObj[1] + "_" + splitObj[2] + "_" + splitObj[3] + "_" + "DefaultValueTextBox";
+                var objTextID = splitObj[0] + "_" + splitObj[1] + "_" + splitObj[2] + "_" + splitObj[3]  + "_" + "DefaultValueTextBox";
 
                 var objTextDefaultValue = document.getElementById(objTextID);
                 var objTableTextBox = document.getElementById("TableTextBox");
@@ -55,7 +55,7 @@
                 }
             }
         }
-    </script>
+    </script>--%>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
@@ -72,7 +72,7 @@
                     <asp:Label ID="LabelCertItemConfigCode" runat="server" Font-Bold="false">CERT_ITEM_CONFIG_CODE</asp:Label>
                 </td>
                 <td>
-                    <asp:TextBox ID="TextboxCertItemConfigCode" TabIndex="1" runat="server" SkinID="MediumTextBox"></asp:TextBox>
+                    <asp:TextBox ID="TextboxCertItemConfigCode" TabIndex="1" runat="server" SkinID="MediumTextBox" OnTextChanged="TextBoxCertItemConfigCode_TextChanged" AutoPostBack="true"></asp:TextBox>
                 </td>
                 <td>
                     <asp:Label ID="LabelCertItemConfigDesc" runat="server">CERT_ITEM_CONFIG_DESC</asp:Label>
@@ -120,6 +120,7 @@
                     AllowPaging="True" CellPadding="1" SkinID="DetailPageGridView" ShowHeaderWhenEmpty="true">
                     <RowStyle HorizontalAlign="Left" />
                     <Columns>
+                        <asp:BoundField Visible="False" />
                         <asp:TemplateField HeaderText="FIELD NAME" SortExpression="FIELD_NAME">
                             <ItemTemplate>
                                 <asp:Label runat="server" ID="FieldNameLabel"></asp:Label>
@@ -127,9 +128,10 @@
                             <EditItemTemplate>
                                 <asp:TextBox runat="server" ID="FieldNameTextBox">
                                 </asp:TextBox>
+                                <%--<asp:Label runat="server" ID="FieldNameLabelEdit" Visible="false"></asp:Label>--%>
                             </EditItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="IN_ENROLLMENT">
+                       <%-- <asp:TemplateField HeaderText="IN_ENROLLMENT">
                             <ItemTemplate>
                                 <asp:Label runat="server" ID="InEnrollmentLabel"></asp:Label>
                             </ItemTemplate>
@@ -137,20 +139,20 @@
                                 <asp:DropDownList runat="server" ID="InEnrollmentDropDown" onchange="InEnrollment_SelectedIndexChanged(this.id);">
                                 </asp:DropDownList>
                             </EditItemTemplate>
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField HeaderText="DEFAULT_VALUE" SortExpression="DEFAULT_VALUE">
                             <ItemTemplate>
                                 <asp:Label runat="server" ID="DefaultValueLabel"></asp:Label>
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <table id="TableTextBox" style="display:none;">
+                                <%--<table id="TableTextBox" style="display:none;">
                                     <tr>
-                                        <td>
+                                        <td>--%>
                                             <asp:TextBox runat="server" ID="DefaultValueTextBox">                                       
                                             </asp:TextBox>
-                                        </td>
+                                        <%--</td>
                                     </tr>
-                                </table>
+                                </table>--%>
                             </EditItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="ALLOW_UPDATE" SortExpression="ALLOW_UPDATE">
@@ -162,20 +164,34 @@
                                 </asp:DropDownList>
                             </EditItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField>
+                         <asp:TemplateField HeaderText="ALLOW_DISPLAY" SortExpression="ALLOW_DISPLAY">
                             <ItemTemplate>
-                                <asp:ImageButton runat="server" ID="EditButton" CommandName="EditRecord" AlternateText="Edit" ImageUrl="~/App_Themes/Default/Images/edit.png" />
-                                <asp:ImageButton runat="server" ID="DeleteButton" CommandName="DeleteRecord" AlternateText="Delete" ImageUrl="~/App_Themes/Default/Images/icon_delete.png" />
+                                <asp:Label runat="server" ID="AllowDisplayLabel"></asp:Label>
                             </ItemTemplate>
                             <EditItemTemplate>
-                                <asp:ImageButton runat="server" ID="SaveButton" AlternateText="Save" CommandName="SaveRecord" ImageUrl="~/App_Themes/Default/Images/save.png" />
-                                <asp:ImageButton runat="server" ID="CancelButton" AlternateText="Cancel" CommandName="CancelRecord" ImageUrl="~/App_Themes/Default/Images/cancel.png" />
+                                <asp:DropDownList runat="server" ID="AllowDisplayDropDown">
+                                </asp:DropDownList>
+                            </EditItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField>
+                            <ItemTemplate>
+                                <asp:ImageButton runat="server" ID="EditButton" CommandName="EditRecord" AlternateText="Edit" ImageUrl="~/App_Themes/Default/Images/edit.png" 
+                                     CommandArgument="<%#Container.DisplayIndex %>"/>
+                                <asp:ImageButton runat="server" ID="DeleteButton" CommandName="DeleteRecord" AlternateText="Delete" ImageUrl="~/App_Themes/Default/Images/icon_delete.png" 
+                                     CommandArgument="<%#Container.DisplayIndex %>"/>
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:ImageButton runat="server" ID="SaveButton" AlternateText="Save" CommandName="SaveRecord" ImageUrl="~/App_Themes/Default/Images/save.png" 
+                                    CommandArgument="<%#Container.DisplayIndex %>" />
+                                <asp:ImageButton runat="server" ID="CancelButton" AlternateText="Cancel" CommandName="CancelRecord" ImageUrl="~/App_Themes/Default/Images/cancel.png" 
+                                    CommandArgument="<%#Container.DisplayIndex %>" />
                             </EditItemTemplate>
                         </asp:TemplateField>
                     </Columns>
                     <PagerSettings PageButtonCount="10" Mode="Numeric" Position="TopAndBottom" />
                 </asp:GridView>
             </div>
+            <%--CommandArgument='<%# Assurant.ElitaPlus.ElitaPlusWebApp.ElitaPlusPage.GetGuidStringFromByteArray(CType(Container.DataItem("ATTRIBUTE_ID"), Byte())) %>'--%>
         </div>
         <div class="btnZone">
             <asp:Button ID="btnAdd" runat="server" SkinID="AlternateLeftButton" Text="Add_New" />

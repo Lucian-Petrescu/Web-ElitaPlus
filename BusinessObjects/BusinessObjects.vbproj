@@ -280,7 +280,7 @@
     <Compile Include="Certificates\CertRegisteredItem.vb" />
     <Compile Include="Certificates\CertRegisteredItemHist.vb" />
     <Compile Include="Certificates\CheckReject.vb" />
-    <Compile Include="Tables\CertExtendedItemFormBO.vb" />
+    <Compile Include="Tables\CertExtendedItem.vb" />
     <Compile Include="Certificates\Rewards.vb" />
     <Compile Include="Certificates\CheckPayment.vb" />
     <Compile Include="Claims\CaseConseqDamage.vb" />
