@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <SQL>
   <LOAD>
-    <![CDATA[elp_tbl_crt_ext_fields_config.loadconfigbycode]]>
+    <![CDATA[elp_tbl_crt_ext_fields_config.loadconfigbyid]]>
   </LOAD>
   <LOAD_LIST>
     <![CDATA[elp_tbl_crt_ext_fields_config.loadconfigbycode]]>

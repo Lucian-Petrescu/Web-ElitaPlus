@@ -310,7 +310,7 @@ Public Class CertExtendedItemForm
                     Dim fieldNameTextBox As TextBox = CType(e.Row.FindControl(FIELD_NAME_TEXTBOX_NAME), TextBox)
                     Dim allowUpdateDropDown As DropDownList = CType(e.Row.FindControl(ALLOW_UPDATE_DROPDOWN_NAME), DropDownList)
                     Dim allowDisplayDropDown As DropDownList = CType(e.Row.FindControl(ALLOW_DISPLAY_DROPDOWN_NAME), DropDownList)
-                    Dim fieldNameLabelEdit As Label = CType(e.Row.FindControl(FIELD_NAME_LABEL_NAME_EDIT), Label)
+                    'Dim fieldNameLabelEdit As Label = CType(e.Row.FindControl(FIELD_NAME_LABEL_NAME_EDIT), Label)
 
                     Dim populateOptions = New PopulateOptions() With
                                             {
@@ -329,9 +329,9 @@ Public Class CertExtendedItemForm
                     SetSelectedItem(allowDisplayDropDown, defaultSelectedCodeId)
 
                     If Not String.IsNullOrEmpty(attribute.FieldName) Then
-                        fieldNameTextBox.Visible = False
-                        fieldNameLabelEdit.Visible = True
-                        fieldNameLabelEdit.Text = attribute.FieldName
+                        'fieldNameTextBox.Visible = False
+                        'fieldNameLabelEdit.Visible = True
+                        'fieldNameLabelEdit.Text = attribute.FieldName
                         fieldNameTextBox.Text = attribute.FieldName
                     End If
                     fieldNameTextBox.MaxLength = FIELD_NAME_TEXTBOX_MAX_LENGTH
@@ -463,10 +463,10 @@ Public Class CertExtendedItemForm
             GridViewCertItemConfig.DataBind()
             GridViewCertItemConfig.Rows(0).Visible = False
             GridViewCertItemConfig.Rows(0).Controls.Clear()
-            Me.State.bnoRow = True
+            Me.State.BnoRow = True
         Else
             Session("recCount") = Me.State.searchDV.Count
-            Me.State.bnoRow = False
+            Me.State.BnoRow = False
             Me.GridViewCertItemConfig.Enabled = True
             Me.GridViewCertItemConfig.DataSource = Me.State.searchDV
             HighLightSortColumn(GridViewCertItemConfig, Me.SortDirection)
