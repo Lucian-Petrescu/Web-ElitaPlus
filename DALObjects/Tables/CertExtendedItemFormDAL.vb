@@ -47,8 +47,10 @@ Public Class CertExtendedItemFormDal
 
     Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
         Try
-            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD"))
-                cmd.AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Raw, id.ToByteArray())
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_LIST"))
+                'cmd.AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Raw, id.ToByteArray())
+                'cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, String.Empty)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
                 OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
             End Using
@@ -127,21 +129,59 @@ Public Class CertExtendedItemFormDal
     End Sub
 #End Region
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
-        If ds Is Nothing Then
-            Return
-        End If
-        If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
-            Throw New NotSupportedException()
-        End If
-        If ds.Tables(TABLE_NAME) IsNot Nothing Then
-            MyBase.Update(ds.Tables(TABLE_NAME), transaction, changesFilter)
-        End If
-    End Sub
+    'Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
+    '    If ds Is Nothing Then
+    '        Return
+    '    End If
+    '    If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
+    '        Throw New NotSupportedException()
+    '    End If
+    '    If ds.Tables(TABLE_NAME) IsNot Nothing Then
+    '        MyBase.Update(ds.Tables(TABLE_NAME), transaction, changesFilter)
+    '    End If
+    'End Sub
+
+    'Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    '    command.AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_CRT_EXT_FIELDS_CONFIG_ID)
+
+    'End Sub
+
+    'Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    '    With command
+    '        .AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_CRT_EXT_FIELDS_CONFIG_ID)
+    '        .AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE.ToUpper().Trim())
+    '        .AddParameter(PAR_I_NAME_DESCRIPTION, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DESCRIPTION)
+    '        .AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Varchar2, sourceColumn:=COL_NAME_FIELD_NAME)
+    '        '.AddParameter(PAR_I_NAME_IN_ENROLLMENT, OracleDbType.Varchar2, sourceColumn:=COL_NAME_IN_ENROLLMENT)
+    '        .AddParameter(PAR_I_NAME_DEFAULT_VALUE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DEFAULT_VALUE)
+    '        .AddParameter(PAR_I_NAME_ALLOW_UPDATE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_ALLOW_UPDATE)
+    '        .AddParameter(PAR_I_NAME_ALLOW_DISPLAY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_ALLOW_DISPLAY)
+    '        .AddParameter(PAR_I_NAME_CREATED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY)
+    '    End With
+
+    'End Sub
+
+    'Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+    '    With command
+    '        .AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_CRT_EXT_FIELDS_CONFIG_ID)
+    '        '.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE.ToUpper().Trim())
+    '        '.AddParameter(PAR_I_NAME_DESCRIPTION, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DESCRIPTION)
+    '        '.AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Varchar2, sourceColumn:=COL_NAME_FIELD_NAME)
+    '        '.AddParameter(PAR_I_NAME_IN_ENROLLMENT, OracleDbType.Varchar2, sourceColumn:=COL_NAME_IN_ENROLLMENT)
+    '        .AddParameter(PAR_I_NAME_DEFAULT_VALUE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DEFAULT_VALUE)
+    '        .AddParameter(PAR_I_NAME_ALLOW_UPDATE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_ALLOW_UPDATE)
+    '        .AddParameter(PAR_I_NAME_ALLOW_DISPLAY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_ALLOW_DISPLAY)
+    '        .AddParameter(PAR_I_NAME_MODIFIED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY)
+    '    End With
+
+    'End Sub
 
     Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
-        command.AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_CRT_EXT_FIELDS_CONFIG_ID)
-
+        'command.AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_CRT_EXT_FIELDS_CONFIG_ID)
+        With command
+            .AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE.ToUpper().Trim())
+            .AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Varchar2, sourceColumn:=COL_NAME_FIELD_NAME)
+        End With
     End Sub
 
     Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
@@ -161,10 +201,10 @@ Public Class CertExtendedItemFormDal
 
     Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
         With command
-            .AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_CRT_EXT_FIELDS_CONFIG_ID)
-            '.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE.ToUpper().Trim())
+            '.AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_CRT_EXT_FIELDS_CONFIG_ID)
+            .AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE.ToUpper().Trim())
             '.AddParameter(PAR_I_NAME_DESCRIPTION, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DESCRIPTION)
-            '.AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Varchar2, sourceColumn:=COL_NAME_FIELD_NAME)
+            .AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Varchar2, sourceColumn:=COL_NAME_FIELD_NAME)
             '.AddParameter(PAR_I_NAME_IN_ENROLLMENT, OracleDbType.Varchar2, sourceColumn:=COL_NAME_IN_ENROLLMENT)
             .AddParameter(PAR_I_NAME_DEFAULT_VALUE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DEFAULT_VALUE)
             .AddParameter(PAR_I_NAME_ALLOW_UPDATE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_ALLOW_UPDATE)
@@ -174,27 +214,6 @@ Public Class CertExtendedItemFormDal
 
     End Sub
 #End Region
-
-#Region "Public Methods"
-
-    Public Function LoadCertExtendedItemList(ByVal pTableName As String) As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_CERT_EXTENDED_ITEM_LIST")
-
-        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure)
-        cmd.AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Varchar2, 30, pTableName)
-        cmd.AddParameter(OracleDALBase.PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-
-        Try
-            Dim ds As New DataSet
-            OracleDbHelper.Fetch(cmd, TABLE_NAME, ds)
-            Return ds
-        Catch ex As Exception
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-        End Try
-    End Function
-
-#End Region
-
 End Class
 
 
