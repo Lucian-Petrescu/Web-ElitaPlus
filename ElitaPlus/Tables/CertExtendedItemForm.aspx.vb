@@ -17,7 +17,6 @@ Public Class CertExtendedItemForm
 
     Private Const GRID_COL_ID_IDX As Integer = 0
     Private Const GRID_COL_FIELD_NAME_IDX As Integer = 1
-    'Private Const GRID_COL_IN_ENROLLMENT_IDX As Integer = 2
     Private Const GRID_COL_DEFAULT_VALUE_IDX As Integer = 2
     Private Const GRID_COL_ALLOW_UPDATE_IDX As Integer = 3
     Private Const GRID_COL_ALLOW_DISPLAY_IDX As Integer = 4
@@ -28,7 +27,6 @@ Public Class CertExtendedItemForm
 
     Private Const FIELD_NAME_LABEL_NAME As String = "FieldNameLabel"
     Private Const FIELD_NAME_LABEL_NAME_EDIT As String = "FieldNameLabelEdit"
-    'Private Const IN_ENROLLMENT_LABEL_NAME As String = "InEnrollmentLabel"
     Private Const DEFAULT_VALUE_LABEL_NAME As String = "DefaultValueLabel"
     Private Const ALLOW_UPDATE_LABEL_NAME As String = "AllowUpdateLabel"
     Private Const ALLOW_DISPLAY_LABEL_NAME As String = "AllowDisplayLabel"
@@ -36,7 +34,6 @@ Public Class CertExtendedItemForm
     Private Const DELETE_BUTTON_NAME As String = "DeleteButton"
 
     Private Const FIELD_NAME_TEXTBOX_NAME As String = "FieldNameTextBox"
-    'Private Const IN_ENROLLMENT_DROPDOWN_NAME As String = "InEnrollmentDropDown"
     Private Const DEFAULT_VALUE_TEXTBOX_NAME As String = "DefaultValueTextBox"
     Private Const ALLOW_UPDATE_DROPDOWN_NAME As String = "AllowUpdateDropDown"
     Private Const ALLOW_DISPLAY_DROPDOWN_NAME As String = "AllowDisplayDropDown"
@@ -215,7 +212,6 @@ Public Class CertExtendedItemForm
 
     Protected Sub BindBoPropertiesToGridHeaders()
         Me.BindBOPropertyToGridHeader(Me.State.MyBO, "FieldName", Me.GridViewCertItemConfig.Columns(GRID_COL_FIELD_NAME_IDX))
-        'Me.BindBOPropertyToGridHeader(Me.State.MyBO, "InEnrollment", Me.GridViewCertItemConfig.Columns(GRID_COL_IN_ENROLLMENT_IDX))
         Me.BindBOPropertyToGridHeader(Me.State.MyBO, "DefaultValue", Me.GridViewCertItemConfig.Columns(GRID_COL_DEFAULT_VALUE_IDX))
         Me.BindBOPropertyToGridHeader(Me.State.MyBO, "AllowUpdate", Me.GridViewCertItemConfig.Columns(GRID_COL_ALLOW_UPDATE_IDX))
         Me.BindBOPropertyToGridHeader(Me.State.MyBO, "AllowDisplay", Me.GridViewCertItemConfig.Columns(GRID_COL_ALLOW_DISPLAY_IDX))
@@ -305,33 +301,25 @@ Public Class CertExtendedItemForm
 
                 If (rowState And DataControlRowState.Edit) = DataControlRowState.Edit Then
 
-                    'Dim inEnrollmentDropDown As DropDownList = CType(e.Row.FindControl(IN_ENROLLMENT_DROPDOWN_NAME), DropDownList)
                     Dim defaultValueTextBox As TextBox = CType(e.Row.FindControl(DEFAULT_VALUE_TEXTBOX_NAME), TextBox)
                     Dim fieldNameTextBox As TextBox = CType(e.Row.FindControl(FIELD_NAME_TEXTBOX_NAME), TextBox)
                     Dim allowUpdateDropDown As DropDownList = CType(e.Row.FindControl(ALLOW_UPDATE_DROPDOWN_NAME), DropDownList)
                     Dim allowDisplayDropDown As DropDownList = CType(e.Row.FindControl(ALLOW_DISPLAY_DROPDOWN_NAME), DropDownList)
-                    'Dim fieldNameLabelEdit As Label = CType(e.Row.FindControl(FIELD_NAME_LABEL_NAME_EDIT), Label)
 
                     Dim populateOptions = New PopulateOptions() With
                                             {
                                                .AddBlankItem = False
                                             }
 
-
-                    'inEnrollmentDropDown.Populate(yesNoList.ToArray(), populateOptions)
                     allowUpdateDropDown.Populate(yesNoList.ToArray(), populateOptions)
                     allowDisplayDropDown.Populate(yesNoList.ToArray(), populateOptions)
 
                     Dim defaultSelectedCodeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
 
-                    'SetSelectedItem(inEnrollmentDropDown, defaultSelectedCodeId)
                     SetSelectedItem(allowUpdateDropDown, defaultSelectedCodeId)
                     SetSelectedItem(allowDisplayDropDown, defaultSelectedCodeId)
 
                     If Not String.IsNullOrEmpty(attribute.FieldName) Then
-                        'fieldNameTextBox.Visible = False
-                        'fieldNameLabelEdit.Visible = True
-                        'fieldNameLabelEdit.Text = attribute.FieldName
                         fieldNameTextBox.Text = attribute.FieldName
                     End If
                     fieldNameTextBox.MaxLength = FIELD_NAME_TEXTBOX_MAX_LENGTH
@@ -340,11 +328,6 @@ Public Class CertExtendedItemForm
                         defaultValueTextBox.Text = attribute.DefaultValue
                     End If
                     defaultValueTextBox.MaxLength = DEFAULT_VALUE_TEXTBOX_MAX_LENGTH
-
-                    'If attribute.InEnrollment IsNot Nothing Then
-                    '    defaultSelectedCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, attribute.InEnrollment)
-                    '    SetSelectedItem(inEnrollmentDropDown, defaultSelectedCodeId)
-                    'End If
 
                     If attribute.AllowUpdate IsNot Nothing Then
                         defaultSelectedCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, attribute.AllowUpdate)
@@ -359,13 +342,11 @@ Public Class CertExtendedItemForm
                     _YesNoDataView = LookupListNew.GetYesNoLookupList(LookupListNew.GetIdFromCode(LookupListNew.LK_LANGUAGES, languageCode), False)
 
                     Dim fieldNameLabel As Label = CType(e.Row.FindControl(FIELD_NAME_LABEL_NAME), Label)
-                    'Dim inEnrollmentLabel As Label = CType(e.Row.FindControl(IN_ENROLLMENT_LABEL_NAME), Label)
                     Dim defaultValueLabel As Label = CType(e.Row.FindControl(DEFAULT_VALUE_LABEL_NAME), Label)
                     Dim allowUpdateLabel As Label = CType(e.Row.FindControl(ALLOW_UPDATE_LABEL_NAME), Label)
                     Dim allowDisplayLabel As Label = CType(e.Row.FindControl(ALLOW_DISPLAY_LABEL_NAME), Label)
 
                     fieldNameLabel.Text = attribute.FieldName
-                    'inEnrollmentLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.InEnrollment)
                     defaultValueLabel.Text = attribute.DefaultValue
                     allowUpdateLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.AllowUpdate)
                     allowDisplayLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.AllowDisplay)
@@ -528,9 +509,6 @@ Public Class CertExtendedItemForm
                 Dim txtDefaultValue As TextBox = CType(gridViewRow.FindControl(DEFAULT_VALUE_TEXTBOX_NAME), TextBox)
                 Me.PopulateBOProperty(.MyBO, "DefaultValue", txtDefaultValue.Text.Trim())
 
-                'Dim ddInEnrollment As DropDownList = CType(gridViewRow.FindControl(IN_ENROLLMENT_DROPDOWN_NAME), DropDownList)
-                'Me.PopulateBOProperty(.MyBO, "InEnrollment", ddInEnrollment.SelectedItem.Text.Substring(0, 1).Trim())
-
                 Dim ddAllowUpdate As DropDownList = CType(gridViewRow.FindControl(ALLOW_UPDATE_DROPDOWN_NAME), DropDownList)
                 Me.PopulateBOProperty(.MyBO, "AllowUpdate", ddAllowUpdate.SelectedItem.Text.Substring(0, 1).Trim())
 
@@ -551,17 +529,9 @@ Public Class CertExtendedItemForm
             Throw New GUIException(Message.MSG_CERT_EXT_CODE_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_CODE_VALUE_REQUIRED)
         End If
 
-        'If (String.IsNullOrEmpty(Me.State.MyBO.Description)) Then
-        '    Throw New GUIException(Message.MSG_CERT_EXT_DESC_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_DESC_VALUE_REQUIRED)
-        'End If
-
         If (String.IsNullOrEmpty(Me.State.MyBO.FieldName)) Then
             Throw New GUIException(Message.MSG_CERT_EXT_FIELD_NAME_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_FIELD_NAME_REQUIRED)
         End If
-
-        'If Not (String.IsNullOrEmpty(Me.State.MyBO.InEnrollment)) AndAlso (Me.State.MyBO.InEnrollment.Substring(0, 1)) = Codes.YESNO_N AndAlso (String.IsNullOrEmpty(Me.State.MyBO.DefaultValue)) Then
-        '    Throw New GUIException(Message.MSG_CERT_EXT_DEFAULT_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_DEFAULT_VALUE_REQUIRED)
-        'End If
 
         Dim dvCertConfigDV As CertExtendedItemFormBO.CertExtendedItemSearchDV = CertExtendedItemFormBO.GetList(Me.State.MyBO.Code)
         If Not dvCertConfigDV Is Nothing AndAlso dvCertConfigDV.Count > 0 Then
@@ -579,7 +549,7 @@ Public Class CertExtendedItemForm
         dv = CertExtendedItemFormBO.GetFieldConfigExist(Me.State.MyBO.Code, Me.State.MyBO.FieldName)
 
         If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
-            Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME)
+            Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY)
         End If
 
     End Function
@@ -623,7 +593,7 @@ Public Class CertExtendedItemForm
                 Dim company_id As Guid = New Guid(Str)
                 dv = CertExtendedItemFormBO.GetDealerCompanyConfigExist(Me.State.CodeMask, "ELP_COMPANY", company_id)
                 If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
-                    Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME)
+                    Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY)
                 End If
             Next
         ElseIf Me.rdoDealers.Checked Then
@@ -631,7 +601,7 @@ Public Class CertExtendedItemForm
                 Dim dealer_id As Guid = New Guid(Str)
                 dv = CertExtendedItemFormBO.GetDealerCompanyConfigExist(Me.State.CodeMask, "ELP_DEALER", dealer_id)
                 If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
-                    Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME)
+                    Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY)
                 End If
             Next
         End If

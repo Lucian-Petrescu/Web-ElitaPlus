@@ -20,11 +20,10 @@ Public Class CertExtendedItemFormBO
         Inherits DataView
 
 #Region "Constants"
-        Public Const COL_CERT_EXT_CONFIG_ID As String = "crt_ext_fields_config_id"
+        Public Const COL_CERT_EXT_CONFIG_ID As String = "crt_ext_cd_flds_id"
         Public Const COL_CODE As String = "code"
         Public Const COL_DESCRIPTION As String = "description"
         Public Const COL_FIELD_NAME As String = "field_name"
-        'Public Const COL_IN_ENROLLMENT As String = "in_enrollment"
         Public Const COL_DEFAULT_VALUE As String = "default_value"
         Public Const COL_ALLOW_UPDATE As String = "allow_update"
         Public Const COL_ALLOW_DISPLAY As String = "allow_display"
@@ -86,7 +85,6 @@ Public Class CertExtendedItemFormBO
         newrow(CertExtendedItemFormDal.COL_NAME_CODE) = String.Empty
         newrow(CertExtendedItemFormDal.COL_NAME_DESCRIPTION) = String.Empty
         newrow(CertExtendedItemFormDal.COL_NAME_FIELD_NAME) = String.Empty
-        'newrow(CertExtendedItemFormDal.COL_NAME_IN_ENROLLMENT) = "Y"
         newrow(CertExtendedItemFormDal.COL_NAME_DEFAULT_VALUE) = String.Empty
         newrow(CertExtendedItemFormDal.COL_NAME_ALLOW_UPDATE) = "Y"
         newrow(CertExtendedItemFormDal.COL_NAME_ALLOW_DISPLAY) = "Y"
@@ -145,13 +143,13 @@ Public Class CertExtendedItemFormBO
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        'InEnrollment = Codes.YESNO_Y
         AllowUpdate = Codes.YESNO_Y
         FieldName = String.Empty
         DefaultValue = String.Empty
         AllowDisplay = Codes.YESNO_Y
     End Sub
 #End Region
+#Region "Dealer Company List"
     Public Function GetAvailableCompanies() As DataView
         Try
             Dim dv As DataView = BusinessObjectsNew.User.GetUserCompanies(Authentication.CurrentUser.Id)
@@ -221,6 +219,7 @@ Public Class CertExtendedItemFormBO
         Try
             Dim dv As DataView
             dv = GetSelectedCompanies(codeMask)
+            Me.SetCreatedAuditInfo()
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find
             For Each rowView As DataRowView In dv
@@ -253,7 +252,7 @@ Public Class CertExtendedItemFormBO
                 If Not dFound Then
                     Dim dal = New CertExtendedItemFormDal
                     Dim company_id As Guid = New Guid(Str)
-                    dal.SaveDealerCompanyList(codeMask, "ELP_COMPANY", company_id)
+                    dal.SaveDealerCompanyList(codeMask, "ELP_COMPANY", company_id, Me.Row(DALBase.COL_NAME_CREATED_BY))
                 End If
             Next
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -283,6 +282,7 @@ Public Class CertExtendedItemFormBO
         Try
             Dim dv As DataView
             dv = GetSelectedDealers(codeMask)
+            Me.SetCreatedAuditInfo()
             'compare with what we have and what is there in the user control
             'user control will always have the final selection so remove from our list what we don't find
             For Each rowView As DataRowView In dv
@@ -315,7 +315,7 @@ Public Class CertExtendedItemFormBO
                 If Not dFound Then
                     Dim dal = New CertExtendedItemFormDal
                     Dim dealer_id As Guid = New Guid(Str)
-                    dal.SaveDealerCompanyList(codeMask, "ELP_DEALER", dealer_id)
+                    dal.SaveDealerCompanyList(codeMask, "ELP_DEALER", dealer_id, Me.Row(DALBase.COL_NAME_CREATED_BY))
                 End If
             Next
 
@@ -323,6 +323,8 @@ Public Class CertExtendedItemFormBO
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
+#End Region
+#Region "Dealer Company List Validation"
     Public Shared Function GetFieldConfigExist(ByVal codeMask As String, ByVal fieldName As String) As DataView
 
         Try
@@ -343,7 +345,7 @@ Public Class CertExtendedItemFormBO
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-
+#End Region
 #Region "Properties"
 
     'Key Property
@@ -356,22 +358,6 @@ Public Class CertExtendedItemFormBO
             End If
         End Get
     End Property
-    '<ValueMandatory(""), ValidStringLength("", Max:=30)>
-    'Public Property TableName() As String
-    '    Get
-    '        CheckDeleted()
-    '        If Row(CertExtendedItemFormDAL.COL_NAME_TABLE_NAME) Is DBNull.Value Then
-    '            Return Nothing
-    '        Else
-    '            Return CType(Row(CertExtendedItemFormDAL.COL_NAME_TABLE_NAME), String)
-    '        End If
-    '    End Get
-    '    Set(ByVal value As String)
-    '        CheckDeleted()
-    '        Me.SetValue(CertExtendedItemFormDal.COL_NAME_TABLE_NAME, value)
-    '    End Set
-    'End Property
-
     <ValueMandatory(""), ValidStringLength("", Max:=255)>
     Public Property FieldName() As String
         Get
@@ -417,23 +403,6 @@ Public Class CertExtendedItemFormBO
             Me.SetValue(CertExtendedItemFormDal.COL_NAME_DESCRIPTION, value)
         End Set
     End Property
-
-    '<ValueMandatory(""), ValidStringLength("", Max:=3)>
-    'Public Property InEnrollment() As String
-    '    Get
-    '        CheckDeleted()
-    '        If Row(CertExtendedItemFormDAL.COL_NAME_IN_ENROLLMENT) Is DBNull.Value Then
-    '            Return Nothing
-    '        Else
-    '            Return CType(Row(CertExtendedItemFormDAL.COL_NAME_IN_ENROLLMENT), String)
-    '        End If
-    '    End Get
-    '    Set(ByVal value As String)
-    '        CheckDeleted()
-    '        Me.SetValue(CertExtendedItemFormDAL.COL_NAME_IN_ENROLLMENT, value)
-    '    End Set
-    'End Property
-
     '<ValueMandatory(""), ValidStringLength("", Max:=255)>
     Public Property DefaultValue() As String
         Get

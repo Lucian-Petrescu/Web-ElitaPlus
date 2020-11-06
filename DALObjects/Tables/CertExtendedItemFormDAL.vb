@@ -6,26 +6,24 @@ Public Class CertExtendedItemFormDal
 
 #Region "Constants"
     Private Const supportChangesFilter As DataRowState = DataRowState.Added Or DataRowState.Modified Or DataRowState.Deleted
-    Public Const TABLE_NAME As String = "ELP_CRT_EXT_FIELDS_CONFIG"
+    Public Const TABLE_NAME As String = "elp_crt_ext_cd_flds"
     Public Const TABLE_KEY_NAME As String = COL_NAME_CRT_EXT_FIELDS_CONFIG_ID
 
-    Public Const COL_NAME_CRT_EXT_FIELDS_CONFIG_ID As String = "crt_ext_fields_config_id"
+    Public Const COL_NAME_CRT_EXT_FIELDS_CONFIG_ID As String = "crt_ext_cd_flds_id"
     Public Const COL_NAME_CODE As String = "code"
     Public Const COL_NAME_DESCRIPTION As String = "description"
     Public Const COL_NAME_FIELD_NAME As String = "field_name"
-    Public Const COL_NAME_IN_ENROLLMENT As String = "in_enrollment"
     Public Const COL_NAME_DEFAULT_VALUE As String = "default_value"
     Public Const COL_NAME_ALLOW_UPDATE As String = "allow_update"
     Public Const COL_NAME_ALLOW_DISPLAY As String = "allow_display"
-    Public Const COL_NAME_TABLE_NAME As String = "ELP_CRT_EXT_FIELDS_CONFIG"
+    Public Const COL_NAME_TABLE_NAME As String = "elp_crt_ext_cd_flds"
 
-    Public Const PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID As String = "pi_crt_ext_fields_config_id"
+    Public Const PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID As String = "pi_crt_ext_cd_flds_id"
     Public Const PAR_I_NAME_REFERENCE_ID As String = "pi_reference_id"
     Public Const PAR_I_NAME_REFERENCE As String = "pi_reference"
     Public Const PAR_I_NAME_CODE As String = "pi_code"
     Public Const PAR_I_NAME_DESCRIPTION As String = "pi_description"
     Public Const PAR_I_NAME_FIELD_NAME As String = "pi_field_name"
-    'Public Const PAR_I_NAME_IN_ENROLLMENT As String = "pi_in_enrollment"
     Public Const PAR_I_NAME_DEFAULT_VALUE As String = "pi_default_value"
     Public Const PAR_I_NAME_ALLOW_UPDATE As String = "pi_allow_update"
     Public Const PAR_I_NAME_ALLOW_DISPLAY As String = "pi_allow_display"
@@ -50,8 +48,6 @@ Public Class CertExtendedItemFormDal
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD"))
                 cmd.AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                'cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, String.Empty)
-                'cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
                 OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
             End Using
         Catch ex As Exception
@@ -101,12 +97,13 @@ Public Class CertExtendedItemFormDal
     End Function
 #End Region
 #Region "Dealer Company List"
-    Public Sub SaveDealerCompanyList(ByVal code As String, ByVal reference As String, ByVal id As Guid)
+    Public Sub SaveDealerCompanyList(ByVal code As String, ByVal reference As String, ByVal id As Guid, ByVal created_by As String)
         Try
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/SAVE_DEALER_COMPANY_LIST"))
                 cmd.AddParameter(PAR_I_NAME_REFERENCE, OracleDbType.Varchar2, reference)
                 cmd.AddParameter(PAR_I_NAME_REFERENCE_ID, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, code)
+                cmd.AddParameter(PAR_I_NAME_CREATED_BY, OracleDbType.Varchar2, created_by)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
                 OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
             End Using
@@ -127,7 +124,8 @@ Public Class CertExtendedItemFormDal
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-
+#End Region
+#Region "Dealer Company List Validation"
     Public Function DealerCompanyConfigExist(ByVal code As String, ByVal reference As String, ByVal id As Guid) As DataSet
         Try
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/CRT_CONFIG_ATTACHED"))
@@ -156,7 +154,6 @@ Public Class CertExtendedItemFormDal
 #End Region
 #Region "Overloaded Methods"
     Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
-        'command.AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_CRT_EXT_FIELDS_CONFIG_ID)
         With command
             .AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE.ToUpper().Trim())
             .AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Varchar2, sourceColumn:=COL_NAME_FIELD_NAME)
@@ -169,7 +166,6 @@ Public Class CertExtendedItemFormDal
             .AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE.ToUpper().Trim())
             .AddParameter(PAR_I_NAME_DESCRIPTION, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DESCRIPTION)
             .AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Varchar2, sourceColumn:=COL_NAME_FIELD_NAME)
-            '.AddParameter(PAR_I_NAME_IN_ENROLLMENT, OracleDbType.Varchar2, sourceColumn:=COL_NAME_IN_ENROLLMENT)
             .AddParameter(PAR_I_NAME_DEFAULT_VALUE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DEFAULT_VALUE)
             .AddParameter(PAR_I_NAME_ALLOW_UPDATE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_ALLOW_UPDATE)
             .AddParameter(PAR_I_NAME_ALLOW_DISPLAY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_ALLOW_DISPLAY)
@@ -182,9 +178,8 @@ Public Class CertExtendedItemFormDal
         With command
             .AddParameter(PAR_I_NAME_CRT_EXT_FIELDS_CONFIG_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_CRT_EXT_FIELDS_CONFIG_ID)
             .AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE.ToUpper().Trim())
-            '.AddParameter(PAR_I_NAME_DESCRIPTION, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DESCRIPTION)
+            .AddParameter(PAR_I_NAME_DESCRIPTION, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DESCRIPTION)
             .AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Varchar2, sourceColumn:=COL_NAME_FIELD_NAME)
-            '.AddParameter(PAR_I_NAME_IN_ENROLLMENT, OracleDbType.Varchar2, sourceColumn:=COL_NAME_IN_ENROLLMENT)
             .AddParameter(PAR_I_NAME_DEFAULT_VALUE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DEFAULT_VALUE)
             .AddParameter(PAR_I_NAME_ALLOW_UPDATE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_ALLOW_UPDATE)
             .AddParameter(PAR_I_NAME_ALLOW_DISPLAY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_ALLOW_DISPLAY)
