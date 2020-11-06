@@ -27,4 +27,10 @@
   <DELETE_DEALER_COMPANY_LIST>
     <![CDATA[elp_tbl_crt_ext_fields_config.deleteconfig]]>
   </DELETE_DEALER_COMPANY_LIST>
+  <CRT_CONFIG_EXIST>
+    <![CDATA[elp_tbl_crt_ext_fields_config.isfieldnameconfigexist]]>
+  </CRT_CONFIG_EXIST>
+  <CRT_CONFIG_ATTACHED>
+    <![CDATA[elp_tbl_crt_ext_fields_config.isconfigexist]]>
+  </CRT_CONFIG_ATTACHED>
 </SQL>

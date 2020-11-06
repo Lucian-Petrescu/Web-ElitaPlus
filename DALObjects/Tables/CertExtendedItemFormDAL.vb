@@ -127,6 +127,32 @@ Public Class CertExtendedItemFormDal
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
+
+    Public Function DealerCompanyConfigExist(ByVal code As String, ByVal reference As String, ByVal id As Guid) As DataSet
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/CRT_CONFIG_ATTACHED"))
+                cmd.AddParameter(PAR_I_NAME_REFERENCE, OracleDbType.Varchar2, reference)
+                cmd.AddParameter(PAR_I_NAME_REFERENCE_ID, OracleDbType.Raw, id.ToByteArray())
+                cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, code)
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
+    Function FieldConfigExist(ByVal code As String, ByVal fieldName As String) As DataSet
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/CRT_CONFIG_EXIST"))
+                cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, code)
+                cmd.AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Varchar2, fieldName)
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
 #End Region
 #Region "Overloaded Methods"
     Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)

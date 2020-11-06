@@ -551,9 +551,9 @@ Public Class CertExtendedItemForm
             Throw New GUIException(Message.MSG_CERT_EXT_CODE_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_CODE_VALUE_REQUIRED)
         End If
 
-        If (String.IsNullOrEmpty(Me.State.MyBO.Description)) Then
-            Throw New GUIException(Message.MSG_CERT_EXT_DESC_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_DESC_VALUE_REQUIRED)
-        End If
+        'If (String.IsNullOrEmpty(Me.State.MyBO.Description)) Then
+        '    Throw New GUIException(Message.MSG_CERT_EXT_DESC_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_DESC_VALUE_REQUIRED)
+        'End If
 
         If (String.IsNullOrEmpty(Me.State.MyBO.FieldName)) Then
             Throw New GUIException(Message.MSG_CERT_EXT_FIELD_NAME_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_FIELD_NAME_REQUIRED)
@@ -574,8 +574,20 @@ Public Class CertExtendedItemForm
                 End If
             Next
         End If
+
+        Dim dv As DataView
+        dv = CertExtendedItemFormBO.GetFieldConfigExist(Me.State.MyBO.Code, Me.State.MyBO.FieldName)
+
+        If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
+            Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME)
+        End If
+
     End Function
     Private Function ValidateDealerCompanyRecords() As Boolean
+        'First Validate Dealer or Comapny list already exits against someother code and field combination
+        DealerCompanyConfigExist()
+
+        'Clear Dealer or Company List if option choosen vice-versa
         Dim clearList As Boolean
         clearList = ClearDealerCompanyList()
         If clearList Then
@@ -604,6 +616,26 @@ Public Class CertExtendedItemForm
             Return True
         End If
     End Function
+    Private Function DealerCompanyConfigExist() As Boolean
+        Dim dv As DataView
+        If Me.rdoCompanies.Checked Then
+            For Each Str As String In UserControlAvailableSelectedCompanies.SelectedList
+                Dim company_id As Guid = New Guid(Str)
+                dv = CertExtendedItemFormBO.GetDealerCompanyConfigExist(Me.State.CodeMask, "ELP_COMPANY", company_id)
+                If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
+                    Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME)
+                End If
+            Next
+        ElseIf Me.rdoDealers.Checked Then
+            For Each Str As String In UserControlAvailableSelectedDealers.SelectedList
+                Dim dealer_id As Guid = New Guid(Str)
+                dv = CertExtendedItemFormBO.GetDealerCompanyConfigExist(Me.State.CodeMask, "ELP_DEALER", dealer_id)
+                If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
+                    Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME)
+                End If
+            Next
+        End If
+    End Function
     Protected Sub SaveDealerCompanyList()
         'populate selection of rule, dealer and company to children
         If Me.rdoDealers.Checked AndAlso ((UserControlAvailableSelectedDealers.SelectedList.Count) > 0) Then
@@ -622,7 +654,7 @@ Public Class CertExtendedItemForm
     Protected Sub btnSaveConfig_Click(sender As Object, e As EventArgs) Handles btnSaveConfig.Click
         Try
             Me.State.MyBO = New CertExtendedItemFormBO()
-            If ValidateDealerCompanyRecords() Then
+            If Not String.IsNullOrEmpty(Me.TextboxCertItemConfigCode.Text) AndAlso Me.GridViewCertItemConfig.Rows.Count > 0 AndAlso ValidateDealerCompanyRecords() Then
                 Me.SaveDealerCompanyList()
                 If Me.State.MyBO.IsDirty Then
                     Me.State.HasDataChanged = False
