@@ -329,7 +329,7 @@ Public Class CertExtendedItemFormBO
     'Key Property
     Public ReadOnly Property Id() As Guid
         Get
-            If Row(CertExtendedItemFormDAL.TABLE_KEY_NAME) Is DBNull.Value Then
+            If Row(CertExtendedItemFormDal.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
                 Return New Guid(CType(Row(CertExtendedItemFormDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID), Byte()))
