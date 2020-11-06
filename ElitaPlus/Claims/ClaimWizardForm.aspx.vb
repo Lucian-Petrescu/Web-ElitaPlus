@@ -1140,7 +1140,7 @@ Public Class ClaimWizardForm
         PopulateFormFromBO(Me.State.StepName)
     End Sub
 
-    Private Sub UpdateBreadCrum(ByVal wizardStep As ClaimWizardSteps)
+    Private Sub UpdateBreadCrum()
 
         If Me.State.EntryStep = ClaimWizardSteps.Step1 Then
 
@@ -1160,7 +1160,7 @@ Public Class ClaimWizardForm
         Me.MasterPage.UsePageTabTitleInBreadCrum = False
         Me.WizardControl.Visible = False
         If (ShowWizard()) Then SetSelectedStep()
-        UpdateBreadCrum(wizardStep)
+        UpdateBreadCrum()
         EnableDisableStepDivs(wizardStep)
         Select Case wizardStep
             Case ClaimWizardSteps.Step1
@@ -1235,7 +1235,7 @@ Public Class ClaimWizardForm
             Case ClaimWizardSteps.Step2
                 MyBase.EnableDisableControls(Me.pnlVehicleInfo, Not Me.State.IsEditMode)
                 MyBase.EnableDisableControls(Me.pnlDeviceInfo, Not Me.State.IsEditMode)
-                Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
+                Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
 
                 If Me.State.CertItemBO.IsEquipmentRequired Then
                     'Claimed Equipment
@@ -1981,8 +1981,8 @@ Public Class ClaimWizardForm
                     Me.PopulateBOProperty(Me.State.CertItemBO, "RiskTypeId", Me.step2_cboRiskTypeId)
                     Me.PopulateBOProperty(Me.State.CertItemBO, "ManufacturerId", Me.step2_cboManufacturerId)
                     Me.PopulateBOProperty(Me.State.CertItemBO, "SerialNumber", Me.step2_TextboxSerialNumber)
-                    Dim dealerTypeVSC As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_DEALER_TYPE, VSCCode)
-                    If (Not Me.State.DealerBO.DealerTypeId.Equals(dealerTypeVSC)) Then
+                    Dim dealerTypeVsc As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_DEALER_TYPE, VSCCode)
+                    If (Not Me.State.DealerBO.DealerTypeId.Equals(dealerTypeVsc)) Then
                         Me.PopulateBOProperty(Me.State.CertItemBO, "Model", Me.step2_TextboxModel)
                     End If
                     Me.PopulateBOProperty(Me.State.CertItemCoverageBO, "MethodOfRepairId", Me.step2_cboMethodOfRepair)
