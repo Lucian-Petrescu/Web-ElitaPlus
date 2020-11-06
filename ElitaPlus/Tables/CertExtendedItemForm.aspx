@@ -120,7 +120,7 @@
                     AllowPaging="True" CellPadding="1" SkinID="DetailPageGridView" ShowHeaderWhenEmpty="true">
                     <RowStyle HorizontalAlign="Left" />
                     <Columns>
-                        <asp:BoundField Visible="False" />
+                       <%-- <asp:BoundField Visible="False" />--%>
                         <asp:TemplateField HeaderText="FIELD NAME" SortExpression="FIELD_NAME">
                             <ItemTemplate>
                                 <asp:Label runat="server" ID="FieldNameLabel"></asp:Label>

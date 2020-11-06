@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <SQL>
   <LOAD>
-    <![CDATA[elp_tbl_crt_ext_fields_config.loadconfigbyid]]>
+    <![CDATA[elp_tbl_crt_ext_fields_config.loadconfigbycode]]>
   </LOAD>
   <LOAD_LIST>
     <![CDATA[elp_tbl_crt_ext_fields_config.loadconfigbycode]]>
@@ -28,9 +28,9 @@
     <![CDATA[elp_tbl_crt_ext_fields_config.loaddealersbycode]]>
   </LOAD_SELECTED_DEALERS_LIST>
   <SAVE_DEALER_COMPANY_LIST>
-    <![CDATA[elp_tbl_crt_ext_fields_config.savedealercompanyconfig]]>
+    <![CDATA[elp_tbl_crt_ext_fields_config.attachconfig]]>
   </SAVE_DEALER_COMPANY_LIST>
   <DELETE_DEALER_COMPANY_LIST>
-    <![CDATA[elp_tbl_crt_ext_fields_config.deletedealercompanyconfig]]>
+    <![CDATA[elp_tbl_crt_ext_fields_config.deleteconfig]]>
   </DELETE_DEALER_COMPANY_LIST>
 </SQL>

@@ -15,12 +15,12 @@ Public Class CertExtendedItemForm
     Public Const URL As String = "CertExtendedItemForm.aspx"
     Private Const DEFAULT_SORT As String = "FIELD_NAME ASC"
 
-    Private Const GRID_COL_ID_IDX As Integer = 0
-    Private Const GRID_COL_FIELD_NAME_IDX As Integer = 1
+    'Private Const GRID_COL_ID_IDX As Integer = 0
+    Private Const GRID_COL_FIELD_NAME_IDX As Integer = 0
     'Private Const GRID_COL_IN_ENROLLMENT_IDX As Integer = 2
-    Private Const GRID_COL_DEFAULT_VALUE_IDX As Integer = 2
-    Private Const GRID_COL_ALLOW_UPDATE_IDX As Integer = 3
-    Private Const GRID_COL_ALLOW_DISPLAY_IDX As Integer = 4
+    Private Const GRID_COL_DEFAULT_VALUE_IDX As Integer = 1
+    Private Const GRID_COL_ALLOW_UPDATE_IDX As Integer = 2
+    Private Const GRID_COL_ALLOW_DISPLAY_IDX As Integer = 3
 
     Private Const MSG_RECORD_DELETED_OK As String = "MSG_RECORD_DELETED_OK"
     Private Const MSG_RECORD_SAVED_OK As String = "MSG_RECORD_SAVED_OK"
@@ -67,6 +67,7 @@ Public Class CertExtendedItemForm
         Public ActionInProgress As DetailPageCommand
         Public LastErrMsg As String
         Public CertExtConfigID As Guid = Guid.Empty
+        Public FieldName As String = String.Empty
         Public HasDataChanged As Boolean
         Public IsRowBeingEdited As Boolean = False
         Public searchDV As CertExtendedItemFormBO.CertExtendedItemSearchDV = Nothing
@@ -101,30 +102,50 @@ Public Class CertExtendedItemForm
     Public Sub btnAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnAdd.Click
         Try
             Me.State.IsGridVisible = True
-            Me.State.CertExtConfigID = Guid.Empty
+            'Me.State.CertExtConfigID = Guid.Empty
+            Me.State.FieldName = String.Empty
             Me.State.IsRowEdit = False
-            Me.BeginEdit(Guid.Empty)
+            'Me.BeginEdit(Guid.Empty)
+            Me.BeginEdit(String.Empty)
             PopulateGrid()
             Me.State.ActionInProgress = DetailPageCommand.New_
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
-    Private Sub BeginEdit(ByVal CurrentCertExtConfigID As Guid)
+    'Private Sub BeginEdit(ByVal CurrentCertExtConfigID As Guid)
+    '    Try
+    '        Me.State.IsRowBeingEdited = True
+    '        With Me.State
+    '            If Not CurrentCertExtConfigID.Equals(Guid.Empty) Then
+    '                .MyBO = New CertExtendedItemFormBO(CurrentCertExtConfigID)
+    '            Else
+    '                .MyBO = New CertExtendedItemFormBO()
+    '                .CertExtConfigID = Me.State.MyBO.Id
+    '                If .searchDV Is Nothing Then
+    '                    .searchDV = .MyBO.GetNewDataViewRow(CertExtendedItemFormBO.GetList(Me.State.CodeMask.ToUpper().Trim()), .CertExtConfigID)
+    '                Else
+    '                    .searchDV = .MyBO.GetNewDataViewRow(.searchDV, .CertExtConfigID)
+    '                End If
+    '            End If
+    '        End With
+    '        Me.ChangeEnabledProperty(Me.btnAdd, False)
+    '    Catch ex As Exception
+    '        Me.HandleErrors(ex, Me.MasterPage.MessageController)
+    '    End Try
+    'End Sub
+    Private Sub BeginEdit(ByVal CurrentFieldName As String)
         Try
             Me.State.IsRowBeingEdited = True
             With Me.State
-                If Not CurrentCertExtConfigID.Equals(Guid.Empty) Then
-                    .MyBO = New CertExtendedItemFormBO(CurrentCertExtConfigID)
+                .MyBO = New CertExtendedItemFormBO()
+                .FieldName = Me.State.MyBO.FieldName
+                If .searchDV Is Nothing Then
+                    .searchDV = .MyBO.GetNewDataViewRow(CertExtendedItemFormBO.GetList(Me.State.CodeMask.ToUpper().Trim()))
                 Else
-                    .MyBO = New CertExtendedItemFormBO()
-                    .CertExtConfigID = Me.State.MyBO.Id
-                    If .searchDV Is Nothing Then
-                        .searchDV = .MyBO.GetNewDataViewRow(CertExtendedItemFormBO.GetList(Me.State.CodeMask.ToUpper().Trim()), .CertExtConfigID)
-                    Else
-                        .searchDV = .MyBO.GetNewDataViewRow(.searchDV, .CertExtConfigID)
-                    End If
+                    .searchDV = .MyBO.GetNewDataViewRow(.searchDV)
                 End If
+                'End If
             End With
             Me.ChangeEnabledProperty(Me.btnAdd, False)
         Catch ex As Exception
@@ -251,8 +272,10 @@ Public Class CertExtendedItemForm
                     Me.State.IsRowEdit = False
                 Case ElitaPlusSearchPage.DELETE_COMMAND_NAME
                     nIndex = CInt(e.CommandArgument)
-                    Me.State.CertExtConfigID = New Guid(GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_ID_IDX).Text)
-                    Me.BeginEdit(Me.State.CertExtConfigID)
+                    'Me.State.CertExtConfigID = New Guid(GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_ID_IDX).Text)
+                    Me.State.FieldName = GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_FIELD_NAME_IDX).Text.ToUpper().Trim()
+                    'Me.BeginEdit(Me.State.CertExtConfigID)
+                    Me.BeginEdit(Me.State.FieldName)
                     Me.EndEdit(ElitaPlusPage.DetailPageCommand.Delete)
                     DisableFields()
                 Case ElitaPlusSearchPage.SAVE_COMMAND_NAME
@@ -267,8 +290,10 @@ Public Class CertExtendedItemForm
                     nIndex = CInt(e.CommandArgument)
                     Me.GridViewCertItemConfig.SelectedIndex = nIndex
                     Me.GridViewCertItemConfig.EditIndex = nIndex
-                    Me.State.CertExtConfigID = New Guid(GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_ID_IDX).Text)
-                    Me.BeginEdit(Me.State.CertExtConfigID)
+                    'Me.State.CertExtConfigID = New Guid(GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_ID_IDX).Text)
+                    'Me.BeginEdit(Me.State.CertExtConfigID)
+                    Me.State.FieldName = GridViewCertItemConfig.Rows(nIndex).Cells(GRID_COL_FIELD_NAME_IDX).Text.ToUpper().Trim()
+                    Me.BeginEdit(Me.State.FieldName)
                     DisableFields()
                     Me.State.IsRowEdit = True
             End Select
@@ -301,7 +326,9 @@ Public Class CertExtendedItemForm
                 Dim attribute As CertExtendedItemFormBO = New CertExtendedItemFormBO(dvRow.Row)
                 Dim rowState As DataControlRowState = CType(e.Row.RowState, DataControlRowState)
 
-                e.Row.Cells(GRID_COL_ID_IDX).Text = attribute.Id.ToString()
+                'e.Row.Cells(GRID_COL_ID_IDX).Text = attribute.Id.ToString()
+
+                e.Row.Cells(GRID_COL_FIELD_NAME_IDX).Text = attribute.FieldName.ToString()
 
                 If (rowState And DataControlRowState.Edit) = DataControlRowState.Edit Then
 
@@ -355,16 +382,16 @@ Public Class CertExtendedItemForm
                         defaultSelectedCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, attribute.AllowDisplay)
                         SetSelectedItem(allowDisplayDropDown, defaultSelectedCodeId)
                     End If
-                ElseIf Not IsEmpty(attribute.Id) Then
+                ElseIf Not String.IsNullOrEmpty(attribute.FieldName) Then
                     _YesNoDataView = LookupListNew.GetYesNoLookupList(LookupListNew.GetIdFromCode(LookupListNew.LK_LANGUAGES, languageCode), False)
 
-                    Dim fieldNameLabel As Label = CType(e.Row.FindControl(FIELD_NAME_LABEL_NAME), Label)
+                    'Dim fieldNameLabel As Label = CType(e.Row.FindControl(FIELD_NAME_LABEL_NAME), Label)
                     'Dim inEnrollmentLabel As Label = CType(e.Row.FindControl(IN_ENROLLMENT_LABEL_NAME), Label)
                     Dim defaultValueLabel As Label = CType(e.Row.FindControl(DEFAULT_VALUE_LABEL_NAME), Label)
                     Dim allowUpdateLabel As Label = CType(e.Row.FindControl(ALLOW_UPDATE_LABEL_NAME), Label)
                     Dim allowDisplayLabel As Label = CType(e.Row.FindControl(ALLOW_DISPLAY_LABEL_NAME), Label)
 
-                    fieldNameLabel.Text = attribute.FieldName
+                    'fieldNameLabel.Text = attribute.FieldName
                     'inEnrollmentLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.InEnrollment)
                     defaultValueLabel.Text = attribute.DefaultValue
                     allowUpdateLabel.Text = LookupListNew.GetDescriptionFromCode(_YesNoDataView, attribute.AllowUpdate)
@@ -551,9 +578,9 @@ Public Class CertExtendedItemForm
             Throw New GUIException(Message.MSG_CERT_EXT_CODE_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_CODE_VALUE_REQUIRED)
         End If
 
-        If (String.IsNullOrEmpty(Me.State.MyBO.Description)) Then
-            Throw New GUIException(Message.MSG_CERT_EXT_DESC_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_DESC_VALUE_REQUIRED)
-        End If
+        'If (String.IsNullOrEmpty(Me.State.MyBO.Description)) Then
+        '    Throw New GUIException(Message.MSG_CERT_EXT_DESC_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_DESC_VALUE_REQUIRED)
+        'End If
 
         If (String.IsNullOrEmpty(Me.State.MyBO.FieldName)) Then
             Throw New GUIException(Message.MSG_CERT_EXT_FIELD_NAME_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_FIELD_NAME_REQUIRED)

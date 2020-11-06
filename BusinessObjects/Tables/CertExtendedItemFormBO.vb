@@ -76,16 +76,35 @@ Public Class CertExtendedItemFormBO
         Me.Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
-    Public Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As CertExtendedItemSearchDV
+    'Public Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As CertExtendedItemSearchDV
+
+    '    Dim dt As DataTable
+    '    dt = dv.Table
+    '    Dim newrow As DataRow = dt.NewRow
+
+    '    'newrow(CertExtendedItemFormDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID) = id.ToByteArray
+    '    newrow(CertExtendedItemFormDal.COL_NAME_CODE) = String.Empty
+    '    newrow(CertExtendedItemFormDal.COL_NAME_DESCRIPTION) = String.Empty
+    '    newrow(CertExtendedItemFormDal.COL_NAME_FIELD_NAME) = String.Empty
+    '    'newrow(CertExtendedItemFormDal.COL_NAME_IN_ENROLLMENT) = "Y"
+    '    newrow(CertExtendedItemFormDal.COL_NAME_DEFAULT_VALUE) = String.Empty
+    '    newrow(CertExtendedItemFormDal.COL_NAME_ALLOW_UPDATE) = "Y"
+    '    newrow(CertExtendedItemFormDal.COL_NAME_ALLOW_DISPLAY) = "Y"
+    '    dt.Rows.Add(newrow)
+    '    Me.Row = newrow
+    '    Return New CertExtendedItemSearchDV(dt)
+
+    'End Function
+    Public Function GetNewDataViewRow(ByVal dv As DataView) As CertExtendedItemSearchDV
 
         Dim dt As DataTable
         dt = dv.Table
         Dim newrow As DataRow = dt.NewRow
 
-        newrow(CertExtendedItemFormDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID) = id.ToByteArray
+        'newrow(CertExtendedItemFormDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID) = id.ToByteArray
         newrow(CertExtendedItemFormDal.COL_NAME_CODE) = String.Empty
         newrow(CertExtendedItemFormDal.COL_NAME_DESCRIPTION) = String.Empty
-        newrow(CertExtendedItemFormDal.COL_NAME_FIELD_NAME) = String.Empty
+        newrow(CertExtendedItemFormDal.COL_NAME_FIELD_NAME) = " "
         'newrow(CertExtendedItemFormDal.COL_NAME_IN_ENROLLMENT) = "Y"
         newrow(CertExtendedItemFormDal.COL_NAME_DEFAULT_VALUE) = String.Empty
         newrow(CertExtendedItemFormDal.COL_NAME_ALLOW_UPDATE) = "Y"
@@ -113,6 +132,7 @@ Public Class CertExtendedItemFormBO
             Dataset.Tables(CertExtendedItemFormDal.TABLE_NAME).Rows.Add(newRow)
             Row = newRow
             SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
+            'SetValue(dal.COL_NAME_FIELD_NAME, " ")
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
