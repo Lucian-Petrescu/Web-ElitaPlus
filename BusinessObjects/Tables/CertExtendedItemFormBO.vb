@@ -323,6 +323,26 @@ Public Class CertExtendedItemFormBO
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
+    Public Shared Function GetFieldConfigExist(ByVal codeMask As String, ByVal fieldName As String) As DataView
+
+        Try
+            Dim dal As New CertExtendedItemFormDal
+            Dim dv As DataView = dal.FieldConfigExist(codeMask, fieldName).Tables(0).DefaultView
+            Return dv
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+    Public Shared Function GetDealerCompanyConfigExist(ByVal code As String, ByVal reference As String, ByVal id As Guid) As DataView
+
+        Try
+            Dim dal As New CertExtendedItemFormDal
+            Dim dv As DataView = dal.DealerCompanyConfigExist(code, reference, id).Tables(0).DefaultView
+            Return dv
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
 
 #Region "Properties"
 
