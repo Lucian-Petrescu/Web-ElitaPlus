@@ -170,7 +170,7 @@
     <Compile Include="AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tables\CertExtendedItemFormDAL.vb" />
+    <Compile Include="Tables\CertExtendedItemFormDal.vb" />
     <Compile Include="Certificates\CertCancellationDAL.vb">
       <SubType>Code</SubType>
     </Compile>
@@ -1214,7 +1214,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Certificates\CheckPaymentDAL.xml" />
-    <EmbeddedResource Include="Tables\CertExtendedItemFormDAL.xml">
+    <EmbeddedResource Include="Tables\CertExtendedItemFormDal.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="Claims\BatchClaimInvoice.xsd">

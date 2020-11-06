@@ -1,23 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <SQL>
   <LOAD>
-
+    <![CDATA[elp_tbl_crt_ext_fields_config.loadconfigbyid]]>
   </LOAD>
-  <LOAD_CERT_EXTENDED_ITEM_LIST>
-
-  </LOAD_CERT_EXTENDED_ITEM_LIST>
-  <LOAD_TABLES>
-
-  </LOAD_TABLES>
+  <LOAD_LIST>
+    <![CDATA[elp_tbl_crt_ext_fields_config.loadconfigbycode]]>
+  </LOAD_LIST>
   <INSERT>
-
+    <![CDATA[elp_tbl_crt_ext_fields_config.addcertextconfig]]>
   </INSERT>
   <UPDATE>
-
+    <![CDATA[elp_tbl_crt_ext_fields_config.modifycertextconfig]]>
   </UPDATE>
   <DELETE>
- 
+    <![CDATA[elp_tbl_crt_ext_fields_config.deletecertextconfig]]>
   </DELETE>
-  <LOAD_COMPANY_LIST>
-  </LOAD_COMPANY_LIST>
+  <LOAD_SELECTED_COMPANIES_LIST>
+    <![CDATA[elp_tbl_crt_ext_fields_config.loadcompaniesbycode]]>
+  </LOAD_SELECTED_COMPANIES_LIST>
+  <LOAD_SELECTED_DEALERS_LIST>
+    <![CDATA[elp_tbl_crt_ext_fields_config.loaddealersbycode]]>
+  </LOAD_SELECTED_DEALERS_LIST>
+  <SAVE_DEALER_COMPANY_LIST>
+    <![CDATA[elp_tbl_crt_ext_fields_config.attachconfig]]>
+  </SAVE_DEALER_COMPANY_LIST>
+  <DELETE_DEALER_COMPANY_LIST>
+    <![CDATA[elp_tbl_crt_ext_fields_config.deleteconfig]]>
+  </DELETE_DEALER_COMPANY_LIST>
+  <CRT_CONFIG_EXIST>
+    <![CDATA[elp_tbl_crt_ext_fields_config.isfieldnameconfigexist]]>
+  </CRT_CONFIG_EXIST>
+  <CRT_CONFIG_ATTACHED>
+    <![CDATA[elp_tbl_crt_ext_fields_config.isconfigexist]]>
+  </CRT_CONFIG_ATTACHED>
 </SQL>
