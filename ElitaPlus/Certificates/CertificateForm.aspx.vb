@@ -7174,11 +7174,11 @@ Namespace Certificates
                         If (Me.State.MyBO.CustomerName <> moCustomerNameText.Text And moCustomerNameText.Text.Trim <> String.Empty) Or (moTaxIdText.Visible = True And Me.State.MyBO.TaxIDNumb <> moTaxIdText.Text) Then
                             Me.DisplayMessage(Message.MSG_TRANSFER_Of_OWNERSHIP_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenTransferOfOwnershipPromptResponse)
                         Else
-                            Me.saveCertificate()
+                            Me.saveCertificateViaApi()
                         End If
                     End If
                 Else
-                    Me.saveCertificate()
+                    Me.saveCertificateViaApi()
                 End If
                 'KDDI
                 'Dim btnValidate_Address As Button = AddressCtr.FindControl(ValidateAddressButton)
