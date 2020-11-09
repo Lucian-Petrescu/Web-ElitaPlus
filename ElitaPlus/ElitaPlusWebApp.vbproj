@@ -766,6 +766,7 @@
       <DependentUpon>CommentListForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Certificates\CommonBankInfo.vb" />
     <Compile Include="Certificates\CustomerProfileHistory.aspx.designer.vb">
       <DependentUpon>CustomerProfileHistory.aspx</DependentUpon>
     </Compile>
@@ -1482,6 +1483,13 @@
     <Compile Include="Tables\BenefitProductCodeSearchForm.aspx.vb">
       <DependentUpon>BenefitProductCodeSearchForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Tables\CertExtendedItemForm.aspx.designer.vb">
+      <DependentUpon>CertExtendedItemForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tables\CertExtendedItemForm.aspx.vb">
+      <DependentUpon>CertExtendedItemForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Tables\CommissionPlanForm.aspx.designer.vb">
       <DependentUpon>CommissionPlanForm.aspx</DependentUpon>
@@ -6422,6 +6430,7 @@
     </None>
     <Content Include="Tables\BenefitProductCodeForm.aspx" />
     <Content Include="Tables\BenefitProductCodeSearchForm.aspx" />
+    <Content Include="Tables\CertExtendedItemForm.aspx" />
     <Content Include="Tables\CommissionPlanForm.aspx" />
     <Content Include="Tables\CommissionPlanSearchForm.aspx" />
     <Content Include="Tables\ProducerForm.aspx" />
