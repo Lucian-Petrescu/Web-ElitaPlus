@@ -477,6 +477,7 @@ Public Class CertExtendedItemForm
                         MasterPage.MessageController.AddSuccess(Message.DELETE_RECORD_CONFIRMATION, True)
                 End Select
                 PopulateUserConctrols()
+                State.CodeMask = TextboxCertItemConfigCode.Text.ToUpper().Trim()
                 .MyBo = Nothing
                 .CertExtConfigId = Guid.Empty
                 .HasDataChanged = True
