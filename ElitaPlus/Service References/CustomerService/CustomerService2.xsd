@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.assurant.com/Elita/PolicyService/Endorse" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/PolicyService/Endorse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/PolicyService/CustomerService.svc?xsd=xsd0" namespace="http://elita.assurant.com/Elita/PolicyService" />
+  <xs:complexType name="UpdateCustomerInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseCustomerEndorseAction">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+          <xs:element xmlns:q1="http://elita.assurant.com/Elita/PolicyService" minOccurs="0" name="Customer" nillable="true" type="q1:CustomerInfo" />
+          <xs:element xmlns:q2="http://elita.assurant.com/Elita/PolicyService" minOccurs="0" name="EndorsementReason" type="q2:EndorsementCustomerReasons" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="UpdateCustomerInfo" nillable="true" type="tns:UpdateCustomerInfo" />
+  <xs:complexType name="BaseCustomerEndorseAction">
+    <xs:sequence>
+      <xs:element name="CompanyCode" nillable="true" type="xs:string" />
+      <xs:element name="DealerCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseCustomerEndorseAction" nillable="true" type="tns:BaseCustomerEndorseAction" />
+  <xs:complexType name="AddCustomerInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseCustomerEndorseAction">
+        <xs:sequence>
+          <xs:element name="CertificateNumber" nillable="true" type="xs:string" />
+          <xs:element xmlns:q3="http://elita.assurant.com/Elita/PolicyService" minOccurs="0" name="Customer" nillable="true" type="q3:CustomerInfo" />
+          <xs:element xmlns:q4="http://elita.assurant.com/Elita/PolicyService" minOccurs="0" name="EndorsementReason" type="q4:EndorsementCustomerReasons" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AddCustomerInfo" nillable="true" type="tns:AddCustomerInfo" />
+  <xs:complexType name="DeleteCustomerInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseCustomerEndorseAction">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+          <xs:element xmlns:q5="http://elita.assurant.com/Elita/PolicyService" minOccurs="0" name="Customer" nillable="true" type="q5:CustomerInfo" />
+          <xs:element xmlns:q6="http://elita.assurant.com/Elita/PolicyService" minOccurs="0" name="EndorsementReason" type="q6:EndorsementCustomerReasons" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DeleteCustomerInfo" nillable="true" type="tns:DeleteCustomerInfo" />
+  <xs:complexType name="EndorseCustomerRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Requests" nillable="true" type="tns:ArrayOfBaseCustomerEndorseAction" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EndorseCustomerRequest" nillable="true" type="tns:EndorseCustomerRequest" />
+  <xs:complexType name="ArrayOfBaseCustomerEndorseAction">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BaseCustomerEndorseAction" nillable="true" type="tns:BaseCustomerEndorseAction" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBaseCustomerEndorseAction" nillable="true" type="tns:ArrayOfBaseCustomerEndorseAction" />
+  <xs:complexType name="EndorseCustomerResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ErrorCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EndorseCustomerResponse" nillable="true" type="tns:EndorseCustomerResponse" />
+  <xs:complexType name="AddPolicyIdentifierRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseCustomerEndorseAction">
+        <xs:sequence>
+          <xs:element name="CertificateNumber" nillable="true" type="xs:string" />
+          <xs:element name="IdentificationCode" nillable="true" type="xs:string" />
+          <xs:element name="IdentificationValue" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AddPolicyIdentifierRequest" nillable="true" type="tns:AddPolicyIdentifierRequest" />
+  <xs:complexType name="RemovePolicyIdentifierRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseCustomerEndorseAction">
+        <xs:sequence>
+          <xs:element name="CertificateNumber" nillable="true" type="xs:string" />
+          <xs:element name="IdentificationCode" nillable="true" type="xs:string" />
+          <xs:element name="IdentificationValue" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RemovePolicyIdentifierRequest" nillable="true" type="tns:RemovePolicyIdentifierRequest" />
+</xs:schema>

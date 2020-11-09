@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.assurant.com/Elita/PolicyService/CustomerSearch" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/PolicyService/CustomerSearch" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/PolicyService/CustomerService.svc?xsd=xsd0" namespace="http://elita.assurant.com/Elita/PolicyService" />
+  <xs:complexType name="SearchCustomerRequest">
+    <xs:sequence>
+      <xs:element name="CustomerLookup" nillable="true" type="tns:BaseCustomerSearchRequest" />
+      <xs:element name="LookUpValue" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SearchCustomerRequest" nillable="true" type="tns:SearchCustomerRequest" />
+  <xs:complexType name="BaseCustomerSearchRequest">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://elita.assurant.com/Elita/PolicyService" minOccurs="0" name="CustomerLookUpBy" type="q1:CustomerLookUpBy" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseCustomerSearchRequest" nillable="true" type="tns:BaseCustomerSearchRequest" />
+  <xs:complexType name="SearchCustomerResponse">
+    <xs:sequence>
+      <xs:element xmlns:q2="http://elita.assurant.com/Elita/PolicyService" minOccurs="0" name="Customers" nillable="true" type="q2:ArrayOfCustomerInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SearchCustomerResponse" nillable="true" type="tns:SearchCustomerResponse" />
+</xs:schema>

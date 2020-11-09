@@ -1444,6 +1444,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\CustomerService\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\FileAdminService\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -6221,6 +6226,19 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
+    <Content Include="Service References\CustomerService\Assurant.ElitaPlus.ElitaPlusWebApp.CustomerService.EndorseCustomerResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\CustomerService\Assurant.ElitaPlus.ElitaPlusWebApp.CustomerService.SearchCustomerResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\CustomerService\CustomerService.disco" />
+    <None Include="Service References\CustomerService\configuration91.svcinfo" />
+    <None Include="Service References\CustomerService\configuration.svcinfo" />
+    <None Include="Service References\CustomerService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
     <Content Include="Service References\FileAdminService\Assurant.ElitaPlus.ElitaPlusWebApp.FileAdminService.GetFileRecordsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -6239,6 +6257,24 @@
     <Content Include="Service References\FileAdminService\Assurant.ElitaPlus.ElitaPlusWebApp.FileAdminService.ValidateFileResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <None Include="Service References\CustomerService\CustomerService.wsdl" />
+    <None Include="Service References\CustomerService\CustomerService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CustomerService\CustomerService1.wsdl" />
+    <None Include="Service References\CustomerService\CustomerService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CustomerService\CustomerService2.wsdl" />
+    <None Include="Service References\CustomerService\CustomerService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CustomerService\CustomerService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CustomerService\CustomerService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\FileAdminService\configuration91.svcinfo" />
     <None Include="Service References\FileAdminService\configuration.svcinfo" />
     <None Include="Service References\FileAdminService\Reference.svcmap">
@@ -9146,6 +9182,7 @@
     <WCFMetadataStorage Include="Service References\ClaimFulfillmentWebAppGatewayService\" />
     <WCFMetadataStorage Include="Service References\ClaimRecordingService\" />
     <WCFMetadataStorage Include="Service References\ClaimService\" />
+    <WCFMetadataStorage Include="Service References\CustomerService\" />
     <WCFMetadataStorage Include="Service References\FileAdminService\" />
     <WCFMetadataStorage Include="Service References\FileManagerAdminService\" />
     <WCFMetadataStorage Include="Service References\GalaxyWcfRef\" />

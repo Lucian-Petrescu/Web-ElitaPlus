@@ -304,6 +304,15 @@ Public NotInheritable Class LookupListNew
         Return id
     End Function
 
+    Public Shared Function GetRegionCodeFromID(ByVal dv As DataView, ByVal id As Guid) As String
+        For i = 0 To dv.Count - 1
+            If New Guid(CType(dv(i)(COL_ID_NAME), Byte())).Equals(id) Then
+                Return dv(i)(COL_CODE_NAME).ToString
+            End If
+        Next
+        Return String.Empty
+    End Function
+
     Public Shared Function GetIdFromExtCode(ByVal listName As String, ByVal extcode As String) As Guid
         Dim id As Guid = Nothing
         Dim dv As DataView = DataView(listName)
