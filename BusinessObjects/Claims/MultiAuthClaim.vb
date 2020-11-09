@@ -1,8 +1,12 @@
 ﻿Imports System.Collections.Generic
+Imports System.Net
+Imports Assurant.Elita.ClientIntegration
+Imports Assurant.Elita.ClientIntegration.Headers
+Imports Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService
 Imports Assurant.ElitaPlus.BusinessObjectsNew.LegacyBridgeService
 
 Public NotInheritable Class MultiAuthClaim
-    Inherits ClaimBase
+    Inherits ClaimBase : Implements IFullfillable
 
 #Region "Constructors"
     'New BO
@@ -167,14 +171,20 @@ Public NotInheritable Class MultiAuthClaim
 #End Region
 
 #Region "Instance Methods"
-    Public  Function GetLegacyBridgeServiceClient() As LegacyBridgeServiceClient
+    Public Function GetLegacyBridgeServiceClient() As LegacyBridgeServiceClient
         Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_LEGACY_BRIDGE_SERVICE), False)
         Dim client = New LegacyBridgeServiceClient("CustomBinding_ILegacyBridgeService", oWebPasswd.Url)
         client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
         client.ClientCredentials.UserName.Password = oWebPasswd.Password
         Return client
     End Function
-
+    Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
+        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
+        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPasswd.Url)
+        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+        client.ClientCredentials.UserName.Password = oWebPasswd.Password
+        Return client
+    End Function
     Public Overrides Sub CreateClaim()
         MyBase.CreateClaim()
     End Sub
@@ -616,4 +626,24 @@ Public NotInheritable Class MultiAuthClaim
         End Function
     End Class
 #End Region
+
+    Public Function GetFulfillmentDetails(claimNumber As String, companyCode As String) As FulfillmentDetails Implements IFullfillable.GetFulfillmentDetails
+        Dim wsRequest As GetFulfillmentDetailsRequest = New GetFulfillmentDetailsRequest()
+        wsRequest.ClaimNumber = claimNumber
+        wsRequest.CompanyCode = companyCode
+        Dim wsResponseObject As New FulfillmentDetails
+
+
+        If Not String.IsNullOrEmpty(claimNumber) AndAlso Not String.IsNullOrEmpty(companyCode) Then
+
+                wsResponseObject = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, FulfillmentDetails)(
+                    GetClaimFulfillmentWebAppGatewayClient(),
+                    New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                    Function(ByVal c As WebAppGatewayClient)
+                        Return c.GetFulfillmentDetails(wsRequest)
+                    End Function)
+        End If
+
+        Return wsResponseObject
+    End Function
 End Class

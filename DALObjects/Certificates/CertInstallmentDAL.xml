@@ -61,7 +61,6 @@
 			UPDATE elita.elp_cert_installment SET
 				billing_frequency_id = :billing_frequency_id,
 				billing_status_id = :billing_status_id,
-				bank_info_id = :bank_info_id,
 				number_of_installments = :number_of_installments,
 				installment_amount = :installment_amount,
 				payment_due_date = :payment_due_date,

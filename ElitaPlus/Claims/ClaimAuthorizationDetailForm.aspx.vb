@@ -1284,6 +1284,8 @@ Partial Class ClaimAuthorizationDetailForm
         ucSelectServiceCenter.CompanyCode = State.ClaimBO.Company.Code
         ucSelectServiceCenter.Dealer = State.ClaimBO.Certificate.Dealer.Dealer
         ucSelectServiceCenter.Make = State.ClaimBO.ClaimedEquipment.Manufacturer
+        ucSelectServiceCenter.City = State.ClaimBO.ContactInfo.Address.City
+        ucSelectServiceCenter.PostalCode = State.ClaimBO.ContactInfo.Address.PostalCode
         ucSelectServiceCenter.RiskTypeEnglish = State.ClaimBO.RiskType
         ucSelectServiceCenter.MethodOfRepairXcd = "METHR-" + State.ClaimBO.MethodOfRepairCode
         ucSelectServiceCenter.InitializeComponent()

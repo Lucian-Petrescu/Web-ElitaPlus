@@ -44,6 +44,9 @@
   <PROCESS_SCREEN_HELP>
     elita.elp_utl_custom_upload.get_screen_help    
   </PROCESS_SCREEN_HELP>
+  <PROCESS_UPDATE_CERT_ITEM_HISTORY>
+    elita.elp_tbl_cert_item_history.elp_tbl_cert_item_history
+  </PROCESS_UPDATE_CERT_ITEM_HISTORY>
   <ADDREMOVEITEMS>
     elita.elp_tbl_lov.UploadType_Lov
   </ADDREMOVEITEMS>

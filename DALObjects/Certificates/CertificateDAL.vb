@@ -718,7 +718,8 @@ Public Class CertificateDAL
         If isVSCSearch Then
             ' FOR VSC SEARCH USE THE FOLLOWINGS
             If ((Not (serialNumberMask Is Nothing)) AndAlso (Me.FormatSearchMask(serialNumberMask)) AndAlso (Not (serialNumberMask.Equals(String.Empty)))) Then
-                whereClauseConditions &= Environment.NewLine & "ci.search_imei_serialnumber" & serialNumberMask.ToUpper & " AND "
+                whereClauseConditions &= Environment.NewLine & "(ci.serial_number" & serialNumberMask.ToUpper & " or "
+                whereClauseConditions &= Environment.NewLine & "ci.imei_number" & serialNumberMask.ToUpper & " ) AND "
             End If
 
             If ((Not (vehicleLicenseFlagMask Is Nothing)) AndAlso (Not (vehicleLicenseFlagMask.Equals(String.Empty)))) Then
