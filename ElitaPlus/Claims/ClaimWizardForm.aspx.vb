@@ -488,22 +488,22 @@ Public Class ClaimWizardForm
                                 Me.State.DoesActiveTradeInExistForIMEI = DoesAcceptedOfferExistForIMEI()
                             End If
                         End If
-                        If Me.State.ClaimBO.IsNew And Me.State.DoesActiveTradeInExistForIMEI Then
-                            Me.State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__ACTIVE_TRADEIN_QUOTE_EXISTS)
-                            Me.State.ClaimBO.DenyClaim()
+                        If State.ClaimBO.IsNew AndAlso State.DoesActiveTradeInExistForIMEI Then
+                           State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__ACTIVE_TRADEIN_QUOTE_EXISTS)
+                           State.ClaimBO.DenyClaim()
                         End If
 
                         If Me.State.ClaimBO IsNot Nothing AndAlso Me.State.ClaimBO.Status = BasicClaimStatus.Active Then
                             'user story 192764 - Task-199011--Start------
                             Dim dsCaseFields As DataSet = CaseBase.GetCaseFieldsList(State.ClaimBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-                            If (Not dsCaseFields Is Nothing AndAlso dsCaseFields.Tables.Count > 0 AndAlso dsCaseFields.Tables(0).Rows.Count > 0) Then
+                            If (dsCaseFields IsNot Nothing AndAlso dsCaseFields.Tables.Count > 0 AndAlso dsCaseFields.Tables(0).Rows.Count > 0) Then
 
                                 Dim hasBenefit As DataRow() = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
                                 Dim benefitCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='BENEFITCHECKERROR'")
                                 Dim preCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='PRECHECKERROR'")
                                 Dim lossType As DataRow() = dsCaseFields.Tables(0).Select("field_code='LOSSTYPE'")
 
-                                If Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0 Then
+                                If hasBenefit IsNot Nothing AndAlso hasBenefit.Length > 0 Then
                                     If Not hasBenefit(0)("field_value") Is Nothing AndAlso String.Equals(hasBenefit(0)("field_value").ToString(), Boolean.FalseString, StringComparison.CurrentCultureIgnoreCase) Then
                                         UpdateCaseFieldValues(hasBenefit, lossType)
 
@@ -511,7 +511,7 @@ Public Class ClaimWizardForm
                                         hasBenefit = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
                                     End If
                                 End If
-                                If Not benefitCheckError Is Nothing AndAlso benefitCheckError.Length > 0 Then
+                                If  benefitCheckError  IsNot Nothing AndAlso benefitCheckError.Length > 0 Then
                                     If Not benefitCheckError(0)("field_value") Is Nothing AndAlso Not String.Equals(benefitCheckError(0)("field_value").ToString(), "NO ERROR", StringComparison.CurrentCultureIgnoreCase) Then
                                         UpdateCaseFieldValues(benefitCheckError, lossType)
 
@@ -520,13 +520,13 @@ Public Class ClaimWizardForm
                                     End If
                                 End If
 
-                                If Not preCheckError Is Nothing And preCheckError.Length = 0 Then
-                                    If Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0 Then
-                                        If Not hasBenefit(0)("field_value") Is Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper() Then
+                                If preCheckError IsNot Nothing And preCheckError.Length = 0 Then
+                                    If hasBenefit IsNot Nothing AndAlso hasBenefit.Length > 0 Then
+                                        If hasBenefit(0)("field_value") IsNot Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper() Then
                                             RunPreCheck(hasBenefit)
                                         End If
-                                    ElseIf Not benefitCheckError Is Nothing AndAlso benefitCheckError.Length > 0 Then
-                                        If Not benefitCheckError(0)("field_value") Is Nothing AndAlso benefitCheckError(0)("field_value").ToString().ToUpper() <> "NO ERROR" Then
+                                    ElseIf  benefitCheckError IsNot Nothing AndAlso benefitCheckError.Length > 0 Then
+                                        If  benefitCheckError(0)("field_value") IsNot Nothing AndAlso benefitCheckError(0)("field_value").ToString().ToUpper() <> "NO ERROR" Then
                                             RunPreCheck(benefitCheckError)
                                         End If
                                     End If
@@ -540,7 +540,8 @@ Public Class ClaimWizardForm
                         For Each i As ClaimIssue In State.ClaimBO.ClaimIssuesList
                             If i.IssueCode = "TIC_IP" Then
                                 blnClaimInProgress = True
-                                Exit For
+                                Return
+                                'Exit For
                             End If
                         Next
                         If blnClaimInProgress Then
@@ -561,7 +562,7 @@ Public Class ClaimWizardForm
                                         Return c.NewClaimEntitled(wsRequest)
                                     End Function)
 
-                                If wsResponse.IsNewClaimEntitled = False Then 'deny the claim with the denial reason returned
+                                If Not wsResponse.IsNewClaimEntitled Then 'deny the claim with the denial reason returned
                                     State.ClaimBO.Status = BasicClaimStatus.Denied
                                     Me.State.ClaimBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, wsResponse.DenialCodes(0))
                                 End If
@@ -584,7 +585,8 @@ Public Class ClaimWizardForm
                                 If Not blnWsSuccess Then
                                     Me.State.ClaimBO.Status = BasicClaimStatus.Pending
                                     Me.State.ClaimBO.Save()
-                                    Exit Sub
+                                    Return
+                                   
                                 End If
                             Catch ex As Exception
                                 Me.State.ClaimBO.Status = BasicClaimStatus.Pending
@@ -596,7 +598,7 @@ Public Class ClaimWizardForm
 
                         'TO DO : Add logic to Send Emails and other stuff
                         Me.ReturnBackToCallingPage()
-                        Exit Sub
+                        Return
                 End Select
 
                 GoToNextStep()
@@ -608,14 +610,14 @@ Public Class ClaimWizardForm
     End Sub
 
     Private Shared Sub UpdateCaseFieldValues(ByRef caseFieldRow As DataRow(), ByRef lossType As DataRow())
-        Dim caseFieldXcds() As String
-        Dim caseFieldValues() As String
+        Dim caseFieldXcds As String()
+        Dim caseFieldValues As String()
 
-        If Not lossType Is Nothing AndAlso lossType.Length > 0 Then
-            If Not lossType(0)("field_value") Is Nothing AndAlso (lossType(0)("field_value").ToString().ToUpper() = "ADH1234" Or lossType(0)("field_value").ToString().ToUpper() = "ADH5") Then
+        If  lossType IsNot Nothing AndAlso lossType.Length > 0 Then
+            If  lossType(0)("field_value") IsNot Nothing AndAlso (lossType(0)("field_value").ToString().ToUpper() = "ADH1234" OrElse lossType(0)("field_value").ToString().ToUpper() = "ADH5") Then
                 caseFieldXcds = {"CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING"}
                 caseFieldValues = {Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper()}
-            ElseIf Not lossType(0)("field_value") Is Nothing AndAlso lossType(0)("field_value").ToString().ToUpper() = "THEFT/LOSS" Then
+            ElseIf  lossType(0)("field_value") IsNot Nothing AndAlso lossType(0)("field_value").ToString().ToUpper() = "THEFT/LOSS" Then
                 caseFieldXcds = {"CASEFLD-HASBENEFIT"}
                 caseFieldValues = {Boolean.TrueString.ToUpper()}
             End If
@@ -687,25 +689,26 @@ Public Class ClaimWizardForm
         End Try
     End Sub
 
+    <Obsolete>
     Protected Sub btnDedCollContinue_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDedCollContinue.Click
 
         If step3_cboDedCollMethod.SelectedIndex < BLANK_ITEM_SELECTED Then
             moModalCollectDivMsgController.AddError (Assurant.ElitaPlus.Common.ErrorCodes.GUI_DED_COLL_METHD_REQD)
             Dim x As String = "<script language='JavaScript'> revealModal('modalCollectDeductible') </script>"
             ClientScript.RegisterStartupScript(Me.GetType(), "Startup", x, True)
-            Exit Sub
+            Return
         Else
             If GetSelectedItem(step3_cboDedCollMethod) = LookupListNew.GetIdFromCode(LookupListCache.LK_DED_COLL_METHOD, Codes.DED_COLL_METHOD_CR_CARD) AndAlso
                step3_txtDedCollAuthCode.Text.Length <> CInt(Codes.DED_COLL_CR_AUTH_CODE_LEN) Then 'Allow exact length of Auth Code
                 moModalCollectDivMsgController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AUTH_CODE_FOR_CC)
                 Dim x As String = "<script language='JavaScript'> revealModal('modalCollectDeductible') </script>"
                 ClientScript.RegisterStartupScript(Me.GetType(), "Startup", x, True)
-                Exit Sub
+                Return
             End If
         End If
 
         
-        Dim oldStatus As String = Me.State.ClaimBO.StatusCode
+        Dim oldStatus As String =State.ClaimBO.StatusCode
         Try
             PopulateBOFromForm(Me.State.StepName)
             Me.State.ClaimBO.Validate()
@@ -786,7 +789,7 @@ Public Class ClaimWizardForm
         End Try
     End Sub
 
-    Private Sub RadioButtonNOSVCOPTIONCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles step4_RadioButtonNO_SVC_OPTION.CheckedChanged
+    Private Sub RadioButton_NOSVCOPTION_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles step4_RadioButtonNO_SVC_OPTION.CheckedChanged
         Try
             Me.EnableDisableWizardControls(ClaimWizardSteps.Step4)
             If Me.step4_RadioButtonNO_SVC_OPTION.Checked Then
@@ -819,7 +822,7 @@ Public Class ClaimWizardForm
         End Try
     End Sub
 
-    Private Sub moMultipleColumnDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl_New) _
+    Private Sub moMultipleColumnDrop_Changed() _
         Handles step4_moMultipleColumnDrop.SelectedDropChanged
         Try
             PopulateGridOrDropDown()
@@ -908,11 +911,12 @@ Public Class ClaimWizardForm
         End Try
     End Sub
 
-    Private Sub SaveClaimIssue(ByVal sender As Object, ByVal Args As EventArgs) Handles step3_modalClaimIssue_btnSave.Click
+    <Obsolete>
+    Private Sub SaveClaimIssue(ByVal sender As Object, ByVal args As EventArgs) Handles step3_modalClaimIssue_btnSave.Click
 
         Try
             Dim claimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-            claimIssue.SaveNewIssue(Me.State.ClaimBO.Id, New Guid(hdnSelectedIssueCode.Value), Me.State.ClaimBO.CertificateId, False)
+            claimIssue.SaveNewIssue(Me.State.ClaimBO.Id, New Guid(hdnSelectedIssueCode.Value), State.ClaimBO.CertificateId, False)
             Me.State.ClaimIssuesView = Me.State.ClaimBO.GetClaimIssuesView()
             PopulateClaimIssuesGrid()
         Catch ex As Exception
@@ -920,7 +924,7 @@ Public Class ClaimWizardForm
         End Try
     End Sub
 
-    Protected Sub btnDenyClaim_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDenyClaim.Click
+    Protected Sub btnDenyClaimWriteClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDenyClaim.Click
         Try
             Me.PopulateBOFromForm(Me.State.StepName)
             Me.State.ClaimBO.Validate()
@@ -935,9 +939,9 @@ Public Class ClaimWizardForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         Catch ex As Assurant.ElitaPlus.BusinessObjectsNew.BOValidationException
             'Allow bypassing LossDate validation denying an expired item claim
-            If ex.ValidationErrorList.Count = 1 And
-               ex.ValidationErrorList(0).PropertyName = "LossDate" And
-               (Me.State.ClaimBO.LossDate.Value > Me.State.ClaimBO.CertificateItemCoverage.EndDate.Value Or
+            If ex.ValidationErrorList.Count = 1 AndAlso
+               ex.ValidationErrorList(0).PropertyName = "LossDate" AndAlso
+               (Me.State.ClaimBO.LossDate.Value > Me.State.ClaimBO.CertificateItemCoverage.EndDate.Value OrElse
                 Me.State.ClaimBO.LossDate.Value < Me.State.ClaimBO.CertificateItemCoverage.BeginDate.Value) Then
                 Dim bypassMdl As String = "<script language='JavaScript'> revealModal('ModalBypassDoL') </script>"
                 ClientScript.RegisterStartupScript(Me.GetType(), "Startup", bypassMdl, True)
@@ -973,13 +977,13 @@ Public Class ClaimWizardForm
     Protected Sub btnModalBbDolYes_Click(sender As Object, e As EventArgs) Handles btnModalBbDolYes.Click
         Dim x As String = "<script language='JavaScript'>hideModal('ModalBypassDoL'); revealModal('ModalDenyClaim'); </script>"
         ClientScript.RegisterStartupScript(Me.GetType(), "Startup", x, True)
-        Dim DndId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED__INCORRECT_DEVICE_SELECTED)
+        Dim dndId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED__INCORRECT_DEVICE_SELECTED)
         Me.step3_cboDeniedReason.SelectedIndex = Me.step3_cboDeniedReason.Items.IndexOf(Me.step3_cboDeniedReason.Items.FindByValue(DndId.ToString()))
         Me.step3_cboDeniedReason.Items.FindByValue(Me.step3_cboDeniedReason.SelectedValue).Selected = True
         Me.step3_cboDeniedReason.Enabled = False
     End Sub
 
-    Private Sub ButtonCancelClaim_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancelClaim.Click
+    Private Sub ButtonCancelClaimWrite_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancelClaim.Click
         Try
             Me.PopulateBOFromForm(Me.State.StepName)
             Me.State.ClaimBO.Cancel()
@@ -3696,7 +3700,7 @@ Public Class ClaimWizardForm
         If (e.CommandName = SELECT_ACTION_IMAGE) Then
             If Not e.CommandArgument.ToString().Equals(String.Empty) Then
 
-                Dim args() As String = CType(e.CommandArgument, String).Split(";".ToCharArray())
+                Dim args As String() = CType(e.CommandArgument, String).Split(";".ToCharArray())
                 Dim claimIdString As String = args(1)
                 Dim imageIdString As String = args(0)
                 Dim isLocalRepository As String = args(2)
@@ -3800,12 +3804,12 @@ Public Class ClaimWizardForm
 
         Try
             Dim claimAuth As ClaimAuthorization = CType(e.Row.DataItem, ClaimAuthorization)
-            Dim btnEditItem As LinkButton
+            'Dim btnEditItem As LinkButton
             If (e.Row.RowType = DataControlRowType.DataRow) _
                OrElse (e.Row.RowType = DataControlRowType.Separator) Then
                 ' Convert short status codes to full description with css
-                e.Row.Cells(Me.GRIDCLA_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, claimAuth.ClaimAuthorizationStatusCode)
-                e.Row.Cells(Me.GRIDCLA_COL_AMOUNT_IDX).Text = Me.GetAmountFormattedString(claimAuth.AuthorizedAmount.Value)
+                e.Row.Cells(GRIDCLA_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, claimAuth.ClaimAuthorizationStatusCode)
+                e.Row.Cells(GRIDCLA_COL_AMOUNT_IDX).Text = GetAmountFormattedString(claimAuth.AuthorizedAmount.Value)
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -3816,6 +3820,7 @@ Public Class ClaimWizardForm
 
 #Region "Claim Case Grid Related Functions"
 
+    <Obsolete>
     Public Sub PopulateClaimActionGrid()
 
         Try
@@ -3839,6 +3844,7 @@ Public Class ClaimWizardForm
         End Try
     End Sub
 
+    <Obsolete>
     Private Sub PopulateQuestionAnswerGrid()
         Try
 
@@ -3860,8 +3866,8 @@ Public Class ClaimWizardForm
             ControlMgr.SetVisibleControl(Me, CaseQuestionAnswerGrid, True)
 
         Catch ex As Exception
-            Dim GetExceptionType As String = ex.GetBaseException.GetType().Name
-            If ((Not GetExceptionType.Equals(String.Empty)) And GetExceptionType.Equals("BOValidationException")) Then
+            Dim getExceptionType As String = ex.GetBaseException.GetType().Name
+            If ((Not GetExceptionType.Equals(String.Empty)) AndAlso GetExceptionType.Equals("BOValidationException")) Then
                 ControlMgr.SetVisibleControl(Me, CaseQuestionAnswerGrid, False)
                 lblQuestionRecordFound.Visible = False
             End If
@@ -3874,17 +3880,15 @@ Public Class ClaimWizardForm
                 OrElse (e.Row.RowType = DataControlRowType.Separator) Then
                 Dim strCreationDate As String = Convert.ToString(e.Row.Cells(CaseQuestionAnswerGridColCreationDateIdx).Text)
                 strCreationDate = strCreationDate.Replace("&nbsp;", "")
-                If String.IsNullOrWhiteSpace(strCreationDate) = False Then
+                If Not  String.IsNullOrWhiteSpace(strCreationDate)  Then
                     Dim tempCreationDate = Convert.ToDateTime(e.Row.Cells(CaseQuestionAnswerGridColCreationDateIdx).Text.Trim())
                     Dim formattedCreationDate = GetLongDate12FormattedString(tempCreationDate)
                     e.Row.Cells(CaseQuestionAnswerGridColCreationDateIdx).Text = Convert.ToString(formattedCreationDate)
                 End If
 
                 Dim answerValue = e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text
-                If String.IsNullOrWhiteSpace(answerValue) = False Then
-                    If (CheckDateAnswer(answerValue) = True) Then
-                        e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text = GetDateFormattedStringNullable(e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text)
-                    End If
+                If Not String.IsNullOrWhiteSpace(answerValue) AndAlso CheckDateAnswer(answerValue) Then
+                    e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text = GetDateFormattedStringNullable(e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text)
                 End If
 
             End If
@@ -3895,8 +3899,8 @@ Public Class ClaimWizardForm
 
     Private Function CheckDateAnswer(strInput As String) As Boolean
 
-        Dim formatProvider = LocalizationMgr.CurrentFormatProvider
-        Dim strOutput As String = Nothing
+        'Dim formatProvider = LocalizationMgr.CurrentFormatProvider
+        'Dim strOutput As String = Nothing
         If IsDate(strInput) Then
             CheckDateAnswer = True
         Else
@@ -3936,12 +3940,12 @@ Public Class ClaimWizardForm
 
     Private Function CallStartFulfillmentProcess() As Boolean
         Dim wsRequest As BaseFulfillmentRequest = New BaseFulfillmentRequest()
-        Dim wsCBFRequest As New Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentRequest()
+        Dim wsCbfRequest As New Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentRequest()
         Dim blnSuccess As Boolean = True
         wsRequest.CompanyCode = State.ClaimBO.Company.Code
         wsRequest.ClaimNumber = State.ClaimBO.ClaimNumber
-        wsCBFRequest.CompanyCode = State.ClaimBO.Company.Code
-        wsCBFRequest.ClaimNumber = State.ClaimBO.ClaimNumber
+        wsCbfRequest.CompanyCode = State.ClaimBO.Company.Code
+        wsCbfRequest.ClaimNumber = State.ClaimBO.ClaimNumber
         Dim wsResponseObject As Object
 
 
@@ -3956,7 +3960,7 @@ Public Class ClaimWizardForm
                                     GetClaimFulfillmentWebAppGatewayClient(),
                                 New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                                 Function(ByVal c As Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGatewayClient)
-                                    Return c.BeginFulfillment(wsCBFRequest)
+                                    Return c.BeginFulfillment(wsCbfRequest)
                                 End Function)
 
             Else
