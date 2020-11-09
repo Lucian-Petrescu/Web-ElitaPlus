@@ -9,6 +9,8 @@ Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita
 Imports System.Text
+Imports System.Collections.Generic
+Imports Assurant.Elita.ClientIntegration
 Namespace Certificates
     Partial Class CertificateForm
         Inherits ElitaPlusSearchPage
@@ -4773,7 +4775,6 @@ Namespace Certificates
             Return (Newsuffix = Suffix)
 
         End Function
-
         Public Sub saveCertificate()
             Try
 
@@ -4814,6 +4815,67 @@ Namespace Certificates
 
                 If Me.State.MyBO.IsDirty Then
                     Me.State.MyBO.Save()
+                    PopulateFormFromBOs()
+                    Me.State.IsEdit = False
+                    Me.EnableDisableFields()
+                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                    Me.State.certificateChanged = True
+                Else
+                    Me.State.IsEdit = False
+                    Me.MasterPage.MessageController.AddSuccess(Message.MSG_RECORD_NOT_SAVED, True)
+                    Me.EnableDisableFields()
+                End If
+                DisplayMaskDob()
+            Catch ex As DataNotFoundException
+                Me.MasterPage.MessageController.AddError(ex.Message)
+                Me.State.IsEdit = True
+                Me.EnableDisableFields()
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                Me.State.IsEdit = True
+                Me.EnableDisableFields()
+            End Try
+        End Sub
+        Public Sub saveCertificateViaApi()
+            Try
+
+                If Me.moVehicleLicenseTagText.Text <> "" Then
+                    Dim dv As DataView, oCert As Certificate
+                    Dim compGroupId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
+                    dv = oCert.ValidateLicenseFlag(Me.moVehicleLicenseTagText.Text, Me.State.MyBO.CertNumber, compGroupId)
+                    If dv.Count > 0 Then
+                        ElitaPlusPage.SetLabelError(Me.moVehicleLicenseTagLabel)
+                        Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_VEHICLE_LICENSE_TAG_ERR)
+                    End If
+                End If
+
+                'REQ-1255 -- START
+                'Validate CUIT_CUIL field
+                If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
+                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Then  '1= Display and Require When Cancelling or 2= Display Only
+                    If Me.moCUIT_CUILText.Text <> String.Empty Then
+                        Dim CUIT_CUIL_Number As Int64 = 0
+                        Dim DigitCheckerResult As Boolean = False
+                        'Checking for numeric
+                        If Me.moCUIT_CUILText.Text.Length > 11 Or Not Int64.TryParse(Me.moCUIT_CUILText.Text, CUIT_CUIL_Number) Then
+                            Throw New GUIException(Message.MSG_INVALID_CUIT_CUIL_NUMBER, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_CUIT_CUIL_NUMBER_ERR)
+                        End If
+                        'Checking for valid number
+                        DigitCheckerResult = CheckCUITCUIL(Me.moCUIT_CUILText.Text)
+                        If Not DigitCheckerResult Then
+                            Throw New GUIException(Message.MSG_INVALID_CUIT_CUIL_NUMBER, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_CUIT_CUIL_NUMBER_ERR)
+                        End If
+                    End If
+                End If
+                'REQ-1255 -- END
+
+                Me.PopulateBOsFromForm()
+
+                ' Validate User Selected Required Fields
+                ValidateRequiredFields()
+
+                If Me.State.MyBO.IsDirty Then
+                    CustomerInfoEndorseRequest(Me.State.MyBO.Dealer.Dealer, Me.State.MyBO.CertNumber, Me.State.MyBO)
                     PopulateFormFromBOs()
                     Me.State.IsEdit = False
                     Me.EnableDisableFields()
@@ -7122,6 +7184,169 @@ Namespace Certificates
             End Try
         End Sub
 
+        Private Function GetClient() As CustomerService.CustomerServiceClient
+            Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__SVC_CERT_CUSTOMER_SERVICE), False)
+            Dim client = New CustomerService.CustomerServiceClient("CustomBinding_ICustomerService", oWebPasswd.Url)
+            client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+            client.ClientCredentials.UserName.Password = oWebPasswd.Password
+            Return client
+        End Function
+        Private Sub CustomerInfoEndorseRequest(ByVal dealerCode As String, ByVal certificateNumber As String, ByVal certificate As Certificate)
+
+            Dim endorseRequest As CustomerService.EndorseCustomerRequest = New CustomerService.EndorseCustomerRequest
+            Dim updateCustInfo As CustomerService.UpdateCustomerInfo = New CustomerService.UpdateCustomerInfo
+            Dim customerInfo As CustomerService.CustomerInfo = New CustomerService.CustomerInfo()
+            customerInfo.FirstName = certificate.CustomerFirstName
+            customerInfo.LastName = certificate.CustomerLastName
+            customerInfo.MiddleName = certificate.CustomerMiddleName
+            customerInfo.LanguagePreferences = GetLaguagePrefrencesCode(certificate.getLanguagePrefDesc)
+
+            customerInfo.CorporateName = certificate.CorporateName
+            If certificate.DateOfBirth IsNot Nothing Then
+                customerInfo.DateOfBirth = certificate.DateOfBirth
+            End If
+
+            customerInfo.AlternateFirstName = certificate.AlternativeFirstName
+            customerInfo.AlternateLastName = certificate.AlternativeLastName
+            customerInfo.CustomerType = CustomerService.CustomerTypes.Primary
+
+            If customerInfo.IdentificationNumber IsNot Nothing Then
+                customerInfo.IdentificationNumber = certificate.IdentificationNumber
+            End If
+
+            Dim dv As DataView
+            If Not certificate.Nationality = Guid.Empty Then
+                dv = LookupListNew.GetListItemId(certificate.Nationality, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                customerInfo.Nationality = dv.Item(FIRST_ROW).Item(CODE).ToString()
+            End If
+
+            If Not certificate.PlaceOfBirth = Guid.Empty Then
+                dv = LookupListNew.GetListItemId(certificate.PlaceOfBirth, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                customerInfo.PlaceOfBirth = dv.Item(FIRST_ROW).Item(CODE).ToString()
+            End If
+
+            If Not certificate.SalutationId = Guid.Empty Then
+                dv = LookupListNew.GetListItemId(certificate.SalutationId, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                customerInfo.Salutation = dv.Item(FIRST_ROW).Item(CODE).ToString()
+            End If
+
+            If Not certificate.MaritalStatus = Guid.Empty Then
+                dv = LookupListNew.GetListItemId(certificate.MaritalStatus, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                customerInfo.MaritalStatus = GetMaritalStatusEnumFromCode(dv.Item(FIRST_ROW).Item(CODE).ToString())
+            End If
+            If Not certificate.Gender = Guid.Empty Then
+                dv = LookupListNew.GetListItemId(certificate.Gender, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                customerInfo.Gender = GetGenderEnumFromCode(dv.Item(FIRST_ROW).Item(CODE).ToString())
+            End If
+
+            customerInfo.Address = New CustomerService.AddressInfo() With {
+                .Address1 = certificate.AddressChild.Address1,
+                .Address2 = certificate.AddressChild.Address2,
+                .Address3 = certificate.AddressChild.Address3,
+                .PostalCode = certificate.AddressChild.PostalCode,
+                .City = certificate.AddressChild.City,
+                .State = GetRegionCode(certificate.AddressChild.RegionId, certificate.AddressChild.CountryId),
+                .Country = certificate.AddressChild.countryBO.Code,
+                .Type = CustomerService.ContactType.Address}
+            customerInfo.Email = New CustomerService.EMailInfo() With {
+                .EmailAddress = certificate.Email,
+                .Type = CustomerService.ContactType.EMailAddress
+                             }
+
+            Dim homePhoneNumber As CustomerService.PhoneInfo = New CustomerService.PhoneInfo()
+            homePhoneNumber.PhoneNumber = certificate.HomePhone
+            homePhoneNumber.Type = CustomerService.ContactType.HomePhone
+
+            Dim workPhoneNumber As CustomerService.PhoneInfo = New CustomerService.PhoneInfo()
+            workPhoneNumber.PhoneNumber = certificate.WorkPhone
+            workPhoneNumber.Type = CustomerService.ContactType.WorkPhone
+
+            customerInfo.Phone = New CustomerService.PhoneInfo() {
+                workPhoneNumber, homePhoneNumber
+                }
+
+            updateCustInfo.EndorsementReason = CustomerService.EndorsementCustomerReasons.UpdatePhone
+            updateCustInfo.CertificateNumber = certificateNumber
+            updateCustInfo.DealerCode = dealerCode
+            updateCustInfo.Customer = customerInfo
+            updateCustInfo.CompanyCode = certificate.Company.Code
+
+            endorseRequest.Requests = New CustomerService.BaseCustomerEndorseAction() {updateCustInfo}
+
+            Try
+                WcfClientHelper.Execute(Of CustomerService.CustomerServiceClient, CustomerService.ICustomerService, CustomerService.EndorseCustomerResponse)(
+                                                                        GetClient(),
+                                                                        New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                                                                         Function(ByVal c As CustomerService.CustomerServiceClient)
+                                                                             Return c.CustomerOperation(endorseRequest)
+                                                                         End Function)
+            Catch ex As Exception
+                Throw
+            End Try
+        End Sub
+        
+        Private Function GetLaguagePrefrencesCode(description As String) As String
+            Dim code As String = String.Empty
+            If description = String.Empty Then
+                Return code
+            End If
+            Dim langList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("LanguageList", Thread.CurrentPrincipal.GetLanguageCode())
+
+            For Each lang As ListItem In langList
+                If lang.Translation = description Then
+                    code = lang.Code
+                    Exit For
+                End If
+            Next
+            Return code
+        End Function
+
+        Private Function GetRegionCode(ByVal regionID As Guid, ByVal countryID As Guid) As String
+            Dim regionCode As String = String.Empty
+            If countryID = Guid.Empty OrElse regionID = Guid.Empty Then
+                Return regionCode
+            End If
+            If Not regionID = Guid.Empty Then
+                Dim list As DataView = LookupListNew.GetRegionLookupList(countryID)
+
+                regionCode = LookupListNew.GetRegionCodeFromID(list, regionID)
+            End If
+            Return regionCode
+        End Function
+
+        Private Function GetGenderEnumFromCode(code As String) As CustomerService.Gender
+            Dim gender As CustomerService.Gender = Nothing
+            Select Case code
+                Case "M"
+                    gender = CustomerService.Gender.Male
+                Case "F"
+                    gender = CustomerService.Gender.Female
+            End Select
+            Return gender
+        End Function
+
+        Private Function GetMaritalStatusEnumFromCode(code As String) As CustomerService.MaritalStatus?
+
+            Dim maritalStatus As CustomerService.MaritalStatus = Nothing
+
+            Select Case code
+                Case "MARRIED"
+                    maritalStatus = CustomerService.MaritalStatus.Married
+                Case "SINGLE"
+                    maritalStatus = CustomerService.MaritalStatus.Single
+                Case "OTHERS"
+                    maritalStatus = CustomerService.MaritalStatus.Others
+                Case "DIVORCED"
+                    maritalStatus = CustomerService.MaritalStatus.Divorced
+                Case "WIDOWER"
+                    maritalStatus = CustomerService.MaritalStatus.Widower
+                Case "COEXIST"
+                    maritalStatus = CustomerService.MaritalStatus.Coexist
+            End Select
+
+            Return maritalStatus
+        End Function
+
         Private Sub btnSaveCertInfo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveCertInfo_WRITE.Click
             Try
                 Me.saveCertificate()
@@ -7596,7 +7821,7 @@ Namespace Certificates
 
                 If oCancelCertificateData.errorExist2 = False Then
                     ControlMgr.SetVisibleControl(Me, ProcessCancellationButton_WRITE, True)
-                    'When an App User picks up the cancellation reason ‘REP’ from Screen at the time of cancellation
+                    'When an App User picks up the cancellation reason â€˜REPâ€™ from Screen at the time of cancellation
                     '(provide the user has a role that is not excluded for this cancellation reason) 
                     'System should display a warning that the Certificate would not get reinstated manually
                     If oCancelCertificateData.cancellationCode = "REP" Then
