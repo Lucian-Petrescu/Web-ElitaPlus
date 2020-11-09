@@ -4875,7 +4875,13 @@ Namespace Certificates
                 ValidateRequiredFields()
 
                 If Me.State.MyBO.IsDirty Then
-                    CustomerInfoEndorseRequest(Me.State.MyBO.Dealer.Dealer, Me.State.MyBO.CertNumber, Me.State.MyBO)
+                    Try
+                        CustomerInfoEndorseRequest(Me.State.MyBO.Dealer.Dealer, Me.State.MyBO.CertNumber, Me.State.MyBO)
+                    Catch ex As Exception
+                        MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_POLICYSERVICE_SERVICE_ERR, True)
+                        Throw
+                    End Try
+
                     PopulateFormFromBOs()
                     Me.State.IsEdit = False
                     Me.EnableDisableFields()
