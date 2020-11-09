@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.assurant.com/PolicyService.Contracts/Faults" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/PolicyService.Contracts/Faults" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="EnrollFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EnrollFault" nillable="true" type="tns:EnrollFault" />
+  <xs:complexType name="BaseFault">
+    <xs:sequence>
+      <xs:element name="FaultCode" nillable="true" type="xs:string" />
+      <xs:element name="FaultMessage" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseFault" nillable="true" type="tns:BaseFault" />
+  <xs:complexType name="CertificateNotFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CertificateNotFoundFault" nillable="true" type="tns:CertificateNotFoundFault" />
+  <xs:complexType name="DealerNotFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DealerNotFoundFault" nillable="true" type="tns:DealerNotFoundFault" />
+  <xs:complexType name="CustomerNotFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CustomerNotFoundFault" nillable="true" type="tns:CustomerNotFoundFault" />
+  <xs:complexType name="InvalidIdentificationTypeFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InvalidIdentificationTypeFault" nillable="true" type="tns:InvalidIdentificationTypeFault" />
+  <xs:complexType name="MoreRecordsFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="MoreRecordsFoundFault" nillable="true" type="tns:MoreRecordsFoundFault" />
+  <xs:complexType name="PolicyAlreadyLinkedFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PolicyAlreadyLinkedFault" nillable="true" type="tns:PolicyAlreadyLinkedFault" />
+  <xs:complexType name="DataNotFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DataNotFoundFault" nillable="true" type="tns:DataNotFoundFault" />
+</xs:schema>

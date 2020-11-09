@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://elita.assurant.com/Elita/PolicyService" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://elita.assurant.com/Elita/PolicyService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://elita.assurant.com/Elita/PolicyService/Imports">
+      <xsd:import schemaLocation="http://localhost/PolicyService/CustomerService.svc?xsd=xsd0" namespace="http://elita.assurant.com/Elita/PolicyService" />
+      <xsd:import schemaLocation="http://localhost/PolicyService/CustomerService.svc?xsd=xsd3" namespace="http://elita.assurant.com/PolicyService.Contracts/Faults" />
+      <xsd:import schemaLocation="http://localhost/PolicyService/CustomerService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost/PolicyService/CustomerService.svc?xsd=xsd2" namespace="http://elita.assurant.com/Elita/PolicyService/CustomerSearch" />
+      <xsd:import schemaLocation="http://localhost/PolicyService/CustomerService.svc?xsd=xsd4" namespace="http://elita.assurant.com/Elita/PolicyService/Endorse" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ICustomerService_SearchCustomer_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchCustomer" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_SearchCustomer_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_SearchCustomer_EnrollFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q1:EnrollFault" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_CustomerOperation_InputMessage">
+    <wsdl:part name="parameters" element="tns:CustomerOperation" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_CustomerOperation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CustomerOperationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_CustomerOperation_EndorseFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q2:EnrollFault" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_AddPolicyIdentifier_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddPolicyIdentifier" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_AddPolicyIdentifier_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddPolicyIdentifierResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_AddPolicyIdentifier_EnrollFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q3:EnrollFault" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_AddPolicyIdentifier_CertificateNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q4:CertificateNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_AddPolicyIdentifier_DealerNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q5:DealerNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_AddPolicyIdentifier_CustomerNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q6:CustomerNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_AddPolicyIdentifier_InvalidIdentificationTypeFaultFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q7:InvalidIdentificationTypeFault" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_AddPolicyIdentifier_MoreRecordsFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q8:MoreRecordsFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_AddPolicyIdentifier_PolicyAlreadyLinkedFaultFault_FaultMessage">
+    <wsdl:part xmlns:q9="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q9:PolicyAlreadyLinkedFault" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_RemovePolicyIdentifier_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemovePolicyIdentifier" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_RemovePolicyIdentifier_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemovePolicyIdentifierResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_RemovePolicyIdentifier_EnrollFaultFault_FaultMessage">
+    <wsdl:part xmlns:q10="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q10:EnrollFault" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_RemovePolicyIdentifier_CertificateNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q11="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q11:CertificateNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_RemovePolicyIdentifier_DealerNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q12="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q12:DealerNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_RemovePolicyIdentifier_CustomerNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q13="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q13:CustomerNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_RemovePolicyIdentifier_InvalidIdentificationTypeFaultFault_FaultMessage">
+    <wsdl:part xmlns:q14="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q14:InvalidIdentificationTypeFault" />
+  </wsdl:message>
+  <wsdl:message name="ICustomerService_RemovePolicyIdentifier_DataNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q15="http://elita.assurant.com/PolicyService.Contracts/Faults" name="detail" element="q15:DataNotFoundFault" />
+  </wsdl:message>
+  <wsdl:portType name="ICustomerService">
+    <wsdl:operation name="SearchCustomer">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/SearchCustomer" message="tns:ICustomerService_SearchCustomer_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/SearchCustomerResponse" message="tns:ICustomerService_SearchCustomer_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/SearchCustomerEnrollFaultFault" name="EnrollFaultFault" message="tns:ICustomerService_SearchCustomer_EnrollFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CustomerOperation">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/CustomerOperation" message="tns:ICustomerService_CustomerOperation_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/CustomerOperationResponse" message="tns:ICustomerService_CustomerOperation_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/CustomerOperationEndorseFaultFault" name="EndorseFaultFault" message="tns:ICustomerService_CustomerOperation_EndorseFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddPolicyIdentifier">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/AddPolicyIdentifier" message="tns:ICustomerService_AddPolicyIdentifier_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/AddPolicyIdentifierResponse" message="tns:ICustomerService_AddPolicyIdentifier_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/AddPolicyIdentifierEnrollFaultFault" name="EnrollFaultFault" message="tns:ICustomerService_AddPolicyIdentifier_EnrollFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/AddPolicyIdentifierCertificateNotFoundFaultFault" name="CertificateNotFoundFaultFault" message="tns:ICustomerService_AddPolicyIdentifier_CertificateNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/AddPolicyIdentifierDealerNotFoundFaultFault" name="DealerNotFoundFaultFault" message="tns:ICustomerService_AddPolicyIdentifier_DealerNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/AddPolicyIdentifierCustomerNotFoundFaultFault" name="CustomerNotFoundFaultFault" message="tns:ICustomerService_AddPolicyIdentifier_CustomerNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/AddPolicyIdentifierInvalidIdentificationTypeFaultFault" name="InvalidIdentificationTypeFaultFault" message="tns:ICustomerService_AddPolicyIdentifier_InvalidIdentificationTypeFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/AddPolicyIdentifierMoreRecordsFoundFaultFault" name="MoreRecordsFoundFaultFault" message="tns:ICustomerService_AddPolicyIdentifier_MoreRecordsFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/AddPolicyIdentifierPolicyAlreadyLinkedFaultFault" name="PolicyAlreadyLinkedFaultFault" message="tns:ICustomerService_AddPolicyIdentifier_PolicyAlreadyLinkedFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemovePolicyIdentifier">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/RemovePolicyIdentifier" message="tns:ICustomerService_RemovePolicyIdentifier_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/RemovePolicyIdentifierResponse" message="tns:ICustomerService_RemovePolicyIdentifier_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/RemovePolicyIdentifierEnrollFaultFault" name="EnrollFaultFault" message="tns:ICustomerService_RemovePolicyIdentifier_EnrollFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/RemovePolicyIdentifierCertificateNotFoundFaultFault" name="CertificateNotFoundFaultFault" message="tns:ICustomerService_RemovePolicyIdentifier_CertificateNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/RemovePolicyIdentifierDealerNotFoundFaultFault" name="DealerNotFoundFaultFault" message="tns:ICustomerService_RemovePolicyIdentifier_DealerNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/RemovePolicyIdentifierCustomerNotFoundFaultFault" name="CustomerNotFoundFaultFault" message="tns:ICustomerService_RemovePolicyIdentifier_CustomerNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/RemovePolicyIdentifierInvalidIdentificationTypeFaultFault" name="InvalidIdentificationTypeFaultFault" message="tns:ICustomerService_RemovePolicyIdentifier_InvalidIdentificationTypeFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/PolicyService/ICustomerService/RemovePolicyIdentifierDataNotFoundFaultFault" name="DataNotFoundFaultFault" message="tns:ICustomerService_RemovePolicyIdentifier_DataNotFoundFaultFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>
