@@ -15,11 +15,11 @@
             var rdoDealers = document.getElementById("<%=rdoDealers.ClientID %>");
             if (rdoCompany.checked) {
                 var lblComapany = document.getElementById("<%=hrefCompany.ClientID %>");
-                lblComapany.click()
+                lblComapany.click();
             }
             if (rdoDealers.checked) {
                 var lblDealer = document.getElementById("<%=hrefDealer.ClientID %>");
-                lblDealer.click()
+                lblDealer.click();
             }
         }
 
@@ -33,29 +33,6 @@
             rdoComapany.checked = true;
         }
     </script>
-    <%--<script type="text/javascript">    
-        function InEnrollment_SelectedIndexChanged(obj) {
-            var ddlYesNO = document.getElementById(obj);
-            if (ddlYesNO.selectedIndex >= 0) {
-                var status = ddlYesNO.options[ddlYesNO.selectedIndex].text;
-                var splitObj = obj.split("_");
-                var objTextID = splitObj[0] + "_" + splitObj[1] + "_" + splitObj[2] + "_" + splitObj[3]  + "_" + "DefaultValueTextBox";
-
-                var objTextDefaultValue = document.getElementById(objTextID);
-                var objTableTextBox = document.getElementById("TableTextBox");
-
-                if (status != 'No') {
-                    objTextDefaultValue.disabled = true;
-                    objTextDefaultValue.value = "";
-                    objTableTextBox.style.display = "none";
-                }
-                else {
-                    objTextDefaultValue.disabled = false;
-                    objTableTextBox.style.display = "table";
-                }
-            }
-        }
-    </script>--%>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
