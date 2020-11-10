@@ -982,12 +982,12 @@ Namespace Tables
 
                     If GetSelectedItem(moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, LookupNo) Then
 
-                        If TheCoverage.AttributeValues.Count > 0 Then
+                        If TheCoverage.AttributeValues.Count > 0 AndAlso TheCoverage.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS) IsNot Nothing Then
                             Throw New GUIException(Message.INVALID_ATTRIBUTE, ElitaPlus.Common.ErrorCodes.ATTRIBUTE_VALUE_CANNOT_BE_SET_WHEN_REINSURED_IS_SET_TO_NO_ERR)
                         End If
                     End If
                 Else
-                    If TheCoverage.AttributeValues.Count > 0 Then
+                    If TheCoverage.AttributeValues.Count > 0 AndAlso TheCoverage.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS) IsNot Nothing Then
                         Throw New GUIException(Message.INVALID_ATTRIBUTE, ElitaPlus.Common.ErrorCodes.CANNOT_SET_ATTRIBUTE_WITHOUT_REINSURED_FLAG)
                     End If
                 End If
