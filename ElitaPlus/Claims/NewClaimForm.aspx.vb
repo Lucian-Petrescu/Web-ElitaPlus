@@ -213,6 +213,7 @@ Partial Class NewClaimForm
         Public CaseQuestionAnswerListDV As CaseQuestionAnswer.CaseQuestionAnswerDV = Nothing
         Public ClaimActionListDV As CaseAction.CaseActionDV = Nothing
         Public FulfillmentDetailsResponse As BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails = Nothing
+        Public FilteredLogistics As List(Of LogisticStageAddress) = Nothing
     End Class
 
     Public Sub New()
@@ -776,7 +777,9 @@ Partial Class NewClaimForm
                                                                           .LogisticStageName = dr.Description
                                                                           }
                         )
-                    Dim filteredLogisticStages = logisticStages.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing ).ToList()
+                    Dim filteredLogisticStages = logisticStages.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing).ToList()
+                    Me.State.FilteredLogistics = filteredLogisticStages
+                    ValidateShippingAddressButtonControl()
 
                     moLogisticStageAddressInfo.ParentBusinessObject = filteredLogisticStages
                     moLogisticStageAddressInfo.DataBind()
@@ -788,6 +791,24 @@ Partial Class NewClaimForm
 
         Else
             moLogisticStageAddressInfo.Visible = False
+        End If
+    End Sub
+
+    Private Sub ValidateShippingAddressButtonControl()
+
+        Dim oCertificate As Certificate = New Certificate(Me.State.MyBO.CertificateId)
+
+        If Me.State.FilteredLogistics IsNot Nothing AndAlso oCertificate.Dealer.Validate_Address = Codes.EXT_YESNO_Y Then
+            If Not String.IsNullOrWhiteSpace(oCertificate.Product.ClaimProfile) Then
+                If Not String.IsNullOrWhiteSpace(Assurant.ElitaPlus.BusinessObjectsNew.Address.ClaimProfileData(oCertificate.Product.ClaimProfile).Url) Then
+                    moLogisticStageAddressInfo.ValidateAddress = True
+                    moLogisticStageAddressInfo.ProfileCode = oCertificate.Product.ClaimProfile
+                Else
+                    Me.MasterPage.MessageController.AddWarning(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_PROFILE_NOT_CONFIGURED))
+                End If
+            Else
+                Me.MasterPage.MessageController.AddWarning(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.MSG_URL_NOT_CONFIGURED))
+            End If
         End If
     End Sub
 
@@ -2889,23 +2910,6 @@ Partial Class NewClaimForm
 
         End Select
     End Sub
-
-    Protected Sub RepAddress_OnItemDataBound(sender As Object, e As RepeaterItemEventArgs)
-        If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
-            Dim lbLogisticStage As Label = DirectCast(e.Item.FindControl("LogisticStage"), Label)
-            Dim addressControls As UserControlAddress_New = DirectCast(e.Item.FindControl("moAddressController"), UserControlAddress_New)
-            addressControls.TranslateAllLabelControl()
-
-            Dim logisticStage As Object = DataBinder.Eval(e.Item.DataItem, "LogisticStage")
-            Dim addressFulfill As Object = DataBinder.Eval(e.Item.DataItem, "Address")
-            Dim convertedAddress As BusinessObjectsNew.Address = ConvertToAddressControllerField(addressFulfill)
-            lbLogisticStage.Text = logisticStage
-            addressControls.Bind(convertedAddress)
-            addressControls.EnableControls(False, True)
-        End If
-
-    End Sub
-
     Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As FulfillmentAddress) As BusinessObjectsNew.Address
 
         Dim convertAddress As New BusinessObjectsNew.Address With {
