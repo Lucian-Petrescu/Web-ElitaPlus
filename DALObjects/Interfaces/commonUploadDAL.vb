@@ -153,20 +153,22 @@ Public Class commonUploadDAL
         End Try
     End Sub
 
-    Public Function getScreenHelpData(FormName As String) As String
+    Public Function getScreenHelpData(FormName As String, uploadType As String) As String
         Dim sqlStmt As String
         sqlStmt = Me.Config("/SQL/PROCESS_SCREEN_HELP")
 
-
         Try
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter("p_InitResult", GetType(String), 500),
-                            New DBHelper.DBHelperParameter("p_ErrCode", GetType(Integer))}
+                            New DBHelper.DBHelperParameter("po_InitResult", GetType(String), 500),
+                            New DBHelper.DBHelperParameter("po_ErrCode", GetType(Integer))}
 
             Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
             Dim param As DBHelper.DBHelperParameter
 
             param = New DBHelper.DBHelperParameter("pi_formname", FormName)
+            inParameters.Add(param)
+
+            param = New DBHelper.DBHelperParameter("pi_uploadType", uploadType)
             inParameters.Add(param)
 
             DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, outParameters)
@@ -326,6 +328,15 @@ Public Class commonUploadDAL
             ElseIf String.Equals(strUploadType, "CLAIMUPDATE") Then
                 sqlStmt = Me.Config("/SQL/PROCESS_UPDATE_CLAIM")
 
+
+                param = New DBHelper.DBHelperParameter("pi_Uploadtype", strUploadType)
+                inParameters.Add(param)
+
+                param = New DBHelper.DBHelperParameter("pi_User", strUser)
+                inParameters.Add(param)
+
+            ElseIf String.Equals(strUploadType, "CERTITEMHISTORYUPDATE") Then
+                sqlStmt = Me.Config("/SQL/PROCESS_UPDATE_CERT_ITEM_HISTORY")
 
                 param = New DBHelper.DBHelperParameter("pi_Uploadtype", strUploadType)
                 inParameters.Add(param)

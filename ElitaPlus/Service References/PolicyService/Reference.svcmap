@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="86d8bf1d-f86c-41c1-ba50-bac4c2f8f7c1" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="PolicyService.xsd" MetadataType="Schema" ID="3b863e1f-bda2-4bd4-9a7d-bb263ea41790" SourceId="1" SourceUrl="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd2" />
+    <MetadataFile FileName="PolicyService1.xsd" MetadataType="Schema" ID="8b4b0d67-495e-405b-adf3-f7f771780074" SourceId="1" SourceUrl="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd10" />
+    <MetadataFile FileName="PolicyService2.xsd" MetadataType="Schema" ID="a13132b9-086c-41dd-a901-b28720584cf4" SourceId="1" SourceUrl="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd11" />
+    <MetadataFile FileName="PolicyService3.xsd" MetadataType="Schema" ID="a9fbec49-3b0c-4ea9-a642-4adb9bc42c27" SourceId="1" SourceUrl="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd4" />
+    <MetadataFile FileName="PolicyService.wsdl" MetadataType="Wsdl" ID="c598c6d1-f56a-4f19-806b-a927a068508a" SourceId="1" SourceUrl="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="PolicyService4.xsd" MetadataType="Schema" ID="a85d3c1c-de15-4f19-a56f-9641af51a1db" SourceId="1" SourceUrl="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd6" />
+    <MetadataFile FileName="PolicyService1.wsdl" MetadataType="Wsdl" ID="be522e84-22f4-4045-9f8c-b58b1bbf6b13" SourceId="1" SourceUrl="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?wsdl" />
+    <MetadataFile FileName="PolicyService5.xsd" MetadataType="Schema" ID="e5e1c7b0-9864-42ec-99d2-e0841a42a89a" SourceId="1" SourceUrl="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd1" />
+    <MetadataFile FileName="PolicyService6.xsd" MetadataType="Schema" ID="deb5a776-b8cf-4368-9f70-0aab91f34b2c" SourceId="1" SourceUrl="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd3" />
+    <MetadataFile FileName="PolicyService7.xsd" MetadataType="Schema" ID="c7786f4a-5a5c-43c9-a446-d741d6384d3d" SourceId="1" SourceUrl="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd5" />
+    <MetadataFile FileName="PolicyService8.xsd" MetadataType="Schema" ID="d783ead8-e858-4576-9fd9-f9ce51dfcb83" SourceId="1" SourceUrl="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd12" />
+    <MetadataFile FileName="PolicyService9.xsd" MetadataType="Schema" ID="8e326f98-ad86-4655-8f7a-17ea1bc53d33" SourceId="1" SourceUrl="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd7" />
+    <MetadataFile FileName="PolicyService10.xsd" MetadataType="Schema" ID="27c90ae2-871b-4478-9452-f91196731c41" SourceId="1" SourceUrl="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd9" />
+    <MetadataFile FileName="PolicyService11.xsd" MetadataType="Schema" ID="6ad6d487-3b19-4ca5-a0a0-be17d9c8af15" SourceId="1" SourceUrl="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd0" />
+    <MetadataFile FileName="PolicyService12.xsd" MetadataType="Schema" ID="028e3616-a7e5-400c-89e3-3ce8ece40ed7" SourceId="1" SourceUrl="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd8" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

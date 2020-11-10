@@ -8,6 +8,7 @@
 <%@ Register TagPrefix="Elita" TagName="BestReplacementOption" Src="~/Interfaces/ReplacementOptions.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlLogisticalInfo" Src="~/Claims/UserControlLogisticalInfo.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlClaimDeviceInfo" Src="~/Interfaces/ClaimDeviceInformationController.ascx" %>
+<%@ Register TagPrefix="Elita" TagName="UserControlLogisticStageAddressInfo" Src="~/Common/UserControlLogisticStageAddress.ascx" %>
 
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="NewClaimForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.NewClaimForm" Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
@@ -23,7 +24,7 @@
     <Elita:MessageController runat="server" ID="mcIssueStatus" Visible="false" />
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
-     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.6.1.min.js" />
+    <script type="text/javascript" src="../Navigation/scripts/jquery-1.6.1.min.js" ></script>
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"
         EnablePageMethods="true" ScriptMode="Auto" AsyncPostBackTimeout="100">
     </asp:ScriptManager>
@@ -722,17 +723,17 @@
     <div id="ModalCancel" class="overlay">
         <div id="light" class="overlay_message_content">
             <p class="modalTitle">
-            <table width="525"><tr><td align="left">
-                <asp:Label ID="lblModalTitle" runat="server" Text="CONFIRM"></asp:Label></td><td align="right">
+            <table style="width: 525px;"><tr><td style="text-align: left;">
+                <asp:Label ID="lblModalTitle" runat="server" Text="CONFIRM"></asp:Label></td><td style="text-align:right">
                 <a href="javascript:void(0)" onclick="hideModal('ModalCancel');">
                     <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                        width="16" height="18" align="right"/></a></td></tr></table></p>
-            <table class="formGrid" cellspacing="0" cellpadding="0" border="0" width="525">
+                        width="16" height="18" style="text-align:right" alt="none"/></a></td></tr></table></p>
+            <table class="formGrid" style="width: 525px; border: 0px; border-spacing: 0px; padding: 0px;">
                 <tbody>
                     <tr>
-                        <td align="right">
-                            <img id="imgMsgIcon" name="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
-                                height="28" />
+                        <td style="text-align:right">
+                            <img id="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
+                                height="28"  alt="none" />
                         </td>
                         <td id="tdModalMessage" colspan="2" runat="server">
                             <asp:Label ID="lblCancelMessage" runat="server"></asp:Label>
@@ -742,7 +743,7 @@
                         <td>
                             &nbsp;
                         </td>
-                        <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="2">
+                        <td id="tdBtnArea" style="white-space: nowrap;"  runat="server" colspan="2">
                             <input id="btnModalCancelYes" class="primaryBtn floatR" runat="server" type="button"
                                 value="Yes" />
                             <input id="Button1" class="popWindowAltbtn floatR" runat="server" type="button" value="No"
@@ -755,7 +756,7 @@
         <div id="fade" class="black_overlay">
         </div>
     </div>
-    <asp:Panel ID="EditPanel_WRITE" runat="server" Width="100%">
+    <asp:Panel ID="EditPanel_WRITE" runat="server" style="width: 100%;">
         <div class="dataContainer" id="dvStepWizBox" visible="false" runat="server">
             <div id="Div1" class="stepWizBox" runat="server">
                 <Elita:UserControlWizard ID="ucWizardControl" runat="server">
@@ -767,128 +768,128 @@
                 <asp:Label runat="server" ID="LabelNewClaimDtl">NEW_CLAIM_DETAILS</asp:Label>
             </h2>
             <div class="stepformZone">
-                <table class="formGrid" cellspacing="0" cellpadding="0" border="0">
+                <table class="formGrid" style=" border: 0px; border-spacing: 0px; padding: 0px;">
                     <tbody>
                         <tr>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelCertificateNumber" runat="server" Font-Bold="false">Certificate</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextboxCertificateNumber" TabIndex="200" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelClaimNumber" runat="server">Claim_Number</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextboxClaimNumber" TabIndex="171" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelServiceCenter" runat="server">Service_Center_Name</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextboxServiceCenter" TabIndex="200" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelContactName" runat="server">Contact_Name</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:DropDownList ID="cboContactSalutationId" TabIndex="64" runat="server">
                                 </asp:DropDownList>
                                 <asp:TextBox ID="TextboxContactName" TabIndex="65" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelCallerName" runat="server">NAME_OF_CALLER</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:DropDownList ID="cboCallerSalutationId" TabIndex="64" runat="server">
                                 </asp:DropDownList>
                                 <asp:TextBox ID="TextboxCallerName" TabIndex="70" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                             </td>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelConditionalReqquired" runat="server">LabelConditionalReqquired</asp:Label>
                                 <asp:Label ID="LabelCALLER_TAX_NUMBER" runat="server">CALLER_TAX_NUMBER</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextboxCALLER_TAX_NUMBER" TabIndex="71" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelLossDate" runat="server">Date_Of_Loss</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextboxLossDate" TabIndex="73" runat="server" SkinID="SmallTextBox"
                                     onchange="UpdateInfo();" AutoPostBack="true"></asp:TextBox>
                                 <asp:ImageButton ID="ImageButtonLossDate" TabIndex="75" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg"
                                     ImageAlign="AbsMiddle"></asp:ImageButton>
                             </td>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelLiabilityLimit" runat="server">Liability_Limit</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextboxLiabilityLimit" TabIndex="76" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                 <asp:TextBox ID="TextboxLiabilityLimitShadow" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelReportDate" runat="server">DATE_REPORTED</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextboxReportDate" TabIndex="73" runat="server" SkinID="SmallTextBox"
                                     onchange="UpdateInfo();"></asp:TextBox>
                                 <asp:ImageButton ID="ImageButtonReportDate" TabIndex="75" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg"
                                     ImageAlign="AbsMiddle"></asp:ImageButton>
                             </td>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelDeductible" runat="server">Deductible</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextboxDeductible_WRITE" TabIndex="78" runat="server" SkinID="SmallTextBox"
                                     onchange="UpdateDeductible();"></asp:TextBox>
                                 <asp:TextBox ID="TextboxDeductibleShadow" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelOutstandingPremAmt" runat="server">OUTSTANDING_PREMIUM_AMOUNT</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextboxOutstandingPremAmt" TabIndex="75" runat="server" ReadOnly="true"
                                     SkinID="MediumTextBox" ForeColor="Red" Font-Bold="True"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelCauseOfLossId" runat="server">Cause_Of_Loss</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:DropDownList ID="cboCauseOfLossId" TabIndex="77" runat="server" SkinID="MediumDropDown"
                                     AutoPostBack="True">
                                 </asp:DropDownList>
                             </td>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelDiscount" runat="server">DISCOUNT</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextBoxDiscount" TabIndex="78" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                 <asp:TextBox ID="TextBoxDiscountShadow" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelReplacementCost" runat="server">Replacement_Cost</asp:Label>
                                 <asp:Label ID="LabelAuthorizedAmount" runat="server">Authorized_Amount</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextBoxReplacementCost" runat="server" SkinID="MediumTextBox" onchange="UpdateAuth(this);"
                                     TabIndex="78"></asp:TextBox>
                                 <asp:TextBox ID="TextboxAuthorizedAmountShadow" runat="server" ReadOnly="true" SkinID="SmallTextBox"
@@ -896,10 +897,10 @@
                                 <asp:TextBox ID="TextboxAuthorizedAmount" TabIndex="78" runat="server" SkinID="SmallTextBox"
                                     onchange="UpdateAuth(this);"></asp:TextBox>
                             </td>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelAssurantPays" runat="server">ASSURANT_PAY</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextboxAssurantPays" TabIndex="265" runat="server" SkinID="SmallTextBox"
                                     DESIGNTIMEDRAGDROP="538"></asp:TextBox>
                                 <asp:TextBox ID="TextboxAssurantPaysShadow" runat="server" SkinID="SmallTextBox"
@@ -907,58 +908,58 @@
                             </td>
                         </tr>
                         <tr>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;"">
                                 <asp:Label ID="LabelLoaner" runat="server" Font-Bold="false">Loaner_Taken</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:CheckBox ID="CheckBoxLoanerTaken" runat="server" TabIndex="79"></asp:CheckBox>
                             </td>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelConsumerPays" runat="server">CONSUMER_PAY</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextboxConsumerPays" TabIndex="270" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                 <asp:TextBox ID="TextboxConsumerPaysShadow" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align:right;white-space: nowrap">
                                 <asp:Label ID="lblLoanerRequested" runat="server" Font-Bold="false">Loaner_Requested</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap">
                                 <asp:CheckBox ID="chkLoanerRequested" runat="server" TabIndex="79"></asp:CheckBox>
                             </td>
-                            <td nowrap="nowrap" align="right" colspan="2">
+                            <td style="text-align:right;white-space: nowrap" colspan="2">
                             </td>
                         </tr>
                         <tr>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap">
                                 <asp:Label ID="LabelPolicyNumber" runat="server">Policy_Number</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap">
                                 <asp:TextBox ID="TextboxPolicyNumber" TabIndex="80" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                             </td>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap">
                                 <asp:Label ID="LabelDueToSCFromAssurant" runat="server">DUE_TO_SC_FROM_ASSURANT</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap">
                                 <asp:TextBox ID="TextboxDueToSCFromAssurant" TabIndex="271" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                 <asp:TextBox ID="TextboxDueToSCFromAssurantShadow" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelPickUpDate" runat="server">PickUp_Date</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextboxPickUpDate" TabIndex="83" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                 <asp:ImageButton ID="ImageButtonPickUpDate" TabIndex="84" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg"
                                     ImageAlign="AbsMiddle"></asp:ImageButton>
                             </td>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelRepairDate" runat="server">REPAIR_DATE</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextboxRepairdate" TabIndex="81" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                 <asp:ImageButton ID="ImageButtonRepairDate" TabIndex="82" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg"
                                     ImageAlign="AbsMiddle"></asp:ImageButton>
@@ -966,32 +967,32 @@
                         </tr>
                         <tr>
                             <%--REQ-784--%>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="LabelUseShipAddress" runat="server" Visible="false">USE_SHIP_ADDRESS</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:DropDownList ID="cboUseShipAddress" TabIndex="85" runat="server" SkinID="MediumDropDown"
                                     AutoPostBack="True" Visible="false">
                                 </asp:DropDownList>
                             </td>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                     <asp:Label ID="LabelIsLawsuitId" runat="server">Lawsuit</asp:Label>
                             </td>
-                             <td nowrap="nowrap">
+                             <td style="white-space: nowrap;">
                                     <asp:DropDownList ID="cboLawsuitId" TabIndex="86" runat="server" SkinID="SmallDropDown"></asp:DropDownList>
                              </td>
                         </tr>
                         <tr>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align:right;white-space: nowrap;">
                                 <asp:Label ID="LabelInvoiceNumber" runat="server">Invoice_Numb</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="TextboxInvoiceNumber" TabIndex="87" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                             </td>
-                            <td nowrap="nowrap" align="right">
+                            <td style="text-align: right;white-space: nowrap;">
                                 <asp:Label ID="lblNewDeviceSKU" runat="server">NEW_DEVICE_SKU:</asp:Label>
                             </td>
-                            <td nowrap="nowrap">
+                            <td style="white-space: nowrap;">
                                 <asp:TextBox ID="txtNewDeviceSKU" TabIndex="88" runat="server" AutoPostBack="true"
                                     SkinID="MediumTextBox"></asp:TextBox>
                             </td>
@@ -1027,9 +1028,9 @@
                   <div id="tabClaimIssues">
                      <div class="Page">
                                 <div id="dvGridPager" runat="server">
-                                    <table width="100%" class="dataGrid">
+                                    <table style="width: 100%;" class="dataGrid">
                                         <tr id="trPageSize" runat="server">
-                                            <td class="bor" align="left">
+                                            <td class="bor" style="text-align: left">
                                                 <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label><asp:Label ID="colonSepertor"
                                                     runat="server">:</asp:Label>
                                                 &nbsp;
@@ -1042,7 +1043,7 @@
                                                     <asp:ListItem Value="25">25</asp:ListItem>
                                                 </asp:DropDownList>
                                             </td>
-                                            <td class="bor" align="right">
+                                            <td class="bor" style="text-align:right">
                                                 <asp:Label ID="lblRecordCount" runat="server"></asp:Label>
                                             </td>
                                         </tr>
@@ -1085,36 +1086,36 @@
                                     <asp:Label runat="server" ID="AddImageHealder">ADD_IMAGE</asp:Label>
                                 </h2>
                                 <div class="stepformZone">
-                                    <table width="100%" class="formGrid" border="0" cellpadding="0" cellspacing="0">
+                                    <table width="100%" class="formGrid" style="border: 0px; border-spacing: 0px; padding: 0px;">
                                         <tbody>
                                             <tr>
-                                                <td align="right" nowrap="nowrap">
+                                                <td style="text-align: right;white-space: nowrap;">
                                                     <asp:Label runat="server" ID="DocumentTypeLabel" Text="DOCUMENT_TYPE"></asp:Label>
                                                 </td>
-                                                <td nowrap="nowrap">
+                                                <td style="white-space: nowrap;">
                                                     <asp:DropDownList runat="server" ID="DocumentTypeDropDown" SkinID="MediumDropDown" />
                                                 </td>
-                                                <td align="right" nowrap="nowrap">
+                                                <td style="text-align: right;white-space: nowrap;">
                                                     <asp:Label runat="server" ID="ScanDateLabel" Text="SCAN_DATE"></asp:Label>
                                                 </td>
-                                                <td nowrap="nowrap">
+                                                <td style="white-space: nowrap;">
                                                     <asp:TextBox runat="server" ID="ScanDateTextBox" ReadOnly="true" SkinID="MediumTextBox" />
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td align="right" nowrap="nowrap">
+                                                <td style="text-align: right;white-space: nowrap;">
                                                     <asp:Label runat="server" ID="FileNameLabel" Text="FileName"></asp:Label>
                                                 </td>
-                                                <td colspan="3" nowrap="nowrap">
+                                                <td colspan="3" style="white-space: nowrap;">
                                                     <input id="ImageFileUpload" style="width: 80%" type="file" name="ImageFileUpload"
                                                         runat="server" />
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td align="right" nowrap="nowrap">
+                                                <td style="text-align: right;white-space: nowrap;">
                                                     <asp:Label runat="server" ID="CommentLabel" Text="COMMENT"></asp:Label>
                                                 </td>
-                                                <td colspan="3" nowrap="nowrap">
+                                                <td colspan="3" style="white-space: nowrap;">
                                                     <asp:TextBox runat="server" ID="CommentTextBox" Width="80%" Rows="4" TextMode="MultiLine"></asp:TextBox>
                                                 </td>
                                             </tr>
@@ -1163,7 +1164,7 @@
                           <div id="dvClaimEquipment" runat="server">
                           <table border="0" width="100%">
                               <tr>
-                                  <td width="100%" align="left">
+                                  <td style="text-align: left; width: 100%;">
                                       <Elita:UserControlClaimDeviceInfo ID="ucClaimDeviceInfo" runat="server"></Elita:UserControlClaimDeviceInfo>
                                   </td>
                               </tr>
@@ -1177,97 +1178,97 @@
                                 <div id="dvServiceCenter" runat="server">
                                     <table class="formGrid">
                                     <tr>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label2" runat="server" Text="SERVICE_CENTER_CODE"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:Label ID="lblServiceCenterCode" runat="server"></asp:Label>
                                         </td>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label3" runat="server" Text="CONTACT_NAME"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:Label ID="lblServiceCenterContactName" runat="server"></asp:Label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label4" runat="server" Text="SERVICE_CENTER_NAME"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:Label ID="lblServiceCenterName" runat="server"></asp:Label>
                                         </td>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label6" runat="server" Text="PHONE1"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:Label ID="lblServiceCenterPhone1" runat="server"></asp:Label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label5" runat="server" Text="ADDRESS"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:Label ID="lblServiceCenterAddress1" runat="server"></asp:Label>
                                         </td>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label8" runat="server" Text="PHONE2"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:Label ID="lblServiceCenterPhone2" runat="server"></asp:Label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label7" runat="server" Text="ADDRESS2"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:Label ID="lblServiceCenterAddress2" runat="server"></asp:Label>
                                         </td>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label10" runat="server" Text="FAX"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:Label ID="lblServiceCenterFax" runat="server"></asp:Label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label9" runat="server" Text="City"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:Label ID="lblServiceCenterCity" runat="server"></asp:Label>
                                         </td>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label12" runat="server" Text="BUSINESS_HOURS"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:Label ID="lblServiceCenterBussHours" runat="server"></asp:Label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label11" runat="server" Text="STATE/PROVICE"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:Label ID="lblServiceCenterState" runat="server"></asp:Label>
                                         </td>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label14" runat="server" Text="PROCESSING_FEE"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:Label ID="lblServiceCenterProcessFee" runat="server"></asp:Label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label13" runat="server" Text="COUNTRY"></asp:Label>:
                                         </td>
                                         <td align="left">
                                             <asp:Label ID="lblServiceCenterCountry" runat="server"></asp:Label>
                                         </td>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label16" runat="server" Text="EMAIL"></asp:Label>:
                                         </td>
                                         <td align="left">
@@ -1275,52 +1276,50 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label15" runat="server" Text="ZIP"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:Label ID="lblServiceCenterZip" runat="server"></asp:Label>
                                         </td>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label18" runat="server" Text="CC_EMAIL"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:Label ID="lblServiceCenterCCEmail" runat="server"></asp:Label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label17" runat="server" Text="ORIGINAL_DEALER"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:Label ID="lblServiceCenterOrigDealer" runat="server"></asp:Label>
                                         </td>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label20" runat="server" Text="DEFAULT_TO_EMAIL"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:CheckBox ID="chkServiceCenterDefToEmail" runat="server" Enabled="false" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right">
-                            
+                                        <td style="text-align:right">
                                         </td>
-                                        <td align="left">
-                            
+                                        <td style="text-align:left">
                                         </td>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label22" runat="server" Text="SHIPPING"></asp:Label>:
                                         </td>
-                                        <td align="left">
+                                        <td style="text-align:left">
                                             <asp:CheckBox ID="chkServiceCenterShipping" runat="server" Enabled="false" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right">
+                                        <td style="text-align:right">
                                             <asp:Label ID="Label19" runat="server" Text="COMMENTS"></asp:Label>:
                                         </td>
-                                        <td align="left" colspan="3">
+                                        <td style="text-align:left" colspan="3">
                                             <asp:TextBox ID="txtServiceCenterComments" runat="server" Columns="125" TextMode="MultiLine"
                                             Rows="4"></asp:TextBox>
                                         </td>
@@ -1343,46 +1342,46 @@
                   <div id="tabExtendedStatusAging">
                      <div class="Page">
 	                            <div id="dvExtendedStatusAging" runat="server">
-	                            <table width="100%" class="dataGrid" cellspacing="0" rules="all" style="width:100%;border-collapse:collapse;">
+	                            <table class="dataGrid"  rules="all"  style="width: 100%;border-collapse:collapse; border: 0px; border-spacing: 0px; padding: 0px;">
 		                        <tbody>
 		                            <asp:Repeater runat="server" ID="moExtendedStatusAgingRepeater" OnItemDataBound="moExtendedStatusAgingRepeater_ItemDataBound">
 			                        <HeaderTemplate>
 			                            <tr>
-				                        <th align="center" scope="col" style="color:#12135B;width:20%;"><asp:Label ID="lblhdStageName" runat="server" Text="STAGE_NAME"></asp:Label></th>
-				                        <th align="center" scope="col" style="color:#12135B;width:20%;"><asp:Label ID="lblhdAgingStartStatus" runat="server" Text="AGING_START_STATUS"></asp:Label></th>
-				                        <th align="center" scope="col" style="color:#12135B;width:20%;"><asp:Label ID="lblhdAgingEndStatus" runat="server" Text="AGING_END_STATUS"></asp:Label></th>
-				                        <th align="center" scope="col" style="color:#12135B;width:15%;"><asp:Label ID="lblhdAgingStatus" runat="server" Text="STATUS_AGING"></asp:Label></th>
-				                        <th align="center" scope="col" style="color:#12135B;width:25%;"><asp:Label ID="lblhdAgingSinceClaimInception" runat="server" Text="AGING_SINCE_CLAIM_INCEPTION"></asp:Label></th>
+				                        <th scope="col" style="color:#12135B;width:20%;text-align:center;"><asp:Label ID="lblhdStageName" runat="server" Text="STAGE_NAME"></asp:Label></th>
+				                        <th scope="col" style="color:#12135B;width:20%;text-align:center;"><asp:Label ID="lblhdAgingStartStatus" runat="server" Text="AGING_START_STATUS"></asp:Label></th>
+				                        <th scope="col" style="color:#12135B;width:20%;text-align:center;"><asp:Label ID="lblhdAgingEndStatus" runat="server" Text="AGING_END_STATUS"></asp:Label></th>
+				                        <th scope="col" style="color:#12135B;width:15%;text-align:center;"><asp:Label ID="lblhdAgingStatus" runat="server" Text="STATUS_AGING"></asp:Label></th>
+				                        <th scope="col" style="color:#12135B;width:25%;text-align:center;"><asp:Label ID="lblhdAgingSinceClaimInception" runat="server" Text="AGING_SINCE_CLAIM_INCEPTION"></asp:Label></th>
 			                            </tr>
 			                        </HeaderTemplate>
 			                        <ItemTemplate>
 			                            <tr style="background-color:#FFFFFF">
-				                        <td rowspan="2" align="center" valign="middle"><asp:Label ID="lblitmStageName" runat="server" Text='<%# Eval("stage_name")%>' Style="vertical-align:central;"></asp:Label></td>
-				                        <td align="center"><asp:Label ID="lblitmAgingStartStatus" runat="server" Text='<%# Eval("aging_start_status")%>'></asp:Label></td>
-				                        <td align="center"><asp:Label ID="lblitmAgingEndStatus" runat="server" Text='<%# Eval("aging_end_status")%>'></asp:Label></td>
-				                        <td align="center"><asp:Label ID="lblitmAgingStatusDays" runat="server" Text='<%# String.Concat(Eval("aging_days"), " Day(s)")%>'></asp:Label></td>
-				                        <td align="center"><asp:Label ID="lblitmAgingSinceClaimInceptionDays" runat="server" Text='<%# String.Concat(Eval("aging_since_claim_days"), " Day(s)")%>'></asp:Label></td>
+				                        <td rowspan="2" style="text-align:center; vertical-align: middle;"><asp:Label ID="lblitmStageName" runat="server" Text='<%# Eval("stage_name")%>' Style="vertical-align:central;"></asp:Label></td>
+				                        <td style="text-align:center;"><asp:Label ID="lblitmAgingStartStatus" runat="server" Text='<%# Eval("aging_start_status")%>'></asp:Label></td>
+				                        <td style="text-align:center;" ><asp:Label ID="lblitmAgingEndStatus" runat="server" Text='<%# Eval("aging_end_status")%>'></asp:Label></td>
+				                        <td style="text-align:center;" ><asp:Label ID="lblitmAgingStatusDays" runat="server" Text='<%# String.Concat(Eval("aging_days"), " Day(s)")%>'></asp:Label></td>
+				                        <td style="text-align:center;" ><asp:Label ID="lblitmAgingSinceClaimInceptionDays" runat="server" Text='<%# String.Concat(Eval("aging_since_claim_days"), " Day(s)")%>'></asp:Label></td>
 			                            </tr>
 			                            <tr style="background-color:#FFFFFF">
-				                        <td align="center"><asp:Label ID="lblitmAgingStartDateTime" runat="server"></asp:Label></td>
-				                        <td align="center"><asp:Label ID="lblitmAgingEndDateTime" runat="server"></asp:Label></td>
-				                        <td align="center"><asp:Label ID="lblitmAgingStatusHours" runat="server" Text='<%# String.Concat(Eval("aging_hours"), " Hour(s)")%>'></asp:Label></td>
-				                        <td align="center"><asp:Label ID="lblitmAgingSinceClaimInceptionHours" runat="server" Text='<%# String.Concat(Eval("aging_since_claim_hours"), " Hour(s)")%>'></asp:Label></td>
+				                        <td style="text-align:center;"><asp:Label ID="lblitmAgingStartDateTime" runat="server"></asp:Label></td>
+				                        <td style="text-align:center;"><asp:Label ID="lblitmAgingEndDateTime" runat="server"></asp:Label></td>
+				                        <td style="text-align:center;"><asp:Label ID="lblitmAgingStatusHours" runat="server" Text='<%# String.Concat(Eval("aging_hours"), " Hour(s)")%>'></asp:Label></td>
+				                        <td style="text-align:center;"><asp:Label ID="lblitmAgingSinceClaimInceptionHours" runat="server" Text='<%# String.Concat(Eval("aging_since_claim_hours"), " Hour(s)")%>'></asp:Label></td>
 			                            </tr>
 			                        </ItemTemplate>
 			                        <AlternatingItemTemplate>
 			                            <tr style="background-color:#F1F1F1">
-				                        <td rowspan="2" align="center" valign="middle"><asp:Label ID="lblitmStageName" runat="server" Text='<%# Eval("stage_name")%>' Style="vertical-align:central;"></asp:Label></td>
-				                        <td align="center"><asp:Label ID="lblitmAgingStartStatus" runat="server" Text='<%# Eval("aging_start_status")%>'></asp:Label></td>
-				                        <td align="center"><asp:Label ID="lblitmAgingEndStatus" runat="server" Text='<%# Eval("aging_end_status")%>'></asp:Label></td>
-				                        <td align="center"><asp:Label ID="lblitmAgingStatusDays" runat="server" Text='<%# String.Concat(Eval("aging_days"), " Day(s)")%>'></asp:Label></td>
-				                        <td align="center"><asp:Label ID="lblitmAgingSinceClaimInceptionDays" runat="server" Text='<%# String.Concat(Eval("aging_since_claim_days"), " Day(s)")%>'></asp:Label></td>
+				                        <td rowspan="2" style="text-align:center; vertical-align: middle;"><asp:Label ID="lblitmStageName" runat="server" Text='<%# Eval("stage_name")%>' Style="vertical-align:central;"></asp:Label></td>
+				                        <td style="text-align:center;"><asp:Label ID="lblitmAgingStartStatus" runat="server" Text='<%# Eval("aging_start_status")%>'></asp:Label></td>
+				                        <td style="text-align:center;"><asp:Label ID="lblitmAgingEndStatus" runat="server" Text='<%# Eval("aging_end_status")%>'></asp:Label></td>
+				                        <td style="text-align:center;"><asp:Label ID="lblitmAgingStatusDays" runat="server" Text='<%# String.Concat(Eval("aging_days"), " Day(s)")%>'></asp:Label></td>
+				                        <td style="text-align:center;"><asp:Label ID="lblitmAgingSinceClaimInceptionDays" runat="server" Text='<%# String.Concat(Eval("aging_since_claim_days"), " Day(s)")%>'></asp:Label></td>
 			                            </tr>
 			                            <tr style="background-color:#F1F1F1">
-				                        <td align="center"><asp:Label ID="lblitmAgingStartDateTime" runat="server"></asp:Label></td>
-				                        <td align="center"><asp:Label ID="lblitmAgingEndDateTime" runat="server"></asp:Label></td>
-				                        <td align="center"><asp:Label ID="lblitmAgingStatusHours" runat="server" Text='<%# String.Concat(Eval("aging_hours"), " Hour(s)")%>'></asp:Label></td>
-				                        <td align="center"><asp:Label ID="lblitmAgingSinceClaimInceptionHours" runat="server" Text='<%# String.Concat(Eval("aging_since_claim_hours"), " Hour(s)")%>'></asp:Label></td>
+				                        <td style="text-align:center;"><asp:Label ID="lblitmAgingStartDateTime" runat="server"></asp:Label></td>
+				                        <td style="text-align:center;"><asp:Label ID="lblitmAgingEndDateTime" runat="server"></asp:Label></td>
+				                        <td style="text-align:center;"><asp:Label ID="lblitmAgingStatusHours" runat="server" Text='<%# String.Concat(Eval("aging_hours"), " Hour(s)")%>'></asp:Label></td>
+				                        <td style="text-align:center;"><asp:Label ID="lblitmAgingSinceClaimInceptionHours" runat="server" Text='<%# String.Concat(Eval("aging_since_claim_hours"), " Hour(s)")%>'></asp:Label></td>
 			                            </tr>
 			                        </AlternatingItemTemplate>
 		                            </asp:Repeater>
@@ -1392,9 +1391,9 @@
                             </div>
                   </div>
                   <div id="tabsQuestionAnswerInfo">
-                     <table class="dataGrid" border="0" width="100%">
+                     <table class="dataGrid" style="width: 100%;border: 0px; border-spacing: 0px; padding: 0px;">
                         <tr>
-                            <td width="40%" align="right">
+                            <td style="text-align: right; width: 40%;">
                                 <asp:Label ID="lblQuestionRecordFound" class="bor" runat="server"></asp:Label>
                             </td>
                         </tr>
@@ -1421,9 +1420,9 @@
                   </div>  
                                 
                 <div id="tabsActionInfo">
-                    <table class="dataGrid" border="0" width="100%">
+                    <table class="dataGrid" style="width: 100%;border: 0px; border-spacing: 0px; padding: 0px;">
                         <tr>
-                            <td width="40%" align="right">
+                            <td style="text-align: right; width: 40%;">
                                 <asp:Label ID="lblClaimActionRecordFound" class="bor" runat="server"></asp:Label>
                             </td>
                         </tr>
@@ -1460,7 +1459,7 @@
                     <asp:Label ID="lblClaimImage" runat="server" Text="CLAIM_IMAGE"></asp:Label>
                     <a href="javascript:void(0)" onclick="hideModal('modalClaimImages');">
                         <img id="img3" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                            width="16" height="18" align="absmiddle" class="floatR" /></a></p>
+                            class="floatR" style="width: 16px; height: 18px; vertical-align: middle;"  alt="none" /></a></p>
                 <iframe class="pdfContainer" align="left" runat="server" id="pdfIframe"></iframe>
             </div>
             <div id="Div5" class="black_overlay">
@@ -1472,10 +1471,10 @@
                     <asp:Label ID="lblCollectDeductible" runat="server" Text="COLLECT_DEDUCTIBLE"></asp:Label>
                     <a href="javascript:void(0)" onclick="hideModal('modalCollectDeductible');">
                         <img id="img5" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                            width="16" height="18" align="middle" class="floatR" /></a>
+                             class="floatR" style="width: 16px; height: 18px; vertical-align: middle;"  alt="none" /></a>
                 </p>
                 <Elita:MessageController runat="server" ID="moModalCollectDivMsgController" />                
-                <table width="100%" border="0" class="formGrid" cellpadding="0" cellspacing="0">
+                <table width="100%" class="formGrid" style="border: 0px; border-spacing: 0px; padding: 0px;">
                     <tr>
                         <td>
                             <span class="mandatory">*</span><asp:Label ID="lblDedCollMethod" runat="server">DED_COLL_METHOD</asp:Label>
@@ -1512,18 +1511,18 @@
                     <asp:Label ID="Label1" runat="server" Text="NEW_CLAIM_ISSUE"></asp:Label>
                     <a href="javascript:void(0)" onclick="HideErrorAndModal('ModalIssue');">
                         <img id="img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                            width="16" height="18" align="absmiddle" class="floatR" /></a></p>
+                            class="floatR" alt="none" style="width: 16px; height: 18px; vertical-align: middle;" /></a></p>
                 <div class="dataContainer">
                     <div runat="server" id="modalMessageBox" class="errorMsg" style="display: none">
                         <p>
-                            <img id="imgIssueMsg" width="16" height="13" align="middle" runat="server" src="~/App_Themes/Default/Images/icon_error.png" />
+                            <img id="imgIssueMsg" align="middle" style="height: 16px; width: 13px;" runat="server" src="~/App_Themes/Default/Images/icon_error.png"  alt="none"/>
                             <asp:Literal runat="server" ID="MessageLiteral" />
                         </p>
                     </div>
                 </div>
-                <table width="100%" border="0" class="formGrid" cellpadding="0" cellspacing="0">
+                <table class="formGrid" style="width: 100%;border: 0px; border-spacing: 0px; padding: 0px;">
                     <tr>
-                        <td align="right">
+                        <td style="text-align:right">
                             <asp:Label ID="lblIssueCode" runat="server" Text="ISSUE_CODE"></asp:Label>:
                         </td>
                         <td colspan="2">
@@ -1532,7 +1531,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right">
+                        <td style="text-align:right">
                             <asp:Label ID="lblIssueDescription" runat="server" Text="ISSUE_DESCRIPTION"></asp:Label>:
                         </td>
                         <td colspan="2">
@@ -1548,7 +1547,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right">
+                        <td style="text-align:right">
                             <asp:Label ID="lblCreatedDate" runat="server" Text="CREATED_DATE"></asp:Label>:
                         </td>
                         <td colspan="2">
@@ -1556,7 +1555,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right">
+                        <td style="text-align:right">
                             <asp:Label ID="lblCreatedBy" runat="server" Text="CREATED_BY"></asp:Label>:
                         </td>
                         <td colspan="2">
@@ -1564,12 +1563,12 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" align="right">
+                        <td colspan="3" style="text-align:right">
                             &nbsp;
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" align="right">
+                        <td colspan="2" style="text-align:right">
                             &nbsp;
                         </td>
                         <td>
@@ -1590,61 +1589,61 @@
                 </h2>
                 <asp:Panel ID="PanelMethodPrice" runat="server">
                     <div class="stepformZone">
-                        <table id="TableMethodPrice" class="formGrid" cellspacing="0" cellpadding="0" border="0">
+                        <table id="TableMethodPrice" class="formGrid" style="border: 0px; border-spacing: 0px; padding: 0px;">
                             <tbody>
                                 <tr>
-                                    <td valign="middle" nowrap="nowrap" align="right">
+                                    <td style="white-space: nowrap; text-align: right; vertical-align: middle;">
                                         <asp:CheckBox ID="CheckBoxCarryInPrice" runat="server"></asp:CheckBox>
                                     </td>
-                                    <td valign="middle" nowrap="nowrap" align="right">
+                                    <td style="white-space: nowrap; text-align: right; vertical-align: middle;">
                                         <asp:TextBox ID="TextBoxCarryInPrice" runat="server" onchange="UpdateAuth(this);"></asp:TextBox>
                                     </td>
-                                    <td class="padRight20" valign="middle" nowrap="nowrap" align="left">
+                                    <td class="padRight20" style="white-space: nowrap; text-align: left; vertical-align: middle;">
                                         <asp:Label ID="LabelCarryInPrice" runat="server">Carry_In_Price</asp:Label>
                                     </td>
-                                    <td valign="middle" nowrap="nowrap" align="left">
+                                    <td style="white-space: nowrap; text-align: left; vertical-align: middle;">
                                         <asp:CheckBox ID="CheckBoxHomePrice" runat="server"></asp:CheckBox>
                                     </td>
-                                    <td valign="middle" nowrap="nowrap" align="left">
+                                    <td style="white-space: nowrap; text-align: left; vertical-align: middle;">
                                         <asp:TextBox ID="TextBoxHomePrice" runat="server" onchange="UpdateAuth(this);"></asp:TextBox>
                                     </td>
-                                    <td class="padRight20" valign="middle" nowrap="nowrap" align="left">
+                                    <td class="padRight20" style="white-space: nowrap; text-align: left; vertical-align: middle;">
                                         <asp:Label ID="LabelHomePrice" runat="server">Home_Price</asp:Label>
                                     </td>
-                                    <td valign="middle" nowrap="nowrap" align="left">
+                                    <td style="white-space: nowrap; text-align: left; vertical-align: middle;">
                                         <asp:CheckBox ID="CheckBoxCleaningPrice" runat="server"></asp:CheckBox>
                                     </td>
-                                    <td valign="middle" nowrap="nowrap" align="left">
+                                    <td style="white-space: nowrap; text-align: left; vertical-align: middle;">
                                         <asp:TextBox ID="TextBoxCleaningPrice" runat="server" onchange="UpdateAuth(this);"></asp:TextBox>
                                     </td>
-                                    <td valign="middle" nowrap="nowrap" align="left">
+                                    <td style="white-space: nowrap; text-align: left; vertical-align: middle;">
                                         <asp:Label ID="LabelCleaningPrice" runat="server">Cleaning_Price</asp:Label>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td valign="middle" nowrap="nowrap" align="right">
+                                    <td style="white-space: nowrap; text-align: right; vertical-align: middle;">
                                         <asp:CheckBox ID="CheckBoxEstimatePrice" runat="server"></asp:CheckBox>
                                     </td>
-                                    <td valign="middle" nowrap="nowrap" align="right">
+                                    <td style="white-space: nowrap; text-align: right; vertical-align: middle;">
                                         <asp:TextBox ID="TextBoxEstimatePrice" runat="server" onchange="UpdateAuth(this);"></asp:TextBox>
                                     </td>
-                                    <td valign="middle" nowrap="nowrap" align="left">
+                                    <td style="white-space: nowrap; text-align: left; vertical-align: middle;">
                                         <asp:Label ID="LabelEstimatePrice" runat="server">Estimate_Price</asp:Label>
                                     </td>
-                                    <td valign="middle" nowrap="nowrap" align="left">
+                                    <td style="white-space: nowrap; text-align: left; vertical-align: middle;">
                                         <asp:CheckBox ID="CheckBoxOtherPrice" runat="server"></asp:CheckBox>
                                     </td>
-                                    <td valign="middle" nowrap="nowrap" align="left">
+                                    <td style="white-space: nowrap; text-align: left; vertical-align: middle;">
                                         <asp:TextBox ID="TextBoxOtherPrice" runat="server" onchange="UpdateAuth(this);"></asp:TextBox>
                                         <asp:TextBox ID="TextBoxOtherPriceShadow" runat="server"></asp:TextBox>
                                     </td>
-                                    <td valign="middle" nowrap="nowrap" align="left">
+                                    <td style="white-space: nowrap; text-align: left; vertical-align: middle;">
                                         <asp:Label ID="LabelOtherPrice" runat="server">Other_Price</asp:Label>
                                     </td>
-                                    <td valign="middle" nowrap="nowrap" align="left">
+                                    <td style="white-space: nowrap; text-align: left; vertical-align: middle;">
                                         &nbsp;
                                     </td>
-                                    <td valign="middle" nowrap="nowrap" align="left">
+                                    <td style="white-space: nowrap; text-align: left; vertical-align: middle;">
                                         &nbsp;
                                     </td>
                                 </tr>
@@ -1663,7 +1662,7 @@
             </div>
         </asp:Panel>
         <div class="dataContainer">
-            <table width="70%" cellspacing="0" cellpadding="0" border="0">
+            <table width="70%" style="border: 0px; border-spacing: 0px; padding: 0px;">
                 <tbody>
                     <tr>
                         <td>
@@ -1671,10 +1670,10 @@
                                 <asp:Label ID="LabelProblemDescription" runat="server">Problem_Description</asp:Label>
                             </h2>
                             <div class="stepformZone">
-                                <table class="formGrid" cellspacing="0" cellpadding="0" border="0">
+                                <table class="formGrid" style="border: 0px; border-spacing: 0px; padding: 0px;">
                                     <tbody>
                                         <tr>
-                                            <td nowrap="nowrap" align="right">
+                                            <td style="text-align: right;white-space: nowrap;">
                                                 <asp:TextBox ID="TextboxProblemDescription" runat="server" Rows="5" TextMode="MultiLine"></asp:TextBox>
                                             </td>
                                         </tr>
@@ -1687,10 +1686,10 @@
                                 <asp:Label ID="LabelSpecialInstruction" runat="server">SPECIAL_INSTRUCTIONS</asp:Label>
                             </h2>
                             <div class="stepformZone">
-                                <table class="formGrid" cellspacing="0" cellpadding="0" border="0">
+                                <table class="formGrid" style="border: 0px; border-spacing: 0px; padding: 0px;">
                                     <tbody>
                                         <tr>
-                                            <td nowrap="nowrap" align="right">
+                                            <td style="text-align: right;white-space: nowrap;">
                                                 <asp:TextBox ID="TextboxSpecialInstruction" runat="server" Rows="5" TextMode="MultiLine"></asp:TextBox>
                                             </td>
                                         </tr>
@@ -1702,11 +1701,26 @@
                 </tbody>
             </table>
         </div>
-        <table width="100%" border="0" class="formGrid" cellpadding="0" cellspacing="0">
+        <table width="100%" style="border: 0px; border-spacing: 0px; padding: 0px;">
             <tbody>
                 <uc1:UserControlContactInfo ID="moUserControlContactInfo" runat="server" Visible="false"></uc1:UserControlContactInfo>
             </tbody>
         </table>
+        <div class="dataContainer">
+            <table style="width: 100%; border-collapse: collapse; border: 0;">
+                <tr>
+                    <td>
+                        <h2 class="dataGridHeader">
+                            <asp:Label ID="lblLogisticStageAddress" runat="server">LOGISTIC_STAGE_ADDRESSES</asp:Label>
+                        </h2>
+                        <div class="stepformZone">
+                            <Elita:UserControlLogisticStageAddressInfo ID="moLogisticStageAddressInfo" runat="server" Visible="True"></Elita:UserControlLogisticStageAddressInfo>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
         <table border="0"></table>
     </asp:Panel>
     <div class="btnZone">
