@@ -1196,7 +1196,7 @@ Public Class ClaimWizardForm
         Return convertAddress
     End Function
 
-    Private Sub UpdateBreadCrum(ByVal wizardStep As ClaimWizardSteps)
+    Private Sub UpdateBreadCrum()
 
         If Me.State.EntryStep = ClaimWizardSteps.Step1 Then
 
