@@ -178,7 +178,7 @@
                                                                                     <asp:RadioButtonList ID="RadioButtonListManufacturer" runat="server" RepeatDirection="Horizontal"
                                                                                         AutoPostBack="True" TabIndex="30" RepeatLayout="Flow">
                                                                                         <asp:ListItem Value="Selected" Selected="True">Selected</asp:ListItem>
-                                                                                        <asp:ListItem Value="Any">Any</asp:ListItem>
+                                                                                        <asp:ListItem Value="Any" Enabled="False">Any</asp:ListItem>
                                                                                     </asp:RadioButtonList>
                                                                                 </td>
                                                                             </tr>
