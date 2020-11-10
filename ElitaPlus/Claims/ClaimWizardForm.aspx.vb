@@ -21,6 +21,7 @@ Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimService
 Imports System.ServiceModel
+Imports Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService
 
 Public Class ClaimWizardForm
     Inherits ElitaPlusSearchPage
@@ -173,6 +174,7 @@ Public Class ClaimWizardForm
         Public ClaimCaseDeviceInfoDV As DataView = Nothing
 
         Public IsCallerAuthenticated As Boolean = False
+        Public FulfillmentDetailsResponse As BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails = Nothing
     End Class
 
     Public Enum LocateServiceCenterSearchType
@@ -1142,9 +1144,59 @@ Public Class ClaimWizardForm
         InitializeCommonData()
         InitializeStepUI(Me.State.StepName)
         PopulateFormFromBO(Me.State.StepName)
+        PopulateLogisticStageAddress()
     End Sub
 
-    Private Sub UpdateBreadCrum()
+    Private Sub PopulateLogisticStageAddress()
+
+        Dim fullFilInfo As BO.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails
+
+        fullFilInfo = Me.State.ClaimBO.GetFulfillmentDetails(Me.State.ClaimBO.ClaimNumber, Me.State.ClaimBO.Company.Code)
+        Me.State.FulfillmentDetailsResponse = fullFilInfo
+        If Me.State.FulfillmentDetailsResponse IsNot Nothing Then
+
+            If Me.State.FulfillmentDetailsResponse.GetType() Is GetType(BO.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails) Then
+                If Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
+                   Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
+
+                    Dim logisticStages As New List(Of LogisticStageAddress)
+
+                    logisticStages = New List(Of LogisticStageAddress)(
+                        From dr In Me.State.FulfillmentDetailsResponse.LogisticStages Select New LogisticStageAddress() With {
+                                                                               .LogisticStageAddress = ConvertToAddressControllerField(dr.Address),
+                                                                               .LogisticStageName = dr.Description
+                                                                               }
+                        )
+                    Dim filteredLogisticStages = logisticStages.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing ).ToList()
+
+                    moLogisticStageAddressInfo.ParentBusinessObject = filteredLogisticStages
+                    moLogisticStageAddressInfo.DataBind()
+                Else
+                    moLogisticStageAddressInfo.Visible = False
+                End If
+
+            End If
+
+        Else
+            moLogisticStageAddressInfo.Visible = False
+        End If
+    End Sub
+
+    Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As FulfillmentAddress) As BusinessObjectsNew.Address
+
+        Dim convertAddress As New BusinessObjectsNew.Address With {
+            .CountryId = LookupListNew.GetIdFromCode(LookupListNew.DataView(LookupListNew.LK_COUNTRIES, False), sourceAddress.Country),
+            .Address1 = sourceAddress.Address1,
+            .Address2 = sourceAddress.Address2,
+            .Address3 = sourceAddress.Address3,
+            .City = sourceAddress.City,
+            .PostalCode = sourceAddress.PostalCode,
+            .RegionId = LookupListNew.GetIdFromDescription(LookupListNew.DataView(LookupListNew.LK_REGIONS, False), sourceAddress.State)
+        }
+        Return convertAddress
+    End Function
+
+    Private Sub UpdateBreadCrum(ByVal wizardStep As ClaimWizardSteps)
 
         If Me.State.EntryStep = ClaimWizardSteps.Step1 Then
 
@@ -2899,7 +2951,7 @@ Public Class ClaimWizardForm
     End Sub
 
     Sub PopulateCountryDropdown()
-        Dim address As New Address(Me.State.CertBO.AddressId)
+        Dim address As New BO.Address(Me.State.CertBO.AddressId)
         Dim dv As ServiceCenter.ServiceCenterSearchDV
         Dim CountryId As Guid
         CountryId = address.CountryId
@@ -2912,7 +2964,6 @@ Public Class ClaimWizardForm
         'get the customer countryId
         Try
             Dim ServNetworkSvc As New ServiceNetworkSvc
-            Dim address As New Address(Me.State.CertBO.AddressId)
             Dim objCompany As New Company(Me.State.CertBO.CompanyId)
             Dim UseZipDistrict As Boolean = True
             Dim DealerType As String
@@ -3950,11 +4001,11 @@ Public Class ClaimWizardForm
 
 
         Try
-            if Me.State.ClaimBO?.FulfillmentProviderType = FulfillmentProviderType.DynamicFulfillment then
+            If Me.State.ClaimBO?.FulfillmentProviderType = FulfillmentProviderType.DynamicFulfillment Then
 
-                return True
-            
-            else If (Not String.IsNullOrWhiteSpace(Me.State.CertItemCoverageBO.FulfillmentProfileCode)) Then
+                Return True
+
+            ElseIf (Not String.IsNullOrWhiteSpace(Me.State.CertItemCoverageBO.FulfillmentProfileCode)) Then
 
                 wsResponseObject = WcfClientHelper.Execute(Of Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGatewayClient, Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGateway, Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse)(
                                     GetClaimFulfillmentWebAppGatewayClient(),

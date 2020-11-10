@@ -2030,6 +2030,24 @@ Partial Public Class NewClaimForm
     Protected WithEvents moUserControlContactInfo As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlContactInfo_New
 
     '''<summary>
+    '''lblLogisticStageAddress control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblLogisticStageAddress As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''moLogisticStageAddressInfo control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents moLogisticStageAddressInfo As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlLogisticStageAddress
+
+    '''<summary>
     '''btnCreateClaim_WRITE control.
     '''</summary>
     '''<remarks>

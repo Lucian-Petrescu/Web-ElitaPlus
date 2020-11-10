@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.assurant.com/Elita/PolicyService" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/PolicyService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd2" namespace="http://elita.assurant.com/Elita/PolicyService/Enroll" />
+  <xs:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd4" namespace="http://elita.assurant.com/Elita/PolicyService/Cancel" />
+  <xs:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd5" namespace="http://elita.assurant.com/Elita/PolicyService/PolicySearch" />
+  <xs:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd6" namespace="http://elita.assurant.com/Elita/PolicyService/Endorse" />
+  <xs:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd7" namespace="http://elita.assurant.com/Elita/PolicyService/RegisterItem" />
+  <xs:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd10" namespace="http://elita.assurant.com/Elita/PolicyService/ExpireRegisteredItem" />
+  <xs:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd11" namespace="http://elita.assurant.com/Elita/PolicyService/CustomerProfile" />
+  <xs:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd12" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.PolicyService.Contracts.PolicyService.GetDetails" />
+  <xs:complexType name="PolicyBooleanPropertyInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:PolicyPropertyInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Value" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PolicyBooleanPropertyInfo" nillable="true" type="tns:PolicyBooleanPropertyInfo" />
+  <xs:complexType name="PolicyPropertyInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Type" type="tns:PolicyPropertyType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PolicyPropertyInfo" nillable="true" type="tns:PolicyPropertyInfo" />
+  <xs:simpleType name="PolicyPropertyType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PrivacyConsentAcceptance" />
+      <xs:enumeration value="CookiesNoticeAcceptance" />
+      <xs:enumeration value="ElectronicCommunicationsConsent" />
+      <xs:enumeration value="DataResidencyConsent" />
+      <xs:enumeration value="MarketingProspectsConsent" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="PolicyPropertyType" nillable="true" type="tns:PolicyPropertyType" />
+  <xs:complexType name="MobileDealerReferenceDataInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DealerReferenceDataInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="MembershipNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MembershipType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ServiceLineNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SubscriberStatus" nillable="true" type="tns:SubscriberStatusType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="MobileDealerReferenceDataInfo" nillable="true" type="tns:MobileDealerReferenceDataInfo" />
+  <xs:complexType name="DealerReferenceDataInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DealerRewardPoints" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DealerSourceSystem" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EnrollReason" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MarketingPromotionNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MarketingPromotionSerial" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DealerReferenceDataInfo" nillable="true" type="tns:DealerReferenceDataInfo" />
+  <xs:simpleType name="SubscriberStatusType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Active" />
+      <xs:enumeration value="Cancelled" />
+      <xs:enumeration value="PastDue" />
+      <xs:enumeration value="PastDueClaimsAllowed" />
+      <xs:enumeration value="Suspended" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SubscriberStatusType" nillable="true" type="tns:SubscriberStatusType" />
+  <xs:element name="Enroll">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://elita.assurant.com/Elita/PolicyService/Enroll" minOccurs="0" name="request" nillable="true" type="q1:EnrollRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BasePolicyRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Comments" nillable="true" type="tns:ArrayOfCommentInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BasePolicyRequest" nillable="true" type="tns:BasePolicyRequest" />
+  <xs:complexType name="ArrayOfCommentInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommentInfo" nillable="true" type="tns:CommentInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommentInfo" nillable="true" type="tns:ArrayOfCommentInfo" />
+  <xs:complexType name="CommentInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CommentTypeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Comments" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommentInfo" nillable="true" type="tns:CommentInfo" />
+  <xs:complexType name="BankInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AccountOwnerName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AccountType" nillable="true" type="tns:AccountTypes" />
+      <xs:element minOccurs="0" name="BankLookupCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BankName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BankSortCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BranchName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BranchNumber" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="IbanCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IbanCode_Last4Digits" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RoutingNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SwiftCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BankInfo" nillable="true" type="tns:BankInfo" />
+  <xs:simpleType name="AccountTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Checking">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Saving">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="AccountTypes" nillable="true" type="tns:AccountTypes" />
+  <xs:complexType name="CreditCardInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreditCardNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreditCardType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ExpirationDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NameOnCreditCard" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreditCardInfo" nillable="true" type="tns:CreditCardInfo" />
+  <xs:complexType name="ArrayOfCustomerInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomerInfo" nillable="true" type="tns:CustomerInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCustomerInfo" nillable="true" type="tns:ArrayOfCustomerInfo" />
+  <xs:complexType name="CustomerInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Address" nillable="true" type="tns:AddressInfo">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CityOfBirth" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CustomerName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CustomerType" nillable="true" type="tns:CustomerTypes">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="DateOfBirth" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Email" nillable="true" type="tns:EMailInfo">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Gender" nillable="true" type="tns:Gender">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="GlobalCustomerNumber" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="IdentificationNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MaritalStatus" nillable="true" type="tns:MaritalStatus">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MiddleName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Nationality" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Phone" nillable="true" type="tns:ArrayOfPhoneInfo" />
+      <xs:element minOccurs="0" name="PlaceOfBirth" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Salutation" nillable="true" type="tns:Salutations">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AlternateFirstName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="AlternateLastName" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustomerInfo" nillable="true" type="tns:CustomerInfo" />
+  <xs:complexType name="AddressInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ContactInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Address1" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address2" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address3" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="City" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Country" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CurrencyCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PostalCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="State" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AddressInfo" nillable="true" type="tns:AddressInfo" />
+  <xs:complexType name="ContactInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Type" type="tns:ContactType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ContactInfo" nillable="true" type="tns:ContactInfo" />
+  <xs:simpleType name="ContactType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="WorkPhone" />
+      <xs:enumeration value="HomePhone" />
+      <xs:enumeration value="Address" />
+      <xs:enumeration value="EMailAddress" />
+      <xs:enumeration value="FaxNumber" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ContactType" nillable="true" type="tns:ContactType" />
+  <xs:simpleType name="CustomerTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Primary" />
+      <xs:enumeration value="Other" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="CustomerTypes" nillable="true" type="tns:CustomerTypes" />
+  <xs:complexType name="EMailInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ContactInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="EmailAddress" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EMailInfo" nillable="true" type="tns:EMailInfo" />
+  <xs:simpleType name="Gender">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Male" />
+      <xs:enumeration value="Female" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Gender" nillable="true" type="tns:Gender" />
+  <xs:simpleType name="MaritalStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Single" />
+      <xs:enumeration value="Married" />
+      <xs:enumeration value="Widower" />
+      <xs:enumeration value="Divorced" />
+      <xs:enumeration value="Others" />
+      <xs:enumeration value="Coexist" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="MaritalStatus" nillable="true" type="tns:MaritalStatus" />
+  <xs:complexType name="ArrayOfPhoneInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PhoneInfo" nillable="true" type="tns:PhoneInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPhoneInfo" nillable="true" type="tns:ArrayOfPhoneInfo" />
+  <xs:complexType name="PhoneInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ContactInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PhoneInfo" nillable="true" type="tns:PhoneInfo" />
+  <xs:simpleType name="Salutations">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Mr" />
+      <xs:enumeration value="Ms" />
+      <xs:enumeration value="MrPHD" />
+      <xs:enumeration value="MsPHD" />
+      <xs:enumeration value="MrProf" />
+      <xs:enumeration value="MsProf" />
+      <xs:enumeration value="Company" />
+      <xs:enumeration value="Mrs" />
+      <xs:enumeration value="MrsPHD" />
+      <xs:enumeration value="MrsProf" />
+      <xs:enumeration value="Miss" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Salutations" nillable="true" type="tns:Salutations" />
+  <xs:complexType name="DealerInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BranchCode" nillable="true" type="xs:string" />
+      <xs:element name="DealerCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DealerInfo" nillable="true" type="tns:DealerInfo" />
+  <xs:complexType name="ArrayOfItemInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ItemInfo" nillable="true" type="tns:ItemInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfItemInfo" nillable="true" type="tns:ArrayOfItemInfo" />
+  <xs:complexType name="ItemInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Color" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ImeiNumber" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ItemEffectiveDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ItemExpirationDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Manufacturer" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ManufacturerWarrantyMonths" nillable="true" type="xs:int">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Memory" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RegisteredDevices" nillable="true" type="tns:ArrayOfRegisteredDeviceInfo" />
+      <xs:element minOccurs="0" name="RiskTypeCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="RiskTypeDescription" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="SkuNumber" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ItemInfo" nillable="true" type="tns:ItemInfo" />
+  <xs:complexType name="ArrayOfRegisteredDeviceInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RegisteredDeviceInfo" nillable="true" type="tns:RegisteredDeviceInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRegisteredDeviceInfo" nillable="true" type="tns:ArrayOfRegisteredDeviceInfo" />
+  <xs:complexType name="RegisteredDeviceInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DeviceType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RegisteredItemIdentifier" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RegisteredDeviceName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Make" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DevicePurChasePrice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DevicePurchaseDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ItemDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RegisteredRetailPrice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RegistrationDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RegisteredItemIndixID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RegisteredItemStatusCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RegisteredDeviceInfo" nillable="true" type="tns:RegisteredDeviceInfo" />
+  <xs:complexType name="PaymentInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BillingCycle" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BillingDocumentType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BillingFrequency" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="BillingFrequencyDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BillingPlan" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InstallmentAmount" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LastBilledAmount" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LastBilledAmtDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="LastFailedTransactionAmount" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LastFailedTransactionDate" nillable="true" type="xs:dateTime">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="LastFailedTransactionReason" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NoOfInstallments" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="PaymentInstrumentDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PaymentInstrumentType" type="tns:PaymentInstrumentTypes" />
+      <xs:element minOccurs="0" name="PaymentReferenceNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PaymentType" type="tns:PaymentTypes" />
+      <xs:element minOccurs="0" name="PostPrePaid" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PaymentInfo" nillable="true" type="tns:PaymentInfo" />
+  <xs:simpleType name="PaymentInstrumentTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="G" />
+      <xs:enumeration value="B" />
+      <xs:enumeration value="C" />
+      <xs:enumeration value="S" />
+      <xs:enumeration value="D" />
+      <xs:enumeration value="P" />
+      <xs:enumeration value="K" />
+      <xs:enumeration value="F" />
+      <xs:enumeration value="O" />
+      <xs:enumeration value="L" />
+      <xs:enumeration value="A" />
+      <xs:enumeration value="T" />
+      <xs:enumeration value="NEW" />
+      <xs:enumeration value="U" />
+      <xs:enumeration value="R" />
+      <xs:enumeration value="NO" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="PaymentInstrumentTypes" nillable="true" type="tns:PaymentInstrumentTypes" />
+  <xs:simpleType name="PaymentTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DealerCollects">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AssurantCollects">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">6</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Debit">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Credit" />
+      <xs:enumeration value="AssurantGenBilling">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="PartialPayment">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="FreeOfCharge">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">9</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="None">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Cash">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ThirdPartyCollects">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">7</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="AssurantCollectsPreAuthorized">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">8</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="PaymentTypes" nillable="true" type="tns:PaymentTypes" />
+  <xs:complexType name="ProductInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="PremiumType" nillable="true" type="tns:PremiumType">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ProductCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProductDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProductSalesDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="SalesPrice" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="WarrantyDurationMonths" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="WarrantySalesDate" nillable="true" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProductInfo" nillable="true" type="tns:ProductInfo" />
+  <xs:simpleType name="PremiumType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Single" />
+      <xs:enumeration value="Monthly" />
+      <xs:enumeration value="Quarterly">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="SingleRenewable">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="PremiumType" nillable="true" type="tns:PremiumType" />
+  <xs:complexType name="ArrayOfPolicyBooleanPropertyInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PolicyBooleanPropertyInfo" nillable="true" type="tns:PolicyBooleanPropertyInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPolicyBooleanPropertyInfo" nillable="true" type="tns:ArrayOfPolicyBooleanPropertyInfo" />
+  <xs:complexType name="ArrayOfCertificateExtendedData">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CertificateExtendedData" nillable="true" type="tns:CertificateExtendedData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCertificateExtendedData" nillable="true" type="tns:ArrayOfCertificateExtendedData" />
+  <xs:complexType name="CertificateExtendedData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FieldName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FieldValue" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CertificateExtendedData" nillable="true" type="tns:CertificateExtendedData" />
+  <xs:element name="EnrollResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://elita.assurant.com/Elita/PolicyService/Enroll" minOccurs="0" name="EnrollResult" nillable="true" type="q2:EnrollResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="BasePolicyResponse">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="BasePolicyResponse" nillable="true" type="tns:BasePolicyResponse" />
+  <xs:element name="Cancel">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://elita.assurant.com/Elita/PolicyService/Cancel" minOccurs="0" name="request" nillable="true" type="q3:CancelRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CancelResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://elita.assurant.com/Elita/PolicyService/Cancel" minOccurs="0" name="CancelResult" nillable="true" type="q4:CancelResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Search">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://elita.assurant.com/Elita/PolicyService/PolicySearch" minOccurs="0" name="request" nillable="true" type="q5:SearchRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://elita.assurant.com/Elita/PolicyService/PolicySearch" minOccurs="0" name="SearchResult" nillable="true" type="q6:SearchResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDetails">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://elita.assurant.com/Elita/PolicyService/PolicySearch" minOccurs="0" name="request" nillable="true" type="q7:GetDetailsRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDetailsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://elita.assurant.com/Elita/PolicyService/Cancel" minOccurs="0" name="GetDetailsResult" nillable="true" type="q8:GetDetailsResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ArrayOfCoverageInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CoverageInfo" nillable="true" type="tns:CoverageInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCoverageInfo" nillable="true" type="tns:ArrayOfCoverageInfo" />
+  <xs:complexType name="CoverageInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CoverageTypeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="BeginDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EndDate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CoverageLiablityLimit" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RemainingCoverageLiablityLimit" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CoverageClaimLiabilityLimit" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RemainingCoverageClaimLiablityLimit" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CoverageInfo" nillable="true" type="tns:CoverageInfo" />
+  <xs:element name="ComputeRefund">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://elita.assurant.com/Elita/PolicyService/Cancel" minOccurs="0" name="request" nillable="true" type="q9:ComputeRefundRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ComputeRefundResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://elita.assurant.com/Elita/PolicyService/Cancel" minOccurs="0" name="ComputeRefundResult" nillable="true" type="q10:ComputeRefundResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="EndorsementPolicyReasons">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ChangeInsuredDevice">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="EmailFulfillment">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BankFulfillment">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="EndorsementPolicyReasons" nillable="true" type="tns:EndorsementPolicyReasons" />
+  <xs:element name="Endorse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://elita.assurant.com/Elita/PolicyService/Endorse" minOccurs="0" name="request" nillable="true" type="q11:EndorsePolicyRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="EndorseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://elita.assurant.com/Elita/PolicyService/Enroll" minOccurs="0" name="EndorseResult" nillable="true" type="q12:EndorseResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RegisterItem">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://elita.assurant.com/Elita/PolicyService/RegisterItem" minOccurs="0" name="request" nillable="true" type="q13:RegisterItemRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RegisterItemResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://elita.assurant.com/Elita/PolicyService/RegisterItem" minOccurs="0" name="RegisterItemResult" nillable="true" type="q14:RegisterItemRespose" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateRegisteredItem">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://elita.assurant.com/Elita/PolicyService/RegisterItem" minOccurs="0" name="request" nillable="true" type="q15:UpdateRegItemRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateRegisteredItemResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://elita.assurant.com/Elita/PolicyService/RegisterItem" minOccurs="0" name="UpdateRegisteredItemResult" nillable="true" type="q16:UpdateRegItemResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ExpireRegisteredItem">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q17="http://elita.assurant.com/Elita/PolicyService/ExpireRegisteredItem" minOccurs="0" name="request" nillable="true" type="q17:ExpireRegisteredItemRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ExpireRegisteredItemResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://elita.assurant.com/Elita/PolicyService/ExpireRegisteredItem" minOccurs="0" name="ExpireRegisteredItemResult" nillable="true" type="q18:ExpireRegisteredItemResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PullUpdate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q19="http://elita.assurant.com/Elita/PolicyService/CustomerProfile" minOccurs="0" name="request" nillable="true" type="q19:PullUpdateBaseRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PullUpdateResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q20="http://elita.assurant.com/Elita/PolicyService/Cancel" minOccurs="0" name="PullUpdateResult" nillable="true" type="q20:GetDetailsResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDetailsByIdentifier">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/Assurant.Elita.PolicyService.Contracts.PolicyService.GetDetails" minOccurs="0" name="request" nillable="true" type="q21:GetDetailsByCustomerIdentifierRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDetailsByIdentifierResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q22="http://elita.assurant.com/Elita/PolicyService/Cancel" minOccurs="0" name="GetDetailsByIdentifierResult" nillable="true" type="q22:ArrayOfGetDetailsResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

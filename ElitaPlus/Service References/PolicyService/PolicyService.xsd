@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.assurant.com/Elita/PolicyService/Enroll" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/PolicyService/Enroll" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://elitaplus-api-test.p2.assurant.com/ElitaPolicyService2/PolicyService.svc?xsd=xsd1" namespace="http://elita.assurant.com/Elita/PolicyService" />
+  <xs:complexType name="EnrollRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://elita.assurant.com/Elita/PolicyService" base="q1:BasePolicyRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BankInfo" nillable="true" type="q1:BankInfo" />
+          <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CreditCardInfo" nillable="true" type="q1:CreditCardInfo" />
+          <xs:element minOccurs="0" name="CuitCuil" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Customers" nillable="true" type="q1:ArrayOfCustomerInfo" />
+          <xs:element minOccurs="0" name="Dealer" nillable="true" type="q1:DealerInfo" />
+          <xs:element minOccurs="0" name="DealerReferenceData" nillable="true" type="q1:DealerReferenceDataInfo" />
+          <xs:element minOccurs="0" name="GrossPremium" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="Items" nillable="true" type="q1:ArrayOfItemInfo" />
+          <xs:element minOccurs="0" name="NetPremium" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="Occupation" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PaymentInfo" nillable="true" type="q1:PaymentInfo" />
+          <xs:element minOccurs="0" name="PersonType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PricePol" type="xs:decimal" />
+          <xs:element minOccurs="0" name="Products" nillable="true" type="q1:ProductInfo" />
+          <xs:element minOccurs="0" name="PropertyInfo" nillable="true" type="q1:ArrayOfPolicyBooleanPropertyInfo" />
+          <xs:element minOccurs="0" name="SalesChannel" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SalesRepNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SalesTax" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="DocumentType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CertificateExtendedItems" nillable="true" type="q1:ArrayOfCertificateExtendedData" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EnrollRequest" nillable="true" type="tns:EnrollRequest" />
+  <xs:complexType name="EnrollResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://elita.assurant.com/Elita/PolicyService" base="q2:BasePolicyResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ErrorCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EnrollResponse" nillable="true" type="tns:EnrollResponse" />
+  <xs:complexType name="EndorseResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EndorseResponse" nillable="true" type="tns:EndorseResponse" />
+</xs:schema>

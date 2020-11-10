@@ -1,6 +1,4 @@
-﻿Imports Microsoft.VisualBasic
-
-Namespace Certificates
+﻿Namespace Certificates
     Public Class BankInfoForm
         Inherits ElitaPlusSearchPage
 
@@ -90,8 +88,6 @@ Namespace Certificates
                         Me.State.MyCountry = New Country(Me.State.MyCompany.CountryId)
                     End If
 
-
-
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.ErrControllerMaster, False)
@@ -178,7 +174,6 @@ Namespace Certificates
         End Sub
 #End Region
 
-
 #Region "Button Handlers"
         Protected Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
             Try
@@ -193,11 +188,8 @@ Namespace Certificates
             Try
                 If Not Me.State.MyCertInstallment Is Nothing Then
                     Me.moPremiumBankInfoController.PopulateBOFromControl()
-                    Me.State.MyBankInfo.Save()
 
-                    Me.State.MyCertInstallment.BankInfoId = Me.State.MyBankInfo.Id
-                    Me.State.MyCertInstallment.BillingStatusId = LookupListNew.GetIdFromCode(LookupListNew.LK_BILLING_STATUS, Codes.BILLING_STATUS__ACTIVE)
-                    Me.State.MyCertInstallment.Save()
+                    CommonBankInfo.BankInfoEndorseRequest(Me.State.MyCertificate.Dealer.Dealer, Me.State.MyCertificate.CertNumber, Me.State.MyBankInfo)
 
                     Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                     PopulateFormFromBOs()
@@ -206,7 +198,8 @@ Namespace Certificates
 
             Catch ex As ApplicationException
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
-
+            Catch ex As Exception
+                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_POLICYSERVICE_SERVICE_ERR, True)
             End Try
         End Sub
         Private Sub btnEdit_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEdit_WRITE.Click
@@ -225,5 +218,6 @@ Namespace Certificates
 
         End Sub
 #End Region
+
     End Class
 End Namespace
