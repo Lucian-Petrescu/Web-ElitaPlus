@@ -98,9 +98,9 @@
             <table class="formGrid" style="width: 98%; border: 0px; border-spacing: 0px; padding: 0px;">
                 <tbody>
                     <tr>
-                        <td align="right">
-                            <img id="img12" name="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
-                                height="28" />
+                        <td style="text-align: right;">
+                            <img id="img12" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png"
+                                height="28" alt="none" />
                         </td>
                         <td id="tdModalMessageServiceWarranty" colspan="2" runat="server">
                             <asp:Label ID="lblServiceWarrantyMessage" runat="server"></asp:Label>

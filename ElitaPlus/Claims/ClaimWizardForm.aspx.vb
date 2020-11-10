@@ -791,7 +791,7 @@ Public Class ClaimWizardForm
         End Try
     End Sub
 
-    Private Sub RadioButton_NOSVCOPTION_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles step4_RadioButtonNO_SVC_OPTION.CheckedChanged
+    Private Sub RadioButtonNOSVCOPTION_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles step4_RadioButtonNO_SVC_OPTION.CheckedChanged
         Try
             Me.EnableDisableWizardControls(ClaimWizardSteps.Step4)
             If Me.step4_RadioButtonNO_SVC_OPTION.Checked Then
@@ -926,7 +926,7 @@ Public Class ClaimWizardForm
         End Try
     End Sub
 
-    Protected Sub btnDenyClaimWriteClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDenyClaim.Click
+    Protected Sub btnDenyClaim_WriteClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDenyClaim.Click
         Try
             Me.PopulateBOFromForm(Me.State.StepName)
             Me.State.ClaimBO.Validate()
@@ -1291,7 +1291,7 @@ Public Class ClaimWizardForm
             Case ClaimWizardSteps.Step2
                 MyBase.EnableDisableControls(Me.pnlVehicleInfo, Not Me.State.IsEditMode)
                 MyBase.EnableDisableControls(Me.pnlDeviceInfo, Not Me.State.IsEditMode)
-                Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
+                'Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
 
                 If Me.State.CertItemBO.IsEquipmentRequired Then
                     'Claimed Equipment
