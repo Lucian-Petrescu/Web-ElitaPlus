@@ -197,6 +197,20 @@ h2.searchGridSubHeader {
 h2.dataGridHeader span.highLightText{ color:#333; font-size:13px;}
 /* h2.dataGridHeader span{ color:#333;} */
 
+/*-Cert Extended Overview  */
+h2.dataGridHeaderCert {
+    font-size: 14px;
+    color: #0066CC;
+    font-weight: normal;
+    border-left: 10px solid #0066CC;
+    padding: 0px 0px 0px 10px;
+    margin-bottom: 1px;
+}
+
+h2.dataGridHeaderCert span.highLightText {
+        color: #333;
+        font-size: 13px;
+    }
 
 /*-Button Zone */
 .btnZone{width:98%; float:left;margin:40px 0px 0px 10px; border-top:1px solid #CCC; padding:4px 0px; background:url('Images/btnZoneBg.png') repeat-x}
