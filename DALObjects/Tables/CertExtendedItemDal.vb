@@ -96,6 +96,20 @@ Public Class CertExtendedItemDal
         End Try
     End Function
 #End Region
+#Region "Description Save"
+    Public Sub SaveDescription(ByVal code As String, ByVal description As String, ByVal modifiedBy As String)
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/SAVE_CODE_DESCRIPTION"))
+                cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, code)
+                cmd.AddParameter(PAR_I_NAME_DESCRIPTION, OracleDbType.Varchar2, description)
+                cmd.AddParameter(PAR_I_NAME_MODIFIED_BY, OracleDbType.Varchar2, modifiedBy)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME)
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
+#End Region
 #Region "Dealer Company List"
     Public Sub SaveDealerCompanyList(ByVal code As String, ByVal reference As String, ByVal id As Guid, ByVal created_by As String)
         Try

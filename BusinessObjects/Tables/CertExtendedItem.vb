@@ -86,7 +86,7 @@ Public Class CertExtendedItem
         newRow(CertExtendedItemDal.COL_NAME_DESCRIPTION) = String.Empty
         newRow(CertExtendedItemDal.COL_NAME_FIELD_NAME) = String.Empty
         newRow(CertExtendedItemDal.COL_NAME_DEFAULT_VALUE) = String.Empty
-        newRow(CertExtendedItemDal.COL_NAME_ALLOW_UPDATE) = "Y"
+        newRow(CertExtendedItemDal.COL_NAME_ALLOW_UPDATE) = "N"
         newRow(CertExtendedItemDal.COL_NAME_ALLOW_DISPLAY) = "Y"
         dt.Rows.Add(newRow)
         Row = newRow
@@ -143,7 +143,7 @@ Public Class CertExtendedItem
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        AllowUpdate = Codes.YESNO_Y
+        AllowUpdate = Codes.YESNO_N
         FieldName = String.Empty
         DefaultValue = String.Empty
         AllowDisplay = Codes.YESNO_Y
@@ -316,6 +316,16 @@ Public Class CertExtendedItem
                     dal.SaveDealerCompanyList(codeMask, "ELP_DEALER", dealerId, Me.Row(DALBase.COL_NAME_CREATED_BY).ToString())
                 End If
             Next
+
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
+    Sub SaveDescription(ByVal codeMask As String, ByVal descriptionValue As String)
+        Try
+            Me.SetModifiedAuditInfo()
+            Dim dal = New CertExtendedItemDal
+            dal.SaveDescription(codeMask, descriptionValue, Me.Row(DALBase.COL_NAME_MODIFIED_BY).ToString())
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)

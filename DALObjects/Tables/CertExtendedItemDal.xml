@@ -33,4 +33,7 @@
   <CRT_CONFIG_ATTACHED>
     <![CDATA[elp_tbl_crt_ext_flds_config.isconfigexist]]>
   </CRT_CONFIG_ATTACHED>
+  <SAVE_CODE_DESCRIPTION>
+    <![CDATA[elp_tbl_crt_ext_flds_config.modifycodedesc]]>
+  </SAVE_CODE_DESCRIPTION>
 </SQL>
