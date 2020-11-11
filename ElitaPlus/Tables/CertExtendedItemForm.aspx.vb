@@ -109,17 +109,7 @@ Public Class CertExtendedItemForm
     End Sub
     Protected Sub BtnSaveConfig_Click(sender As Object, e As EventArgs) Handles btnSaveConfig.Click
         Try
-            State.MyBo = New CertExtendedItem()
-            If Not String.IsNullOrEmpty(TextboxCertItemConfigCode.Text) AndAlso GridViewCertItemConfig.Rows.Count > 0 AndAlso ValidateDealerCompanyRecords() Then
-                SaveDealerCompanyList()
-                If State.MyBo.IsDirty Then
-                    State.HasDataChanged = False
-                    DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
-                    DisableFields()
-                Else
-                    DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
-                End If
-            End If
+            SaveMain()
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -384,6 +374,7 @@ Public Class CertExtendedItemForm
 #Region "Page Events"
     Private Sub SetStateProperties()
         State.CodeMask = TextboxCertItemConfigCode.Text.ToUpper().Trim()
+        State.Description = TextboxCertItemConfigDesc.Text.Trim()
     End Sub
     Private Sub UpdateBreadCrum()
         MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & CERTITEMEXTENDEDCONTROL
@@ -551,12 +542,26 @@ Public Class CertExtendedItemForm
         Try
             If ValidateCodeWithDataGrid() AndAlso ValidateDealerCompanyRecords() Then
                 SaveDealerCompanyList()
+                SaveDescription()
                 If State.MyBo.IsDirty Then
                     State.HasDataChanged = False
                     DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", MSG_BTN_OK, MSG_TYPE_INFO)
                     DisableFields()
                 Else
                     DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", MSG_BTN_OK, MSG_TYPE_INFO)
+                End If
+            End If
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+    Private Sub SaveDescription()
+        Try
+            Dim dvCertConfigDv As CertExtendedItem.CertExtendedItemSearchDv = CertExtendedItem.GetList(State.CodeMask)
+            If Not dvCertConfigDv Is Nothing AndAlso dvCertConfigDv.Count > 0 Then
+                Dim description As String = dvCertConfigDv.Table.Rows(0)(2).ToString()
+                If Not TextboxCertItemConfigDesc.Text.Equals(description) AndAlso TextboxCertItemConfigDesc.Text.Length > 0 Then
+                    State.MyBo.SaveDescription(State.CodeMask, TextboxCertItemConfigDesc.Text.Trim())
                 End If
             End If
         Catch ex As Exception
@@ -666,6 +671,9 @@ Public Class CertExtendedItemForm
 #End Region
 #Region "Clear Selections"
     Private Function ClearDealerCompanyList() As Boolean
+        If State.MyBo Is Nothing Then
+            State.MyBo = New CertExtendedItem
+        End If
         Dim dv As DataView
         'Detach companies from fields if nothing selected from CompanyList
         dv = State.MyBo.GetSelectedCompanies(State.CodeMask)
