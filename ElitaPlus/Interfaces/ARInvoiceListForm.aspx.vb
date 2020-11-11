@@ -549,8 +549,8 @@ Public Class ArInvoiceListForm
 
                 invoiceHeaderId = Grid.Rows(rowIndex).Cells(GridColIdxInvoiceHeaderId).Text
                 State.SelectedInvoiceId = New Guid(invoiceHeaderId)
-                'to-do call AR invoice detail pages
-                'callPage(ArInvoiceDetailForm.URL, State.SelectedInvoiceId)
+                'call AR invoice detail pages
+                callPage(ArInvoiceDetailsForm.URL, State.SelectedInvoiceId)
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
