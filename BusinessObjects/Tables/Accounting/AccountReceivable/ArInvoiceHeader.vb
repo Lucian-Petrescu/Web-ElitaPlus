@@ -578,21 +578,57 @@ Public Class ArInvoiceHeader
 
         Dim dal As New ArInvoiceHeaderDAL
         Dim userId As Guid
-        Dim searchResults As New DataSet
+        Dim invoiceLines As New DataSet
 
         With Authentication.CurrentUser
             userId = .Id
         End With
 
         dal.SearchArInvoices(companyId, dealerId, invoiceNum, source, invoiceDate, reference,referenceNumber,
-                             documentType, documentUniqueId, statusXcd, rowCountReturn, userId, searchResults)
-        Return New ArInvoiceSearchDV(searchResults.Tables(0))
+                             documentType, documentUniqueId, statusXcd, rowCountReturn, userId, invoiceLines)
+        Return New ArInvoiceSearchDV(invoiceLines.Tables(0))
 
     End Function
     
+    Public  Shared Function GetInvoiceLinesByHeader(ByVal invoiceHeaderId As Guid) As ArInvoiceLinesDv
+        Dim dal As New ArInvoiceHeaderDAL
+        Dim languageId As Guid
+        Dim searchResults As New DataSet
+
+        With Authentication.CurrentUser
+            languageId = .LanguageId
+        End With
+
+        dal.GetArInvoiceLinesByHeaderId(invoiceHeaderId, languageId, searchResults)
+        Return New ArInvoiceLinesDv(searchResults.Tables(0))
+    End Function
 #End Region
 
-    #Region "Invoice search view class"
+#Region "Invoice Lines view class"
+    Public Class ArInvoiceLinesDv
+        Inherits DataView
+
+        Public Const ColInvoiceLineId As String = "invoice_line_id"
+        Public Const ColLineType As String = "line_type"
+        Public Const ColItemCode As String = "item_code"
+        Public Const ColDescription As String = "description"
+        Public Const ColLineNumber As String = "line_number"
+        Public Const ColParentLineNumber As String = "parent_line_number"
+        Public Const ColAmount As String = "amount"
+        Public Const ColInvoicePeriodStartDate As String = "invoice_period_start_date"
+        Public Const ColInvoicePeriodEndDate As String = "invoice_period_end_date"
+        Public Const ColIncomingAmount As String = "incoming_amount"
+        Public Const ColEarningParter As String = "earning_parter"
+
+        Public Sub New(ByVal table As DataTable)
+            MyBase.New(table)
+        End Sub
+
+    End Class
+#End Region
+
+
+#Region "Invoice search view class"
 
     Public Class ArInvoiceSearchDv
         Inherits DataView
