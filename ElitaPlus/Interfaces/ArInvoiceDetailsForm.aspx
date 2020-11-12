@@ -45,12 +45,13 @@
                 </td>
                 <td nowrap="nowrap" style="text-align: left">
                     <asp:DropDownList runat="server" id="ddlReference" AutoPostBack="False" SkinID="SmallDropDown" Enabled="False" />
+                    <asp:TextBox ID="txtReferenceNum" runat="server" ReadOnly="true" SkinID="SmallTextBox" AutoPostBack="False" ></asp:TextBox>
                 </td>
                 <td style="text-align: right" nowrap="nowrap">
-                    <asp:Label ID="lblReferenceNum" runat="server">REFERENCE_NUMBER</asp:Label>:
+                    <asp:Label ID="lblDocUniqueId" runat="server">DOCUMENT_UNIQUE_ID</asp:Label>:
                 </td>
                 <td style="text-align: left" nowrap="nowrap">
-                    <asp:TextBox ID="txtReferenceNum" runat="server" ReadOnly="true" SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
+                    <asp:TextBox ID="txtDocUniqueId" runat="server" ReadOnly="true" SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
                 </td>
             </tr>
             <tr>
@@ -181,17 +182,11 @@
                 </td>
             </tr>
             <tr>
-                <td style="text-align: right" class="borderLeft" nowrap="nowrap">
-                    <asp:Label ID="lblDocUniqueId" runat="server">DOCUMENT_UNIQUE_ID</asp:Label>:
-                </td>
-                <td style="text-align: left" nowrap="nowrap">
-                    <asp:TextBox ID="txtDocUniqueId" runat="server" ReadOnly="true" SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
-                </td>
                 <td style="text-align: right" nowrap="nowrap">
                     <asp:Label ID="lblComments" runat="server">COMMENTS</asp:Label>:
                 </td>
-                <td style="text-align: left" nowrap="nowrap">
-                    <asp:TextBox ID="txtComments" runat="server" ReadOnly="true" SkinID="LargeTextBox" AutoPostBack="False" TextMode="MultiLine" Rows="3"></asp:TextBox>
+                <td style="text-align: left" nowrap="nowrap" colspan="3">
+                    <asp:TextBox ID="txtComments" runat="server" ReadOnly="true" SkinID="LargeTextBox" AutoPostBack="False" TextMode="MultiLine" Rows="3" Width="850px"></asp:TextBox>
                 </td>
             </tr>
             <tr> 

@@ -541,8 +541,24 @@ Public Class ArInvoiceHeader
         End Set
     End Property
 	
-	
-   
+	Private _referenceNumber as String = Nothing
+    Public ReadOnly Property ReferenceNumber() As String
+        Get
+            if _referenceNumber is Nothing Then
+                Select Case Reference
+                    Case "ELP_CERT"
+                        _referenceNumber = new Certificate(ReferenceId).CertNumber
+                    Case "ELP_CLAIM"
+                        _referenceNumber = new Claim(ReferenceId).ClaimNumber
+                    Case "ELP_CLAIM_AUTHORIZATION"
+                        _referenceNumber = new ClaimAuthorization(ReferenceId).AuthorizationNumber
+                    Case Else
+                        _referenceNumber = string.Empty
+                End Select
+            End If
+            Return _referenceNumber
+        End Get
+    end property
 
 #End Region
 
