@@ -1100,6 +1100,13 @@
       <DependentUpon>AppleGBIFileFormDetail.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="Interfaces\ArInvoiceDetailsForm.aspx.designer.vb">
+      <DependentUpon>ArInvoiceDetailsForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\ArInvoiceDetailsForm.aspx.vb">
+      <DependentUpon>ArInvoiceDetailsForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Interfaces\ARInvoiceListForm.aspx.designer.vb">
       <DependentUpon>ARInvoiceListForm.aspx</DependentUpon>
     </Compile>
@@ -5876,6 +5883,7 @@
     </Content>
     <Content Include="Interfaces\AppleGBIFileForm.aspx" />
     <Content Include="Interfaces\AppleGBIFileFormDetail.aspx" />
+    <Content Include="Interfaces\ArInvoiceDetailsForm.aspx" />
     <Content Include="Interfaces\ARInvoiceListForm.aspx" />
     <Content Include="Interfaces\ARInvoiceReconWrkForm.aspx" />
     <Content Include="Interfaces\ARPaymentReconWrkForm.aspx" />
