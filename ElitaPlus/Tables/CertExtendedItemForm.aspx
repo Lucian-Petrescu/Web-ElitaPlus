@@ -8,12 +8,7 @@
 <asp:Content ContentPlaceHolderID="HeadPlaceHolder" runat="server">
     <script src="../Navigation/scripts/Common.js" type="text/javascript">
     </script>
-    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.6.1.min.js" >
-    </script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            changeSelection();
-        });
         function changeSelection() {
 
             var rdoCompany = document.getElementById("<%=rdoCompanies.ClientID %>");
@@ -44,6 +39,9 @@
 <asp:Content ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
     <table id="TableFixed" border="0" style="width: 70%;" class="searchGrid">
         <caption></caption>
+        <tr>
+            <th scope="col"></th>
+        </tr>
         <tbody>
             <tr>
                 <td style="white-space: nowrap;">
@@ -68,6 +66,9 @@
         <div class="dataContainer">
             <table style="width: 100%;" border="0" class="dataGrid">
                 <caption></caption>
+                <tr>
+                    <th scope="col"></th>
+                </tr>
                 <tr id="trPageSize" runat="server">
                     <td class="bor">
                         <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label>: &nbsp;
@@ -181,7 +182,7 @@
                 <tbody>
                     <tr>
                         <td>
-                            <h2 class="dataGridHeaderCert">
+                            <h2 class="dataGridHeader">
                                 <asp:Label ID="Label1" runat="server">CONFIGURATION_BY</asp:Label>
                             </h2>
                         </td>
