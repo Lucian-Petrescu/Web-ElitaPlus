@@ -791,7 +791,7 @@ Public Class ClaimWizardForm
         End Try
     End Sub
 
-    Private Sub RadioButtonNOSVCOPTION_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles step4_RadioButtonNO_SVC_OPTION.CheckedChanged
+    Private Sub RadioButtonNoSvcOption_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles step4_RadioButtonNO_SVC_OPTION.CheckedChanged
         Try
             Me.EnableDisableWizardControls(ClaimWizardSteps.Step4)
             If Me.step4_RadioButtonNO_SVC_OPTION.Checked Then
