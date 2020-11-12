@@ -231,10 +231,8 @@ Public Class CertExtendedItemForm
         UserControlAvailableSelectedDealers.RemoveSelectedFromAvailable()
 
         If UserControlAvailableSelectedDealers.SelectedList.Count > 0 Then
-            rdoCompanies.Checked = False
             rdoDealers.Checked = True
         Else
-            rdoDealers.Checked = False
             rdoCompanies.Checked = True
         End If
     End Sub
@@ -317,11 +315,9 @@ Public Class CertExtendedItemForm
                     allowDisplayDropDown.Populate(yesNoList.ToArray(), populateOptions)
 
                     Dim defaultSelectedCodeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
-                    SetSelectedItem(allowDisplayDropDown, defaultSelectedCodeId)
-
-                    defaultSelectedCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
 
                     SetSelectedItem(allowUpdateDropDown, defaultSelectedCodeId)
+                    SetSelectedItem(allowDisplayDropDown, defaultSelectedCodeId)
 
                     If Not String.IsNullOrEmpty(attribute.FieldName) Then
                         fieldNameTextBox.Text = attribute.FieldName
