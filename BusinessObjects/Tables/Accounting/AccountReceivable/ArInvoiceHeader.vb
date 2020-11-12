@@ -542,15 +542,19 @@ Public Class ArInvoiceHeader
     End Property
 	
 	Private _referenceNumber as String = Nothing
+    public Const ReferenceCertificate = "ELP_CERT"
+    public Const ReferenceClaim = "ELP_CLAIM"
+    public Const ReferenceClaimAuthorization = "ELP_CLAIM_AUTHORIZATION"
+
     Public ReadOnly Property ReferenceNumber() As String
         Get
             if _referenceNumber is Nothing Then
                 Select Case Reference
-                    Case "ELP_CERT"
+                    Case ReferenceCertificate
                         _referenceNumber = new Certificate(ReferenceId).CertNumber
-                    Case "ELP_CLAIM"
+                    Case ReferenceClaim
                         _referenceNumber = new Claim(ReferenceId).ClaimNumber
-                    Case "ELP_CLAIM_AUTHORIZATION"
+                    Case ReferenceClaimAuthorization
                         _referenceNumber = new ClaimAuthorization(ReferenceId).AuthorizationNumber
                     Case Else
                         _referenceNumber = string.Empty
