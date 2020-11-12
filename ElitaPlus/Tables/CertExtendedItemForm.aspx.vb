@@ -124,7 +124,6 @@ Public Class CertExtendedItemForm
                 End If
             End With
             ChangeEnabledProperty(btnAdd, False)
-            ChangeEnabledProperty(btnSaveConfig, False)
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -259,7 +258,6 @@ Public Class CertExtendedItemForm
                     PopulateBoFromControls(GridViewCertItemConfig.Rows(nIndex))
                     'Check if fieldName / code is duplicated
                     ValidateConfigRecords()
-                    ValidateDealerCompanyRecords()
                     EndEdit(ElitaPlusPage.DetailPageCommand.OK)
                     DisableFields()
                     State.IsRowEdit = False
@@ -476,7 +474,6 @@ Public Class CertExtendedItemForm
                     Case ElitaPlusPage.DetailPageCommand.OK
                         .MyBo.Save()
                         .MyBo.EndEdit()
-                        SaveDealerCompanyList()
                         MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                     Case ElitaPlusPage.DetailPageCommand.Delete
                         .MyBo.Delete()
@@ -491,7 +488,6 @@ Public Class CertExtendedItemForm
                 .IsRowBeingEdited = False
                 .SearchDv = Nothing
                 ChangeEnabledProperty(btnAdd, True)
-                ChangeEnabledProperty(btnSaveConfig, True)
             End With
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -531,17 +527,6 @@ Public Class CertExtendedItemForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    Private Function ValidateCodeWithDataGrid() As Boolean
-        If (String.IsNullOrEmpty(State.CodeMask)) Then
-            Throw New GUIException(Message.MSG_CERT_EXT_CODE_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_CODE_VALUE_REQUIRED)
-        End If
-
-        If (State.SearchDv.Count = 0) OrElse (State.SearchDv.Table.Rows.Count = 0) Then
-            'OrElse (String.IsNullOrEmpty(State.SearchDv.Table.Rows(0)("code").ToString().ToUpper.Trim())) Then
-            Throw New GUIException(Message.MSG_CERT_EXT_FIELD_NAME_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_FIELD_NAME_REQUIRED)
-        End If
-        Return True
-    End Function
     Private Function ValidateConfigRecords() As Boolean
 
         If (String.IsNullOrEmpty(State.MyBo.Code)) Then
@@ -552,7 +537,7 @@ Public Class CertExtendedItemForm
             Throw New GUIException(Message.MSG_CERT_EXT_FIELD_NAME_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_FIELD_NAME_REQUIRED)
         End If
 
-        Dim dvCertConfigDv As CertExtendedItem.CertExtendedItemSearchDv = CertExtendedItem.GetList(State.MyBo.Code)
+        Dim dvCertConfigDv As CertExtendedItem.CertExtendedItemSearchDV = CertExtendedItem.GetList(State.MyBo.Code)
         If Not dvCertConfigDv Is Nothing AndAlso dvCertConfigDv.Count > 0 Then
             For Each certItemConfig As DataRow In dvCertConfigDv.Table.Rows
                 'For Template Fields
@@ -573,14 +558,6 @@ Public Class CertExtendedItemForm
 
     End Function
     Private Function ValidateDealerCompanyRecords() As Boolean
-        ' First Validated that Dealer or Company list is selected
-        If rdoCompanies.Checked AndAlso (UserControlAvailableSelectedCompanies.SelectedList.Count) < 1 Then
-            Throw New GUIException(Message.MSG_EMPTY_SELECTED_COMPANY_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EMPTY_SELECTED_COMPANY_REQUIRED)
-        End If
-        If rdoDealers.Checked AndAlso (UserControlAvailableSelectedDealers.SelectedList.Count) < 1 Then
-            Throw New GUIException(Message.MSG_EMPTY_SELECTED_DEALER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EMPTY_SELECTED_DEALER_REQUIRED)
-        End If
-
         'First Validate Dealer or Company list already exits against some other code and field combination
         DealerCompanyConfigExist()
 
@@ -590,16 +567,17 @@ Public Class CertExtendedItemForm
         If clearList Then
             Return True
         End If
-
+        If rdoCompanies.Checked AndAlso (UserControlAvailableSelectedCompanies.SelectedList.Count) < 1 Then
+            Throw New GUIException(Message.MSG_EMPTY_SELECTED_COMPANY_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EMPTY_SELECTED_COMPANY_REQUIRED)
+        End If
+        If rdoDealers.Checked AndAlso (UserControlAvailableSelectedDealers.SelectedList.Count) < 1 Then
+            Throw New GUIException(Message.MSG_EMPTY_SELECTED_DEALER_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_EMPTY_SELECTED_DEALER_REQUIRED)
+        End If
         Return True
     End Function
     Private Function ClearDealerCompanyList() As Boolean
         Dim dv As DataView
         'Detach companies from fields if nothing selected from CompanyList
-        If State.MyBo Is Nothing Then
-            State.MyBo = New CertExtendedItem
-        End If
-
         dv = State.MyBo.GetSelectedCompanies(State.CodeMask)
         If dv.Count > 0 AndAlso (rdoDealers.Checked OrElse (UserControlAvailableSelectedCompanies.SelectedList.Count) <= 0) Then
             State.MyBo.ClearCompanyList(State.CodeMask)
@@ -648,11 +626,9 @@ Public Class CertExtendedItemForm
         TextboxCertItemConfigCode.Enabled = False
     End Sub
     Protected Sub BtnSaveConfig_Click(sender As Object, e As EventArgs) Handles btnSaveConfig.Click
-        SaveMain()
-    End Sub
-    Private Sub SaveMain()
         Try
-            If ValidateCodeWithDataGrid() AndAlso ValidateDealerCompanyRecords() Then
+            State.MyBo = New CertExtendedItem()
+            If Not String.IsNullOrEmpty(TextboxCertItemConfigCode.Text) AndAlso GridViewCertItemConfig.Rows.Count > 0 AndAlso ValidateDealerCompanyRecords() Then
                 SaveDealerCompanyList()
                 If State.MyBo.IsDirty Then
                     State.HasDataChanged = False
