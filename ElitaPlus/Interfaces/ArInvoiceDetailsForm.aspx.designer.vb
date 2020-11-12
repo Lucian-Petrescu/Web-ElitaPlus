@@ -68,15 +68,6 @@ Partial Public Class ArInvoiceDetailsForm
     Protected WithEvents ddlReference As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
-    '''lblReferenceNum control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblReferenceNum As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
     '''txtReferenceNum control.
     '''</summary>
     '''<remarks>
@@ -84,6 +75,24 @@ Partial Public Class ArInvoiceDetailsForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtReferenceNum As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblDocUniqueId control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDocUniqueId As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtDocUniqueId control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtDocUniqueId As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''lblDocType control.
@@ -408,24 +417,6 @@ Partial Public Class ArInvoiceDetailsForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtPosted As Global.System.Web.UI.WebControls.TextBox
-
-    '''<summary>
-    '''lblDocUniqueId control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblDocUniqueId As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''txtDocUniqueId control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtDocUniqueId As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''lblComments control.
