@@ -173,11 +173,7 @@ Class MyState
             'populate dropdown lists
             PopulateControlFromBOProperty(ddlCompany, .CompanyId)
             PopulateControlFromBOProperty(ddlDealer, .DealerId)
-            'PopulateControlFromBOProperty(ddlDocType, .DocType)
-            'PopulateControlFromBOProperty(ddlReference, .Reference)
-            'PopulateControlFromBOProperty(ddlPaymentMethod, .PaymentMethodXcd)
-            'PopulateControlFromBOProperty(ddlStatus, .StatusXcd)
-
+            'dropdown by extended codes
             ddlDocType.SelectedValue = .DocType
             ddlReference.SelectedValue = .Reference
             ddlStatus.SelectedValue = .StatusXcd
@@ -199,7 +195,7 @@ Class MyState
             PopulateControlFromBOProperty(txtNumOfPymtRejected, .NoOfTimesPymtRejected)
             PopulateControlFromBOProperty(txtInvoiceDate, .InvoiceDate)
             PopulateControlFromBOProperty(txtInvoiceDueDate, .InvioceDueDate)
-            PopulateControlFromBOProperty(txtReferenceNum, .ReferenceId)
+            PopulateControlFromBOProperty(txtReferenceNum, .ReferenceNumber)
             PopulateControlFromBOProperty(txtCreatedBy, .CreatedById)
             PopulateControlFromBOProperty(txtCreatedDate, .CreatedDateTime)
 
@@ -214,9 +210,9 @@ Class MyState
                 ucAddressBillTo.Bind(New Address(.BillToAddressId))
             End If
             
+            ucBankInfo.DisableAllFields() 'view only
             If .BankInfoId <> Guid.Empty Then
                 ucBankInfo.Bind(New BankInfo(.BankInfoId))
-                ucBankInfo.DisableAllFields() 'view only
             End If
 
             PopulateLinesGrid()
@@ -260,7 +256,7 @@ Class MyState
 #End Region
 
 #Region "Grid Event handlers"
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles Grid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As GridViewPageEventArgs) Handles Grid.PageIndexChanging
         Try
             Grid.PageIndex = e.NewPageIndex
             State.PageIndex = Grid.PageIndex
@@ -270,7 +266,7 @@ Class MyState
     End Sub
 
 
-    Private Sub cboPageSize_SelectedIndexChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+    Private Sub cboPageSize_SelectedIndexChanged(ByVal source As Object, ByVal e As EventArgs) Handles cboPageSize.SelectedIndexChanged
         Try
             State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(Grid, State.InvoiceLines.Count, State.selectedPageSize)
@@ -282,7 +278,7 @@ Class MyState
     End Sub
 
 
-    Public Sub RowCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowCreated
+    Public Sub RowCreated(ByVal sender As System.Object, ByVal e As GridViewRowEventArgs) Handles Grid.RowCreated
         Try
             BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -290,7 +286,7 @@ Class MyState
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As EventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = Grid.PageIndex
             populateLinesGrid()
