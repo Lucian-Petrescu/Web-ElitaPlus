@@ -1,4 +1,4 @@
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="DealerForm.aspx.vb" Theme="Default"
+<%@ Page Language="vb" MaintainScrollPositionOnPostback="true" AutoEventWireup="false" CodeBehind="DealerForm.aspx.vb" Theme="Default"
 Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.DealerForm" EnableSessionState="True"
 MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
