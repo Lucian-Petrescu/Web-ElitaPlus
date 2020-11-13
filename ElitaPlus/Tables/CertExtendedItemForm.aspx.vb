@@ -218,6 +218,7 @@ Public Class CertExtendedItemForm
         ClearGridViewHeadersAndLabelsErrorSign()
     End Sub
     Protected Sub PopulateUserConctrols()
+        ClearOptionSelection()
         UserControlAvailableSelectedCompanies.ClearLists()
         UserControlAvailableSelectedCompanies.SetAvailableData(State.MyBo.GetAvailableCompanies(), "Description", "COMPANY_ID")
         UserControlAvailableSelectedCompanies.SetSelectedData(State.MyBo.GetSelectedCompanies(State.CodeMask), "Description", "ID")
@@ -571,21 +572,28 @@ Public Class CertExtendedItemForm
         End If
         Return True
     End Function
+#Region "Clear Selections"
     Private Function ClearDealerCompanyList() As Boolean
+        If State.MyBo Is Nothing Then
+            State.MyBo = New CertExtendedItem
+        End If
         Dim dv As DataView
         'Detach companies from fields if nothing selected from CompanyList
         dv = State.MyBo.GetSelectedCompanies(State.CodeMask)
-        If dv.Count > 0 AndAlso (rdoDealers.Checked OrElse (UserControlAvailableSelectedCompanies.SelectedList.Count) <= 0) Then
+        If dv.Count > 0 AndAlso rdoDealers.Checked Then
             State.MyBo.ClearCompanyList(State.CodeMask)
-            Return True
         End If
         'Detach dealers from fields if nothing selected from DealerList
         dv = State.MyBo.GetSelectedDealers(State.CodeMask)
-        If dv.Count > 0 AndAlso (rdoCompanies.Checked OrElse (UserControlAvailableSelectedDealers.SelectedList.Count) <= 0) Then
+        If dv.Count > 0 AndAlso rdoCompanies.Checked Then
             State.MyBo.ClearDealerList(State.CodeMask)
-            Return True
         End If
     End Function
+    Private Sub ClearOptionSelection()
+        rdoDealers.Checked = False
+        rdoCompanies.Checked = False
+    End Sub
+#End Region
     Private Function DealerCompanyConfigExist() As Boolean
         Dim dv As DataView
         If rdoCompanies.Checked Then
