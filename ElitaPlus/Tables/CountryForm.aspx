@@ -233,15 +233,20 @@
                     <asp:TextBox ID="TextboxAddressConfidenceThreshold" runat="server" Width="140px"></asp:TextBox>
 					</td>
 			</tr>
-		<tr>
-		<td align="right" nowrap="nowrap">
-		    <asp:Label ID="lblFullnameFormat" class="borderRight" runat="server" Font-Bold="false">FULL_NAME_FORMAT</asp:Label></td>
-		<td align="left" nowrap="nowrap">
-         <asp:DropDownList ID="cboFullNameFormat" runat="server" Width="280px"></asp:DropDownList></td>
-        </tr>
-            <tr>
+		    <tr>
+		        <td align="right" nowrap="nowrap">
+		            <asp:Label ID="lblFullnameFormat" class="borderRight" runat="server" Font-Bold="false">FULL_NAME_FORMAT</asp:Label></td>
+		        <td align="left" nowrap="nowrap">
+                    <asp:DropDownList ID="cboFullNameFormat" runat="server" Width="280px"></asp:DropDownList></td>
+                <%--PBI 604501 - Add a new field to manage the BIC value in SEPA FILE--%>
+                <td align="right" nowrap="nowrap">
+					<asp:Label ID="lblUseSepaBicCustomer" class="borderRight" runat="server" Font-Bold="false">USE_SEPA_BIC_CUSTOMER</asp:Label></td>
+				<td align="left" nowrap="nowrap">
+					<asp:DropDownList ID="cboUseSepaBicCustomer" TabIndex="69" runat="server" Width="140px"></asp:DropDownList></td>
+            </tr>
+<%--        <tr>
               <td colspan="4"></td>
-           </tr>
+            </tr>--%>
 			<tr>
 				<td colspan="2" class="borderLeft">
 					<table id="tblPostalCode" cellspacing="0" cellpadding="6" align="center" border="0">
@@ -1160,8 +1165,6 @@
                 objLblACT.style.display = 'none';
                 objTxtACT.style.display = 'none';
             }
-
-
         }
 	</script>
 	<div class="btnZone">

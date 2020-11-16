@@ -592,6 +592,21 @@ Public Class Country
             Me.SetValue(CountryDAL.COL_NAME_FULL_NAME_FORMAT, Value)
         End Set
     End Property
+
+    Public Property UseSepaBicCustomer() As Guid
+        Get
+            CheckDeleted()
+            If Row(CountryDAL.COL_NAME_USE_SEPA_BIC_CUSTOMER) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New Guid(CType(Row(CountryDAL.COL_NAME_USE_SEPA_BIC_CUSTOMER), Byte()))
+            End If
+        End Get
+        Set(ByVal value As Guid)
+            CheckDeleted()
+            Me.SetValue(CountryDAL.COL_NAME_USE_SEPA_BIC_CUSTOMER, value)
+        End Set
+    End Property
 #End Region
 
 #Region "Public Members"

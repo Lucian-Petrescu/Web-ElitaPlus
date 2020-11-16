@@ -41,7 +41,8 @@
         allow_forgotten,       
         full_name_format_xcd,
         price_list_approval_needed,
-        price_list_approval_email
+        price_list_approval_email,
+        use_sepa_bic_customer
 			FROM ELITA.ELP_COUNTRY_V 
 			WHERE
 				country_id = :country_id
@@ -111,7 +112,8 @@
         allow_forgotten = :allow_forgotten,        
         full_name_format_xcd = :full_name_format_xcd,
         price_list_approval_needed = :price_list_approval_needed,
-        price_list_approval_email = :price_list_approval_email
+        price_list_approval_email = :price_list_approval_email,
+        use_sepa_bic_customer = :use_sepa_bic_customer
 			WHERE
 				country_id = :country_id
 		]]>
@@ -151,7 +153,8 @@
     allow_forgotten,
     full_name_format_xcd,
     price_list_approval_needed,
-    price_list_approval_email
+    price_list_approval_email,
+    use_sepa_bic_customer
     )
     VALUES
     (
@@ -187,7 +190,8 @@
     :allow_forgotten,
     :full_name_format_xcd,
     :price_list_approval_needed,
-    :price_list_approval_email
+    :price_list_approval_email,
+    :use_sepa_bic_customer
     )
   </INSERT>
 	<DELETE>
