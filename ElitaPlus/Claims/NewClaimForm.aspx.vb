@@ -154,6 +154,7 @@ Partial Class NewClaimForm
         Public PoliceReportBO As PoliceReport
         Public ScreenSnapShotBO As Claim
         Public InputParameters As Parameters
+        Public LogisticAddressBO As List(Of LogisticStageAddress)
         Public ShippingInfoBO As Assurant.ElitaPlus.BusinessObjectsNew.ShippingInfo
         Public LastState As InternalStates = InternalStates.Regular
         Public LastErrMsg As String
@@ -780,17 +781,18 @@ Partial Class NewClaimForm
                     Dim filteredLogisticStages = logisticStages.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing).ToList()
                     Me.State.FilteredLogistics = filteredLogisticStages
                     ValidateShippingAddressButtonControl()
-
-                    moLogisticStageAddressInfo.ParentBusinessObject = filteredLogisticStages
-                    moLogisticStageAddressInfo.DataBind()
+                    State.LogisticAddressBO = filteredLogisticStages
+                    UserControlLogisticStageAddressInfo.Bind(State.LogisticAddressBO)
+                    State.LogisticAddressBO = filteredLogisticStages
+                    UserControlLogisticStageAddressInfo.Bind(State.LogisticAddressBO)
                 Else
-                    moLogisticStageAddressInfo.Visible = False
+                    UserControlLogisticStageAddressInfo.Visible = False
                 End If
 
             End If
 
         Else
-            moLogisticStageAddressInfo.Visible = False
+            UserControlLogisticStageAddressInfo.Visible = False
         End If
     End Sub
 
@@ -2075,6 +2077,7 @@ Partial Class NewClaimForm
         'Me.State.MyBO.ContactInfo.Address.InforceFieldValidation = True
         'UserControlContactInfo.PopulateBOFromControl(True)
         'Me.State.MyBO.ContactInfo.Save()
+        UserControlLogisticStageAddressInfo.PopulateBOFromControl(True)
 
     End Sub
 
@@ -2162,10 +2165,11 @@ Partial Class NewClaimForm
             Throw New PopulateBOErrorException
         End If
 
-        Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
-        If cboUseShipAddress.SelectedValue = YesId.ToString Then
-            PopulateNewClaimContactInfoBOsFromForm()
-        End If
+        'Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
+        'If cboUseShipAddress.SelectedValue = YesId.ToString Then
+        '    PopulateNewClaimContactInfoBOsFromForm()
+        'End If
+        PopulateNewClaimContactInfoBOsFromForm()
     End Sub
 
     ' Clean Popup Input
@@ -2919,9 +2923,8 @@ Partial Class NewClaimForm
 
         End Select
     End Sub
-    Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As FulfillmentAddress) As BusinessObjectsNew.Address
-
-        Dim convertAddress As New BusinessObjectsNew.Address With {
+    Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As Claim.FulfilmentaddressInfo) As BusinessObjectsNew.Address
+        Dim convertAddress As New BusinessObjectsNew.Address(sourceAddress.AddressId) With {
                 .CountryId = LookupListNew.GetIdFromCode(LookupListNew.DataView(LookupListNew.LK_COUNTRIES, False), sourceAddress.Country),
                 .Address1 = sourceAddress.Address1,
                 .Address2 = sourceAddress.Address2,
@@ -2932,7 +2935,6 @@ Partial Class NewClaimForm
                 }
         Return convertAddress
     End Function
-
 #End Region
 
 #Region "Button Clicks"

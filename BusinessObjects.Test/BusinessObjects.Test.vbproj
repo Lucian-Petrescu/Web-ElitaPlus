@@ -139,6 +139,7 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <Compile Include="Claims\LogisticStageAddressTest.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="Tables\PriceListDetailTest.vb" />
     <Compile Include="Tables\PriceListTest.vb" />

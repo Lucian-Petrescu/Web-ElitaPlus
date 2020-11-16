@@ -18,6 +18,19 @@ Public Class UserControlLogisticStageAddress
 
 #Region "Properties"
 
+    Public Property MyGenBO() As BusinessObjectBase
+        Get
+            Return CType(Me.Page.StateSession.Item(Me.UniqueID), BusinessObjectBase)
+        End Get
+        Set(ByVal Value As BusinessObjectBase)
+            Me.Page.StateSession.Item(Me.UniqueID) = Value
+        End Set
+    End Property
+    Private Shadows ReadOnly Property Page() As ElitaPlusPage
+        Get
+            Return CType(MyBase.Page, ElitaPlusPage)
+        End Get
+    End Property
     Public Property ParentBusinessObject As List(Of LogisticStageAddress)
     Public Property ProfileCode As String 
     Public Property ValidateAddress As Boolean
@@ -63,4 +76,21 @@ Public Class UserControlLogisticStageAddress
 
     End Sub
 
+    Friend Sub Bind(filteredLogistics As List(Of LogisticStageAddress))
+        ' MyGenBO = oBusObj
+        repLogisticStageAddress.DataSource = filteredLogistics
+        repLogisticStageAddress.DataBind()
+        If Not Me.MyGenBO Is Nothing Then
+            'BindBoPropertiesToLabels()
+            Me.Page.AddLabelDecorations(Me.MyGenBO)
+        End If
+    End Sub
+    Friend Sub PopulateBOFromControl(Optional ByVal blnIncludeCountryId As Boolean = False)
+
+        For Each repeaterItem As RepeaterItem In repLogisticStageAddress.Items
+            Dim addressControl As UserControlAddress_New = DirectCast(repeaterItem.FindControl(GridCtrlUcAddressController), UserControlAddress_New)
+            addressControl.PopulateBOFromControl(True)
+        Next
+
+    End Sub
 End Class
