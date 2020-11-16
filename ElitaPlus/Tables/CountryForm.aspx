@@ -244,9 +244,7 @@
 				<td align="left" nowrap="nowrap">
 					<asp:DropDownList ID="cboUseSepaBicCustomer" TabIndex="69" runat="server" Width="140px"></asp:DropDownList></td>
             </tr>
-<%--        <tr>
-              <td colspan="4"></td>
-            </tr>--%>
+
 			<tr>
 				<td colspan="2" class="borderLeft">
 					<table id="tblPostalCode" cellspacing="0" cellpadding="6" align="center" border="0">
