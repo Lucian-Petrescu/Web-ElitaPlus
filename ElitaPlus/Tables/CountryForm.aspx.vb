@@ -247,6 +247,9 @@ Partial Class CountryForm
         'Me.BindBOPropertyToLabel(Me.State.MyBO, "PriceListApprovalEmail", Me.lblPriceListApprovalEmail)
         'Me.BindBOPropertyToLabel(Me.State.MyBO, "PriceListApprovalNeeded", lblPriceListApprovalNeeded)
 
+        'PBI 604501 - Add a new field to manage the BIC value in SEPA FILE
+        Me.BindBOPropertyToLabel(Me.State.MyBO, "UseSepaBicCustomer", Me.lblUseSepaBicCustomer)
+
         Me.ClearGridHeadersAndLabelsErrSign()
     End Sub
 
@@ -341,7 +344,11 @@ Partial Class CountryForm
                                            .TextFunc = AddressOf .GetDescription,
                                            .ValueFunc = AddressOf .GetExtendedCode
                                            })
-
+        'PBI 604501 - Add a new field to manage the BIC value in SEPA FILE
+        cboUseSepaBicCustomer.Populate(yesNoLkl, New PopulateOptions() With
+                                                      {
+                                                        .AddBlankItem = True
+                                                       })
     End Sub
 
     Protected Sub LoadPostalCodeLists()
@@ -487,6 +494,8 @@ Partial Class CountryForm
             End If
 
             'Me.PopulateControlFromBOProperty(Me.txtPriceListApprovalEmail, .PriceListApprovalEmail)
+            'PBI 604501 - Add a new field to manage the BIC value in SEPA FILE
+            Me.SetSelectedItem(Me.cboUseSepaBicCustomer, .UseSepaBicCustomer)
         End With
 
         'Individual Policy
@@ -581,6 +590,8 @@ Partial Class CountryForm
 
             Me.PopulateBOProperty(Me.State.MyBO, "FullNameFormat", Me.cboFullNameFormat, False, True)
 
+            'PBI 604501 - Add a new field to manage the BIC value in SEPA FILE
+            Me.PopulateBOProperty(Me.State.MyBO, "UseSepaBicCustomer", Me.cboUseSepaBicCustomer)
         End With
         If Me.ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException

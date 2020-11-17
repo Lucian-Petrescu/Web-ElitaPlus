@@ -47,6 +47,8 @@ Public Class CountryDAL
     Public Const COL_NAME_ALLOW_FORCE_ADDRESS_XCD As String = "allow_force_address_xcd"
     Public Const COL_NAME_ADDRESS_CONFIDENCE_THRESHOLD As String = "address_confidence_threshold"
 
+    'PBI 604501 - Add a new field to manage the BIC value in SEPA FILE
+    Public Const COL_NAME_USE_SEPA_BIC_CUSTOMER As String = "use_sepa_bic_customer"
 #End Region
 
 #Region "Constructors"
