@@ -2,13 +2,12 @@
 <%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
 <%@ Register assembly="Microsoft.Web.UI.WebControls" namespace="Microsoft.Web.UI.WebControls" tagprefix="iewc" %>
 <%--REQ-784--%>
-<%@ Register TagPrefix="uc1" TagName="UserControlContactInfo" Src="../Common/UserControlContactInfo_New.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="ProtectionAndEventDetails" Src="~/Common/ProtectionAndEventDetails.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlWizard" Src="~/Common/UserControlWizard.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="BestReplacementOption" Src="~/Interfaces/ReplacementOptions.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlLogisticalInfo" Src="~/Claims/UserControlLogisticalInfo.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlClaimDeviceInfo" Src="~/Interfaces/ClaimDeviceInformationController.ascx" %>
-<%@ Register TagPrefix="Elita" TagName="UserControlLogisticStageAddressInfo" Src="~/Common/UserControlLogisticStageAddress.ascx" %>
+<%@ Register TagPrefix="uc1" TagName="UserControlLogisticStageAddressInfo" Src="~/Common/UserControlLogisticStageAddress.ascx" %>
 
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="NewClaimForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.NewClaimForm" Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
@@ -1703,11 +1702,6 @@
                 </tbody>
             </table>
         </div>
-        <table width="100%" border="0" class="formGrid" cellpadding="0" cellspacing="0">
-            <tbody>
-                <uc1:UserControlContactInfo ID="moUserControlContactInfo" runat="server" Visible="false"></uc1:UserControlContactInfo>
-            </tbody>
-        </table>
         <div class="dataContainer">
             <table style="width: 100%; border-collapse: collapse; border: 0;">
                 <tr>
@@ -1716,7 +1710,7 @@
                             <asp:Label ID="lblLogisticStageAddress" runat="server">LOGISTIC_STAGE_ADDRESSES</asp:Label>
                         </h2>
                         <div class="stepformZone">
-                            <Elita:UserControlLogisticStageAddressInfo ID="moLogisticStageAddressInfo" runat="server" Visible="True"></Elita:UserControlLogisticStageAddressInfo>
+                            <uc1:UserControlLogisticStageAddressInfo ID="moLogisticStageAddressInfo" runat="server" Visible="True"></uc1:UserControlLogisticStageAddressInfo>
                         </div>
                     </td>
                 </tr>
