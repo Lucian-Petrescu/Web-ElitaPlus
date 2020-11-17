@@ -2,7 +2,6 @@
 <%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
 <%@ Register assembly="Microsoft.Web.UI.WebControls" namespace="Microsoft.Web.UI.WebControls" tagprefix="iewc" %>
 <%--REQ-784--%>
-<%--<%@ Register TagPrefix="uc1" TagName="UserControlContactInfo" Src="../Common/UserControlContactInfo_New.ascx" %>--%>
 <%@ Register TagPrefix="Elita" TagName="ProtectionAndEventDetails" Src="~/Common/ProtectionAndEventDetails.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlWizard" Src="~/Common/UserControlWizard.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="BestReplacementOption" Src="~/Interfaces/ReplacementOptions.ascx" %>
@@ -1703,11 +1702,6 @@
                 </tbody>
             </table>
         </div>
-       <%-- <table width="100%" border="0" class="formGrid" cellpadding="0" cellspacing="0">
-            <tbody>
-                <uc1:UserControlContactInfo ID="moUserControlContactInfo" runat="server" Visible="false"></uc1:UserControlContactInfo>
-            </tbody>
-        </table>--%>
         <div class="dataContainer">
             <table style="width: 100%; border-collapse: collapse; border: 0;">
                 <tr>
