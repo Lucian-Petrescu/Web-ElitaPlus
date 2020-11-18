@@ -3904,28 +3904,29 @@ Public NotInheritable Class Claim
     Public Function GetFulfillmentDetails(claimNumber As String, companyCode As String) As FulfillmentDetails Implements IFullfillable.GetFulfillmentDetails
 
         Dim response As New FulfillmentDetails
-        response.Charges = {New Charge()}
-        response.Fees = {New Fee()}
-        response.LogisticStages = {New SelectedLogisticStage() With {
-                                                                                                .Address = New FulfilmentaddressInfo With {.AddressId = Me.ContactInfo.Address.Id,
-                                                                                                .Address1 = ContactInfo.Address.Address1,
-                                                                                                     .Address2 = Me.ContactInfo.Address.Address2,
-                                                                                                     .Address3 = Me.ContactInfo.Address.Address3,
-                                                                                                     .City = Me.ContactInfo.Address.City,
-                                                                                                     .Country = Me.ContactInfo.Address.countryBO.Code,
-                                                                                                     .PostalCode = Me.ContactInfo.Address.PostalCode,
-                                                                                                     .State = LookupListNew.GetDescriptionFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS, False), Me.ContactInfo.Address.RegionId)
-                                                                                                                },
-                                                                        .OptionCode = Me.MethodOfRepairCode,
-                                                                        .OptionDescription = Me.MethodOfRepairDescription,
-                                                                        .Code = "FW",
-                                                                        .Description = "Forward Logistics",
-                                                                        .HandlingStore = New HandlingStore(),
-                                                                        .ServiceCenterCode = Me.ServiceCenterObject.Code,
-                                                                        .ServiceCenterDescription = Me.ServiceCenterObject.Description,
-                                                                        .Shipping = New ClaimFulfillmentWebAppGatewayService.ShippingInfo()
-            }}
-
+        If Not Me.ContactInfo Is Nothing Then
+            response.Charges = {New Charge()}
+            response.Fees = {New Fee()}
+            response.LogisticStages = {New SelectedLogisticStage() With {
+                                                                                                    .Address = New FulfilmentaddressInfo With {.AddressId = Me.ContactInfo.Address.Id,
+                                                                                                    .Address1 = ContactInfo.Address.Address1,
+                                                                                                         .Address2 = Me.ContactInfo.Address.Address2,
+                                                                                                         .Address3 = Me.ContactInfo.Address.Address3,
+                                                                                                         .City = Me.ContactInfo.Address.City,
+                                                                                                         .Country = Me.ContactInfo.Address.countryBO.Code,
+                                                                                                         .PostalCode = Me.ContactInfo.Address.PostalCode,
+                                                                                                         .State = LookupListNew.GetDescriptionFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS, False), Me.ContactInfo.Address.RegionId)
+                                                                                                                    },
+                                                                            .OptionCode = Me.MethodOfRepairCode,
+                                                                            .OptionDescription = Me.MethodOfRepairDescription,
+                                                                            .Code = "FW",
+                                                                            .Description = "Forward Logistics",
+                                                                            .HandlingStore = New HandlingStore(),
+                                                                            .ServiceCenterCode = Me.ServiceCenterObject.Code,
+                                                                            .ServiceCenterDescription = Me.ServiceCenterObject.Description,
+                                                                            .Shipping = New ClaimFulfillmentWebAppGatewayService.ShippingInfo()
+                }}
+        End If
         Return response
     End Function
 
