@@ -167,6 +167,40 @@ Public Class CertExtendedItemDal
     End Function
 #End Region
 #Region "Overloaded Methods"
+    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal transaction As IDbTransaction = Nothing)
+
+        Dim tr As IDbTransaction = transaction
+        If tr Is Nothing Then
+            tr = DBHelper.GetNewTransaction
+        End If
+        Try
+            Update(familyDataset.GetChanges(), tr)
+
+            If transaction Is Nothing Then
+                'We are the creator of the transaction we should commit it  and close the connection
+                DBHelper.Commit(tr)
+                familyDataset.AcceptChanges()
+            End If
+        Catch ex As Exception
+            If Transaction Is Nothing Then
+                'We are the creator of the transaction we should commit it  and close the connection
+                DBHelper.RollBack(tr)
+            End If
+            Throw ex
+        End Try
+
+    End Sub
+    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
+        If ds Is Nothing Then
+            Return
+        End If
+        If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
+            Throw New NotSupportedException()
+        End If
+        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(Me.TABLE_NAME), transaction, changesFilter)
+        End If
+    End Sub
     Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
         With command
             .AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE.ToUpper().Trim())
