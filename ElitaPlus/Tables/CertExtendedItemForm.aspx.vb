@@ -258,6 +258,7 @@ Public Class CertExtendedItemForm
                 Case ElitaPlusSearchPage.SAVE_COMMAND_NAME
                     nIndex = CInt(e.CommandArgument)
                     PopulateBoFromControls(GridViewCertItemConfig.Rows(nIndex))
+                    State.SearchDv=CertExtendedItem.GetExistingList(State.DataSet)
                     'Check if fieldName / code is duplicated
                     ValidateConfigRecords()
                     EndEdit(ElitaPlusPage.DetailPageCommand.OK)
@@ -426,9 +427,6 @@ Public Class CertExtendedItemForm
 
 #Region "Controlling Logic"
     Public Sub PopulateGrid()
-        'If ((State.SearchDv Is Nothing) OrElse (State.HasDataChanged)) Then
-        '    State.SearchDv = CertExtendedItem.GetList(State.CodeMask)
-        'End If
         If ((State.DataSet Is Nothing) OrElse (State.HasDataChanged)) Then
             State.DataSet = CertExtendedItem.GeDataSet(State.CodeMask)
         End If
@@ -507,7 +505,7 @@ Public Class CertExtendedItemForm
                         'MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                     Case ElitaPlusPage.DetailPageCommand.Delete
                         .MyBo.Delete()
-                        .DataSet= .SearchDv.Table.DataSet
+                        '.DataSet= .SearchDv.Table.DataSet
                         .MyBo.Save()
                         'MasterPage.MessageController.AddSuccess(Message.DELETE_RECORD_CONFIRMATION, True)
                 End Select
