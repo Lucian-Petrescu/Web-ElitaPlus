@@ -175,7 +175,7 @@ Public Class ClaimWizardForm
 
         Public IsCallerAuthenticated As Boolean = False
         Public FulfillmentDetailsResponse As BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails = Nothing
-        Public FilteredLogistics As List(Of LogisticStageAddress) = Nothing
+        Public LogisticAddressBO As List(Of LogisticStageAddress)
     End Class
 
     Public Enum LocateServiceCenterSearchType
@@ -275,25 +275,25 @@ Public Class ClaimWizardForm
 
 #Region "Properties"
     Protected WithEvents moUserControlAddress As UserControlAddress_New
-    Public ReadOnly Property UserControlAddress() As UserControlAddress_New
-        Get
-            If moUserControlAddress Is Nothing Then
-                moUserControlContactInfo = CType(Me.Master.FindControl("BodyPlaceHolder").FindControl("moUserControlContactInfo"), UserControlContactInfo_New)
-                moUserControlAddress = CType(moUserControlContactInfo.FindControl("moAddressController"), UserControlAddress_New)
+    'Public ReadOnly Property UserControlAddress() As UserControlAddress_New
+    '    Get
+    '        If moUserControlAddress Is Nothing Then
+    '            moUserControlContactInfo = CType(Me.Master.FindControl("BodyPlaceHolder").FindControl("moUserControlContactInfo"), UserControlContactInfo_New)
+    '            moUserControlAddress = CType(moUserControlContactInfo.FindControl("moAddressController"), UserControlAddress_New)
 
-            End If
-            Return moUserControlAddress
-        End Get
-    End Property
+    '        End If
+    '        Return moUserControlAddress
+    '    End Get
+    'End Property
 
-    Public ReadOnly Property UserControlContactInfo() As UserControlContactInfo_New
-        Get
-            If moUserControlContactInfo Is Nothing Then
-                moUserControlContactInfo = CType(Me.Master.FindControl("BodyPlaceHolder").FindControl("moUserControlContactInfo"), UserControlContactInfo_New)
-            End If
-            Return moUserControlContactInfo
-        End Get
-    End Property
+    'Public ReadOnly Property UserControlContactInfo() As UserControlContactInfo_New
+    '    Get
+    '        If moUserControlContactInfo Is Nothing Then
+    '            moUserControlContactInfo = CType(Me.Master.FindControl("BodyPlaceHolder").FindControl("moUserControlContactInfo"), UserControlContactInfo_New)
+    '        End If
+    '        Return moUserControlContactInfo
+    '    End Get
+    'End Property
 
     Protected WithEvents MessageController As MessageController
     Public ReadOnly Property UserControlMessageController() As MessageController
@@ -990,41 +990,41 @@ Public Class ClaimWizardForm
         End Try
     End Sub
 
-    Private Sub cboUseShipAddress_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles step3_cboUseShipAddress.SelectedIndexChanged
-        Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
-        If step3_cboUseShipAddress.SelectedValue = YesId.ToString Then
-            moUserControlContactInfo.Visible = True
+    'Private Sub cboUseShipAddress_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles step3_cboUseShipAddress.SelectedIndexChanged
+    '    Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
+    '    If step3_cboUseShipAddress.SelectedValue = YesId.ToString Then
+    '        moUserControlContactInfo.Visible = True
 
-            If Me.State.ClaimBO.ContactInfoId.Equals(Guid.Empty) Then
-                Me.State.ClaimBO.AddContactInfo(Nothing)
-                Me.State.ClaimBO.ContactInfo.Address.CountryId = Me.State.ClaimBO.Company.CountryId
-                Me.State.ClaimBO.ContactInfo.SalutationId = Me.State.ClaimBO.Company.SalutationId
+    '        If Me.State.ClaimBO.ContactInfoId.Equals(Guid.Empty) Then
+    '            Me.State.ClaimBO.AddContactInfo(Nothing)
+    '            Me.State.ClaimBO.ContactInfo.Address.CountryId = Me.State.ClaimBO.Company.CountryId
+    '            Me.State.ClaimBO.ContactInfo.SalutationId = Me.State.ClaimBO.Company.SalutationId
 
-                Me.UserControlAddress.NewClaimBind(Me.State.ClaimBO.ContactInfo.Address)
-                Me.UserControlContactInfo.NewClaimBind(Me.State.ClaimBO.ContactInfo)
-            Else
-                Me.UserControlAddress.ClaimDetailsBind(Me.State.ClaimBO.ContactInfo.Address)
-                Me.UserControlContactInfo.Bind(Me.State.ClaimBO.ContactInfo)
+    '            Me.UserControlAddress.NewClaimBind(Me.State.ClaimBO.ContactInfo.Address)
+    '            Me.UserControlContactInfo.NewClaimBind(Me.State.ClaimBO.ContactInfo)
+    '        Else
+    '            Me.UserControlAddress.ClaimDetailsBind(Me.State.ClaimBO.ContactInfo.Address)
+    '            Me.UserControlContactInfo.Bind(Me.State.ClaimBO.ContactInfo)
 
-            End If
-        Else
-            moUserControlContactInfo.Visible = False
+    '        End If
+    '    Else
+    '        moUserControlContactInfo.Visible = False
 
-            If Me.State.ClaimBO.ContactInfo.IsNew Then
-                If Not Me.State.ClaimBO.ContactInfo Is Nothing Then
-                    Me.State.ClaimBO.ContactInfo.Delete()
-                End If
+    '        If Me.State.ClaimBO.ContactInfo.IsNew Then
+    '            If Not Me.State.ClaimBO.ContactInfo Is Nothing Then
+    '                Me.State.ClaimBO.ContactInfo.Delete()
+    '            End If
 
-                If Not Me.State.ClaimBO.ContactInfo.Address Is Nothing Then
-                    Me.State.ClaimBO.ContactInfo.Address.Delete()
-                End If
+    '            If Not Me.State.ClaimBO.ContactInfo.Address Is Nothing Then
+    '                Me.State.ClaimBO.ContactInfo.Address.Delete()
+    '            End If
 
-                If Not Me.State.ClaimBO.ContactInfoId = System.Guid.Empty Then
-                    Me.State.ClaimBO.ContactInfoId = System.Guid.Empty
-                End If
-            End If
-        End If
-    End Sub
+    '            If Not Me.State.ClaimBO.ContactInfoId = System.Guid.Empty Then
+    '                Me.State.ClaimBO.ContactInfoId = System.Guid.Empty
+    '            End If
+    '        End If
+    '    End If
+    'End Sub
 
     Private Sub tvQuestion_TreeNodePopulate(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.TreeNodeEventArgs) Handles tvQuestion.TreeNodePopulate
         Dim guidParent As Guid = New Guid(e.Node.Value.Split("|"c)(0))
@@ -1128,40 +1128,53 @@ Public Class ClaimWizardForm
         PopulateFormFromBO(Me.State.StepName)
         PopulateLogisticStageAddress()
     End Sub
+    Public ReadOnly Property UserControlLogisticStageAddressInfo() As UserControlLogisticStageAddress
+        Get
+            If moLogisticStageAddressInfo Is Nothing Then
+                moLogisticStageAddressInfo = CType(Me.Master.FindControl("BodyPlaceHolder").FindControl("moLogisticStageAddressInfo"), UserControlLogisticStageAddress)
+            End If
+            Return moLogisticStageAddressInfo
+        End Get
+    End Property
 
-    Private Sub PopulateLogisticStageAddress()
+   Private Sub PopulateLogisticStageAddress()
 
-        Dim fullFilInfo As BO.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails
-
-        fullFilInfo = Me.State.ClaimBO.GetFulfillmentDetails(Me.State.ClaimBO.ClaimNumber, Me.State.ClaimBO.Company.Code)
-        Me.State.FulfillmentDetailsResponse = fullFilInfo
+       Dim fullFilInfo As BO.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails
+        
+       If Me.State.FulfillmentDetailsResponse  is Nothing Then
+            fullFilInfo = Me.State.ClaimBO.GetFulfillmentDetails(Me.State.ClaimBO.ClaimNumber, Me.State.ClaimBO.Company.Code)
+            Me.State.FulfillmentDetailsResponse = fullFilInfo
+        End If
+      
         If Me.State.FulfillmentDetailsResponse IsNot Nothing Then
 
             If Me.State.FulfillmentDetailsResponse.GetType() Is GetType(BO.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails) Then
                 If Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
                    Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
 
-                    Dim logisticStages As New List(Of LogisticStageAddress)
+                    Dim logisticStageAddresses As New List(Of LogisticStageAddress)
 
-                    logisticStages = New List(Of LogisticStageAddress)(
+                    logisticStageAddresses = New List(Of LogisticStageAddress)(
                         From dr In Me.State.FulfillmentDetailsResponse.LogisticStages Select New LogisticStageAddress() With {
                                                                                .LogisticStageAddress = ConvertToAddressControllerField(dr.Address),
-                                                                               .LogisticStageName = dr.Description
+                                                                               .LogisticStageName = dr.Description,
+                                                                               .LogisticStageCode = dr.Code
                                                                                }
                         )
-                    Dim filteredLogisticStages = logisticStages.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing ).ToList()
-                    Me.State.FilteredLogistics = filteredLogisticStages
+
+                    Dim filteredLogisticStageAddresses = logisticStageAddresses.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing).ToList()
+                    
                     ValidateShippingAddressButtonControl()
-                    moLogisticStageAddressInfo.ParentBusinessObject = filteredLogisticStages
-                    moLogisticStageAddressInfo.DataBind()
+                    State.LogisticAddressBO = FilteredLogisticStageAddresses
+                    UserControlLogisticStageAddressInfo.Bind(State.LogisticAddressBO)
                 Else
-                    moLogisticStageAddressInfo.Visible = False
+                    UserControlLogisticStageAddressInfo.Visible = False
                 End If
 
             End If
 
         Else
-            moLogisticStageAddressInfo.Visible = False
+            UserControlLogisticStageAddressInfo.Visible = False
         End If
     End Sub
 
@@ -1169,7 +1182,7 @@ Public Class ClaimWizardForm
 
         Dim oCertificate As Certificate = New Certificate(Me.State.CertBO.Id)
 
-        If Me.State.FilteredLogistics IsNot Nothing AndAlso oCertificate.Dealer.Validate_Address = Codes.EXT_YESNO_Y Then
+        If Me.State.LogisticAddressBO IsNot Nothing AndAlso oCertificate.Dealer.Validate_Address = Codes.EXT_YESNO_Y Then
             If Not String.IsNullOrWhiteSpace(oCertificate.Product.ClaimProfile) Then
                 If Not String.IsNullOrWhiteSpace(BO.Address.ClaimProfileData(oCertificate.Product.ClaimProfile).Url) Then
                     moLogisticStageAddressInfo.ValidateAddress = True
@@ -1183,18 +1196,39 @@ Public Class ClaimWizardForm
         End If
     End Sub
 
-    Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As FulfillmentAddress) As BusinessObjectsNew.Address
-
+    Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As Fulfillmentaddress) As BusinessObjectsNew.Address
         Dim convertAddress As New BusinessObjectsNew.Address With {
-            .CountryId = LookupListNew.GetIdFromCode(LookupListNew.DataView(LookupListNew.LK_COUNTRIES, False), sourceAddress.Country),
-            .Address1 = sourceAddress.Address1,
-            .Address2 = sourceAddress.Address2,
-            .Address3 = sourceAddress.Address3,
-            .City = sourceAddress.City,
-            .PostalCode = sourceAddress.PostalCode,
-            .RegionId = LookupListNew.GetIdFromDescription(LookupListNew.DataView(LookupListNew.LK_REGIONS, False), sourceAddress.State)
-        }
+                .CountryId =
+                LookupListNew.GetIdFromCode(LookupListNew.DataView(LookupListNew.LK_COUNTRIES, False),
+                                            sourceAddress.Country),
+                .Address1 = sourceAddress.Address1,
+                .Address2 = sourceAddress.Address2,
+                .Address3 = sourceAddress.Address3,
+                .City = sourceAddress.City,
+                .PostalCode = sourceAddress.PostalCode,
+                .RegionId =
+                LookupListNew.GetIdFromDescription(LookupListNew.DataView(LookupListNew.LK_REGIONS, False),
+                                                   sourceAddress.State)
+                }
         Return convertAddress
+    End Function
+    Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As Claim.FulfillmentaddressInfo) As BusinessObjectsNew.Address
+       
+        Dim convertAddress As New BusinessObjectsNew.Address(sourceAddress.AddressId) With {
+                .CountryId =
+                LookupListNew.GetIdFromCode(LookupListNew.DataView(LookupListNew.LK_COUNTRIES, False),
+                                            sourceAddress.Country),
+                .Address1 = sourceAddress.Address1,
+                .Address2 = sourceAddress.Address2,
+                .Address3 = sourceAddress.Address3,
+                .City = sourceAddress.City,
+                .PostalCode = sourceAddress.PostalCode,
+                .RegionId =
+                LookupListNew.GetIdFromDescription(LookupListNew.DataView(LookupListNew.LK_REGIONS, False),
+                                                   sourceAddress.State)
+                }
+        Return convertAddress
+  
     End Function
 
     Private Sub UpdateBreadCrum(ByVal wizardStep As ClaimWizardSteps)
@@ -1251,8 +1285,8 @@ Public Class ClaimWizardForm
                 Me.btnModalBbDolYes.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_INVALID_DOL_BYPASS_YES)
                 Me.btnModalBbDolNo.Value = TranslationBase.TranslateLabelOrMessage(Message.MSG_INVALID_DOL_BYPASS_NO)
 
-                Me.SetContactInfoLabelColor()
-                Me.SetAddressLabelColor()
+                'Me.SetContactInfoLabelColor()
+                'Me.SetAddressLabelColor()
                 TranslateGridHeader(Grid)
                 TranslateGridHeader(GridClaimImages)
                 TranslateGridHeader(GridClaimAuthorization)
@@ -2078,7 +2112,9 @@ Public Class ClaimWizardForm
                     Throw New PopulateBOErrorException
                 End If
             Case ClaimWizardSteps.Step3
+                
                 PopulateBOFromFormForStep3()
+
             Case ClaimWizardSteps.Step4
 
                 If Me.step4_RadioButtonNO_SVC_OPTION.Checked Then
@@ -2404,20 +2440,20 @@ Public Class ClaimWizardForm
         Dim isNewFulfillment = (Not String.IsNullOrWhiteSpace(Me.State.CertItemCoverageBO.FulfillmentProfileCode))
 
 
-        If Not Me.State.ClaimBO.ContactInfoId.Equals(Guid.Empty) Then
-            Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
-            SetSelectedItem(Me.step3_cboUseShipAddress, YesId)
-            moUserControlContactInfo.Visible = True
+        'If Not Me.State.ClaimBO.ContactInfoId.Equals(Guid.Empty) Then
+        '    Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
+        '    SetSelectedItem(Me.step3_cboUseShipAddress, YesId)
+        '    moUserControlContactInfo.Visible = True
 
-            Me.UserControlAddress.ClaimDetailsBind(Me.State.ClaimBO.ContactInfo.Address)
-            Me.UserControlContactInfo.Bind(Me.State.ClaimBO.ContactInfo)
-            'This makes all child controls inside UserControlAddress as ReadOnly 
-            If isNewFulfillment = True Then
-                Me.UserControlAddress.EnableControl(False)
-                Me.UserControlContactInfo.EnableControl(False)
-            End If
+        '    Me.UserControlAddress.ClaimDetailsBind(Me.State.ClaimBO.ContactInfo.Address)
+        '    Me.UserControlContactInfo.Bind(Me.State.ClaimBO.ContactInfo)
+        '    'This makes all child controls inside UserControlAddress as ReadOnly 
+        '    If isNewFulfillment = True Then
+        '        Me.UserControlAddress.EnableControl(False)
+        '        Me.UserControlContactInfo.EnableControl(False)
+        '    End If
 
-        End If
+        'End If
 
         If Not State.ClaimBO.LossDate Is Nothing AndAlso Not State.ClaimBO.ReportedDate Is Nothing Then
             'Display warning Message if the period between the Date of loss and the Reported Date is more than the allowed Number of Days
@@ -2636,11 +2672,11 @@ Public Class ClaimWizardForm
                 Me.State.PoliceReportBO = Nothing
             End If
 
-            If Not Me.State.ClaimBO.ContactInfo Is Nothing Then
-                If Me.State.ClaimBO.ContactInfo.IsDeleted = False Then
-                    Me.State.ClaimBO.ContactInfoId = Me.State.ClaimBO.ContactInfo.Id
-                End If
-            End If
+            'If Not Me.State.ClaimBO.ContactInfo Is Nothing Then
+            '    If Me.State.ClaimBO.ContactInfo.IsDeleted = False Then
+            '        Me.State.ClaimBO.ContactInfoId = Me.State.ClaimBO.ContactInfo.Id
+            '    End If
+            'End If
 
             If Me.State.IsClaimDenied Then
                 Me.PopulateBOProperty(Me.State.ClaimBO, "DeniedReasonId", Me.step3_cboDeniedReason)
@@ -2653,17 +2689,26 @@ Public Class ClaimWizardForm
                 Me.PopulateBOProperty(Me.State.ClaimBO, "Fraudulent", Me.step3_cboFraudulent)
                 Me.PopulateBOProperty(Me.State.ClaimBO, "Complaint", Me.step3_cboComplaint)
             End If
+            
+            'Save Logistic stage Addresses
+            UserControlLogisticStageAddressInfo.FulfillmentProviderTypeInfo = Me.State.ClaimBO.FulfillmentProviderType
+            UserControlLogisticStageAddressInfo.PopulateBoFromRepeaterControl(Me.State.FulfillmentDetailsResponse)
+            if Me.State.ClaimBO.FulfillmentProviderType = BusinessObjectsNew.FulfillmentProviderType.Elita then  '---V3
+                Me.State.ClaimBO.SaveLogisticsStages(Me.State.ClaimBO.ClaimNumber, Me.State.ClaimBO.Company.Code,Me.State.FulfillmentDetailsResponse.LogisticStages.ToList())
+                UserControlLogisticStageAddressInfo.PopulateBoFromRepeaterControl(Me.State.FulfillmentDetailsResponse)
+            End If
+
 
         End With
         If Me.ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
 
-        If step3_cboUseShipAddress.SelectedValue = Me.State.yesId.ToString Then
-            Me.State.ClaimBO.ContactInfo.Address.InforceFieldValidation = True
-            UserControlContactInfo.PopulateBOFromControl(True)
-            Me.State.ClaimBO.ContactInfo.Save()
-        End If
+        'If step3_cboUseShipAddress.SelectedValue = Me.State.yesId.ToString Then
+        '    Me.State.ClaimBO.ContactInfo.Address.InforceFieldValidation = True
+        '    UserControlContactInfo.PopulateBOFromControl(True)
+        '    Me.State.ClaimBO.ContactInfo.Save()
+        'End If
 
     End Sub
 
@@ -3130,106 +3175,106 @@ Public Class ClaimWizardForm
         End Select
     End Sub
 
-    Private Sub SetContactInfoLabelColor()
-        If UserControlContactInfo Is Nothing Then
-            Exit Sub
-        End If
+    'Private Sub SetContactInfoLabelColor()
+    '    If UserControlContactInfo Is Nothing Then
+    '        Exit Sub
+    '    End If
 
-        Dim lbl As Label
-        lbl = CType(UserControlContactInfo.FindControl("moSalutationLabel"), Label)
-        If lbl.ForeColor = Color.Red Then
-            If Not Me.UserControlMessageController.Controls.Contains(lbl) Then
-                lbl.ForeColor = Color.Black
-            End If
-        End If
-        lbl = CType(UserControlContactInfo.FindControl("Label1"), Label)
-        If lbl.ForeColor = Color.Red Then
-            If Not UserControlMessageController.Controls.Contains(lbl) Then
-                lbl.ForeColor = Color.Black
-            End If
-        End If
-        lbl = CType(UserControlContactInfo.FindControl("moContactNameLabel"), Label)
-        If lbl.ForeColor = Color.Red Then
-            If Not UserControlMessageController.Controls.Contains(lbl) Then
-                lbl.ForeColor = Color.Black
-            End If
-        End If
-        lbl = CType(UserControlContactInfo.FindControl("moHomePhoneLabel"), Label)
-        If lbl.ForeColor = Color.Red Then
-            If Not UserControlMessageController.Controls.Contains(lbl) Then
-                lbl.ForeColor = Color.Black
-            End If
-        End If
-        lbl = CType(UserControlContactInfo.FindControl("moEmailAddressLabel"), Label)
-        If lbl.ForeColor = Color.Red Then
-            If Not UserControlMessageController.Controls.Contains(lbl) Then
-                lbl.ForeColor = Color.Black
-            End If
-        End If
-        lbl = CType(UserControlContactInfo.FindControl("moWorkPhoneLabel"), Label)
-        If lbl.ForeColor = Color.Red Then
-            If Not UserControlMessageController.Controls.Contains(lbl) Then
-                lbl.ForeColor = Color.Black
-            End If
-        End If
-        lbl = CType(UserControlContactInfo.FindControl("moCellPhoneLabel"), Label)
-        If lbl.ForeColor = Color.Red Then
-            If Not UserControlMessageController.Controls.Contains(lbl) Then
-                lbl.ForeColor = Color.Black
-            End If
-        End If
-    End Sub
+    '    Dim lbl As Label
+    '    lbl = CType(UserControlContactInfo.FindControl("moSalutationLabel"), Label)
+    '    If lbl.ForeColor = Color.Red Then
+    '        If Not Me.UserControlMessageController.Controls.Contains(lbl) Then
+    '            lbl.ForeColor = Color.Black
+    '        End If
+    '    End If
+    '    lbl = CType(UserControlContactInfo.FindControl("Label1"), Label)
+    '    If lbl.ForeColor = Color.Red Then
+    '        If Not UserControlMessageController.Controls.Contains(lbl) Then
+    '            lbl.ForeColor = Color.Black
+    '        End If
+    '    End If
+    '    lbl = CType(UserControlContactInfo.FindControl("moContactNameLabel"), Label)
+    '    If lbl.ForeColor = Color.Red Then
+    '        If Not UserControlMessageController.Controls.Contains(lbl) Then
+    '            lbl.ForeColor = Color.Black
+    '        End If
+    '    End If
+    '    lbl = CType(UserControlContactInfo.FindControl("moHomePhoneLabel"), Label)
+    '    If lbl.ForeColor = Color.Red Then
+    '        If Not UserControlMessageController.Controls.Contains(lbl) Then
+    '            lbl.ForeColor = Color.Black
+    '        End If
+    '    End If
+    '    lbl = CType(UserControlContactInfo.FindControl("moEmailAddressLabel"), Label)
+    '    If lbl.ForeColor = Color.Red Then
+    '        If Not UserControlMessageController.Controls.Contains(lbl) Then
+    '            lbl.ForeColor = Color.Black
+    '        End If
+    '    End If
+    '    lbl = CType(UserControlContactInfo.FindControl("moWorkPhoneLabel"), Label)
+    '    If lbl.ForeColor = Color.Red Then
+    '        If Not UserControlMessageController.Controls.Contains(lbl) Then
+    '            lbl.ForeColor = Color.Black
+    '        End If
+    '    End If
+    '    lbl = CType(UserControlContactInfo.FindControl("moCellPhoneLabel"), Label)
+    '    If lbl.ForeColor = Color.Red Then
+    '        If Not UserControlMessageController.Controls.Contains(lbl) Then
+    '            lbl.ForeColor = Color.Black
+    '        End If
+    '    End If
+    'End Sub
 
-    Private Sub SetAddressLabelColor()
+    'Private Sub SetAddressLabelColor()
 
-        If UserControlAddress Is Nothing Then
-            Exit Sub
-        End If
+    '    If UserControlAddress Is Nothing Then
+    '        Exit Sub
+    '    End If
 
-        Dim lbl As Label
-        lbl = CType(UserControlAddress.FindControl("moAddress1Label"), Label)
-        If lbl.ForeColor = Color.Red Then
-            If Not UserControlMessageController.Controls.Contains(lbl) Then
-                lbl.ForeColor = Color.Black
-            End If
-        End If
-        lbl = CType(UserControlAddress.FindControl("moAddress2Label"), Label)
-        If lbl.ForeColor = Color.Red Then
-            If Not UserControlMessageController.Controls.Contains(lbl) Then
-                lbl.ForeColor = Color.Black
-            End If
-        End If
-        lbl = CType(UserControlAddress.FindControl("moAddress3Label"), Label)
-        If lbl.ForeColor = Color.Red Then
-            If Not UserControlMessageController.Controls.Contains(lbl) Then
-                lbl.ForeColor = Color.Black
-            End If
-        End If
-        lbl = CType(UserControlAddress.FindControl("moCityLabel"), Label)
-        If lbl.ForeColor = Color.Red Then
-            If Not UserControlMessageController.Controls.Contains(lbl) Then
-                lbl.ForeColor = Color.Black
-            End If
-        End If
-        lbl = CType(UserControlAddress.FindControl("moCountryLabel"), Label)
-        If lbl.ForeColor = Color.Red Then
-            If Not UserControlMessageController.Controls.Contains(lbl) Then
-                lbl.ForeColor = Color.Black
-            End If
-        End If
-        lbl = CType(UserControlAddress.FindControl("moPostalLabel"), Label)
-        If lbl.ForeColor = Color.Red Then
-            If Not UserControlMessageController.Controls.Contains(lbl) Then
-                lbl.ForeColor = Color.Black
-            End If
-        End If
-        lbl = CType(UserControlAddress.FindControl("moRegionLabel"), Label)
-        If lbl.ForeColor = Color.Red Then
-            If Not UserControlMessageController.Controls.Contains(lbl) Then
-                lbl.ForeColor = Color.Black
-            End If
-        End If
-    End Sub
+    '    Dim lbl As Label
+    '    lbl = CType(UserControlAddress.FindControl("moAddress1Label"), Label)
+    '    If lbl.ForeColor = Color.Red Then
+    '        If Not UserControlMessageController.Controls.Contains(lbl) Then
+    '            lbl.ForeColor = Color.Black
+    '        End If
+    '    End If
+    '    lbl = CType(UserControlAddress.FindControl("moAddress2Label"), Label)
+    '    If lbl.ForeColor = Color.Red Then
+    '        If Not UserControlMessageController.Controls.Contains(lbl) Then
+    '            lbl.ForeColor = Color.Black
+    '        End If
+    '    End If
+    '    lbl = CType(UserControlAddress.FindControl("moAddress3Label"), Label)
+    '    If lbl.ForeColor = Color.Red Then
+    '        If Not UserControlMessageController.Controls.Contains(lbl) Then
+    '            lbl.ForeColor = Color.Black
+    '        End If
+    '    End If
+    '    lbl = CType(UserControlAddress.FindControl("moCityLabel"), Label)
+    '    If lbl.ForeColor = Color.Red Then
+    '        If Not UserControlMessageController.Controls.Contains(lbl) Then
+    '            lbl.ForeColor = Color.Black
+    '        End If
+    '    End If
+    '    lbl = CType(UserControlAddress.FindControl("moCountryLabel"), Label)
+    '    If lbl.ForeColor = Color.Red Then
+    '        If Not UserControlMessageController.Controls.Contains(lbl) Then
+    '            lbl.ForeColor = Color.Black
+    '        End If
+    '    End If
+    '    lbl = CType(UserControlAddress.FindControl("moPostalLabel"), Label)
+    '    If lbl.ForeColor = Color.Red Then
+    '        If Not UserControlMessageController.Controls.Contains(lbl) Then
+    '            lbl.ForeColor = Color.Black
+    '        End If
+    '    End If
+    '    lbl = CType(UserControlAddress.FindControl("moRegionLabel"), Label)
+    '    If lbl.ForeColor = Color.Red Then
+    '        If Not UserControlMessageController.Controls.Contains(lbl) Then
+    '            lbl.ForeColor = Color.Black
+    '        End If
+    '    End If
+    'End Sub
 
 
     Private Sub PopulateSoftQuestionTree()
