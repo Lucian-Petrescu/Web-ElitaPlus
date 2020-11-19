@@ -96,6 +96,20 @@ Public Class CertExtendedItemDal
         End Try
     End Function
 #End Region
+#Region "Description Save"
+    Public Sub SaveDescription(ByVal code As String, ByVal description As String, ByVal modifiedBy As String)
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/SAVE_CODE_DESCRIPTION"))
+                cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, code)
+                cmd.AddParameter(PAR_I_NAME_DESCRIPTION, OracleDbType.Varchar2, description)
+                cmd.AddParameter(PAR_I_NAME_MODIFIED_BY, OracleDbType.Varchar2, modifiedBy)
+                OracleDbHelper.Fetch(cmd, TABLE_NAME)
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
+#End Region
 #Region "Dealer Company List"
     Public Sub SaveDealerCompanyList(ByVal code As String, ByVal reference As String, ByVal id As Guid, ByVal created_by As String)
         Try
@@ -151,8 +165,56 @@ Public Class CertExtendedItemDal
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
+    Function FieldConfigExist(ByVal code As String, ByVal fieldName As String,ByVal reference As String, ByVal id As Guid) As DataSet
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/CRT_CONFIG_EXIST"))
+                cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, code)
+                cmd.AddParameter(PAR_I_NAME_FIELD_NAME, OracleDbType.Varchar2, fieldName)
+                cmd.AddParameter(PAR_I_NAME_REFERENCE, OracleDbType.Varchar2, reference)
+                cmd.AddParameter(PAR_I_NAME_REFERENCE_ID, OracleDbType.Raw, id.ToByteArray())
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
 #End Region
 #Region "Overloaded Methods"
+    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal transaction As IDbTransaction = Nothing)
+
+        Dim tr As IDbTransaction = transaction
+        If tr Is Nothing Then
+            tr = DBHelper.GetNewTransaction
+        End If
+        Try
+            Update(familyDataset.GetChanges(), tr)
+
+            If transaction Is Nothing Then
+                'We are the creator of the transaction we should commit it  and close the connection
+                DBHelper.Commit(tr)
+                familyDataset.AcceptChanges()
+            End If
+        Catch ex As Exception
+            If Transaction Is Nothing Then
+                'We are the creator of the transaction we should commit it  and close the connection
+                DBHelper.RollBack(tr)
+            End If
+            Throw ex
+        End Try
+
+    End Sub
+    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
+        If ds Is Nothing Then
+            Return
+        End If
+        If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
+            Throw New NotSupportedException()
+        End If
+        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(Me.TABLE_NAME), transaction, changesFilter)
+        End If
+    End Sub
     Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
         With command
             .AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CODE.ToUpper().Trim())

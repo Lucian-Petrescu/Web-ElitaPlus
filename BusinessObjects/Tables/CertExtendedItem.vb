@@ -15,7 +15,7 @@ Public Class CertExtendedItem
     Public Const COL_NAME_CERT_EXTENDED_ITEM_ID As String = CertExtendedItemDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID
     Public Const COL_NAME_DEFAULT_VALUE As String = CertExtendedItemDal.COL_NAME_DEFAULT_VALUE
 #End Region
-#Region "BankNameSearchDV"
+#Region "CertExtSearchDV"
     Public Class CertExtendedItemSearchDv
         Inherits DataView
 
@@ -44,7 +44,7 @@ Public Class CertExtendedItem
 
     'Exiting BO
     Public Sub New(ByVal id As Guid)
-        MyBase.New()
+        MyBase.New(false)
         Dataset = New DataSet
         Load(id)
     End Sub
@@ -75,21 +75,21 @@ Public Class CertExtendedItem
         Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
-    Public Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid) As CertExtendedItemSearchDv
+    Public Function GetNewDataViewRow(ByVal ds As DataSet, ByVal id As Guid) As CertExtendedItemSearchDv
 
         Dim dt As DataTable
-        dt = dv.Table
-        Dim newRow As DataRow = dt.NewRow
+        dt = ds.Tables(0)
+        'Dim newRow As DataRow = dt.NewRow
 
-        newRow(CertExtendedItemDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID) = id.ToByteArray
-        newRow(CertExtendedItemDal.COL_NAME_CODE) = String.Empty
-        newRow(CertExtendedItemDal.COL_NAME_DESCRIPTION) = String.Empty
-        newRow(CertExtendedItemDal.COL_NAME_FIELD_NAME) = String.Empty
-        newRow(CertExtendedItemDal.COL_NAME_DEFAULT_VALUE) = String.Empty
-        newRow(CertExtendedItemDal.COL_NAME_ALLOW_UPDATE) = "Y"
-        newRow(CertExtendedItemDal.COL_NAME_ALLOW_DISPLAY) = "Y"
-        dt.Rows.Add(newRow)
-        Row = newRow
+        'newRow(CertExtendedItemDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID) = id.ToByteArray
+        'newRow(CertExtendedItemDal.COL_NAME_CODE) = String.Empty
+        'newRow(CertExtendedItemDal.COL_NAME_DESCRIPTION) = String.Empty
+        'newRow(CertExtendedItemDal.COL_NAME_FIELD_NAME) = String.Empty
+        'newRow(CertExtendedItemDal.COL_NAME_DEFAULT_VALUE) = String.Empty
+        'newRow(CertExtendedItemDal.COL_NAME_ALLOW_UPDATE) = "N"
+        'newRow(CertExtendedItemDal.COL_NAME_ALLOW_DISPLAY) = "Y"
+        'dt.Rows.Add(newRow)
+        'Row = newRow
         Return New CertExtendedItemSearchDv(dt)
 
     End Function
@@ -97,6 +97,21 @@ Public Class CertExtendedItem
         Try
             Dim dal As New CertExtendedItemDal
             Return New CertExtendedItemSearchDV(dal.LoadList(codeMask).Tables(0))
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+    Public Shared Function GetExistingList(ByVal familyDs As DataSet) As CertExtendedItemSearchDV
+        Try
+            Return New CertExtendedItemSearchDV(familyDs.Tables(0))
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+    Public Shared Function GeDataSet(ByVal codeMask As String) As DataSet
+        Try
+            Dim dal As New CertExtendedItemDal
+            Return dal.LoadList(codeMask)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
@@ -143,7 +158,7 @@ Public Class CertExtendedItem
 #Region "Private Members"
     'Initialization code for new objects
     Private Sub Initialize()
-        AllowUpdate = Codes.YESNO_Y
+        AllowUpdate = Codes.YESNO_N
         FieldName = String.Empty
         DefaultValue = String.Empty
         AllowDisplay = Codes.YESNO_Y
@@ -321,6 +336,27 @@ Public Class CertExtendedItem
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
+    Sub SaveDescription(ByVal codeMask As String, ByVal descriptionValue As String)
+        Try
+            Me.SetModifiedAuditInfo()
+            Dim dal = New CertExtendedItemDal
+            dal.SaveDescription(codeMask, descriptionValue, Me.Row(DALBase.COL_NAME_MODIFIED_BY).ToString())
+
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
+     Sub SaveConfig(ByVal ds As DataSet)
+        Try
+            Dataset=ds
+            If Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then 'Me._isDSCreator AndAlso 
+                Dim dal As New CertExtendedItemDal
+                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
+            End If
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
 #End Region
 #Region "Dealer Company List Validation"
     Public Shared Function GetFieldConfigExist(ByVal codeMask As String, ByVal fieldName As String) As DataView
@@ -328,6 +364,16 @@ Public Class CertExtendedItem
         Try
             Dim dal As New CertExtendedItemDal
             Dim dv As DataView = dal.FieldConfigExist(codeMask, fieldName).Tables(0).DefaultView
+            Return dv
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+    Public Shared Function GetFieldConfigExist(ByVal codeMask As String, ByVal fieldName As String,ByVal reference As String, ByVal id As Guid) As DataView
+
+        Try
+            Dim dal As New CertExtendedItemDal
+            Dim dv As DataView = dal.FieldConfigExist(codeMask, fieldName,reference, id).Tables(0).DefaultView
             Return dv
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
@@ -458,7 +504,8 @@ Public Class CertExtendedItem
             MyBase.Save()
             If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CertExtendedItemDal
-                dal.Update(Me.Row)
+                'dal.Update(Me.Row)
+                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
