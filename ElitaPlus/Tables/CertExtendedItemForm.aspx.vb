@@ -640,16 +640,18 @@ Public Class CertExtendedItemForm
         If Not dvCertConfigDv Is Nothing AndAlso dvCertConfigDv.Count > 0 Then
             For Each certItemConfig As DataRow In dvCertConfigDv.Table.Rows
                 'For Template Fields
-                Dim currentCertConfigId As Guid = New Guid(CType(certItemConfig(CertExtendedItem.CertExtendedItemSearchDv.COL_CERT_EXT_CONFIG_ID), Byte()))
+                if Not(certItemConfig.RowState = DataRowState.Deleted) Then
+                    Dim currentCertConfigId As Guid = New Guid(CType(certItemConfig(CertExtendedItem.CertExtendedItemSearchDv.COL_CERT_EXT_CONFIG_ID), Byte()))
 
-                If Not currentCertConfigId.Equals(State.MyBo.Id) AndAlso certItemConfig(CertExtendedItem.CertExtendedItemSearchDv.COL_FIELD_NAME).ToString().ToUpper() = State.MyBo.FieldName.ToUpper() AndAlso State.IsRowEdit = False Then
-                    Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME)
+                    If Not currentCertConfigId.Equals(State.MyBo.Id) AndAlso certItemConfig(CertExtendedItem.CertExtendedItemSearchDv.COL_FIELD_NAME).ToString().ToUpper().Trim() = State.MyBo.FieldName.ToUpper().Trim() AndAlso State.IsRowEdit = False Then
+                        Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME)
+                    End If
                 End If
             Next
         End If
 
         Dim dv As DataView
-        dv = CertExtendedItem.GetFieldConfigExist(State.MyBo.Code, State.MyBo.FieldName)
+        dv = CertExtendedItem.GetFieldConfigExist(State.MyBo.Code.ToUpper().Trim(), State.MyBo.FieldName.ToUpper().Trim())
 
         If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
             Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY)
@@ -676,26 +678,50 @@ Public Class CertExtendedItemForm
         If rdoCompanies.Checked Then
             For Each str As String In UserControlAvailableSelectedCompanies.SelectedList
                 Dim companyId As Guid = New Guid(str)
-                dv = CertExtendedItem.GetDealerCompanyConfigExist(State.CodeMask, "ELP_COMPANY", companyId)
+                dv = CertExtendedItem.GetDealerCompanyConfigExist(State.CodeMask.ToUpper().Trim(), "ELP_COMPANY", companyId)
                 If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
                     Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY)
                 End If
+            Next
+            For Each str As String In UserControlAvailableSelectedCompanies.SelectedList
+                Dim companyId As Guid = New Guid(str)
+                For Each certItemConfig As DataRow In State.DataSet.Tables(0).Rows
+                    if Not(certItemConfig.RowState = DataRowState.Deleted) Then
+                        dv = CertExtendedItem.GetFieldConfigExist(State.CodeMask,certItemConfig(CertExtendedItem.CertExtendedItemSearchDv.COL_FIELD_NAME).ToString().ToUpper(), "ELP_COMPANY", companyId)
+                        If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
+                            Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY)
+                        End If
+                    End If
+                Next
             Next
         ElseIf rdoDealers.Checked Then
             For Each Str As String In UserControlAvailableSelectedDealers.SelectedList
                 Dim dealerId As Guid = New Guid(Str)
-                dv = CertExtendedItem.GetDealerCompanyConfigExist(State.CodeMask, "ELP_DEALER", dealerId)
+                dv = CertExtendedItem.GetDealerCompanyConfigExist(State.CodeMask.ToUpper().Trim(), "ELP_DEALER", dealerId)
                 If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
                     Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY)
                 End If
             Next
+            For Each str As String In UserControlAvailableSelectedDealers.SelectedList
+                Dim dealerId As Guid = New Guid(str)
+                For Each certItemConfig As DataRow In State.DataSet.Tables(0).Rows
+                    if Not(certItemConfig.RowState = DataRowState.Deleted) Then
+                        dv = CertExtendedItem.GetFieldConfigExist(State.CodeMask,certItemConfig(CertExtendedItem.CertExtendedItemSearchDv.COL_FIELD_NAME).ToString().ToUpper(), "ELP_DEALER", dealerId)
+                        If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
+                            Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY)
+                        End If
+                    End If
+                Next
+            Next
         End If
 
         For Each certItemConfig As DataRow In State.DataSet.Tables(0).Rows
-            dv = CertExtendedItem.GetFieldConfigExist(certItemConfig(CertExtendedItem.CertExtendedItemSearchDv.COL_CODE).ToString().ToUpper(), certItemConfig(CertExtendedItem.CertExtendedItemSearchDv.COL_FIELD_NAME).ToString().ToUpper())
+            if Not(certItemConfig.RowState = DataRowState.Deleted) Then
+                dv = CertExtendedItem.GetFieldConfigExist(certItemConfig(CertExtendedItem.CertExtendedItemSearchDv.COL_CODE).ToString().ToUpper(), certItemConfig(CertExtendedItem.CertExtendedItemSearchDv.COL_FIELD_NAME).ToString().ToUpper())
 
-            If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
-                Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY)
+                If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
+                    Throw New GUIException(Message.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY)
+                End If
             End If
         Next
     End Function

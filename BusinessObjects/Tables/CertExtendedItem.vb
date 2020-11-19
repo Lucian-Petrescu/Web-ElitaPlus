@@ -369,6 +369,16 @@ Public Class CertExtendedItem
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
+    Public Shared Function GetFieldConfigExist(ByVal codeMask As String, ByVal fieldName As String,ByVal reference As String, ByVal id As Guid) As DataView
+
+        Try
+            Dim dal As New CertExtendedItemDal
+            Dim dv As DataView = dal.FieldConfigExist(codeMask, fieldName,reference, id).Tables(0).DefaultView
+            Return dv
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
     Public Shared Function GetDealerCompanyConfigExist(ByVal code As String, ByVal reference As String, ByVal id As Guid) As DataView
 
         Try
