@@ -122,14 +122,6 @@ Public Class CertExtendedItemForm
     Protected Sub TextBoxCertItemConfigCode_TextChanged(sender As Object, e As EventArgs) Handles TextboxCertItemConfigCode.TextChanged
         Try
             If btnAdd.Enabled = True AndAlso Not State.CodeMask.Equals(TextboxCertItemConfigCode.Text.ToUpper().Trim()) Then
-                'SetStateProperties()
-                'TextboxCertItemConfigDesc.Text = ""
-                'State.HasDataChanged = True
-                'State.IsGridVisible = True
-                'State.MyBo = New CertExtendedItem
-                'PopulateUserConctrols()
-                'State.SearchDv = CertExtendedItem.GetList(TextboxCertItemConfigCode.Text.ToUpper().Trim())
-                'PopulateGrid()
                 LoadData()
             End If
         Catch ex As Exception
