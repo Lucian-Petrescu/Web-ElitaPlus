@@ -3904,7 +3904,6 @@ Public NotInheritable Class Claim
     Public Function GetFulfillmentDetails(claimNumber As String, companyCode As String) As FulfillmentDetails Implements IFullfillable.GetFulfillmentDetails
 
         Dim response As New FulfillmentDetails
-        If Not Me.ContactInfo Is Nothing Then
         response.Charges = {New Charge()}
         response.Fees = {New Fee()}
         response.LogisticStages = {New SelectedLogisticStage() With {
@@ -3926,7 +3925,7 @@ Public NotInheritable Class Claim
                                                                         .ServiceCenterDescription = Me.ServiceCenterObject.Description,
                                                                         .Shipping = New ClaimFulfillmentWebAppGatewayService.ShippingInfo()
             }}
-        End If
+
         Return response
     End Function
 
