@@ -107,7 +107,7 @@ Public Class UserControlLogisticStageAddress
             zd.CountryId = New Guid(ddlCountry.SelectedValue.ToString())
             zd.ValidateZipCode(txtPostalCode.Text)
   
-            if FulfillmentProviderTypeInfo <> FulfillmentProviderType.Elita Then  '---V3
+            if FulfillmentProviderTypeInfo <> FulfillmentProviderType.V3 Then
                  addressControl.PopulateBOFromControl(True)
             End If
 
@@ -126,4 +126,5 @@ Public Class UserControlLogisticStageAddress
 
         Next
     End Sub
+
 End Class

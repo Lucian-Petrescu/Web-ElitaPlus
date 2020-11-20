@@ -174,8 +174,8 @@ Public Class ClaimWizardForm
         Public ClaimCaseDeviceInfoDV As DataView = Nothing
 
         Public IsCallerAuthenticated As Boolean = False
-        Public FulfillmentDetailsResponse As BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails = Nothing
-        Public LogisticAddressBO As List(Of LogisticStageAddress)
+        Public FulfillmentDetails As BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails = Nothing
+        Public LogisticAddressBo As List(Of LogisticStageAddress)
     End Class
 
     Public Enum LocateServiceCenterSearchType
@@ -1141,21 +1141,21 @@ Public Class ClaimWizardForm
 
        Dim fullFilInfo As BO.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails
         
-       If Me.State.FulfillmentDetailsResponse  is Nothing Then
+       If Me.State.FulfillmentDetails  is Nothing Then
             fullFilInfo = Me.State.ClaimBO.GetFulfillmentDetails(Me.State.ClaimBO.ClaimNumber, Me.State.ClaimBO.Company.Code)
-            Me.State.FulfillmentDetailsResponse = fullFilInfo
+            Me.State.FulfillmentDetails = fullFilInfo
         End If
       
-        If Me.State.FulfillmentDetailsResponse IsNot Nothing Then
+        If Me.State.FulfillmentDetails IsNot Nothing Then
 
-            If Me.State.FulfillmentDetailsResponse.GetType() Is GetType(BO.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails) Then
-                If Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
-                   Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
+            If Me.State.FulfillmentDetails.GetType() Is GetType(BO.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails) Then
+                If Me.State.FulfillmentDetails.LogisticStages IsNot Nothing AndAlso
+                   Me.State.FulfillmentDetails.LogisticStages.Length > 0 Then
 
                     Dim logisticStageAddresses As New List(Of LogisticStageAddress)
 
                     logisticStageAddresses = New List(Of LogisticStageAddress)(
-                        From dr In Me.State.FulfillmentDetailsResponse.LogisticStages Select New LogisticStageAddress() With {
+                        From dr In Me.State.FulfillmentDetails.LogisticStages Select New LogisticStageAddress() With {
                                                                                .LogisticStageAddress = ConvertToAddressControllerField(dr.Address),
                                                                                .LogisticStageName = dr.Description,
                                                                                .LogisticStageCode = dr.Code
@@ -1165,8 +1165,8 @@ Public Class ClaimWizardForm
                     Dim filteredLogisticStageAddresses = logisticStageAddresses.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing).ToList()
                     
                     ValidateShippingAddressButtonControl()
-                    State.LogisticAddressBO = FilteredLogisticStageAddresses
-                    UserControlLogisticStageAddressInfo.Bind(State.LogisticAddressBO)
+                    State.LogisticAddressBo = logisticStageAddresses 'FilteredLogisticStageAddresses
+                    UserControlLogisticStageAddressInfo.Bind(State.LogisticAddressBo)
                 Else
                     UserControlLogisticStageAddressInfo.Visible = False
                 End If
@@ -1182,7 +1182,7 @@ Public Class ClaimWizardForm
 
         Dim oCertificate As Certificate = New Certificate(Me.State.CertBO.Id)
 
-        If Me.State.LogisticAddressBO IsNot Nothing AndAlso oCertificate.Dealer.Validate_Address = Codes.EXT_YESNO_Y Then
+        If Me.State.LogisticAddressBo IsNot Nothing AndAlso oCertificate.Dealer.Validate_Address = Codes.EXT_YESNO_Y Then
             If Not String.IsNullOrWhiteSpace(oCertificate.Product.ClaimProfile) Then
                 If Not String.IsNullOrWhiteSpace(BO.Address.ClaimProfileData(oCertificate.Product.ClaimProfile).Url) Then
                     moLogisticStageAddressInfo.ValidateAddress = True
@@ -2690,14 +2690,7 @@ Public Class ClaimWizardForm
                 Me.PopulateBOProperty(Me.State.ClaimBO, "Complaint", Me.step3_cboComplaint)
             End If
             
-            'Save Logistic stage Addresses
-            UserControlLogisticStageAddressInfo.FulfillmentProviderTypeInfo = Me.State.ClaimBO.FulfillmentProviderType
-            UserControlLogisticStageAddressInfo.PopulateBoFromRepeaterControl(Me.State.FulfillmentDetailsResponse)
-            if Me.State.ClaimBO.FulfillmentProviderType = BusinessObjectsNew.FulfillmentProviderType.Elita then  '---V3
-                Me.State.ClaimBO.SaveLogisticsStages(Me.State.ClaimBO.ClaimNumber, Me.State.ClaimBO.Company.Code,Me.State.FulfillmentDetailsResponse.LogisticStages.ToList())
-                UserControlLogisticStageAddressInfo.PopulateBoFromRepeaterControl(Me.State.FulfillmentDetailsResponse)
-            End If
-
+            PopulateLogisticStageAddressBoFromForm()
 
         End With
         If Me.ErrCollection.Count > 0 Then
@@ -2934,6 +2927,18 @@ Public Class ClaimWizardForm
     '    End If
     '    Return returnValue
     'End Function
+
+    Private Sub PopulateLogisticStageAddressBoFromForm()
+        'Save Logistic stage Addresses
+        UserControlLogisticStageAddressInfo.FulfillmentProviderTypeInfo = Me.State.ClaimBO.FulfillmentProviderType
+        UserControlLogisticStageAddressInfo.PopulateBoFromRepeaterControl(Me.State.FulfillmentDetails)
+
+        if Me.State.ClaimBO.FulfillmentProviderType = BusinessObjectsNew.FulfillmentProviderType.V3 then
+            Me.State.ClaimBO.SaveLogisticsStages(Me.State.ClaimBO.ClaimNumber, Me.State.ClaimBO.Company.Code,Me.State.FulfillmentDetails.LogisticStages.ToList())
+            UserControlLogisticStageAddressInfo.PopulateBoFromRepeaterControl(Me.State.FulfillmentDetails)
+        End If
+
+    End Sub
 
     Private Sub PopulatePoliceReportBOFromUserCtr(ByVal blnExcludePoliceReportSave As Boolean)
         With Me.State.PoliceReportBO
@@ -4044,7 +4049,7 @@ Public Class ClaimWizardForm
 
 
         Try
-            If Me.State.ClaimBO?.FulfillmentProviderType = FulfillmentProviderType.DynamicFulfillment Then
+            If Me.State.ClaimBO?.FulfillmentProviderType = FulfillmentProviderType.V4 Then
 
                 Return True
 

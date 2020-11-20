@@ -631,7 +631,7 @@ Public NotInheritable Class MultiAuthClaim
     Public Function GetFulfillmentDetails(claimNumber As String, companyCode As String) As FulfillmentDetails Implements IFullfillable.GetFulfillmentDetails
 
        Dim wsResponseObject As New FulfillmentDetails
-        If (MyBase.FulfillmentProviderType = FulfillmentProviderType.Elita) Then '---V3
+        If (MyBase.FulfillmentProviderType = FulfillmentProviderType.V3) Then
             wsResponseObject = GetFulfillmentDataForV3Provider(claimNumber, companyCode)
         Else
             wsResponseObject = GetFulfillmentDataForOtherProviders(claimNumber, companyCode)
@@ -691,18 +691,11 @@ Public NotInheritable Class MultiAuthClaim
 
         Return wsResponseObject
     End Function
-  
-    public Function SaveLogisticsStages1(claimNumber As String, companyCode As String, stages As List(Of SelectedLogisticStage)) As Boolean
-        Dim flg As Boolean= False
-        Dim logisticStages As List(Of SelectedLogisticStage) = stages.ToList()
 
-        Return flg
+  public Function SaveLogisticsStages(claimNumber As String, companyCode As String, stages As List(Of SelectedLogisticStage)) As UpdatedLogisticStagesResponse
+        try
 
-    End Function
-
-    public Function SaveLogisticsStages(claimNumber As String, companyCode As String, stages As List(Of SelectedLogisticStage)) As UpdatedLogisticStagesResponse
-
-        'Dim logisticStages As List(Of SelectedLogisticStage) = fulfillmentDetails.LogisticStages.ToList()
+       
         Dim wsRequest As UpdateLogisticStageRequest = New UpdateLogisticStageRequest() With
                 {
                 .ClaimNumber = claimNumber,
@@ -723,5 +716,8 @@ Public NotInheritable Class MultiAuthClaim
         End If
 
         Return wsResponseObject
+        Catch ex As Exception
+
+        End Try
     End Function
 End Class

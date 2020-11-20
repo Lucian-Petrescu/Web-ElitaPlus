@@ -2047,7 +2047,6 @@ Partial Class NewClaimForm
     '' REQ-784
     Protected Sub PopulateNewClaimLogisticAddressBOsFromForm()
         UserControlLogisticStageAddressInfo.PopulateBoFromRepeaterControl(Me.State.FulfillmentDetailsResponse)
-
     End Sub
 
     Protected Sub PopulateBOsFromForm()
