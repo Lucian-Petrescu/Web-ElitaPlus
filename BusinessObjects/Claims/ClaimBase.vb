@@ -585,7 +585,7 @@ Public MustInherit Class ClaimBase
                 If [Enum].TryParse(Of FulfillmentProviderType)(Row(ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP).ToString().GetXcdEnum(Of FulfillmentProviderType)(), result) Then
                     Return result
                 Else
-                    Return FulfillmentProviderType.Elita
+                    Return FulfillmentProviderType.V1
                 End If
             End If
         End Get

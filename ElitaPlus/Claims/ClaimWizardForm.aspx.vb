@@ -3999,7 +3999,7 @@ Public Class ClaimWizardForm
 
 
         Try
-            If Me.State.ClaimBO?.FulfillmentProviderType = FulfillmentProviderType.DynamicFulfillment Then
+            If Me.State.ClaimBO?.FulfillmentProviderType = FulfillmentProviderType.V4 Then
 
                 Return True
 
