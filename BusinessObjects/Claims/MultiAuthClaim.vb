@@ -180,10 +180,11 @@ Public NotInheritable Class MultiAuthClaim
     End Function
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
-        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
-        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPasswd.Url)
-        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
-        client.ClientCredentials.UserName.Password = oWebPasswd.Password
+        'Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
+        'Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", " http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/test-p1/WebAppGateway/gateway")
+        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", "http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/Test-J1/WebAppGateway/gateway")
+        client.ClientCredentials.UserName.UserName = "elita1"
+        client.ClientCredentials.UserName.Password = "elita1"
         Return client
     End Function
     Public Overrides Sub CreateClaim()
@@ -647,7 +648,9 @@ Public NotInheritable Class MultiAuthClaim
         response.Charges = {New Charge()}
         response.Fees = {New Fee()}
         response.LogisticStages = {New SelectedLogisticStage() With {
-                                                                        .Address = New FulfillmentAddress With {.Address1 = Me.ContactInfo.Address.Address1,
+                                                                        .Address = New FulfillmentAddressInfo With {
+                                                                                                                    .AddressId =Me.ContactInfo.AddressId,
+                                                                                                                    .Address1 = Me.ContactInfo.Address.Address1,
                                                                                                                     .Address2 = Me.ContactInfo.Address.Address2,
                                                                                                                     .Address3 = Me.ContactInfo.Address.Address3,
                                                                                                                     .City = Me.ContactInfo.Address.City,
@@ -689,6 +692,30 @@ Public NotInheritable Class MultiAuthClaim
         End If
 
         Return wsResponseObject
+    End Function
+
+    public Function SaveLogisticStages(claimNumber As String, companyCode As String, logisticStages As List(Of SelectedLogisticStage)) As UpdatedLogisticStagesResponse  Implements IFullfillable.SaveLogisticStages
+       
+        Dim wsRequest As UpdateLogisticStageRequest = New UpdateLogisticStageRequest() With
+                {
+                .ClaimNumber = claimNumber,
+                .CompanyCode = companyCode,
+                .LogisticStages = logisticStages.ToArray()
+                }
+
+        Dim wsResponseObject As New UpdatedLogisticStagesResponse
+        If Not String.IsNullOrEmpty(claimNumber) AndAlso Not String.IsNullOrEmpty(companyCode) Then
+
+            wsResponseObject = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, UpdatedLogisticStagesResponse)(
+                GetClaimFulfillmentWebAppGatewayClient(),
+                New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                Function(ByVal c As WebAppGatewayClient)
+                    Return c.UpdateLogistics(wsRequest)
+                End Function)
+        End If
+
+        Return wsResponseObject
+    
     End Function
 
 End Class

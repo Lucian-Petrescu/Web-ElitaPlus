@@ -5,7 +5,6 @@
 <%@ Register TagPrefix="Elita" TagName="ProtectionAndEventDetails" Src="~/Common/ProtectionAndEventDetails.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlWizard" Src="~/Common/UserControlWizard.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="MultipleColumnDDLabelControl" Src="~/Common/MultipleColumnDDLabelControl_New.ascx" %>
-<%@ Register TagPrefix="Elita" TagName="UserControlContactInfo" Src="../Common/UserControlContactInfo_New.ascx" %>
 <%@ Register TagPrefix="Elita" Assembly="Assurant.ElitaPlus.WebApp" Namespace="Assurant.ElitaPlus.ElitaPlusWebApp" %>
 <%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlPoliceReport_New" Src="~/Common/UserControlPoliceReport_New.ascx" %>
@@ -1209,16 +1208,6 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                <div class="dataContainer">
-                    <div class="stepformZone">
-                        <table>
-                            <tbody>
-                                <Elita:UserControlContactInfo ID="moUserControlContactInfo" runat="server" Visible="false"></Elita:UserControlContactInfo>
-                            </tbody>
-                        </table>
-                        <table border="0"></table>
-                    </div>
                 </div>
                 <div class="dataContainer">
                     <table style="width: 100%; border-collapse: collapse; border: 0;">

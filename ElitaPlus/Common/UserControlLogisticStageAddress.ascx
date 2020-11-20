@@ -9,6 +9,7 @@
                     <table style="border-collapse: collapse; border: 0;">
                         <tr>
                             <td>
+                                <asp:HiddenField ID="hdnLogisticStageCode" runat="server" Visible="False"/>
                                 <asp:Label ID="lblLogisticStageName" runat="server" />:
                             </td>
                         </tr>
@@ -23,4 +24,3 @@
         </td>
     </tr>
 </table>
-

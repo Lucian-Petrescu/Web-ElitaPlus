@@ -26,6 +26,9 @@
      <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.6.1.min.js" />
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"
         EnablePageMethods="true" ScriptMode="Auto" AsyncPostBackTimeout="100">
+        <Scripts>
+            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+        </Scripts>
     </asp:ScriptManager>
     <script type="text/javascript">
         var newRptWin
