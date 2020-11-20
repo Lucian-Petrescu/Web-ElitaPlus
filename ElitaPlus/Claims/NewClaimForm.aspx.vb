@@ -92,7 +92,6 @@ Partial Class NewClaimForm
 
     Private mbIsFirstPass As Boolean = True
 
-
 #End Region
 
 #Region "Page Return Type"
@@ -215,8 +214,6 @@ Partial Class NewClaimForm
         Public ClaimActionListDV As CaseAction.CaseActionDV = Nothing
         Public FulfillmentDetailsResponse As BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails = Nothing
         Public FilteredLogistics As List(Of LogisticStageAddress) = Nothing
-        Public UpdateFilteredLogistic As Boolean = False
-
     End Class
 
     Public Sub New()
@@ -757,9 +754,12 @@ Partial Class NewClaimForm
     Private Sub PopulateLogisticStageAddress()
 
         Dim fullFilInfo As Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails
-        fullFilInfo = Me.State.MyBO.GetFulfillmentDetails(Me.State.MyBO.ClaimNumber, Me.State.MyBO.Company.Code)
 
-        Me.State.FulfillmentDetailsResponse = fullFilInfo
+        If Me.State.FulfillmentDetailsResponse Is Nothing Then
+            fullFilInfo = Me.State.MyBO.GetFulfillmentDetails(Me.State.MyBO.ClaimNumber, Me.State.MyBO.Company.Code)
+            Me.State.FulfillmentDetailsResponse = fullFilInfo
+        End If
+
         If Me.State.FulfillmentDetailsResponse IsNot Nothing Then
 
             If Me.State.FulfillmentDetailsResponse.GetType() Is GetType(Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails) Then
@@ -771,18 +771,14 @@ Partial Class NewClaimForm
                     logisticStages = New List(Of LogisticStageAddress)(
                         From dr In Me.State.FulfillmentDetailsResponse.LogisticStages Select New LogisticStageAddress() With {
                                                                           .LogisticStageAddress = ConvertToAddressControllerField(dr.Address),
-                                                                          .LogisticStageName = dr.Description
+                                                                          .LogisticStageName = dr.Description,
+                                                                          .LogisticStageCode = dr.Code
                                                                           }
                         )
                     Dim filteredLogisticStages = logisticStages.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing).ToList()
-
+                    Me.State.FilteredLogistics = filteredLogisticStages
                     ValidateShippingAddressButtonControl()
-                    If Me.State.UpdateFilteredLogistic = False Then
-                        Me.State.FilteredLogistics = filteredLogisticStages
-                        UserControlLogisticStageAddressInfo.Bind(Me.State.FilteredLogistics)
-                    Else
-                        UserControlLogisticStageAddressInfo.Bind(Me.State.FilteredLogistics)
-                    End If
+                    UserControlLogisticStageAddressInfo.Bind(Me.State.FilteredLogistics)
                 Else
                     UserControlLogisticStageAddressInfo.Visible = False
                 End If
@@ -825,7 +821,7 @@ Partial Class NewClaimForm
         End Get
     End Property
 
-       Public ReadOnly Property UserControlMessageController() As MessageController
+    Public ReadOnly Property UserControlMessageController() As MessageController
         Get
             If MessageController Is Nothing Then
                 MessageController = DirectCast(Me.MasterPage.MessageController, MessageController)
@@ -1803,7 +1799,6 @@ Partial Class NewClaimForm
             '    Me.UserControlAddress.ClaimDetailsBind(Me.State.MyBO.ContactInfo.Address)
             '    Me.UserControlContactInfo.Bind(Me.State.MyBO.ContactInfo)
             'End If
-
             PopulateLogisticStageAddress()
             hdnDealerId.Value = Me.State.MyBO.Dealer.Id.ToString
         End With
@@ -1867,7 +1862,7 @@ Partial Class NewClaimForm
                     .ClaimBO = CType(State.MyBO, ClaimBase)
                     If Not allowEnrolledDeviceUpdate Is Nothing AndAlso allowEnrolledDeviceUpdate.Value = Codes.YESNO_Y Then
                         For Each i As ClaimIssue In State.MyBO.ClaimIssuesList
-                            If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS and i.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Then
+                            If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS And i.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Then
                                 .ShowDeviceEditImg = True
                                 Exit For
                             Else
@@ -2051,9 +2046,7 @@ Partial Class NewClaimForm
 
     '' REQ-784
     Protected Sub PopulateNewClaimLogisticAddressBOsFromForm()
-        UserControlLogisticStageAddressInfo.PopulateBOFromControl(True)
-        Me.State.UpdateFilteredLogistic = True
-
+        UserControlLogisticStageAddressInfo.PopulateBoFromRepeaterControl(Me.State.FulfillmentDetailsResponse)
     End Sub
 
     Protected Sub PopulateBOsFromForm()
@@ -2674,11 +2667,11 @@ Partial Class NewClaimForm
 
         If Not lossType Is Nothing AndAlso lossType.Length > 0 Then
             If Not lossType(0)("field_value") Is Nothing AndAlso (lossType(0)("field_value").ToString().ToUpper() = "ADH1234" Or lossType(0)("field_value").ToString().ToUpper() = "ADH5") Then
-                caseFieldXcds = { "CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING" }
-                caseFieldValues = { Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper() }
-            Else If Not lossType(0)("field_value") Is Nothing AndAlso lossType(0)("field_value").ToString().ToUpper() = "THEFT/LOSS" Then
-                caseFieldXcds = { "CASEFLD-HASBENEFIT" }
-                caseFieldValues = { Boolean.TrueString.ToUpper() }
+                caseFieldXcds = {"CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING"}
+                caseFieldValues = {Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper()}
+            ElseIf Not lossType(0)("field_value") Is Nothing AndAlso lossType(0)("field_value").ToString().ToUpper() = "THEFT/LOSS" Then
+                caseFieldXcds = {"CASEFLD-HASBENEFIT"}
+                caseFieldValues = {Boolean.TrueString.ToUpper()}
             End If
         End If
 
