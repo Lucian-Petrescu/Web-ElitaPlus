@@ -1304,7 +1304,7 @@ Public NotInheritable Class Claim
             If Not MasterClaimNumber Is Nothing Then
                 IsUpdatedMasterClaimComment = True
                 Dim ds As DataSet = Claim.GetClaimDetailbyClaimNumAndDealer(MasterClaimNumber, cert.DealerId)
-                MasterClaimId = GuidControl.ByteArrayToGuid(ds.Tables(0).Rows(0)(ClaimDAL.COL_NAME_CLAIM_ID))
+                MasterClaimId = GuidControl.ByteArrayToGuid(ds.Tables(0).Rows(0)(claimdal.COL_NAME_CLAIM_ID))
 
                 Dim claimBO As Claim = Me.AddClaim(MasterClaimId)
                 claimBO.ProblemDescription = "  ***" & splsvcDesc & "  " &
