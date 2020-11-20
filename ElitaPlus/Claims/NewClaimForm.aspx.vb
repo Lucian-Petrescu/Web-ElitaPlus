@@ -212,7 +212,7 @@ Partial Class NewClaimForm
 
         Public CaseQuestionAnswerListDV As CaseQuestionAnswer.CaseQuestionAnswerDV = Nothing
         Public ClaimActionListDV As CaseAction.CaseActionDV = Nothing
-        Public FulfillmentDetailsResponse As BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails = Nothing
+        Public FulfillmentDetails As BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails = Nothing
         Public FilteredLogistics As List(Of LogisticStageAddress) = Nothing
     End Class
 
@@ -755,21 +755,21 @@ Partial Class NewClaimForm
 
         Dim fullFilInfo As Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails
 
-        If Me.State.FulfillmentDetailsResponse  is Nothing Then
+        If Me.State.FulfillmentDetails  is Nothing Then
             fullFilInfo = Me.State.MyBO.GetFulfillmentDetails(Me.State.MyBO.ClaimNumber, Me.State.MyBO.Company.Code)
-            Me.State.FulfillmentDetailsResponse = fullFilInfo
+            Me.State.FulfillmentDetails = fullFilInfo
         End If
 
-      If Me.State.FulfillmentDetailsResponse IsNot Nothing Then
+      If Me.State.FulfillmentDetails IsNot Nothing Then
 
-            If Me.State.FulfillmentDetailsResponse.GetType() Is GetType(Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails) Then
-                If Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
-                   Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
+            If Me.State.FulfillmentDetails.GetType() Is GetType(Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails) Then
+                If Me.State.FulfillmentDetails.LogisticStages IsNot Nothing AndAlso
+                   Me.State.FulfillmentDetails.LogisticStages.Length > 0 Then
 
                     Dim logisticStages As New List(Of LogisticStageAddress)
 
                     logisticStages = New List(Of LogisticStageAddress)(
-                        From dr In Me.State.FulfillmentDetailsResponse.LogisticStages Select New LogisticStageAddress() With {
+                        From dr In Me.State.FulfillmentDetails.LogisticStages Select New LogisticStageAddress() With {
                                                                           .LogisticStageAddress = ConvertToAddressControllerField(dr.Address),
                                                                           .LogisticStageName = dr.Description,
                                                                           .LogisticStageCode = dr.Code
@@ -2046,7 +2046,7 @@ Partial Class NewClaimForm
 
     '' REQ-784
     Protected Sub PopulateNewClaimLogisticAddressBOsFromForm()
-        UserControlLogisticStageAddressInfo.PopulateBoFromRepeaterControl(Me.State.FulfillmentDetailsResponse)
+        UserControlLogisticStageAddressInfo.PopulateBoFromRepeaterControl(Me.State.FulfillmentDetails)
     End Sub
 
     Protected Sub PopulateBOsFromForm()

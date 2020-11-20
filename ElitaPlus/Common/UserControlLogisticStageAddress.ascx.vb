@@ -102,7 +102,6 @@ Public Class UserControlLogisticStageAddress
             Dim ddlCountry As DropDownList = DirectCast(addressControl.FindControl(AddressCtrlDdlCountry), DropDownList)
             Dim txtPostalCode As TextBox = DirectCast(addressControl.FindControl(AddressCtrlTxtPostal), TextBox)
 
-            'Zip Code validation
             Dim zd As New ZipDistrict()
             zd.CountryId = New Guid(ddlCountry.SelectedValue.ToString())
             zd.ValidateZipCode(txtPostalCode.Text)

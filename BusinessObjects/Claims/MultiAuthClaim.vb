@@ -178,12 +178,11 @@ Public NotInheritable Class MultiAuthClaim
         client.ClientCredentials.UserName.Password = oWebPasswd.Password
         Return client
     End Function
-        Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
-        'Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
-        'Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", " http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/test-p1/WebAppGateway/gateway")
-            Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", "http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/Test-J1/WebAppGateway/gateway")
-        client.ClientCredentials.UserName.UserName = "elita1"
-        client.ClientCredentials.UserName.Password = "elita1"
+    Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
+        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
+        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPasswd.Url)
+        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+        client.ClientCredentials.UserName.Password = oWebPasswd.Password
         Return client
     End Function
     Public Overrides Sub CreateClaim()
@@ -693,8 +692,6 @@ Public NotInheritable Class MultiAuthClaim
     End Function
 
   public Function SaveLogisticsStages(claimNumber As String, companyCode As String, stages As List(Of SelectedLogisticStage)) As UpdatedLogisticStagesResponse
-        try
-
        
         Dim wsRequest As UpdateLogisticStageRequest = New UpdateLogisticStageRequest() With
                 {
@@ -716,8 +713,6 @@ Public NotInheritable Class MultiAuthClaim
         End If
 
         Return wsResponseObject
-        Catch ex As Exception
-
-        End Try
+    
     End Function
 End Class
