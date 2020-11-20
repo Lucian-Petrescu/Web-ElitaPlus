@@ -6,6 +6,8 @@ Imports Assurant.ElitaPlus.DataEntities
 Imports Assurant.ElitaPlus.DataAccess
 Imports Assurant.ElitaPlus.DataAccessInterface
 Imports Assurant.Common
+Imports Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService
+Imports Assurant.ElitaPlus.BusinessObjectsNew.LegacyBridgeService
 
 ''' <summary>
 ''' Claim Base class acts as base class for Creating the Claim Objects. The class encapsulates common properties from SingleAuthorization Claim and 
@@ -2509,8 +2511,13 @@ Public MustInherit Class ClaimBase
             Return True
 
         End Function
-    End Class
 
+    End Class
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+    Public NotInheritable Class FulfillmentaddressInfo
+        Inherits FulfillmentAddress
+        Public Property AddressId As Guid
+    End Class
 #End Region
 
 #Region "Claim Equipment"

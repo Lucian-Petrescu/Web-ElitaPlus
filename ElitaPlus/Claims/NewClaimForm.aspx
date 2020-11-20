@@ -8,8 +8,8 @@
 <%@ Register TagPrefix="Elita" TagName="UserControlLogisticalInfo" Src="~/Claims/UserControlLogisticalInfo.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlClaimDeviceInfo" Src="~/Interfaces/ClaimDeviceInformationController.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="UserControlLogisticStageAddressInfo" Src="~/Common/UserControlLogisticStageAddress.ascx" %>
-
-<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="NewClaimForm.aspx.vb"
+<%@ Register TagPrefix="asp" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit" %>
+<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="NewClaimForm.aspx.vb" EnableSessionState="True"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.NewClaimForm" Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
@@ -26,6 +26,9 @@
      <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.6.1.min.js" />
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"
         EnablePageMethods="true" ScriptMode="Auto" AsyncPostBackTimeout="100">
+        <Scripts>
+            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+        </Scripts>
     </asp:ScriptManager>
     <script type="text/javascript">
         var newRptWin

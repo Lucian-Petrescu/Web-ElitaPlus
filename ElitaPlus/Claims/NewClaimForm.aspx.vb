@@ -92,6 +92,7 @@ Partial Class NewClaimForm
 
     Private mbIsFirstPass As Boolean = True
 
+
 #End Region
 
 #Region "Page Return Type"
@@ -214,6 +215,8 @@ Partial Class NewClaimForm
         Public ClaimActionListDV As CaseAction.CaseActionDV = Nothing
         Public FulfillmentDetailsResponse As BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails = Nothing
         Public FilteredLogistics As List(Of LogisticStageAddress) = Nothing
+        Public UpdateFilteredLogistic As Boolean = False
+
     End Class
 
     Public Sub New()
@@ -754,8 +757,8 @@ Partial Class NewClaimForm
     Private Sub PopulateLogisticStageAddress()
 
         Dim fullFilInfo As Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails
-
         fullFilInfo = Me.State.MyBO.GetFulfillmentDetails(Me.State.MyBO.ClaimNumber, Me.State.MyBO.Company.Code)
+
         Me.State.FulfillmentDetailsResponse = fullFilInfo
         If Me.State.FulfillmentDetailsResponse IsNot Nothing Then
 
@@ -772,9 +775,14 @@ Partial Class NewClaimForm
                                                                           }
                         )
                     Dim filteredLogisticStages = logisticStages.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing).ToList()
-                    Me.State.FilteredLogistics = filteredLogisticStages
+
                     ValidateShippingAddressButtonControl()
-                    UserControlLogisticStageAddressInfo.Bind(Me.State.FilteredLogistics)
+                    If Me.State.UpdateFilteredLogistic = False Then
+                        Me.State.FilteredLogistics = filteredLogisticStages
+                        UserControlLogisticStageAddressInfo.Bind(Me.State.FilteredLogistics)
+                    Else
+                        UserControlLogisticStageAddressInfo.Bind(Me.State.FilteredLogistics)
+                    End If
                 Else
                     UserControlLogisticStageAddressInfo.Visible = False
                 End If
@@ -1795,7 +1803,8 @@ Partial Class NewClaimForm
             '    Me.UserControlAddress.ClaimDetailsBind(Me.State.MyBO.ContactInfo.Address)
             '    Me.UserControlContactInfo.Bind(Me.State.MyBO.ContactInfo)
             'End If
-             PopulateLogisticStageAddress()
+
+            PopulateLogisticStageAddress()
             hdnDealerId.Value = Me.State.MyBO.Dealer.Id.ToString
         End With
 
@@ -2043,6 +2052,7 @@ Partial Class NewClaimForm
     '' REQ-784
     Protected Sub PopulateNewClaimLogisticAddressBOsFromForm()
         UserControlLogisticStageAddressInfo.PopulateBOFromControl(True)
+        Me.State.UpdateFilteredLogistic = True
 
     End Sub
 
@@ -2883,7 +2893,7 @@ Partial Class NewClaimForm
 
         End Select
     End Sub
-    Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As Claim.FulfilmentaddressInfo) As BusinessObjectsNew.Address
+    Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As Claim.FulfillmentaddressInfo) As BusinessObjectsNew.Address
         Dim convertAddress As New BusinessObjectsNew.Address(sourceAddress.AddressId) With {
                 .CountryId = LookupListNew.GetIdFromCode(LookupListNew.DataView(LookupListNew.LK_COUNTRIES, False), sourceAddress.Country),
                 .Address1 = sourceAddress.Address1,

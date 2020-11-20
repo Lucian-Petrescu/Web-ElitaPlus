@@ -1,14 +1,17 @@
 ﻿Imports System.Collections.Generic
+Imports Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService
 
 Public Class UserControlLogisticStageAddress
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 #Region "Constants"
+    Private Const GridCtrlLblLogisticStageName As String = "lblLogisticStageName"
+    Private Const GridCtrlUcAddressController As String = "moAddressController"
+    Private Const GridColDataLogisticStageName As String = "LogisticStageName"
+    Private Const GridColDataLogisticStageAddress As String = "LogisticStageAddress"
+    Private Const ValidateAddressButton As String = "btnValidate_Address"
+    Private Const AddressCtrlDdlCountry As String = "moCountryDrop_WRITE"
+    Private Const AddressCtrlTxtPostal As String = "moPostalText"
 
-     Private Const GridCtrlLblLogisticStageName As String = "lblLogisticStageName"
-     Private Const GridCtrlUcAddressController As String = "moAddressController"
-     Private Const GridColDataLogisticStageName As String = "LogisticStageName"
-     Private Const GridColDataLogisticStageAddress As String = "LogisticStageAddress"
-     Private Const ValidateAddressButton As String = "btnValidate_Address"
 
 #End Region
 
@@ -18,12 +21,12 @@ Public Class UserControlLogisticStageAddress
 
 #Region "Properties"
 
-    Public Property MyGenBO() As BusinessObjectBase
+    Public Property MyGenBo() As BusinessObjectBase
         Get
-            Return CType(Me.Page.StateSession.Item(Me.UniqueID), BusinessObjectBase)
+            Return CType(Page.StateSession.Item(UniqueID), BusinessObjectBase)
         End Get
-        Set(ByVal Value As BusinessObjectBase)
-            Me.Page.StateSession.Item(Me.UniqueID) = Value
+        Set(ByVal value As BusinessObjectBase)
+            Page.StateSession.Item(UniqueID) = value
         End Set
     End Property
     Private Shadows ReadOnly Property Page() As ElitaPlusPage
@@ -32,11 +35,10 @@ Public Class UserControlLogisticStageAddress
         End Get
     End Property
     Public Property ParentBusinessObject As List(Of LogisticStageAddress)
-    Public Property ProfileCode As String 
+    Public Property ProfileCode As String
     Public Property ValidateAddress As Boolean
-    
-#End Region
 
+#End Region
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
     End Sub
@@ -46,7 +48,7 @@ Public Class UserControlLogisticStageAddress
     End Sub
 
     Private Sub PopulateLogisticStageAddress()
-      
+
         If (ParentBusinessObject Is Nothing) Then
             Throw New BOInvalidOperationException("Value of ParentBusinessObject can not be null")
         End If
@@ -61,16 +63,17 @@ Public Class UserControlLogisticStageAddress
         If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
 
             Dim lblLogisticStageName As Label = DirectCast(e.Item.FindControl(GridCtrlLblLogisticStageName), Label)
-            Dim addressControls As UserControlAddress_New = DirectCast(e.Item.FindControl(GridCtrlUcAddresscontroller), UserControlAddress_New)
-            Dim logisticStageName As Object = DataBinder.Eval(e.Item.DataItem, GridColDataLogisticstageName)
-            Dim logisticStageAddressData As Object = DataBinder.Eval(e.Item.DataItem, GridColDataLogisticstageAddress)
+            Dim addressControls As UserControlAddress_New = DirectCast(e.Item.FindControl(GridCtrlUcAddressController), UserControlAddress_New)
+            Dim logisticStageName As Object = DataBinder.Eval(e.Item.DataItem, GridColDataLogisticStageName)
+            Dim logisticStageAddressData As Object = DataBinder.Eval(e.Item.DataItem, GridColDataLogisticStageAddress)
             Dim btnValidateAddress As Button = addressControls.FindControl(ValidateAddressButton)
-            addressControls.TranslateAllLabelControl()
-            btnValidateAddress.Visible = If( ValidateAddress, "True", "False")
 
+            addressControls.TranslateAllLabelControl()
+            btnValidateAddress.Visible = If(ValidateAddress, "True", "False")
             lblLogisticStageName.Text = logisticStageName
             addressControls.Bind(logisticStageAddressData, ProfileCode)
             addressControls.EnableControls(False, True)
+
 
         End If
 
@@ -80,17 +83,23 @@ Public Class UserControlLogisticStageAddress
         ' MyGenBO = oBusObj
         repLogisticStageAddress.DataSource = filteredLogistics
         repLogisticStageAddress.DataBind()
-        If Not Me.MyGenBO Is Nothing Then
-            'BindBoPropertiesToLabels()
-            Me.Page.AddLabelDecorations(Me.MyGenBO)
+        If MyGenBo IsNot Nothing Then
+            Page.AddLabelDecorations(MyGenBo)
         End If
     End Sub
     Friend Sub PopulateBOFromControl(Optional ByVal blnIncludeCountryId As Boolean = False)
 
         For Each repeaterItem As RepeaterItem In repLogisticStageAddress.Items
             Dim addressControl As UserControlAddress_New = DirectCast(repeaterItem.FindControl(GridCtrlUcAddressController), UserControlAddress_New)
-            addressControl.PopulateBOFromControl(True)
+            Dim ddlCountry As DropDownList = DirectCast(addressControl.FindControl(AddressCtrlDdlCountry), DropDownList)
+            Dim txtPostalCode As TextBox = DirectCast(addressControl.FindControl(AddressCtrlTxtPostal), TextBox)
+            'Zip Code validation
+            Dim zd As New ZipDistrict()
+            zd.CountryId = New Guid(ddlCountry.SelectedValue.ToString())
+            zd.ValidateZipCode(txtPostalCode.Text)
+            addressControl.PopulateBOFromControl(blnIncludeCountryId, True)
         Next
 
     End Sub
+
 End Class
