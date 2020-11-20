@@ -79,17 +79,7 @@ Public Class CertExtendedItem
 
         Dim dt As DataTable
         dt = ds.Tables(0)
-        'Dim newRow As DataRow = dt.NewRow
 
-        'newRow(CertExtendedItemDal.COL_NAME_CRT_EXT_FIELDS_CONFIG_ID) = id.ToByteArray
-        'newRow(CertExtendedItemDal.COL_NAME_CODE) = String.Empty
-        'newRow(CertExtendedItemDal.COL_NAME_DESCRIPTION) = String.Empty
-        'newRow(CertExtendedItemDal.COL_NAME_FIELD_NAME) = String.Empty
-        'newRow(CertExtendedItemDal.COL_NAME_DEFAULT_VALUE) = String.Empty
-        'newRow(CertExtendedItemDal.COL_NAME_ALLOW_UPDATE) = "N"
-        'newRow(CertExtendedItemDal.COL_NAME_ALLOW_DISPLAY) = "Y"
-        'dt.Rows.Add(newRow)
-        'Row = newRow
         Return New CertExtendedItemSearchDv(dt)
 
     End Function
@@ -351,7 +341,7 @@ Public Class CertExtendedItem
             Dataset=ds
             If Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then 'Me._isDSCreator AndAlso 
                 Dim dal As New CertExtendedItemDal
-                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
+                dal.Update(Me.Dataset) 'New Code Added Manually
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
@@ -390,6 +380,7 @@ Public Class CertExtendedItem
         End Try
     End Function
 #End Region
+
 #Region "Properties"
 
     'Key Property
@@ -497,15 +488,61 @@ Public Class CertExtendedItem
 
 
 #End Region
+#Region "ConfigLevelvalidation"
+    Public Sub CheckDuplicateConfigRecords()
+        Try
+            For Each certItemConfig As DataRow In Dataset.Tables(0).Rows
+                'For Template Fields
+                if Not (certItemConfig.RowState = DataRowState.Deleted) Then
+                    Dim currentCertConfigId As Guid = New Guid(CType(certItemConfig(CertExtendedItem.CertExtendedItemSearchDv.COL_CERT_EXT_CONFIG_ID), Byte()))
 
+                    If Not currentCertConfigId.Equals(Id) AndAlso certItemConfig(CertExtendedItem.CertExtendedItemSearchDv.COL_FIELD_NAME).ToString().ToUpper().Trim() = FieldName.ToUpper().Trim()  Then 'AndAlso State.IsRowEdit = False
+                        Throw New BOValidationException(New ValidationError() {New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME, Me.GetType, Nothing, "Name", Me.GetType.Name)}, Me.GetType.Name)
+                    End If
+                End If
+            Next
+            Dim dv As DataView
+            dv = GetFieldConfigExist(Code.ToUpper().Trim(), FieldName.ToUpper().Trim())
+
+            If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
+                Throw New BOValidationException(New ValidationError() {New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY, Me.GetType, Nothing, "Name", Me.GetType.Name)}, Me.GetType.Name)
+            End If
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Sub
+    Public Sub DealerCompanyConfigExist(ByVal dealerCompanyList As ArrayList,ByVal referenceType As string, ByVal codeMasK As String,ByVal ds As DataSet )
+        Try
+            Dim dv As DataView
+            For Each str As String In dealerCompanyList
+                Dim dealerCompanyId As Guid = New Guid(str)
+
+                For Each certItemConfig As DataRow In ds.Tables(0).Rows
+                    If Not(certItemConfig.RowState = DataRowState.Deleted) Then
+                        dv = CertExtendedItem.GetFieldConfigExist(codeMasK.ToUpper().Trim(),certItemConfig(CertExtendedItemSearchDv.COL_FIELD_NAME).ToString().ToUpper(), referenceType, dealerCompanyId)
+                        If Not (dv.Table(0).Table.Rows(0)(0).ToString().ToUpper.Trim().Equals("SUCCESS")) Then
+                            Throw New BOValidationException(New ValidationError() {New ValidationError(Assurant.ElitaPlus.Common.ErrorCodes.MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY, Me.GetType, Nothing, "Name", Me.GetType.Name)}, Me.GetType.Name)
+                        End If
+                    End If
+                Next
+            Next
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Sub
+
+#End Region
 #Region "Public Members"
+    Public Overrides Sub Validate()
+        MyBase.Validate()
+        CheckDuplicateConfigRecords()
+    End Sub
     Public Overrides Sub Save()
         Try
             MyBase.Save()
             If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
                 Dim dal As New CertExtendedItemDal
-                'dal.Update(Me.Row)
-                dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
+                dal.Update(Me.Row)
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
