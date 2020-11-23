@@ -26,6 +26,9 @@
      <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.6.1.min.js" />
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"
         EnablePageMethods="true" ScriptMode="Auto" AsyncPostBackTimeout="100">
+        <Scripts>
+            <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
+        </Scripts>
     </asp:ScriptManager>
     <script type="text/javascript">
         var newRptWin
@@ -457,13 +460,11 @@
                     val = webControl.value.substring(1);
                     if (ValidCultureValue(val)) {
                         if (decSep == '.') {
-                            if (EU.test(val))
-                            { val1 = parseFloat(setJsFormat(val, ',')); }
+                            if (EU.test(val)) { val1 = parseFloat(setJsFormat(val, ',')); }
                             else { val1 = parseFloat(setJsFormat(val, decSep)); }
                         }
                         else {
-                            if (US.test(val))
-                            { val1 = parseFloat(setJsFormat(val, '.')); }
+                            if (US.test(val)) { val1 = parseFloat(setJsFormat(val, '.')); }
                             else { val1 = parseFloat(setJsFormat(val, decSep)); }
                         }
                         auth.value = '-' + convertNumberToCulture(val1, decSep, groupSep);
@@ -471,11 +472,9 @@
                         AssurantPays(0 - val1);
                         auth2.value = auth.value;
                     }
-                    else
-                    { alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>'); }
+                    else { alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>'); }
                 }
-                else
-                { alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>'); }
+                else { alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>'); }
             }
 
             //auth.value = parseFloat(setJsFormat(webControl.value,decSep));
@@ -673,31 +672,27 @@
 
         var hdnDealerId = '<%=hdnDealerId.ClientId%>';
 
-        function LoadSKU(ctrlManufaturer,ctrlModel,ctrlSKU,ctrlHdnField)
-        {
+        function LoadSKU(ctrlManufaturer, ctrlModel, ctrlSKU, ctrlHdnField) {
 
             var claimedManufacturerId = $('#' + ctrlManufaturer).val();
             var claimedmodel = $('#' + ctrlModel).val();
             var dealerId = $('#' + hdnDealerId).val();
 
-            if (claimedManufacturerId.length > 0 && claimedManufacturerId != '00000000-0000-0000-0000-000000000000' && claimedmodel.length > 0)
-            {
+            if (claimedManufacturerId.length > 0 && claimedManufacturerId != '00000000-0000-0000-0000-000000000000' && claimedmodel.length > 0) {
                 $.ajax({
                     type: "POST",
                     url: "ClaimWizardForm.aspx/LoadSku",
                     data: '{ manufacturerId: "' + claimedManufacturerId + '",model:"' + claimedmodel + '",dealerId:"' + dealerId + '" }',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    success: function (msg)
-                    {
+                    success: function (msg) {
                         $('#' + ctrlSKU).empty();
                         if (msg.d == null) { return }
 
                         var jsonArray = jQuery.parseJSON(msg.d);
-                       
+
                         var listItems = "";
-                        $.each(jsonArray, function ()
-                        {
+                        $.each(jsonArray, function () {
                             listItems += "<option value='" + this + "'>" + this + "</option>";
 
                         });
@@ -710,14 +705,13 @@
             }
         }
 
-        function FillHiddenField(sourceDropDownClientId, destinationControlClientId)
-        {
+        function FillHiddenField(sourceDropDownClientId, destinationControlClientId) {
             var hdnSelectedIssue = document.getElementById(destinationControlClientId);
             var objDecDropDown = document.getElementById(sourceDropDownClientId);
             hdnSelectedIssue.value = objDecDropDown.options[objDecDropDown.selectedIndex].value;
         }
 
-	    
+
     </script>
     <div id="ModalCancel" class="overlay">
         <div id="light" class="overlay_message_content">
