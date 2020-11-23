@@ -2138,15 +2138,6 @@ Partial Public Class ClaimWizardForm
     Protected WithEvents step3_TxtSpecialInstruction As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''moUserControlContactInfo control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents moUserControlContactInfo As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlContactInfo_New
-
-    '''<summary>
     '''lblLogisticStageAddress control.
     '''</summary>
     '''<remarks>
