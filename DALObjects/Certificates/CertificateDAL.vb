@@ -3531,6 +3531,27 @@ Public Class CertificateDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
+    Public Sub UpdateCertExtension(certextId As Guid, fieldValue As String, Modified_By As String)
+        Dim updateStmt As String = Me.Config("/SQL/UPDATE_CERT_EXT_FIELDS_VALUE")
+        Dim outputParameter(Me.PO_CURSOR_UPDATE_CUSTOMER) As DBHelper.DBHelperParameter
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim param As DBHelper.DBHelperParameter
+        param = New DBHelper.DBHelperParameter("pi_cert_ext_id", certextId.ToByteArray)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_modified_by", Modified_By)
+        inParameters.Add(param)
+
+        If fieldValue <> String.Empty Then
+            param = New DBHelper.DBHelperParameter("pi_field_value", fieldValue)
+            inParameters.Add(param)
+        End If
+
+        Try
+            DBHelper.ExecuteSpParamBindByName(updateStmt, inParameters.ToArray, Nothing)
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
 
 #End Region
 End Class

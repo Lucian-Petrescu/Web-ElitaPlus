@@ -57,7 +57,7 @@ Namespace Certificates
         Public Const CallerName As String = "DPO"
         Public Const RestrictionListCode As String = "RST"
         'Tab related
-        Private Const TAB_TOTAL_COUNT As Integer = 14
+        Private Const TAB_TOTAL_COUNT As Integer = 16
         Public Const CERT_DETAIL_TAB As Integer = 0
         Public Const CERT_INFORMATION_TAB As Integer = 1
         Public Const CERT_ITEMS_INFO_TAB As Integer = 2
@@ -73,7 +73,7 @@ Namespace Certificates
         Public Const CERT_REPRICE_TAB As Integer = 12
         'Data Protection Tab
         Public Const CERT_DATA_PROTECTION_TAB As Integer = 13
-        Public Const CERT_EXTENDED_FIELDS_TAB As Integer = 14
+        Public Const CERT_EXTENDED_FIELDS_TAB As Integer = 15
         Public Const Total_installments As Integer = 0
         Public Const Remaining_Installments As Integer = 1
         Public Const Amount_Collected As Integer = 2
@@ -165,6 +165,9 @@ Namespace Certificates
 
 #Region "Cert Extended Fields Grid"
 
+        Public Const CERT_EXT_GRID_FIELD_VALUE_TEXT_CTRL As String = "TXT_FIELD_VALUE"
+        Public Const CERT_EXT_GRID_FIELD_VALUE_LBL_CTRL As String = "LBL_FIELD_VALUE"
+        Public Const CERT_EXT_GRID_FIELD_EDIT_BTN_CTRL As String = "EditButton"
         Public Const CERT_EXT_ID_ID_IDX As Integer = 0
         Public Const CERT_EXT_CERT_ID_IDX As Integer = 1
         Public Const CERT_EXT_FIELD_NAME_IDX As Integer = 2
@@ -173,6 +176,8 @@ Namespace Certificates
         Public Const CERT_EXT_CREATED_DATE_IDX As Integer = 5
         Public Const CERT_EXT_MODIFIED_BY_IDX As Integer = 6
         Public Const CERT_EXT_MODIFIED_DATE_IDX As Integer = 7
+        Public Const CERT_EXT_ACTIONS_IDX As Integer = 8
+        Public Const CERT_EXT_ALOWUPDATE_IDX As Integer = 9
 
 #End Region
 
@@ -711,6 +716,7 @@ Namespace Certificates
             'Authentication
             Public IsCallerAuthenticated As Boolean = False
             Public blnMFGChanged As Boolean = False
+            Public IsRowBeingEdited As Boolean = False
 
 #End Region
 #Region "MyState Constructor"
@@ -797,7 +803,7 @@ Namespace Certificates
                         Me.State.MyBO = New Certificate(CType(Me.CallingParameters, Guid))
                     Catch ex As Exception
                         Me.State.MyBO = New Certificate(CType(Me.CallingParameters, Parameters).CertificateId)
-                        Me.state.IsCallerAuthenticated = CType(Me.CallingParameters, Parameters).IsCallerAuthenticated
+                        Me.State.IsCallerAuthenticated = CType(Me.CallingParameters, Parameters).IsCallerAuthenticated
                     End Try
                     Me.CertId = Me.State.MyBO.Id
                     Me.State.ValFlag = Me.State.MyBO.GetValFlag()
@@ -1208,6 +1214,7 @@ Namespace Certificates
 
                 If Not Page.IsPostBack Then
                     Me.TranslateGridHeader(Me.GridDataProtection)
+                    Me.TranslateGridHeader(Me.GrdCertExtFields)
 
                     If (Me.State.MyBO.CertificateIsRestricted) Then
                         ControlMgr.SetVisibleControl(Me, btnRestrict, False)
@@ -1252,7 +1259,10 @@ Namespace Certificates
                             btnRightToForgotten.Visible = True
                         End If
                     End If
-
+                Else
+                    If Not Me.State.selectedTab = CERT_EXTENDED_FIELDS_TAB Then
+                        PopulateCertExtendedFieldsGrid()
+                    End If
                 End If
 
                 btnNewClaim.Visible = Not Me.State.MyBO.CertificateIsRestricted
@@ -1486,7 +1496,7 @@ Namespace Certificates
                         Else
                             ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, True)
                         End If
-                    ElseIf Me.State.certCancelRequestBO Is Nothing And Not Me.State.MyBO.getCertCancelRequestID.Equals(guid.Empty) Then
+                    ElseIf Me.State.certCancelRequestBO Is Nothing And Not Me.State.MyBO.getCertCancelRequestID.Equals(Guid.Empty) Then
                         Me.State.CertCancelRequestId = Me.State.MyBO.getCertCancelRequestID
                         Me.State.certCancelRequestBO = New CertCancelRequest(Me.State.CertCancelRequestId)
                         ControlMgr.SetVisibleControl(Me, btnCreateNewRequest_WRITE, False)
@@ -4936,7 +4946,7 @@ Namespace Certificates
                         Try
                             CommonBankInfo.BankInfoEndorseRequest(Me.State.MyBO.Dealer.Dealer, Me.State.MyBO.CertNumber, Me.State.TheDirectDebitState.bankInfo)
                         Catch ex As Exception
-                            
+
                             MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_POLICYSERVICE_SERVICE_ERR, True)
                             Throw
                         End Try
@@ -6931,33 +6941,66 @@ Namespace Certificates
 #End Region
 
 #Region "Certificate Extended Fields grid Related"
-        Private Sub GridCertExtFields_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles GridCertExtFields.ItemDataBound
+        Private Sub GrdCertExtFields_ItemDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles GrdCertExtFields.RowDataBound
             Try
-                Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
-                Dim dvRow As DataRowView = CType(e.Item.DataItem, DataRowView)
-                If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
-                    e.Item.Cells(CERT_EXT_CERT_ID_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_CERT_ID).ToString
-                    e.Item.Cells(CERT_EXT_FIELD_NAME_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_NAME).ToString
-                    e.Item.Cells(CERT_EXT_FIELD_VALUE_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE).ToString
-                    e.Item.Cells(CERT_EXT_CREATED_BY_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_BY).ToString
-                    e.Item.Cells(CERT_EXT_MODIFIED_BY_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_BY).ToString
-                    If Not IsDBNull(dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_DATE)) Then
-                        e.Item.Cells(CERT_EXT_CREATED_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_DATE), Date))
+                Dim rowType As DataControlRowType = CType(e.Row.RowType, DataControlRowType)
+                Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
+                Dim rowState As DataControlRowState = CType(e.Row.RowState, DataControlRowState)
+                If (rowType = DataControlRowType.DataRow) AndAlso (dvRow IsNot Nothing) Then
+
+                    If (rowState And DataControlRowState.Edit) = DataControlRowState.Edit Then
+                        Dim fieldValueTextBox As TextBox = CType(e.Row.FindControl(CERT_EXT_GRID_FIELD_VALUE_TEXT_CTRL), TextBox)
+                        fieldValueTextBox.Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE).ToString
                     Else
-                        e.Item.Cells(CERT_EXT_CREATED_DATE_IDX).Text = String.Empty
+
+                        Dim fieldValueLabelBox As Label = CType(e.Row.FindControl(CERT_EXT_GRID_FIELD_VALUE_LBL_CTRL), Label)
+                        fieldValueLabelBox.Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE).ToString
                     End If
-                    If Not IsDBNull(dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE)) Then
-                        e.Item.Cells(CERT_EXT_MODIFIED_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE), Date))
-                    Else
-                        e.Item.Cells(CERT_EXT_MODIFIED_DATE_IDX).Text = String.Empty
-                    End If
+                    'e.Row.Cells(CERT_EXT_ID_ID_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_CERT_EXT_ID).ToString
+                    e.Row.Cells(CERT_EXT_ID_ID_IDX).Text = New Guid(CType(dvRow(Certificate.CertExtendedFieldsDv.COL_CERT_EXT_ID), Byte())).ToString
+                    e.Row.Cells(CERT_EXT_CERT_ID_IDX).Text = New Guid(CType(dvRow(Certificate.CertExtendedFieldsDv.COL_CERT_ID), Byte())).ToString
+                    ' e.Item.Cells(CERT_EXT_FIELD_NAME_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_NAME).ToString
+
+                    'e.Row.Cells(CERT_EXT_FIELD_VALUE_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE).ToString
+                    'e.Row.Cells(CERT_EXT_CREATED_BY_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_BY).ToString
+                    'e.Item.Cells(CERT_EXT_MODIFIED_BY_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_BY).ToString
+                    'If Not IsDBNull(dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_DATE)) Then
+                    '    e.Item.Cells(CERT_EXT_CREATED_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(Certificate.CertExtendedFieldsDv.COL_CREATED_DATE), Date))
+                    'Else
+                    '    e.Item.Cells(CERT_EXT_CREATED_DATE_IDX).Text = String.Empty
+                    'End If
+                    'If Not IsDBNull(dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE)) Then
+                    '    e.Item.Cells(CERT_EXT_MODIFIED_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE), Date))
+                    'Else
+                    '    e.Item.Cells(CERT_EXT_MODIFIED_DATE_IDX).Text = String.Empty
+                    'End If
+
+                    e.Row.Cells(CERT_EXT_ALOWUPDATE_IDX).Text = dvRow(Certificate.CertExtendedFieldsDv.COL_ALLOW_UPDATE).ToString
 
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub GridCertExtFields_SortCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles GridCertExtFields.SortCommand
+        Private Sub GrdCertExtFields_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles GrdCertExtFields.RowCreated
+            BaseItemCreated(sender, e)
+
+            Dim rowType As DataControlRowType = CType(e.Row.RowType, DataControlRowType)
+            Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
+            Dim rowState As DataControlRowState = CType(e.Row.RowState, DataControlRowState)
+
+            If (rowType = DataControlRowType.DataRow) AndAlso (dvRow IsNot Nothing) Then
+                Dim editButton As ImageButton = CType(e.Row.FindControl(CERT_EXT_GRID_FIELD_EDIT_BTN_CTRL), ImageButton)
+                If Not editButton Is Nothing Then
+                    If dvRow(Certificate.CertExtendedFieldsDv.COL_ALLOW_UPDATE).ToString = "YESNO-Y" Then
+                        editButton.Visible = True
+                    Else
+                        editButton.Visible = False
+                    End If
+                End If
+            End If
+        End Sub
+        Public Sub GrdViewCertItemConfig_Sorting(ByVal source As Object, ByVal e As GridViewSortEventArgs) Handles GrdCertExtFields.Sorting
             Try
                 If Me.State.CertExtFieldsSortExpression.StartsWith(e.SortExpression) Then
                     If Me.State.CertExtFieldsSortExpression.EndsWith(" DESC") Then
@@ -6975,16 +7018,10 @@ Namespace Certificates
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
-        Public Sub GridCertExtFields_ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs) Handles GridCertExtFields.ItemCreated
-            Try
-                BaseItemCreated(sender, e)
-            Catch ex As Exception
-                Me.HandleErrors(ex, MasterPage.MessageController)
-            End Try
-        End Sub
 
-        Private Sub GridCertExtFields_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridPageChangedEventArgs) Handles GridCertExtFields.PageIndexChanged
+        Public Sub GrdCertExtFields__OnPageIndexChanging(ByVal sender As Object, ByVal e As GridViewPageEventArgs) Handles GrdCertExtFields.PageIndexChanging
             Try
+                Me.GrdCertExtFields.PageIndex = e.NewPageIndex
                 Me.State.CertExtFieldsPageIndex = e.NewPageIndex
                 Me.State.SelectedCertExtId = Guid.Empty
                 Me.PopulateCertExtendedFieldsGrid()
@@ -6993,28 +7030,99 @@ Namespace Certificates
             End Try
         End Sub
 
+        Public Sub GridViewCertItemConfig_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles GrdCertExtFields.RowCommand
+            Try
+                Dim nIndex As Integer
+
+                Select Case e.CommandName
+                    Case ElitaPlusSearchPage.CANCEL_COMMAND_NAME
+                        GrdCertExtFields.EditIndex = NO_ITEM_SELECTED_INDEX
+                        'EndEdit(ElitaPlusPage.DetailPageCommand.Cancel)
+                        State.IsRowBeingEdited = False
+
+                    Case ElitaPlusSearchPage.SAVE_COMMAND_NAME
+                        nIndex = CInt(e.CommandArgument)
+                        ''Check if fieldName / code is duplicated
+                        ValidateExtFieldsRecords()
+                        Dim fieldValueTextBox As TextBox = CType(GrdCertExtFields.Rows(nIndex).FindControl(CERT_EXT_GRID_FIELD_VALUE_TEXT_CTRL), TextBox)
+
+                        If (String.IsNullOrEmpty(fieldValueTextBox.Text)) Then
+                            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_FIELD_VALUE_REQUIRED, True)
+                        Else
+                            Certificate.UpdateCertExtensionFieldsValue(New Guid(GrdCertExtFields.Rows(nIndex).Cells(CERT_EXT_ID_ID_IDX).Text), fieldValueTextBox.Text)
+                            State.IsRowBeingEdited = False
+                        End If
+
+                    Case ElitaPlusSearchPage.EDIT_COMMAND_NAME
+                        nIndex = CInt(e.CommandArgument)
+                        GrdCertExtFields.SelectedIndex = nIndex
+                        GrdCertExtFields.EditIndex = nIndex
+                        Me.State.SelectedCertExtId = New Guid(GrdCertExtFields.Rows(nIndex).Cells(CERT_EXT_ID_ID_IDX).Text)
+                        State.IsRowBeingEdited = True
+
+                        'DisableFields()
+
+
+                End Select
+                Me.EnableDisableTabs(State.IsRowBeingEdited)
+                PopulateCertExtendedFieldsGrid()
+            Catch ex As Oracle.ManagedDataAccess.Client.OracleException
+                Select Case ex.Number
+                    Case 20005
+                        MasterPage.MessageController.AddInformation(TranslationBase.TranslateLabelOrMessage("FIELDNAME_CANNOT_BE_ADDED"), True)
+                    Case 20006
+                        MasterPage.MessageController.AddInformation(TranslationBase.TranslateLabelOrMessage("FIELDNAME_CANNOT_BE_MODIFIED"), True)
+                    Case 20007
+                        MasterPage.MessageController.AddInformation(TranslationBase.TranslateLabelOrMessage("FIELDNAME_CANNOT_BE_DELETED"), True)
+                End Select
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
+
+
+        Public Sub GrdViewCertItemConfig_PageIndexChanged(ByVal sender As Object, ByVal e As GridViewPageEventArgs) Handles GrdCertExtFields.PageIndexChanged
+            Try
+                Me.State.CertExtFieldsPageIndex = e.NewPageIndex
+                Me.State.SelectedCertExtId = Guid.Empty
+                Me.PopulateCertExtendedFieldsGrid()
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+        Private Function ValidateExtFieldsRecords() As Boolean
+
+            'If (String.IsNullOrEmpty(State.MyBO.CODE)) Then
+            '    Throw New GUIException(Message.MSG_CERT_EXT_CODE_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_CODE_VALUE_REQUIRED)
+            'End If
+
+            'If (String.IsNullOrEmpty(State.MyBO.FieldName)) Then
+            '    Throw New GUIException(Message.MSG_CERT_EXT_FIELD_NAME_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_CERT_EXT_FIELD_NAME_REQUIRED)
+            'End If
+        End Function
+
         Public Sub PopulateCertExtendedFieldsGrid()
-            Dim cert As Certificate = Me.State.MyBO
             Dim dv As Certificate.CertExtendedFieldsDv = Certificate.GetCertExtensionFieldsList(Me.State.MyBO.Id, Authentication.CurrentUser.LanguageId)
             dv.Sort = Me.State.CertExtFieldsSortExpression
 
-            Me.GridCertExtFields.AutoGenerateColumns = False
-            Me.GridCertExtFields.Columns(CERT_EXT_FIELD_NAME_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_FIELD_NAME
-            Me.GridCertExtFields.Columns(CERT_EXT_FIELD_VALUE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE
-            Me.GridCertExtFields.Columns(CERT_EXT_CREATED_BY_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_CREATED_BY
-            Me.GridCertExtFields.Columns(CERT_EXT_CREATED_DATE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_CREATED_DATE
-            Me.GridCertExtFields.Columns(CERT_EXT_MODIFIED_BY_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_MODIFIED_BY
-            Me.GridCertExtFields.Columns(CERT_EXT_MODIFIED_DATE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE
-            Me.GridCertExtFields.EditItemIndex = -1
-            SetPageAndSelectedIndexFromGuid(dv, Me.State.SelectedCertExtId, Me.GridCertExtFields, Me.State.CertExtFieldsPageIndex)
-            Me.State.CertExtFieldsPageIndex = Me.GridCertExtFields.CurrentPageIndex
-            Me.GridCertExtFields.DataSource = dv
-            Me.GridCertExtFields.DataBind()
+            Me.GrdCertExtFields.AutoGenerateColumns = False
+            Me.GrdCertExtFields.Columns(CERT_EXT_FIELD_NAME_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_FIELD_NAME
+            Me.GrdCertExtFields.Columns(CERT_EXT_FIELD_VALUE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE
+            Me.GrdCertExtFields.Columns(CERT_EXT_CREATED_BY_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_CREATED_BY
+            Me.GrdCertExtFields.Columns(CERT_EXT_CREATED_DATE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_CREATED_DATE
+            Me.GrdCertExtFields.Columns(CERT_EXT_MODIFIED_BY_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_MODIFIED_BY
+            Me.GrdCertExtFields.Columns(CERT_EXT_MODIFIED_DATE_IDX).SortExpression = Certificate.CertExtendedFieldsDv.COL_MODIFIED_DATE
+            Me.GrdCertExtFields.EditIndex = -1
+            SetPageAndSelectedIndexFromGuid(dv, Me.State.SelectedCertExtId, Me.GrdCertExtFields, Me.State.CertExtFieldsPageIndex, State.IsRowBeingEdited)
+            Me.State.CertExtFieldsPageIndex = Me.GrdCertExtFields.PageIndex
+            Me.GrdCertExtFields.DataSource = dv
+            Me.GrdCertExtFields.DataBind()
 
             lblCertificateExtendedFields.Text = TranslationBase.TranslateLabelOrMessage("CERT_EXT_FIELDS") & " : " & dv.Count.ToString()
 
-            ControlMgr.SetVisibleControl(Me, GridCertExtFields, Me.State.IsCertExtFieldsGridVisible)
+            ControlMgr.SetVisibleControl(Me, GrdCertExtFields, Me.State.IsCertExtFieldsGridVisible)
         End Sub
+
 
 #End Region
 

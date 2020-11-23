@@ -5255,12 +5255,19 @@ Public Class Certificate
     End Function
 
     Public Shared Function GetCertExtensionFieldsList(ByVal CertId As Guid, ByVal languageId As Guid) As CertExtendedFieldsDv
-        
+
         Dim dal As New CertificateDAL
 
         Return New CertExtendedFieldsDv(dal.GetCertExtFieldsList(CertId, languageId).Tables(0))
 
     End Function
+    Public Shared Sub UpdateCertExtensionFieldsValue(ByVal CertextId As Guid, ByVal Value As String)
+
+        Dim dal As New CertificateDAL
+
+        dal.UpdateCertExtension(CertextId, Value, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+
+    End Sub
 
     Public Function MaskDatePart(txtDate As String, Optional noMask As Boolean = True) As String
         If Not (String.IsNullOrEmpty(txtDate)) Then
@@ -5386,6 +5393,7 @@ Public Class Certificate
         Public Const COL_CREATED_BY As String = "created_by"
         Public Const COL_MODIFIED_DATE As String = "modified_date"
         Public Const COL_MODIFIED_BY As String = "modified_by"
+        Public Const COL_ALLOW_UPDATE As String = "allow_update_xcd"
 
         Public Sub New()
             MyBase.New()

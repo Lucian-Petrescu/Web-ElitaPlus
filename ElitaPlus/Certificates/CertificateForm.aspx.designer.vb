@@ -5055,13 +5055,13 @@ Namespace Certificates
         Protected WithEvents linkOrigCertId As Global.System.Web.UI.WebControls.LinkButton
 
         '''<summary>
-        '''GridCertExtFields control.
+        '''GrdCertExtFields control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents GridCertExtFields As Global.System.Web.UI.WebControls.DataGrid
+        Protected WithEvents GrdCertExtFields As Global.System.Web.UI.WebControls.GridView
 
         '''<summary>
         '''LabelCvgInfoHdr control.
