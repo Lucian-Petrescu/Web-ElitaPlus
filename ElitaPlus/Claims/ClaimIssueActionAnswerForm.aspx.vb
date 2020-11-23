@@ -1061,6 +1061,8 @@ Partial Class ClaimIssueActionAnswerForm
             GridViewDeviceSelection.Columns(GridColNumberOfDeviceIdx).Visible = False
         ElseIf State.SelectedActionCode = IssueActionCode.LflDevSel Then
             GridViewDeviceSelection.Columns(GridColInventoryCheckIdx).Visible = True
+            GridViewDeviceSelection.Columns(GridColReplacementCostIdx).Visible = True
+            GridViewDeviceSelection.Columns(GridColNumberOfDeviceIdx).Visible = True
         End If
     End Sub
     
