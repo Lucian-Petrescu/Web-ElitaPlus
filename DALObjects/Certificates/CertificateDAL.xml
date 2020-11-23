@@ -1254,4 +1254,7 @@ order by created_date
   <GET_CERT_EXT_FIELDS_LIST>
     elita.elp_tbl_cert_ext.load
   </GET_CERT_EXT_FIELDS_LIST>
+  <UPDATE_CERT_EXT_FIELDS_VALUE>
+    elita.elp_tbl_cert_ext.modify
+  </UPDATE_CERT_EXT_FIELDS_VALUE>
 </SQL>

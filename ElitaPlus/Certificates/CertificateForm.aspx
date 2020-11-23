@@ -2326,29 +2326,47 @@
                 
                 <div id ="tabsCertificateExtendedFields">
                     <div class="dataContainer" style="width: 100%">
-                        <asp:DataGrid ID="GridCertExtFields" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True"
-                            OnItemCreated="GridCertExtFields_ItemCreated"
-                                      SkinID="DetailPageDataGrid" AllowSorting="true">
+                       <asp:GridView ID="GrdCertExtFields" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True" OnItemCreated="GrdCertExtFields_ItemCreated" SkinID="DetailPageGridView"
+                            AllowSorting="true">
                             <HeaderStyle />
                             <Columns>
-                                <asp:BoundColumn DataField="CERT_EXT_ID" Visible="False"/>
-                                <asp:BoundColumn DataField="CERT_ID" Visible="False"/>
-                                <asp:BoundColumn DataField="FIELD_NAME" SortExpression="FIELD_NAME" ReadOnly="true" HeaderStyle-CssClass="FIELD_NAME" ItemStyle-CssClass="FIELD_NAME"
-                                                HeaderText="FIELD_NAME" HeaderStyle-HorizontalAlign="Center" />
-                                <asp:BoundColumn DataField="FIELD_VALUE" SortExpression="FIELD_VALUE" ReadOnly="true" HeaderStyle-CssClass="FIELD_VALUE" ItemStyle-CssClass="FIELD_VALUE"
-                                                HeaderText="FIELD_VALUE" HeaderStyle-HorizontalAlign="Center" />
-                                <asp:BoundColumn DataField="CREATED_BY" SortExpression="CREATED_BY" ReadOnly="true" HeaderStyle-CssClass="CREATED_BY" ItemStyle-CssClass="CREATED_BY"
-                                                HeaderText="CREATED_BY" HeaderStyle-HorizontalAlign="Center" />
-                                <asp:BoundColumn DataField="CREATED_DATE" SortExpression="CREATED_DATE" ReadOnly="true" HeaderStyle-CssClass="CREATED_DATE" ItemStyle-CssClass="CREATED_DATE"
-                                                 HeaderText="CREATED_DATE" HeaderStyle-HorizontalAlign="Center" />
-                                <asp:BoundColumn DataField="MODIFIED_BY" SortExpression="MODIFIED_BY" ReadOnly="true" HeaderStyle-CssClass="MODIFIED_BY" ItemStyle-CssClass="MODIFIED_BY"
-                                                HeaderText="MODIFIED_BY" HeaderStyle-HorizontalAlign="Center" />
-                                <asp:BoundColumn DataField="MODIFIED_DATE" SortExpression="MODIFIED_DATE" ReadOnly="true" HeaderStyle-CssClass="MODIFIED_DATE" ItemStyle-CssClass="MODIFIED_DATE"
-                                                 HeaderText="MODIFIED_DATE" HeaderStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="CERT_EXT_ID" Visible="false"  />
+                                <asp:BoundField DataField="CERT_ID" Visible="false" />
+                                <asp:BoundField DataField="FIELD_NAME" SortExpression="FIELD_NAME" ReadOnly="true" HeaderStyle-CssClass="FIELD_VALUE" ItemStyle-CssClass="FIELD_VALUE"
+                                    HeaderText="FIELD_NAME" HeaderStyle-HorizontalAlign="Center" />
+                                <asp:TemplateField HeaderText="FIELD_VALUE" AccessibleHeaderText="FIELD_VALUE" SortExpression="FIELD_VALUE" HeaderStyle-HorizontalAlign="Center" HeaderStyle-CssClass="FIELD_VALUE" ItemStyle-CssClass="FIELD_VALUE">
+                                    <ItemTemplate>
+                                        <asp:Label ID="LBL_FIELD_VALUE" runat="server" ></asp:Label>
+                                    </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:TextBox ID="TXT_FIELD_VALUE" runat="server"></asp:TextBox>
+                                    </EditItemTemplate>
+                                </asp:TemplateField>
+                                <asp:BoundField DataField="CREATED_BY" SortExpression="CREATED_BY" ReadOnly="true" HeaderStyle-CssClass="CREATED_BY" ItemStyle-CssClass="CREATED_BY"
+                                    HeaderText="CREATED_BY" HeaderStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="CREATED_DATE" SortExpression="CREATED_DATE" ReadOnly="true" HeaderStyle-CssClass="CREATED_DATE" ItemStyle-CssClass="CREATED_DATE"
+                                    HeaderText="CREATED_DATE" HeaderStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="MODIFIED_BY" SortExpression="MODIFIED_BY" ReadOnly="true" HeaderStyle-CssClass="MODIFIED_BY" ItemStyle-CssClass="MODIFIED_BY"
+                                    HeaderText="MODIFIED_BY" HeaderStyle-HorizontalAlign="Center" />
+                                <asp:BoundField DataField="MODIFIED_DATE" SortExpression="MODIFIED_DATE" ReadOnly="true" HeaderStyle-CssClass="MODIFIED_DATE" ItemStyle-CssClass="MODIFIED_DATE"
+                                    HeaderText="MODIFIED_DATE" HeaderStyle-HorizontalAlign="Center" />
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:ImageButton runat="server" ID="EditButton" CommandName="EditRecord" AlternateText="Edit" ImageUrl="~/App_Themes/Default/Images/edit.png"
+                                            CommandArgument="<%#Container.DisplayIndex %>" />
+                                    </ItemTemplate>
+                                    <EditItemTemplate>
+                                        <asp:ImageButton runat="server" ID="SaveButton" AlternateText="Save" CommandName="SaveRecord" ImageUrl="~/App_Themes/Default/Images/save.png"
+                                            CommandArgument="<%#Container.DisplayIndex %>" />
+                                        <asp:ImageButton runat="server" ID="CancelButton" AlternateText="Cancel" CommandName="CancelRecord" ImageUrl="~/App_Themes/Default/Images/cancel.png"
+                                            CommandArgument="<%#Container.DisplayIndex %>" />
+                                    </EditItemTemplate>
+                                </asp:TemplateField>
+                                 <asp:BoundField DataField="ALLOW_UPDATE" SortExpression="ALLOW_UPDATE" ReadOnly="true" HeaderStyle-CssClass="MODIFIED_DATE" ItemStyle-CssClass="MODIFIED_DATE"
+                                    HeaderText="ALLOW_UPDATE" Visible="false" HeaderStyle-HorizontalAlign="Center"  />
                             </Columns>
-                            <PagerStyle Position="TopAndBottom" PageButtonCount="15" Mode="NumericPages"></PagerStyle>
-                            <PagerStyle />
-                        </asp:DataGrid>
+                            <PagerSettings PageButtonCount="10" Mode="Numeric" Position="TopAndBottom" />
+                        </asp:GridView>
                         </div>
                 </div>
             </div>
