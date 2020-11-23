@@ -982,12 +982,12 @@ Namespace Tables
 
                     If GetSelectedItem(moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, LookupNo) Then
 
-                        If TheCoverage.AttributeValues.Count > 0 Then
+                        If TheCoverage.AttributeValues.Count > 0 AndAlso TheCoverage.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS) IsNot Nothing Then
                             Throw New GUIException(Message.INVALID_ATTRIBUTE, ElitaPlus.Common.ErrorCodes.ATTRIBUTE_VALUE_CANNOT_BE_SET_WHEN_REINSURED_IS_SET_TO_NO_ERR)
                         End If
                     End If
                 Else
-                    If TheCoverage.AttributeValues.Count > 0 Then
+                    If TheCoverage.AttributeValues.Count > 0 AndAlso TheCoverage.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS) IsNot Nothing Then
                         Throw New GUIException(Message.INVALID_ATTRIBUTE, ElitaPlus.Common.ErrorCodes.CANNOT_SET_ATTRIBUTE_WITHOUT_REINSURED_FLAG)
                     End If
                 End If
@@ -1460,6 +1460,7 @@ Namespace Tables
             BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.RecoverDeviceId), moRecoverDeciveLabel)
             BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.OffsetToStartDays), moOffsetLabel)
             BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.OffsetMethodId), moOffsetMethodLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.DeviceExpectedBackXCD), lblDeviceExpectedBack)
         End Sub
 
         Private Sub ClearLabelsErrSign()
@@ -1487,6 +1488,7 @@ Namespace Tables
             ClearLabelErrSign(moRecoverDeciveLabel)
             ClearLabelErrSign(moAgentCodeLabel)
             ClearLabelErrSign(moClaimLimitCountLabel)
+            ClearLabelErrSign(lblDeviceExpectedBack)
 
         End Sub
 
@@ -2777,6 +2779,16 @@ Namespace Tables
             Else
                 SetSelectedItem(cboDeductibleBasedOn, TheCoverage.DeductibleBasedOnId)
             End If
+
+            Dim DeviceExpectedBackList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DEVICE_EXPECTED_BACK", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
+            ddlDeviceExpectedBack.Populate(DeviceExpectedBackList, New PopulateOptions() With
+                                                  {.AddBlankItem = True, .BlankItemValue = String.Empty, .ValueFunc = AddressOf PopulateOptions.GetExtendedCode, .SortFunc = AddressOf PopulateOptions.GetDescription})
+
+            ControlMgr.SetEnableControl(Me, ddlDeviceExpectedBack, True)
+            If Not String.IsNullOrEmpty(TheCoverage.DeviceExpectedBackXCD) Then
+                SetSelectedItem(ddlDeviceExpectedBack, TheCoverage.DeviceExpectedBackXCD)
+            End If
+
         End Sub
 
         Private Sub PopulateCoveragePricing()
@@ -3056,6 +3068,13 @@ Namespace Tables
                 'US-489839
                 ValidateRateRenewalNo()
                 ValidateRateLimitAndPercent()
+
+                
+                If ddlDeviceExpectedBack.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                    PopulateBOProperty(TheCoverage, NameOf(TheCoverage.DeviceExpectedBackXCD), ddlDeviceExpectedBack, isGuidValue:=False, isStringValue:=True)
+                Else
+                    TheCoverage.DeviceExpectedBackXCD = Nothing
+                End If
             End With
 
             If ErrCollection.Count > 0 Then

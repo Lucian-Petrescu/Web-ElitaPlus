@@ -99,8 +99,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.3\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
+    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.4\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Common.Types, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Elita.Assurant.Common.Types.2.0.0\lib\net462\Assurant.Common.Types.dll</HintPath>
@@ -442,6 +442,7 @@
     <Compile Include="Tables\ApsPublishingLogDAL.vb" />
     <Compile Include="Tables\BankMaintenanceDAL.vb" />
     <Compile Include="Tables\BenefitProductCodeDAL.vb" />
+    <Compile Include="Tables\CertExtendedItemFormDAL.vb" />
     <Compile Include="Tables\ClaimFulfillmentOrderDetailDAL.vb" />
     <Compile Include="Tables\ClaimBonusSettingsDAL.vb" />
     <Compile Include="Tables\ClaimStageDAL.vb" />

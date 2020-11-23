@@ -1153,5 +1153,31 @@ Partial Class UserControlBankInfo_New
             ControlMgr.SetEnableControl(Me.Page, txtBankLookupCode, False)
         End If
     End Sub
+
+    Public Sub LabelTranslations()
+        lblBankName.Text = TranslationBase.TranslateLabelOrMessage("BANK_NAME")
+        labelNameonAccount.Text = TranslationBase.TranslateLabelOrMessage("NAME_ON_ACCOUNT")
+        labelCountryOfBank.Text = TranslationBase.TranslateLabelOrMessage("COUNTRY_OF_BANK")
+        lblBranchName.Text = TranslationBase.TranslateLabelOrMessage("BANK_BRANCH_NAME")
+        labelBankID.Text = TranslationBase.TranslateLabelOrMessage("BANK_ID")
+        lblBranchNumber.Text = TranslationBase.TranslateLabelOrMessage("BRANCH_NUMBER")
+        lblBranchDigit.Text = TranslationBase.TranslateLabelOrMessage("BRANCH_DIGIT")
+        labelBankAccountNo.Text = TranslationBase.TranslateLabelOrMessage("BANK_ACCOUNT_NO")
+        labelBankAccountNo_Last4Digits.Text = TranslationBase.TranslateLabelOrMessage("BANK_ACCOUNT_NO_LAST4DIGITS")
+        labelAccountType.Text = TranslationBase.TranslateLabelOrMessage("ACCOUNT_TYPE")
+        lblAcctDigit.Text = TranslationBase.TranslateLabelOrMessage("ACCOUNT_DIGIT")
+        labelSwiftCode.Text = TranslationBase.TranslateLabelOrMessage("SWIFT_CODE")
+        labelIBAN_Number.Text = TranslationBase.TranslateLabelOrMessage("IBAN_NUMBER")
+        labelIBAN_Number_Last4Digits.Text = TranslationBase.TranslateLabelOrMessage("IBAN_NUMBER_LAST4DIGITS")
+        labelBanklookup.Text = TranslationBase.TranslateLabelOrMessage("BANK_LOOKUP_CODE")
+        labelbanksubcode.Text = TranslationBase.TranslateLabelOrMessage("BANK_SUB_CODE")
+        labelBankSortCode.Text = TranslationBase.TranslateLabelOrMessage("BANK_SORT_CODE")
+        labelTranslimit.Text = TranslationBase.TranslateLabelOrMessage("TRANSACTION_LIMIT")
+        labelTaxId.Text = TranslationBase.TranslateLabelOrMessage("TAX_ID")
+        labelAddress1.Text = TranslationBase.TranslateLabelOrMessage("ADDRESS1")
+        labelAddress2.Text = TranslationBase.TranslateLabelOrMessage("ADDRESS2")
+        labelCity.Text = TranslationBase.TranslateLabelOrMessage("CITY")
+        labelPostalCode.Text = TranslationBase.TranslateLabelOrMessage("POSTAL_CODE")
+    End Sub
 End Class
 

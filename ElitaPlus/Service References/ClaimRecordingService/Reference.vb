@@ -2420,7 +2420,9 @@ Namespace ClaimRecordingService
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoDealerBranchAddress)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoElectronicDelivery)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoUnspecified)),  _
-     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoHandlingStore))>  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoHandlingStore)),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoBankTransfer)),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoCheckCustomerMail))>  _
     Partial Public Class LogisticOptionInfoBase
         Inherits Object
         Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
@@ -2673,6 +2675,12 @@ Namespace ClaimRecordingService
         
         <System.Runtime.Serialization.EnumMemberAttribute()>  _
         ServiceCenter = 5
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        BankTransfer = 6
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        CheckCustomerMail = 7
     End Enum
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
@@ -2785,6 +2793,52 @@ Namespace ClaimRecordingService
                 If (Object.ReferenceEquals(Me.HandlingStoreField, value) <> true) Then
                     Me.HandlingStoreField = value
                     Me.RaisePropertyChanged("HandlingStore")
+                End If
+            End Set
+        End Property
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="LogisticOptionInfoBankTransfer", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/Shared/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class LogisticOptionInfoBankTransfer
+        Inherits ClaimRecordingService.LogisticOptionInfoBase
+        
+        Private BankInfoField As ClaimRecordingService.BankInfo
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property BankInfo() As ClaimRecordingService.BankInfo
+            Get
+                Return Me.BankInfoField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.BankInfoField, value) <> true) Then
+                    Me.BankInfoField = value
+                    Me.RaisePropertyChanged("BankInfo")
+                End If
+            End Set
+        End Property
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="LogisticOptionInfoCheckCustomerMail", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/Shared/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class LogisticOptionInfoCheckCustomerMail
+        Inherits ClaimRecordingService.LogisticOptionInfoBase
+        
+        Private AddressField As ClaimRecordingService.Address
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property Address() As ClaimRecordingService.Address
+            Get
+                Return Me.AddressField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.AddressField, value) <> true) Then
+                    Me.AddressField = value
+                    Me.RaisePropertyChanged("Address")
                 End If
             End Set
         End Property
@@ -3016,6 +3070,52 @@ Namespace ClaimRecordingService
         Locker = 2
     End Enum
     
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="BankInfo", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/Shared/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class BankInfo
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        Private ReferenceIdField As String
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property ReferenceId() As String
+            Get
+                Return Me.ReferenceIdField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ReferenceIdField, value) <> true) Then
+                    Me.ReferenceIdField = value
+                    Me.RaisePropertyChanged("ReferenceId")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
      System.Runtime.Serialization.DataContractAttribute(Name:="ProcessTypes", [Namespace]:="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts")>  _
     Public Enum ProcessTypes As Integer
@@ -3211,6 +3311,9 @@ Namespace ClaimRecordingService
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private DisplayOptionField As ClaimRecordingService.FulfillmentDisplayOptionTypes
         
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private AlternateCodeField As String
+        
         <Global.System.ComponentModel.BrowsableAttribute(false)>  _
         Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
             Get
@@ -3334,6 +3437,19 @@ Namespace ClaimRecordingService
                 If (Me.DisplayOptionField.Equals(value) <> true) Then
                     Me.DisplayOptionField = value
                     Me.RaisePropertyChanged("DisplayOption")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=9)>  _
+        Public Property AlternateCode() As String
+            Get
+                Return Me.AlternateCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.AlternateCodeField, value) <> true) Then
+                    Me.AlternateCodeField = value
+                    Me.RaisePropertyChanged("AlternateCode")
                 End If
             End Set
         End Property
@@ -3464,6 +3580,7 @@ Namespace ClaimRecordingService
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.CallerAuthenticationFailedFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.FulfillmentServiceFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.TranslationNotFoundFault)),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.FmipApiNotConfiguredFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.InvalidPolicyNumberFault))>  _
     Partial Public Class BaseFault
         Inherits Object
@@ -3636,6 +3753,15 @@ Namespace ClaimRecordingService
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="FmipApiNotConfiguredFault", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.Fau"& _ 
+        "lts"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class FmipApiNotConfiguredFault
+        Inherits ClaimRecordingService.BaseFault
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
      System.Runtime.Serialization.DataContractAttribute(Name:="InvalidPolicyNumberFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
      System.SerializableAttribute()>  _
     Partial Public Class InvalidPolicyNumberFault
@@ -3778,6 +3904,7 @@ Namespace ClaimRecordingService
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.TroubleShootingRequest)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.CallerAuthenticationRequest)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.FulfillmentOptionsRequest)),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.UsedLoyaltyPointsRequest)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticStagesRequest)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.DynamicFulfillmentRequest))>  _
     Partial Public Class BaseClaimRecordingRequest
@@ -4163,6 +4290,62 @@ Namespace ClaimRecordingService
                 End If
             End Set
         End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property QuestionSetCode() As String
+            Get
+                Return Me.QuestionSetCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.QuestionSetCodeField, value) <> true) Then
+                    Me.QuestionSetCodeField = value
+                    Me.RaisePropertyChanged("QuestionSetCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property QuestionVersion() As Integer
+            Get
+                Return Me.QuestionVersionField
+            End Get
+            Set
+                If (Me.QuestionVersionField.Equals(value) <> true) Then
+                    Me.QuestionVersionField = value
+                    Me.RaisePropertyChanged("QuestionVersion")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property Questions() As Assurant.Elita.Questions.Contracts.Question()
+            Get
+                Return Me.QuestionsField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.QuestionsField, value) <> true) Then
+                    Me.QuestionsField = value
+                    Me.RaisePropertyChanged("Questions")
+                End If
+            End Set
+        End Property
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="UsedLoyaltyPointsRequest", [Namespace]:="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class UsedLoyaltyPointsRequest
+        Inherits ClaimRecordingService.BaseClaimRecordingRequest
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private QuestionSetCodeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private QuestionVersionField As Integer
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private QuestionsField() As Assurant.Elita.Questions.Contracts.Question
         
         <System.Runtime.Serialization.DataMemberAttribute()>  _
         Public Property QuestionSetCode() As String
@@ -4999,6 +5182,9 @@ Namespace ClaimRecordingService
         Private ClaimEquipmentField As ClaimRecordingService.ClaimEquipment
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ClaimEquipmentListField() As ClaimRecordingService.ClaimEquipment
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private ClaimIdField As System.Guid
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
@@ -5069,6 +5255,9 @@ Namespace ClaimRecordingService
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private ProblemDescriptionField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private RepairDateField As System.Nullable(Of Date)
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private ReportedDateField As Date
@@ -5260,6 +5449,19 @@ Namespace ClaimRecordingService
                 If (Object.ReferenceEquals(Me.ClaimEquipmentField, value) <> true) Then
                     Me.ClaimEquipmentField = value
                     Me.RaisePropertyChanged("ClaimEquipment")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property ClaimEquipmentList() As ClaimRecordingService.ClaimEquipment()
+            Get
+                Return Me.ClaimEquipmentListField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ClaimEquipmentListField, value) <> true) Then
+                    Me.ClaimEquipmentListField = value
+                    Me.RaisePropertyChanged("ClaimEquipmentList")
                 End If
             End Set
         End Property
@@ -5572,6 +5774,19 @@ Namespace ClaimRecordingService
                 If (Object.ReferenceEquals(Me.ProblemDescriptionField, value) <> true) Then
                     Me.ProblemDescriptionField = value
                     Me.RaisePropertyChanged("ProblemDescription")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property RepairDate() As System.Nullable(Of Date)
+            Get
+                Return Me.RepairDateField
+            End Get
+            Set
+                If (Me.RepairDateField.Equals(value) <> true) Then
+                    Me.RepairDateField = value
+                    Me.RaisePropertyChanged("RepairDate")
                 End If
             End Set
         End Property
@@ -6670,6 +6885,12 @@ Namespace ClaimRecordingService
         
         <System.Runtime.Serialization.EnumMemberAttribute()>  _
         R = 2
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        ReplacementOptions = 3
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        ReceivedDevice = 4
     End Enum
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
@@ -7110,6 +7331,9 @@ Namespace ClaimRecordingService
             "mitFulfillmentServiceFaultFault", Name:="FulfillmentServiceFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
          System.ServiceModel.FaultContractAttribute(GetType(ClaimRecordingService.TranslationNotFoundFault), Action:="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Sub"& _ 
             "mitTranslationNotFoundFaultFault", Name:="TranslationNotFoundFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
+         System.ServiceModel.FaultContractAttribute(GetType(ClaimRecordingService.FmipApiNotConfiguredFault), Action:="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Sub"& _ 
+            "mitFmipApiNotConfiguredFaultFault", Name:="FmipApiNotConfiguredFault", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.Fau"& _ 
+            "lts"),  _
          System.ServiceModel.FaultContractAttribute(GetType(Assurant.ElitaPlus.BusinessObjectsNew.LegacyBridgeService.ValidationFault), Action:="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Sub"& _ 
             "mitValidationFaultFault", Name:="ValidationFault", [Namespace]:="http://assurant.com/Elita/ServiceIntegration/Faults")>  _
         Function Submit(ByVal request As ClaimRecordingService.BaseClaimRecordingRequest) As ClaimRecordingService.BaseClaimRecordingResponse

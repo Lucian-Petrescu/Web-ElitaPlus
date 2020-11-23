@@ -1730,8 +1730,8 @@ Partial Class ContractForm
         If Not selectedDealerId.Equals(Guid.Empty) Then
             Dim defaultDates As Contract.StartEndDates = Contract.GetNewDefaultDates(selectedDealerId)
             With defaultDates
-                Me.PopulateControlFromBOProperty(Me.TextboxStartDate_WRITE, .StartDate)
-                Me.PopulateControlFromBOProperty(Me.TextboxEndDate_WRITE, .EndDate)
+                Me.PopulateControlFromBOProperty(Me.TextboxStartDate_WRITE, New DateType(.StartDate))
+                Me.PopulateControlFromBOProperty(Me.TextboxEndDate_WRITE, New DateType(.EndDate))
             End With
             SetID_Validation_DDandAcsel_Prod_Code() 'SetID_Validation_DD()
         End If

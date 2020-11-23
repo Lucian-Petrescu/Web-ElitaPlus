@@ -105,6 +105,7 @@ Public Class ClaimDocumentForm
                 'check if the user has access to delete the images 
                 Me.State.AllowDeleteOfImage = Me.CanSetControlEnabled(HiddenIsDeleteImagesAllowed.ID)
                 Me.PopulateGrid()
+
                 Dim oDocumentTypeDropDown As ListItem() = CommonConfigManager.Current.ListManager.GetList("DTYP", Thread.CurrentPrincipal.GetLanguageCode())
                 DocumentTypeDropDown.Populate(oDocumentTypeDropDown, New PopulateOptions() With
                                           {

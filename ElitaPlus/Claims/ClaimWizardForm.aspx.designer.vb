@@ -2795,6 +2795,15 @@ Partial Public Class ClaimWizardForm
     Protected WithEvents btnComment As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
+    '''btnClaimDeductibleRefund control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnClaimDeductibleRefund As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
     '''btnDenyClaim control.
     '''</summary>
     '''<remarks>
