@@ -2699,163 +2699,6 @@ Namespace ClaimFulfillmentWebAppGatewayService
         End Sub
     End Class
     
-    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
-     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
-     System.Runtime.Serialization.DataContractAttribute(Name:="UpdateLogisticStageRequest", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data"),  _
-     System.SerializableAttribute()>  _
-    Partial Public Class UpdateLogisticStageRequest
-        Inherits Object
-        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
-        
-        <System.NonSerializedAttribute()>  _
-        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
-        
-        Private CompanyCodeField As String
-        
-        Private ClaimNumberField As String
-        
-        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
-        Private LogisticStagesField() As ClaimFulfillmentWebAppGatewayService.SelectedLogisticStage
-        
-        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
-        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
-            Get
-                Return Me.extensionDataField
-            End Get
-            Set
-                Me.extensionDataField = value
-            End Set
-        End Property
-        
-        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
-        Public Property CompanyCode() As String
-            Get
-                Return Me.CompanyCodeField
-            End Get
-            Set
-                If (Object.ReferenceEquals(Me.CompanyCodeField, value) <> true) Then
-                    Me.CompanyCodeField = value
-                    Me.RaisePropertyChanged("CompanyCode")
-                End If
-            End Set
-        End Property
-        
-        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=1)>  _
-        Public Property ClaimNumber() As String
-            Get
-                Return Me.ClaimNumberField
-            End Get
-            Set
-                If (Object.ReferenceEquals(Me.ClaimNumberField, value) <> true) Then
-                    Me.ClaimNumberField = value
-                    Me.RaisePropertyChanged("ClaimNumber")
-                End If
-            End Set
-        End Property
-        
-        <System.Runtime.Serialization.DataMemberAttribute(Order:=2)>  _
-        Public Property LogisticStages() As ClaimFulfillmentWebAppGatewayService.SelectedLogisticStage()
-            Get
-                Return Me.LogisticStagesField
-            End Get
-            Set
-                If (Object.ReferenceEquals(Me.LogisticStagesField, value) <> true) Then
-                    Me.LogisticStagesField = value
-                    Me.RaisePropertyChanged("LogisticStages")
-                End If
-            End Set
-        End Property
-        
-        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
-        
-        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
-            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
-            If (Not (propertyChanged) Is Nothing) Then
-                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
-            End If
-        End Sub
-    End Class
-    
-    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
-     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
-     System.Runtime.Serialization.DataContractAttribute(Name:="UpdatedLogisticStagesResponse", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimFulfillment.Contracts"& _ 
-        ".Shared.Response"),  _
-     System.SerializableAttribute()>  _
-    Partial Public Class UpdatedLogisticStagesResponse
-        Inherits Object
-        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
-        
-        <System.NonSerializedAttribute()>  _
-        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
-        
-        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
-        Private ClaimNumberField As String
-        
-        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
-        Private CompanyCodeField As String
-        
-        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
-        Private FulfillmentNumberField As String
-        
-        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
-        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
-            Get
-                Return Me.extensionDataField
-            End Get
-            Set
-                Me.extensionDataField = value
-            End Set
-        End Property
-        
-        <System.Runtime.Serialization.DataMemberAttribute()>  _
-        Public Property ClaimNumber() As String
-            Get
-                Return Me.ClaimNumberField
-            End Get
-            Set
-                If (Object.ReferenceEquals(Me.ClaimNumberField, value) <> true) Then
-                    Me.ClaimNumberField = value
-                    Me.RaisePropertyChanged("ClaimNumber")
-                End If
-            End Set
-        End Property
-        
-        <System.Runtime.Serialization.DataMemberAttribute()>  _
-        Public Property CompanyCode() As String
-            Get
-                Return Me.CompanyCodeField
-            End Get
-            Set
-                If (Object.ReferenceEquals(Me.CompanyCodeField, value) <> true) Then
-                    Me.CompanyCodeField = value
-                    Me.RaisePropertyChanged("CompanyCode")
-                End If
-            End Set
-        End Property
-        
-        <System.Runtime.Serialization.DataMemberAttribute()>  _
-        Public Property FulfillmentNumber() As String
-            Get
-                Return Me.FulfillmentNumberField
-            End Get
-            Set
-                If (Object.ReferenceEquals(Me.FulfillmentNumberField, value) <> true) Then
-                    Me.FulfillmentNumberField = value
-                    Me.RaisePropertyChanged("FulfillmentNumber")
-                End If
-            End Set
-        End Property
-        
-        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
-        
-        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
-            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
-            If (Not (propertyChanged) Is Nothing) Then
-                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
-            End If
-        End Sub
-    End Class
-    
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0"),  _
      System.ServiceModel.ServiceContractAttribute([Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway", ConfigurationName:="ClaimFulfillmentWebAppGatewayService.WebAppGateway")>  _
     Public Interface WebAppGateway
@@ -2925,16 +2768,6 @@ Namespace ClaimFulfillmentWebAppGatewayService
             "iceCenter", ReplyAction:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/ChangeServ"& _ 
             "iceCenterResponse")>  _
         Function ChangeServiceCenterAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.ChangeServiceCenterRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.ChangeServiceCenterResponse)
-        
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/UpdateLogi"& _ 
-            "stics", ReplyAction:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/UpdateLogi"& _ 
-            "sticsResponse")>  _
-        Function UpdateLogistics(ByVal request As ClaimFulfillmentWebAppGatewayService.UpdateLogisticStageRequest) As ClaimFulfillmentWebAppGatewayService.UpdatedLogisticStagesResponse
-        
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/UpdateLogi"& _ 
-            "stics", ReplyAction:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/UpdateLogi"& _ 
-            "sticsResponse")>  _
-        Function UpdateLogisticsAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.UpdateLogisticStageRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.UpdatedLogisticStagesResponse)
     End Interface
     
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")>  _
@@ -3014,14 +2847,6 @@ Namespace ClaimFulfillmentWebAppGatewayService
         
         Public Function ChangeServiceCenterAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.ChangeServiceCenterRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.ChangeServiceCenterResponse) Implements ClaimFulfillmentWebAppGatewayService.WebAppGateway.ChangeServiceCenterAsync
             Return MyBase.Channel.ChangeServiceCenterAsync(request)
-        End Function
-        
-        Public Function UpdateLogistics(ByVal request As ClaimFulfillmentWebAppGatewayService.UpdateLogisticStageRequest) As ClaimFulfillmentWebAppGatewayService.UpdatedLogisticStagesResponse Implements ClaimFulfillmentWebAppGatewayService.WebAppGateway.UpdateLogistics
-            Return MyBase.Channel.UpdateLogistics(request)
-        End Function
-        
-        Public Function UpdateLogisticsAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.UpdateLogisticStageRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.UpdatedLogisticStagesResponse) Implements ClaimFulfillmentWebAppGatewayService.WebAppGateway.UpdateLogisticsAsync
-            Return MyBase.Channel.UpdateLogisticsAsync(request)
         End Function
     End Class
 End Namespace
