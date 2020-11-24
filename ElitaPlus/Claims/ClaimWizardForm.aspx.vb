@@ -1077,7 +1077,7 @@ Public Class ClaimWizardForm
     End Property
 
    Private Sub PopulateLogisticStageAddress()
-
+       
        Dim fullFilInfo As BO.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails
         
        If Me.State.FulfillmentDetails  is Nothing Then
@@ -1093,13 +1093,24 @@ Public Class ClaimWizardForm
 
                     Dim logisticStageAddresses As New List(Of LogisticStageAddress)
 
-                    logisticStageAddresses = New List(Of LogisticStageAddress)(
-                        From dr In Me.State.FulfillmentDetails.LogisticStages Select New LogisticStageAddress() With {
-                                                                               .LogisticStageAddress = ConvertToAddressControllerField(dr.Address),
-                                                                               .LogisticStageName = dr.Description,
-                                                                               .LogisticStageCode = dr.Code
-                                                                               }
-                        )
+                    if Me.State.ClaimBO.FulfillmentProviderType =  BusinessObjectsNew.FulfillmentProviderType.V3 then
+                      
+                        logisticStageAddresses = New List(Of LogisticStageAddress)(
+                            From dr In Me.State.FulfillmentDetails.LogisticStages Select New LogisticStageAddress() With {
+                                                                                                                          .LogisticStageAddress = ConvertToAddressControllerFieldsForV3Providers(dr.Address),
+                                                                                                                          .LogisticStageName = dr.Description,
+                                                                                                                          .LogisticStageCode = dr.Code
+                                                                                                                          }
+                            )
+                        else
+                            logisticStageAddresses = New List(Of LogisticStageAddress)(
+                                From dr In Me.State.FulfillmentDetails.LogisticStages Select New LogisticStageAddress() With {
+                                                                                                                              .LogisticStageAddress = ConvertToAddressControllerFieldsForOtherProviders(dr.Address),
+                                                                                                                              .LogisticStageName = dr.Description,
+                                                                                                                              .LogisticStageCode = dr.Code
+                                                                                                                              }
+                                )
+                    End If
 
                     Dim filteredLogisticStageAddresses = logisticStageAddresses.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing).ToList()
                     
@@ -1135,7 +1146,7 @@ Public Class ClaimWizardForm
         End If
     End Sub
 
-    Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As Fulfillmentaddress) As BusinessObjectsNew.Address
+    Private Shared Function ConvertToAddressControllerFieldsForV3Providers(ByVal sourceAddress As Fulfillmentaddress) As BusinessObjectsNew.Address
         Dim convertAddress As New BusinessObjectsNew.Address With {
                 .CountryId =
                 LookupListNew.GetIdFromCode(LookupListNew.DataView(LookupListNew.LK_COUNTRIES, False),
@@ -1151,7 +1162,7 @@ Public Class ClaimWizardForm
                 }
         Return convertAddress
     End Function
-    Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As Claim.FulfillmentaddressInfo) As BusinessObjectsNew.Address
+    Private Shared Function ConvertToAddressControllerFieldsForOtherProviders(ByVal sourceAddress As Claim.FulfillmentaddressInfo) As BusinessObjectsNew.Address
        
         Dim convertAddress As New BusinessObjectsNew.Address(sourceAddress.AddressId) With {
                 .CountryId =
