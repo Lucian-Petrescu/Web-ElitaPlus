@@ -1397,41 +1397,64 @@
     <None Include="Service References\Auth\AuthorizationService65.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse.datasource">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse1.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.ChangeServiceCenterResponse.datasource">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.ChangeServiceCenterResponse1.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.CustomerDecisionResponse.datasource">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.CustomerDecisionResponse1.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails.datasource">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails1.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentServicesCenter.datasource">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentServicesCenter1.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.GetDeliverySlotsResponse.datasource">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.GetDeliverySlotsResponse1.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway.wsdl" />
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway.xsd">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.UpdatedLogisticStagesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway1.wsdl" />
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway11.wsdl" />
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway5.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway1.xsd">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway51.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway2.xsd">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway510.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway3.xsd">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway52.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway4.xsd">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway53.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway.wsdl" />
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway54.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway55.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway56.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway57.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway58.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway59.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway1.wsdl" />
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway11.wsdl" />
     <None Include="Service References\DocAdmin\Assurant.ElitaPlus.BusinessObjectsNew.DocAdmin.DocumentFormat.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

@@ -1,11 +1,14 @@
 ﻿Imports System.Linq
 Imports System.Reflection
 Imports System.Collections.Generic
+Imports System.Net
 Imports Assurant.ElitaPlus.Business
 Imports Assurant.ElitaPlus.DataEntities
 Imports Assurant.ElitaPlus.DataAccess
 Imports Assurant.ElitaPlus.DataAccessInterface
 Imports Assurant.Common
+Imports Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService
+Imports Assurant.ElitaPlus.BusinessObjectsNew.LegacyBridgeService
 
 ''' <summary>
 ''' Claim Base class acts as base class for Creating the Claim Objects. The class encapsulates common properties from SingleAuthorization Claim and 
@@ -585,7 +588,7 @@ Public MustInherit Class ClaimBase
                 If [Enum].TryParse(Of FulfillmentProviderType)(Row(ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP).ToString().GetXcdEnum(Of FulfillmentProviderType)(), result) Then
                     Return result
                 Else
-                    Return FulfillmentProviderType.Elita
+                    Return FulfillmentProviderType.V1
                 End If
             End If
         End Get
@@ -2509,6 +2512,13 @@ Public MustInherit Class ClaimBase
             Return True
 
         End Function
+
+    End Class
+
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+    Public NotInheritable Class FulfillmentaddressInfo
+        Inherits FulfillmentAddress
+        Public Property AddressId As Guid
     End Class
 
 #End Region
@@ -3990,7 +4000,7 @@ Public MustInherit Class ClaimBase
             Me.IsLocked = Codes.YESNO_N
             ''claim lock - End            
 
-            If Not Me.IsNew Then                
+            If Not Me.IsNew Then
                 If Me.GetDealerDRPTradeInQuoteFlag(Me.DealerCode) Then
                     If IsStatusChngdFromPendingOrClosedToActive() Then
                         If Me.VerifyIMEIWithDRPSystem(Me.SerialNumber) Then
@@ -4964,6 +4974,7 @@ Public MustInherit Class ClaimBase
         Dim dal As New ClaimDAL
         Return dal.IsServiceWarrantyValid(ClaimId) 'checks if service warranty is valid
     End Function
+
 End Class
 
 #Region "Enums"
