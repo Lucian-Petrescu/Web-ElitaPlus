@@ -176,6 +176,7 @@ Namespace Certificates
         Public Const CERT_EXT_MODIFIED_DATE_IDX As Integer = 7
         Public Const CERT_EXT_ACTIONS_IDX As Integer = 8
         Public Const CERT_EXT_ALOWUPDATE_IDX As Integer = 9
+        Public Const CertFieldValueMaxLength As Integer = 20
 
 #End Region
 
@@ -6883,6 +6884,7 @@ Namespace Certificates
                     If (rowState And DataControlRowState.Edit) = DataControlRowState.Edit Then
                         Dim fieldValueTextBox As TextBox = CType(e.Row.FindControl(CERT_EXT_GRID_FIELD_VALUE_TEXT_CTRL), TextBox)
                         fieldValueTextBox.Text = dvRow(Certificate.CertExtendedFieldsDv.COL_FIELD_VALUE).ToString
+                        fieldValueTextBox.MaxLength=CertFieldValueMaxLength
                     Else
 
                         Dim fieldValueLabelBox As Label = CType(e.Row.FindControl(CERT_EXT_GRID_FIELD_VALUE_LBL_CTRL), Label)
