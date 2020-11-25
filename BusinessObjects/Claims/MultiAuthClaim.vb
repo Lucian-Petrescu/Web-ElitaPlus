@@ -180,10 +180,12 @@ Public NotInheritable Class MultiAuthClaim
     End Function
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
-        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
-        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPasswd.Url)
-        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
-        client.ClientCredentials.UserName.Password = oWebPasswd.Password
+        'http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/test-p1/WebAppGateway/gateway
+        'http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/Test-J1/WebAppGateway/gateway
+
+        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", "http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/Test-J1/WebAppGateway/gateway")
+        client.ClientCredentials.UserName.UserName = "elita1"
+        client.ClientCredentials.UserName.Password = "elita1"
         Return client
     End Function
     Public Overrides Sub CreateClaim()
@@ -655,7 +657,7 @@ Public NotInheritable Class MultiAuthClaim
                                                                                                                     .City = Me.ContactInfo.Address.City,
                                                                                                                     .Country = Me.ContactInfo.Address.countryBO.Code,
                                                                                                                     .PostalCode = Me.ContactInfo.Address.PostalCode,
-                                                                                                                    .State = LookupListNew.GetDescriptionFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS,
+                                                                                                                    .State = LookupListNew.GetCodeFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS,
                                                                                                                                                                                        False), Me.ContactInfo.Address.RegionId)
                                                                                                                 },
                                                                         .OptionCode = Me.MethodOfRepairCode,

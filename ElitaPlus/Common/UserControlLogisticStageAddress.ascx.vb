@@ -118,7 +118,7 @@ Public Class UserControlLogisticStageAddress
                 ls.Address.Address2 = repAddress.Address2
                 ls.Address.Address3 = repAddress.Address3
                 ls.Address.City = repAddress.City
-                ls.Address.State = LookupListNew.GetDescriptionFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS, False), repAddress.RegionId)
+                ls.Address.State = LookupListNew.GetCodeFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS, False), repAddress.RegionId)
                 ls.Address.Country = repAddress.countryBO.Code
                 ls.Address.PostalCode = repAddress.PostalCode
             Next
