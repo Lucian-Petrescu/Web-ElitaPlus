@@ -2692,6 +2692,25 @@ Public Class CertificateDAL
 
     End Function
 
+    Public Function LoadCertExtendedFieldHistory(ByVal CertId As Guid) As DataSet
+
+        Dim ds As New DataSet
+
+
+        Dim selectstmt As String = Me.Config("/SQL/LOAD_CERT_EXT_FIELDS_VALUE_HISTORY")
+
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                        {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, CertId.ToByteArray)
+                        }
+        Try
+            DBHelper.Fetch(ds, selectstmt, Me.TABLE_NAME, parameters)
+            Return ds
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+    End Function
+
     Public Function GetInforceCertsLastestDate() As DataSet
         'Dim ds As New DataSet
         Dim selectStmt As String = Me.Config("/SQL/GET_INFORCECERT_LASTEST_DATE")

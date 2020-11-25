@@ -24,6 +24,7 @@ Namespace Certificates
             Public CustAddressHistDV As Certificate.CustAddressHistoryDV = Nothing
             Public CustContactHistDV As Certificate.CustContactHistoryDV = Nothing
             Public CustBankDetailHistDV As Certificate.CustBankDetailHistoryDV = Nothing
+            Public CertExtendedFieldHistDV As Certificate.CertExtendedFieldsDv = Nothing
         End Class
 
         Public Sub New()
@@ -64,6 +65,8 @@ Namespace Certificates
                     PopulateCustContactHistory()
                     Me.TranslateGridHeader(Me.CustBankDetailHistory)
                     PopulateCustBankDetailHistory()
+                    Me.TranslateGridHeader(Me.grdExtendedFieldValueHist)
+                    PopulateExtendedFieldValueHistory()
                     Me.MasterPage.MessageController.Clear()
                 End If
             Catch ex As Threading.ThreadAbortException
@@ -205,6 +208,12 @@ Namespace Certificates
             Me.CustBankDetailHistory.AutoGenerateColumns = False
             Me.CustBankDetailHistory.DataSource = Me.State.CustBankDetailHistDV
             Me.CustBankDetailHistory.DataBind()
+        End Sub
+        Public Sub PopulateExtendedFieldValueHistory()
+            Me.State.CertExtendedFieldHistDV = Me.State.oCert.GetCertExtendedFieldHistory(Me.State.oCert.Id)
+            Me.grdExtendedFieldValueHist.AutoGenerateColumns = False
+            Me.grdExtendedFieldValueHist.DataSource = Me.State.CertExtendedFieldHistDV
+            Me.grdExtendedFieldValueHist.DataBind()
         End Sub
         Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
             Try

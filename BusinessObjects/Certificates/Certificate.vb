@@ -4265,47 +4265,65 @@ Public Class Certificate
         End Sub
 
     End Class
+    Public Class CertExtFieldDetailsDV
+        Inherits DataView
+        Public Const FIELD_NAME As String = "field_name"
+        Public Const FIELD_VALUE As String = "field_value"
+        Public Const COL_CREATED_BY As String = "created_by"
+        Public Const COL_CREATED_DATE As String = "created_date"
+        Public Const COL_MODIFIED_BY As String = "modified_by"
+        Public Const COL_MODIFIED_DATE As String = "modified_date"
+
+        Public Sub New()
+            MyBase.New()
+        End Sub
+
+        Public Sub New(ByVal table As DataTable)
+            MyBase.New(table)
+        End Sub
+
+    End Class
 
 #End Region
 #Region "DataView Retrieveing Methods"
 
     Public Shared Function GetCustPersonalHistory(ByVal certId As Guid, ByVal language_id As Guid) As DataView
-        Try
-            Dim dal As New CertificateDAL
-            Dim ds As New DataSet
+            Try
+                Dim dal As New CertificateDAL
+                Dim ds As New DataSet
 
-            ds = dal.LoadCustPersonalHistory(certId, language_id)
-            Return New CustPersonelHistoryDV(ds.Tables(0))
+                ds = dal.LoadCustPersonalHistory(certId, language_id)
+                Return New CustPersonelHistoryDV(ds.Tables(0))
 
-        Catch ex As Exception
+            Catch ex As Exception
 
-        End Try
-    End Function
-    Public Shared Function GetCustAddressHistory(ByVal certId As Guid) As DataView
-        Try
-            Dim dal As New CertificateDAL
-            Dim ds As New DataSet
+            End Try
+        End Function
+        Public Shared Function GetCustAddressHistory(ByVal certId As Guid) As DataView
+            Try
+                Dim dal As New CertificateDAL
+                Dim ds As New DataSet
 
-            ds = dal.LoadCustAddressHistory(certId)
-            Return New CustAddressHistoryDV(ds.Tables(0))
+                ds = dal.LoadCustAddressHistory(certId)
+                Return New CustAddressHistoryDV(ds.Tables(0))
 
-        Catch ex As Exception
+            Catch ex As Exception
 
-        End Try
-    End Function
+            End Try
+        End Function
 
-    Public Shared Function GetCustContactHistory(ByVal certId As Guid) As DataView
-        Try
-            Dim dal As New CertificateDAL
-            Dim ds As New DataSet
+        Public Shared Function GetCustContactHistory(ByVal certId As Guid) As DataView
+            Try
+                Dim dal As New CertificateDAL
+                Dim ds As New DataSet
 
-            ds = dal.LoadCustContactHistory(certId)
-            Return New CustContactHistoryDV(ds.Tables(0))
+                ds = dal.LoadCustContactHistory(certId)
+                Return New CustContactHistoryDV(ds.Tables(0))
 
-        Catch ex As Exception
+            Catch ex As Exception
 
-        End Try
-    End Function
+            End Try
+        End Function
 
     Public Shared Function GetCustBankDetailHistory(ByVal certId As Guid) As DataView
         Try
@@ -4320,1273 +4338,1286 @@ Public Class Certificate
         End Try
     End Function
 
+    Public Shared Function GetCertExtendedFieldHistory(ByVal certId As Guid) As DataView
+        Try
+            Dim dal As New CertificateDAL
+            Dim ds As New DataSet
+
+            ds = dal.LoadCertExtendedFieldHistory(certId)
+            Return New CertExtendedFieldsDv(ds.Tables(0))
+
+        Catch ex As Exception
+
+        End Try
+    End Function
+
 #End Region
 
 #Region "Web Svc Methods"
 
 
     Public Shared Function GetOlitaConsumerCertList(ByVal cert_number As String, ByVal dealerId As Guid, Optional ByVal InvoiceNumberMask As String = Nothing, Optional ByVal LimitResultset As Int32 = CertificateDAL.MAX_NUMBER_OF_ROWS) As DataSet
-        Dim dal As New CertificateDAL
-        Dim ds As DataSet
-        Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-        If Dealer.GetOlitaSearchType(dealerId).Equals(Codes.OLITA_SEARCH_GENERIC) Then
-            cert_number += "*"
-        End If
+            Dim dal As New CertificateDAL
+            Dim ds As DataSet
+            Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
+            If Dealer.GetOlitaSearchType(dealerId).Equals(Codes.OLITA_SEARCH_GENERIC) Then
+                cert_number += "*"
+            End If
 
-        Return dal.GetOlitaConsumerCertList(cert_number, dealerId, compIds, LimitResultset, InvoiceNumberMask)
+            Return dal.GetOlitaConsumerCertList(cert_number, dealerId, compIds, LimitResultset, InvoiceNumberMask)
 
-    End Function
+        End Function
 
 
-    Public Shared Function GetCertificateBO(ByVal dsParams As GetCertificateListInputDs) As String
+        Public Shared Function GetCertificateBO(ByVal dsParams As GetCertificateListInputDs) As String
 
-        Dim local As New Certificate()
-        Dim sWSConsumer As String
-        Dim XMLData As String
-        Dim dv As DataView
-
-        Try
-
-            dv = local.Dataset.Tables(0).DefaultView
-            Dim DS As GetCertificateListInputDs = dsParams
-
-            'sWSConsumer = DS.GetCertificateListInput.Item(0).wsConsumer
-
-            Dim oProps As System.Reflection.PropertyInfo() = GetType(Certificate).GetProperties()
-            Dim oProp As System.Reflection.PropertyInfo
-
-            Dim iArrLen As Integer = oProps.Length
-            Dim iCnt As Integer
-
-            For iCnt = 0 To iArrLen
-
-                oProps(iCnt).GetCustomAttributes(True)
-                Dim oCustAttribs As Array = CType(oProps(iCnt).GetCustomAttributes(True), Array)
-
-                Dim sAttribName As String
-                Dim iAttribArrLen As Integer = oCustAttribs.Length
-
-                Dim oArrItem As Object
-                For Each oArrItem In oCustAttribs
-
-                    sAttribName = oArrItem.GetType.ToString
-                    'this is an example.  to implement, create a new attribute class called WSVisibleLevel with value options : Read, Validate, Return
-                    If sAttribName = "Assurant.Common.Validation.WSVisibilityAttribute" Then
-
-                    ElseIf Equals(GetType(Assurant.Common.Validation.ValueMandatoryAttribute), oArrItem.GetType) Then
-
-                    End If
-                Next
-
-            Next iCnt
-
-            'if consumer type = "CLIENT" or is empty 
-            'If sWSConsumer.ToUpper.Equals(WSUtility.WS_CONSUMER_CLIENT) OrElse sWSConsumer.Trim.Equals("") Then
-            '    XMLData = WSUtility.CompactData(dv)
-            'Else
-            DS.Tables.Add(dv.Table.Copy)
-            XMLData = XMLHelper.FromDatasetToXML(DS)
-            'End If
-
-            dv.Dispose()
-            DS.Dispose()
-
-            Return XMLData
-
-        Catch ex As Exception
-            Throw New ElitaWSException(ex.Message)
-        End Try
-    End Function
-
-    Public Shared Function GetCertificateList(ByVal dsParams As GetCertificateListInputDs) As String
-        Try
-            Dim sCertNum As String = ""
-            Dim sCustName As String = ""
-            Dim sAddress As String = ""
-            Dim sZIP As String = ""
-            Dim sTaxID As String = ""
-            Dim sDealerCode As String = ""
-            Dim iLimitResultset As Integer
-            Dim sSortBy As String = ""
-            Dim sWSConsumer As String = ""
+            Dim local As New Certificate()
+            Dim sWSConsumer As String
             Dim XMLData As String
             Dim dv As DataView
 
-            If Not dsParams.GetCertificateListInput.Count = 0 Then
-                With dsParams.GetCertificateListInput.Item(0)
-                    sCertNum = .CertificateNumber
-                    sCustName = .CustomerName
-                    sAddress = .Address
-                    sZIP = .ZIP
-                    sTaxID = .TaxID
-                    sDealerCode = .DealerCode
-                    iLimitResultset = .LimitResultset
-                    sSortBy = .SortBy
-                    'sWSConsumer = .wsConsumer
-                End With
-            End If
+            Try
 
-            'for backwards compatibility with GetCertificatesList 
-            'where validation check is AndAlso (dealerName Is Nothing) instead of sDealerCode.Equals(String.Empty)
-            If sDealerCode.Equals(String.Empty) Then sDealerCode = Nothing
+                dv = local.Dataset.Tables(0).DefaultView
+                Dim DS As GetCertificateListInputDs = dsParams
 
-            If WSUtility.IsGuid(sDealerCode) Then
-                Dim guidDealerCode As New Guid(sDealerCode)
-                sDealerCode = WSUtility.GetDealerCode(guidDealerCode) 'convert GUID to code
-            End If
+                'sWSConsumer = DS.GetCertificateListInput.Item(0).wsConsumer
 
-            If WSUtility.IsGuid(sSortBy) Then
-                Dim guidSortBy As New Guid(sSortBy)
-                sSortBy = LookupListNew.GetCodeFromId(LookupListNew.LK_CERTIFICATE_SEARCH_FIELDS, guidSortBy)
-            End If
+                Dim oProps As System.Reflection.PropertyInfo() = GetType(Certificate).GetProperties()
+                Dim oProp As System.Reflection.PropertyInfo
 
-            dv = GetCertificatesList(sCertNum, sCustName, sAddress, sZIP, sTaxID, sDealerCode, sSortBy, iLimitResultset)
+                Dim iArrLen As Integer = oProps.Length
+                Dim iCnt As Integer
 
-            'if consumer type = "CLIENT" or is empty 
-            'If sWSConsumer.ToUpper.Equals(WSUtility.WS_CONSUMER_CLIENT) OrElse sWSConsumer.Trim.Equals("") Then
-            '    XMLData = WSUtility.CompactData(dv)
-            'Else
-            Dim dsRetMsg As New DataSet
-            dsRetMsg.DataSetName = "GetCertificateListResultset"
-            dsRetMsg.Tables.Add(dv.Table.Copy)
-            XMLData = XMLHelper.FromDatasetToXML(dsRetMsg)
-            dsRetMsg.Dispose()
-            'End If
+                For iCnt = 0 To iArrLen
 
-            dsParams.Dispose()
+                    oProps(iCnt).GetCustomAttributes(True)
+                    Dim oCustAttribs As Array = CType(oProps(iCnt).GetCustomAttributes(True), Array)
 
-            If XMLData = String.Empty Then XMLData = XMLHelper.FromStringToXML("<MESSAGE>" & TranslationBase.TranslateLabelOrMessage(NO_RECORDS_FOUND) & "</MESSAGE>")
+                    Dim sAttribName As String
+                    Dim iAttribArrLen As Integer = oCustAttribs.Length
 
-            Return XMLData
+                    Dim oArrItem As Object
+                    For Each oArrItem In oCustAttribs
 
-        Catch ex As Exception
-            If Not ex.GetType.Equals(GetType(BOValidationException)) Then
-                Throw New ElitaWSException(ex)
-            Else
-                Throw ex 'percolate BO validation type as is. do not convert to type ElitaWSException
-            End If
-        End Try
-    End Function
+                        sAttribName = oArrItem.GetType.ToString
+                        'this is an example.  to implement, create a new attribute class called WSVisibleLevel with value options : Read, Validate, Return
+                        If sAttribName = "Assurant.Common.Validation.WSVisibilityAttribute" Then
 
-    Public Shared Function GalaxyGetCertificateDetail(ByVal certNumber As String, ByVal dealerCode As String) As DataSet
-        Try
-            Dim compId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
-            Dim dal As New CertificateDAL
-            Dim ds As DataSet
-            Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
+                        ElseIf Equals(GetType(Assurant.Common.Validation.ValueMandatoryAttribute), oArrItem.GetType) Then
 
-            If (certNumber.Equals(String.Empty) AndAlso (dealerCode Is Nothing)) Then
-                Throw New BOValidationException(errors, GetType(Certificate).FullName)
-            End If
+                        End If
+                    Next
 
-            Return dal.GalaxyLoadCertificateDetail(certNumber, dealerCode, compId)
+                Next iCnt
 
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Throw New DataBaseAccessException(ex.ErrorType, ex)
-        End Try
-    End Function
+                'if consumer type = "CLIENT" or is empty 
+                'If sWSConsumer.ToUpper.Equals(WSUtility.WS_CONSUMER_CLIENT) OrElse sWSConsumer.Trim.Equals("") Then
+                '    XMLData = WSUtility.CompactData(dv)
+                'Else
+                DS.Tables.Add(dv.Table.Copy)
+                XMLData = XMLHelper.FromDatasetToXML(DS)
+                'End If
 
-    Public Shared Function ClaimLogisticsGetCert(ByVal certNumber As String, ByVal dealerCode As String) As DataSet
-        Try
-            Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
+                dv.Dispose()
+                DS.Dispose()
 
-            Dim dal As New CertificateDAL
-            Dim ds As DataSet
-            Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
+                Return XMLData
 
-            If (certNumber Is Nothing Or certNumber.Equals(String.Empty) Or dealerCode Is Nothing Or dealerCode.Equals(String.Empty)) Then
-                Throw New BOValidationException(errors, GetType(Certificate).FullName)
-            End If
+            Catch ex As Exception
+                Throw New ElitaWSException(ex.Message)
+            End Try
+        End Function
 
-            Return dal.ClaimLogisticsGetCert(certNumber, dealerCode, compIds)
+        Public Shared Function GetCertificateList(ByVal dsParams As GetCertificateListInputDs) As String
+            Try
+                Dim sCertNum As String = ""
+                Dim sCustName As String = ""
+                Dim sAddress As String = ""
+                Dim sZIP As String = ""
+                Dim sTaxID As String = ""
+                Dim sDealerCode As String = ""
+                Dim iLimitResultset As Integer
+                Dim sSortBy As String = ""
+                Dim sWSConsumer As String = ""
+                Dim XMLData As String
+                Dim dv As DataView
 
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Throw New DataBaseAccessException(ex.ErrorType, ex)
-        End Try
-    End Function
+                If Not dsParams.GetCertificateListInput.Count = 0 Then
+                    With dsParams.GetCertificateListInput.Item(0)
+                        sCertNum = .CertificateNumber
+                        sCustName = .CustomerName
+                        sAddress = .Address
+                        sZIP = .ZIP
+                        sTaxID = .TaxID
+                        sDealerCode = .DealerCode
+                        iLimitResultset = .LimitResultset
+                        sSortBy = .SortBy
+                        'sWSConsumer = .wsConsumer
+                    End With
+                End If
 
-    Public Shared Function GetCertListByInvoiceNumber(ByVal InvoiceNumber As String) As DataSet
-        Try
-            Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
+                'for backwards compatibility with GetCertificatesList 
+                'where validation check is AndAlso (dealerName Is Nothing) instead of sDealerCode.Equals(String.Empty)
+                If sDealerCode.Equals(String.Empty) Then sDealerCode = Nothing
 
-            Dim dal As New CertificateDAL
-            Dim ds As DataSet
-            Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
+                If WSUtility.IsGuid(sDealerCode) Then
+                    Dim guidDealerCode As New Guid(sDealerCode)
+                    sDealerCode = WSUtility.GetDealerCode(guidDealerCode) 'convert GUID to code
+                End If
 
-            If InvoiceNumber Is Nothing Or InvoiceNumber.Equals(String.Empty) Then
-                Throw New BOValidationException(errors, GetType(Certificate).FullName)
-            End If
+                If WSUtility.IsGuid(sSortBy) Then
+                    Dim guidSortBy As New Guid(sSortBy)
+                    sSortBy = LookupListNew.GetCodeFromId(LookupListNew.LK_CERTIFICATE_SEARCH_FIELDS, guidSortBy)
+                End If
 
-            Return dal.GetCertListByInvoiceNumber(InvoiceNumber, compIds)
+                dv = GetCertificatesList(sCertNum, sCustName, sAddress, sZIP, sTaxID, sDealerCode, sSortBy, iLimitResultset)
 
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Throw New DataBaseAccessException(ex.ErrorType, ex)
-        End Try
-    End Function
+                'if consumer type = "CLIENT" or is empty 
+                'If sWSConsumer.ToUpper.Equals(WSUtility.WS_CONSUMER_CLIENT) OrElse sWSConsumer.Trim.Equals("") Then
+                '    XMLData = WSUtility.CompactData(dv)
+                'Else
+                Dim dsRetMsg As New DataSet
+                dsRetMsg.DataSetName = "GetCertificateListResultset"
+                dsRetMsg.Tables.Add(dv.Table.Copy)
+                XMLData = XMLHelper.FromDatasetToXML(dsRetMsg)
+                dsRetMsg.Dispose()
+                'End If
 
-    Public Shared Function GetCertListWithInvoiceNumberByCertNUmber(ByVal CertificateNumber As String) As DataSet
-        Try
-            Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
+                dsParams.Dispose()
 
-            Dim dal As New CertificateDAL
-            Dim ds As DataSet
-            Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
+                If XMLData = String.Empty Then XMLData = XMLHelper.FromStringToXML("<MESSAGE>" & TranslationBase.TranslateLabelOrMessage(NO_RECORDS_FOUND) & "</MESSAGE>")
 
-            If CertificateNumber Is Nothing Or CertificateNumber.Equals(String.Empty) Then
-                Throw New BOValidationException(errors, GetType(Certificate).FullName)
-            End If
+                Return XMLData
 
-            Return dal.GetCertListWithInvoiceNumberByCertNUmber(CertificateNumber, compIds)
+            Catch ex As Exception
+                If Not ex.GetType.Equals(GetType(BOValidationException)) Then
+                    Throw New ElitaWSException(ex)
+                Else
+                    Throw ex 'percolate BO validation type as is. do not convert to type ElitaWSException
+                End If
+            End Try
+        End Function
 
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Throw New DataBaseAccessException(ex.ErrorType, ex)
-        End Try
-    End Function
+        Public Shared Function GalaxyGetCertificateDetail(ByVal certNumber As String, ByVal dealerCode As String) As DataSet
+            Try
+                Dim compId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
+                Dim dal As New CertificateDAL
+                Dim ds As DataSet
+                Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
 
-    Public Shared Function GetGalaxyCertificatesList(ByVal certNumberMask As String, ByVal customerNameMask As String,
+                If (certNumber.Equals(String.Empty) AndAlso (dealerCode Is Nothing)) Then
+                    Throw New BOValidationException(errors, GetType(Certificate).FullName)
+                End If
+
+                Return dal.GalaxyLoadCertificateDetail(certNumber, dealerCode, compId)
+
+            Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+                Throw New DataBaseAccessException(ex.ErrorType, ex)
+            End Try
+        End Function
+
+        Public Shared Function ClaimLogisticsGetCert(ByVal certNumber As String, ByVal dealerCode As String) As DataSet
+            Try
+                Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
+
+                Dim dal As New CertificateDAL
+                Dim ds As DataSet
+                Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
+
+                If (certNumber Is Nothing Or certNumber.Equals(String.Empty) Or dealerCode Is Nothing Or dealerCode.Equals(String.Empty)) Then
+                    Throw New BOValidationException(errors, GetType(Certificate).FullName)
+                End If
+
+                Return dal.ClaimLogisticsGetCert(certNumber, dealerCode, compIds)
+
+            Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+                Throw New DataBaseAccessException(ex.ErrorType, ex)
+            End Try
+        End Function
+
+        Public Shared Function GetCertListByInvoiceNumber(ByVal InvoiceNumber As String) As DataSet
+            Try
+                Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
+
+                Dim dal As New CertificateDAL
+                Dim ds As DataSet
+                Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
+
+                If InvoiceNumber Is Nothing Or InvoiceNumber.Equals(String.Empty) Then
+                    Throw New BOValidationException(errors, GetType(Certificate).FullName)
+                End If
+
+                Return dal.GetCertListByInvoiceNumber(InvoiceNumber, compIds)
+
+            Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+                Throw New DataBaseAccessException(ex.ErrorType, ex)
+            End Try
+        End Function
+
+        Public Shared Function GetCertListWithInvoiceNumberByCertNUmber(ByVal CertificateNumber As String) As DataSet
+            Try
+                Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
+
+                Dim dal As New CertificateDAL
+                Dim ds As DataSet
+                Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
+
+                If CertificateNumber Is Nothing Or CertificateNumber.Equals(String.Empty) Then
+                    Throw New BOValidationException(errors, GetType(Certificate).FullName)
+                End If
+
+                Return dal.GetCertListWithInvoiceNumberByCertNUmber(CertificateNumber, compIds)
+
+            Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+                Throw New DataBaseAccessException(ex.ErrorType, ex)
+            End Try
+        End Function
+
+        Public Shared Function GetGalaxyCertificatesList(ByVal certNumberMask As String, ByVal customerNameMask As String,
                         ByVal IdentificationNumberMask As String, ByVal VehicleLicenseTagMask As String,
                         ByVal VINLocatorMask As String, ByVal dealerCodeMask As String, ByVal dealerNameMask As String,
                         ByVal CustomerPhoneMask As String, Optional ByVal sortBy As String = CertificateDAL.SORT_BY_CUSTOMER_NAME, Optional ByVal LimitResultset As Int32 = CertificateDAL.GALAXY_MAX_NUMBER_OF_ROWS) As DataSet
 
-        Try
-            Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-            Dim dal As New CertificateDAL
-            Dim ds As DataSet
-            Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
+            Try
+                Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
+                Dim dal As New CertificateDAL
+                Dim ds As DataSet
+                Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
 
-            Return dal.LoadGalaxyList(certNumberMask, customerNameMask,
+                Return dal.LoadGalaxyList(certNumberMask, customerNameMask,
                                      IdentificationNumberMask, VehicleLicenseTagMask, VINLocatorMask, dealerCodeMask, dealerNameMask, CustomerPhoneMask, compIds, sortBy, LimitResultset)
 
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Throw New DataBaseAccessException(ex.ErrorType, ex)
-        End Try
-    End Function
+            Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+                Throw New DataBaseAccessException(ex.ErrorType, ex)
+            End Try
+        End Function
 
-    Public Shared Function OlitaGetCertificatesList(ByVal certNumberMask As String, ByVal customerNameMask As String,
+        Public Shared Function OlitaGetCertificatesList(ByVal certNumberMask As String, ByVal customerNameMask As String,
                         ByVal CustomerPhoneMask As String, Optional ByVal sortBy As String = CertificateDAL.SORT_BY_CERT_NUMBER, Optional ByVal LimitResultset As Int32 = CertificateDAL.MAX_NUMBER_OF_ROWS) As DataSet
 
-        Try
-            Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-            Dim dal As New CertificateDAL
-            Dim ds As DataSet
-            Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
+            Try
+                Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
+                Dim dal As New CertificateDAL
+                Dim ds As DataSet
+                Dim errors() As ValidationError = {New ValidationError(SEARCH_EXCEPTION, GetType(Certificate), Nothing, "Search", Nothing)}
 
-            Return dal.LoadOlitaList(certNumberMask, customerNameMask, CustomerPhoneMask, compIds, sortBy, LimitResultset)
+                Return dal.LoadOlitaList(certNumberMask, customerNameMask, CustomerPhoneMask, compIds, sortBy, LimitResultset)
 
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Throw New DataBaseAccessException(ex.ErrorType, ex)
-        End Try
-    End Function
+            Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+                Throw New DataBaseAccessException(ex.ErrorType, ex)
+            End Try
+        End Function
 
-    Public Shared Function SearchCertificateByImeiNumber(ByVal companyCode As String, ByVal dealerCode As String,
+        Public Shared Function SearchCertificateByImeiNumber(ByVal companyCode As String, ByVal dealerCode As String,
                                                          ByVal imeiNumber As String, ByVal certStatus As String,
                                                          ByVal userId As String,
                                                          ByRef oErrCode As Integer, ByRef oErrMsg As String) As DataSet
-        Dim dal As New CertificateDAL
-        Return dal.GetCertificateByImei(companyCode, dealerCode, imeiNumber, certStatus, userId, oErrCode, oErrMsg)
-    End Function
+            Dim dal As New CertificateDAL
+            Return dal.GetCertificateByImei(companyCode, dealerCode, imeiNumber, certStatus, userId, oErrCode, oErrMsg)
+        End Function
 
-    Public Shared Function UpdateImeiNumberAddEvent(ByVal certItemId As Guid, ByVal imeiNumberCurrent As String, ByVal imeiNumberNew As String, ByVal identificationType As String,
+        Public Shared Function UpdateImeiNumberAddEvent(ByVal certItemId As Guid, ByVal imeiNumberCurrent As String, ByVal imeiNumberNew As String, ByVal identificationType As String,
                                                          ByRef oErrCode As Integer, ByRef oErrMsg As String) As Boolean
-        Dim dal As New CertificateDAL
-        dal.UpdateImeiAddEvent(certItemId, imeiNumberCurrent, imeiNumberNew, identificationType, oErrCode, oErrMsg)
-        If oErrCode = 0 Then 'successs
-            Return True
-        Else
-            Return False
-        End If
-    End Function
+            Dim dal As New CertificateDAL
+            dal.UpdateImeiAddEvent(certItemId, imeiNumberCurrent, imeiNumberNew, identificationType, oErrCode, oErrMsg)
+            If oErrCode = 0 Then 'successs
+                Return True
+            Else
+                Return False
+            End If
+        End Function
 
-    Public Shared Sub CancelCertByExternalNumber(ByVal CompanyCode As String, ByVal DealerCode As String,
+        Public Shared Sub CancelCertByExternalNumber(ByVal CompanyCode As String, ByVal DealerCode As String,
                                  ByVal ExternalCertNumType As String, ByVal ExternalCertNum As String,
                                  ByVal CancelllationDate As Date, ByVal CancellationReasonCode As String,
                                  ByVal CallerName As String, ByVal User As String,
                                  ByRef oDealerCode As String, ByRef oCertificateNum As String,
                                  ByRef oErrCode As String, ByRef oErrMsg As String)
-        Dim dal As New CertificateDAL
-        oDealerCode = String.Empty
-        oCertificateNum = String.Empty
-        oErrCode = String.Empty
-        oErrMsg = String.Empty
+            Dim dal As New CertificateDAL
+            oDealerCode = String.Empty
+            oCertificateNum = String.Empty
+            oErrCode = String.Empty
+            oErrMsg = String.Empty
 
-        dal.CancelCertByExternalNumber(CompanyCode, DealerCode, ExternalCertNumType, ExternalCertNum,
+            dal.CancelCertByExternalNumber(CompanyCode, DealerCode, ExternalCertNumType, ExternalCertNum,
                                               CancelllationDate, CancellationReasonCode, CallerName, User,
                                               oDealerCode, oCertificateNum, oErrCode, oErrMsg)
-    End Sub
+        End Sub
 #End Region
 
 #Region "CertificateSearchDV"
 
-    Public Class CertificateSearchDV
-        Inherits DataView
+        Public Class CertificateSearchDV
+            Inherits DataView
 
 #Region "Constants"
-        Public Const COL_CERTIFICATE_ID As String = "Cert_Id"
-        Public Const COL_CERTIFICATE_NUMBER As String = "CERT_NUMBER"
-        Public Const COL_CUSTOMER_NAME As String = "CUSTOMER_NAME"
-        Public Const COL_ADDRESS As String = "ADDRESS1"
-        Public Const COL_ZIP As String = "POSTAL_CODE"
-        Public Const COL_TAX_ID As String = "IDENTIFICATION_NUMBER"
-        Public Const COL_DEALER As String = "DEALER"
-        Public Const COL_STATUS_CODE As String = "Status_Code"
-        Public Const COL_PRODUCT_CODE As String = "Product_Code"
-        Public Const COL_MEMBERSHIP_NUM As String = "MEMBERSHIP_NUMBER"
-        Public Const COL_INVOICE_NUM As String = "INVOICE_NUMBER"
+            Public Const COL_CERTIFICATE_ID As String = "Cert_Id"
+            Public Const COL_CERTIFICATE_NUMBER As String = "CERT_NUMBER"
+            Public Const COL_CUSTOMER_NAME As String = "CUSTOMER_NAME"
+            Public Const COL_ADDRESS As String = "ADDRESS1"
+            Public Const COL_ZIP As String = "POSTAL_CODE"
+            Public Const COL_TAX_ID As String = "IDENTIFICATION_NUMBER"
+            Public Const COL_DEALER As String = "DEALER"
+            Public Const COL_STATUS_CODE As String = "Status_Code"
+            Public Const COL_PRODUCT_CODE As String = "Product_Code"
+            Public Const COL_MEMBERSHIP_NUM As String = "MEMBERSHIP_NUMBER"
+            Public Const COL_INVOICE_NUM As String = "INVOICE_NUMBER"
 #End Region
 
 
-        Public Sub New()
-            MyBase.New()
-        End Sub
+            Public Sub New()
+                MyBase.New()
+            End Sub
 
-        Public Sub New(ByVal table As DataTable)
-            MyBase.New(table)
-        End Sub
+            Public Sub New(ByVal table As DataTable)
+                MyBase.New(table)
+            End Sub
 
-    End Class
+        End Class
 #End Region
 
 #Region "CombinedCertificateSearchDV"
 
 
-    Public Class CombinedCertificateSearchDV
-        Inherits DataView
+        Public Class CombinedCertificateSearchDV
+            Inherits DataView
 
 #Region "Constants"
-        Public Const COL_CERTIFICATE_ID As String = "Cert_Id"
-        Public Const COL_CERTIFICATE_NUMBER As String = "CERT_NUMBER"
-        Public Const COL_CUSTOMER_NAME As String = "CUSTOMER_NAME"
-        Public Const COL_ADDRESS As String = "ADDRESS1"
-        Public Const COL_ZIP As String = "POSTAL_CODE"
-        Public Const COL_DEALER As String = "DEALER"
-        Public Const COL_STATUS_CODE As String = "Status_Code"
-        Public Const COL_PRODUCT_CODE As String = "Product_Code"
-        Public Const COL_HOME_PHONE As String = "HOME_PHONE"
-        'Added for Req-610
-        Public Const COL_WORK_PHONE As String = "WORK_PHONE"
+            Public Const COL_CERTIFICATE_ID As String = "Cert_Id"
+            Public Const COL_CERTIFICATE_NUMBER As String = "CERT_NUMBER"
+            Public Const COL_CUSTOMER_NAME As String = "CUSTOMER_NAME"
+            Public Const COL_ADDRESS As String = "ADDRESS1"
+            Public Const COL_ZIP As String = "POSTAL_CODE"
+            Public Const COL_DEALER As String = "DEALER"
+            Public Const COL_STATUS_CODE As String = "Status_Code"
+            Public Const COL_PRODUCT_CODE As String = "Product_Code"
+            Public Const COL_HOME_PHONE As String = "HOME_PHONE"
+            'Added for Req-610
+            Public Const COL_WORK_PHONE As String = "WORK_PHONE"
 
-        Public Const COL_MEMBERSHIP_NUM As String = "MEMBERSHIP_NUMBER"
-        Public Const COL_INVOICE_NUM As String = "INVOICE_NUMBER"
-        Public Const COL_TAX_ID As String = "IDENTIFICATION_NUMBER"
+            Public Const COL_MEMBERSHIP_NUM As String = "MEMBERSHIP_NUMBER"
+            Public Const COL_INVOICE_NUM As String = "INVOICE_NUMBER"
+            Public Const COL_TAX_ID As String = "IDENTIFICATION_NUMBER"
 
-        ' for searial number search
-        Public Const COL_SERIAL_NUMBER As String = "serial_number"
+            ' for searial number search
+            Public Const COL_SERIAL_NUMBER As String = "serial_number"
 
-        ' vor vehicle lic search
-        Public Const COL_VEHICLE_LICENSE_TAG As String = "vehicle_license_tag"
-        Public Const COL_IS_RESTRICTED As String = "is_restricted"
+            ' vor vehicle lic search
+            Public Const COL_VEHICLE_LICENSE_TAG As String = "vehicle_license_tag"
+            Public Const COL_IS_RESTRICTED As String = "is_restricted"
 
 
 #End Region
 
 
-        Public Sub New()
-            MyBase.New()
-        End Sub
+            Public Sub New()
+                MyBase.New()
+            End Sub
 
-        Public Sub New(ByVal table As DataTable)
-            MyBase.New(table)
-        End Sub
+            Public Sub New(ByVal table As DataTable)
+                MyBase.New(table)
+            End Sub
 
-    End Class
+        End Class
 
 #End Region
 
 #Region "PhoneNumberSearchDV"
-    Public Class PhoneNumberSearchDV
-        Inherits DataView
+        Public Class PhoneNumberSearchDV
+            Inherits DataView
 
-        Public Const COL_CERTIFICATE_ID As String = "Cert_Id"
-        Public Const COL_CERTIFICATE_NUMBER As String = "CERT_NUMBER"
-        Public Const COL_CUSTOMER_NAME As String = "CUSTOMER_NAME"
-        Public Const COL_ADDRESS As String = "ADDRESS1"
-        Public Const COL_ZIP As String = "POSTAL_CODE"
-        Public Const COL_DEALER As String = "DEALER"
-        Public Const COL_STATUS_CODE As String = "Status_Code"
-        Public Const COL_PRODUCT_CODE As String = "Product_Code"
-        Public Const COL_HOME_PHONE As String = "HOME_PHONE"
-        'Added for Req-610
-        Public Const COL_WORK_PHONE As String = "WORK_PHONE"
+            Public Const COL_CERTIFICATE_ID As String = "Cert_Id"
+            Public Const COL_CERTIFICATE_NUMBER As String = "CERT_NUMBER"
+            Public Const COL_CUSTOMER_NAME As String = "CUSTOMER_NAME"
+            Public Const COL_ADDRESS As String = "ADDRESS1"
+            Public Const COL_ZIP As String = "POSTAL_CODE"
+            Public Const COL_DEALER As String = "DEALER"
+            Public Const COL_STATUS_CODE As String = "Status_Code"
+            Public Const COL_PRODUCT_CODE As String = "Product_Code"
+            Public Const COL_HOME_PHONE As String = "HOME_PHONE"
+            'Added for Req-610
+            Public Const COL_WORK_PHONE As String = "WORK_PHONE"
 
-        Public Sub New()
-            MyBase.New()
-        End Sub
+            Public Sub New()
+                MyBase.New()
+            End Sub
 
-        Public Sub New(ByVal table As DataTable)
-            MyBase.New(table)
-        End Sub
-        Public Function AddNewRowToEmptyDV() As PhoneNumberSearchDV
-            Dim dt As DataTable = Me.Table.Clone()
-            Dim row As DataRow = dt.NewRow
-            row(PhoneNumberSearchDV.COL_CERTIFICATE_ID) = (New Guid()).ToByteArray
-            row(PhoneNumberSearchDV.COL_CERTIFICATE_NUMBER) = ""
-            row(PhoneNumberSearchDV.COL_CUSTOMER_NAME) = ""
-            row(PhoneNumberSearchDV.COL_ADDRESS) = ""
-            row(PhoneNumberSearchDV.COL_ZIP) = ""
-            row(PhoneNumberSearchDV.COL_DEALER) = ""
-            row(PhoneNumberSearchDV.COL_STATUS_CODE) = ""
-            row(PhoneNumberSearchDV.COL_PRODUCT_CODE) = ""
-            row(PhoneNumberSearchDV.COL_HOME_PHONE) = ""
-            row(PhoneNumberSearchDV.COL_WORK_PHONE) = ""
-            dt.Rows.Add(row)
-            Return New PhoneNumberSearchDV(dt)
-        End Function
-    End Class
+            Public Sub New(ByVal table As DataTable)
+                MyBase.New(table)
+            End Sub
+            Public Function AddNewRowToEmptyDV() As PhoneNumberSearchDV
+                Dim dt As DataTable = Me.Table.Clone()
+                Dim row As DataRow = dt.NewRow
+                row(PhoneNumberSearchDV.COL_CERTIFICATE_ID) = (New Guid()).ToByteArray
+                row(PhoneNumberSearchDV.COL_CERTIFICATE_NUMBER) = ""
+                row(PhoneNumberSearchDV.COL_CUSTOMER_NAME) = ""
+                row(PhoneNumberSearchDV.COL_ADDRESS) = ""
+                row(PhoneNumberSearchDV.COL_ZIP) = ""
+                row(PhoneNumberSearchDV.COL_DEALER) = ""
+                row(PhoneNumberSearchDV.COL_STATUS_CODE) = ""
+                row(PhoneNumberSearchDV.COL_PRODUCT_CODE) = ""
+                row(PhoneNumberSearchDV.COL_HOME_PHONE) = ""
+                row(PhoneNumberSearchDV.COL_WORK_PHONE) = ""
+                dt.Rows.Add(row)
+                Return New PhoneNumberSearchDV(dt)
+            End Function
+        End Class
 #End Region
 
 #Region "SerialNumberSearchDV"
 
-    Public Class SerialNumberSearchDV
-        Inherits DataView
+        Public Class SerialNumberSearchDV
+            Inherits DataView
 
 #Region "Constants"
-        Public Const COL_CERTIFICATE_ID As String = "cert_id"
-        Public Const COL_SERIAL_NUMBER As String = "serial_number"
-        Public Const COL_CERTIFICATE_NUMBER As String = "cert_number"
-        Public Const COL_STATUS_CODE As String = "status_code"
-        Public Const COL_DEALER As String = "dealer"
-        Public Const COL_PRODUCT_CODE As String = "product_code"
+            Public Const COL_CERTIFICATE_ID As String = "cert_id"
+            Public Const COL_SERIAL_NUMBER As String = "serial_number"
+            Public Const COL_CERTIFICATE_NUMBER As String = "cert_number"
+            Public Const COL_STATUS_CODE As String = "status_code"
+            Public Const COL_DEALER As String = "dealer"
+            Public Const COL_PRODUCT_CODE As String = "product_code"
 #End Region
 
 
-        Public Sub New()
-            MyBase.New()
-        End Sub
+            Public Sub New()
+                MyBase.New()
+            End Sub
 
-        Public Sub New(ByVal table As DataTable)
-            MyBase.New(table)
-        End Sub
+            Public Sub New(ByVal table As DataTable)
+                MyBase.New(table)
+            End Sub
 
-    End Class
+        End Class
 
 #End Region
 
 #Region "VehicleLicenseFlagSearchDV"
 
-    Public Class VehicleLicenseFlagSearchDV
-        Inherits DataView
+        Public Class VehicleLicenseFlagSearchDV
+            Inherits DataView
 
 #Region "Constants"
-        Public Const COL_CERTIFICATE_ID As String = "cert_id"
-        Public Const COL_VEHICLE_LICENSE_TAG As String = "vehicle_license_tag"
-        Public Const COL_CERTIFICATE_NUMBER As String = "cert_number"
-        Public Const COL_STATUS_CODE As String = "status_code"
-        Public Const COL_CUSTOMER_NAME As String = "customer_name"
+            Public Const COL_CERTIFICATE_ID As String = "cert_id"
+            Public Const COL_VEHICLE_LICENSE_TAG As String = "vehicle_license_tag"
+            Public Const COL_CERTIFICATE_NUMBER As String = "cert_number"
+            Public Const COL_STATUS_CODE As String = "status_code"
+            Public Const COL_CUSTOMER_NAME As String = "customer_name"
 #End Region
 
 
-        Public Sub New()
-            MyBase.New()
-        End Sub
+            Public Sub New()
+                MyBase.New()
+            End Sub
 
-        Public Sub New(ByVal table As DataTable)
-            MyBase.New(table)
-        End Sub
+            Public Sub New(ByVal table As DataTable)
+                MyBase.New(table)
+            End Sub
 
-    End Class
+        End Class
 
 #End Region
 
 #Region "Custom Validation"
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
-    Public NotInheritable Class NonFutureProductSalesAndWarrantyDate
-        Inherits ValidBaseAttribute
+        <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+        Public NotInheritable Class NonFutureProductSalesAndWarrantyDate
+            Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.FUTURE_WARRANTY_PRODUCT_SALE_DATES_NOT_ALLOWED)
-        End Sub
+            Public Sub New(ByVal fieldDisplayName As String)
+                MyBase.New(fieldDisplayName, Common.ErrorCodes.FUTURE_WARRANTY_PRODUCT_SALE_DATES_NOT_ALLOWED)
+            End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-            Dim oCert As Certificate = CType(objectToValidate, Certificate)
-            Dim bIsOk As Boolean = True
+            Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+                Dim oCert As Certificate = CType(objectToValidate, Certificate)
+                Dim bIsOk As Boolean = True
 
-            If oCert.ProductSalesDate Is Nothing OrElse oCert.WarrantySalesDate Is Nothing Then Return True
+                If oCert.ProductSalesDate Is Nothing OrElse oCert.WarrantySalesDate Is Nothing Then Return True
 
-            If (oCert.PreviousCertificateId.Equals(Guid.Empty)) And (oCert.WarrantySalesDate.Value > Date.Today) Then
-                bIsOk = False
-            End If
+                If (oCert.PreviousCertificateId.Equals(Guid.Empty)) And (oCert.WarrantySalesDate.Value > Date.Today) Then
+                    bIsOk = False
+                End If
 
-            Return bIsOk
+                Return bIsOk
 
-        End Function
-    End Class
+            End Function
+        End Class
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
-    Public NotInheritable Class NewValueMandatory
-        Inherits ValidBaseAttribute
+        <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+        Public NotInheritable Class NewValueMandatory
+            Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_FIELD_NUMBER_REQUIRED)
-        End Sub
+            Public Sub New(ByVal fieldDisplayName As String)
+                MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_FIELD_NUMBER_REQUIRED)
+            End Sub
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-            Dim obj As Certificate = CType(objectToValidate, Certificate)
-            Dim bIsOk As Boolean = True
-            'START DEF-1986
-            Dim DocType As String = obj.getDocTypeCode
-            Dim Dealer As Dealer
-            Dim DealerTypeCode As Guid
-            DealerTypeCode = Dealer.GetDealerTypeId(obj.DealerId)
-            'END DEF-1986
-
-            If obj.ValFlag = VALIDATION_FLAG_NONE Then
-                Return True
-            End If
-
-            If obj.ValFlag = VALIDATION_FLAG_FULL Then
+            Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+                Dim obj As Certificate = CType(objectToValidate, Certificate)
+                Dim bIsOk As Boolean = True
                 'START DEF-1986
-                'DOC_TYPE_CNPJ
-                If UCase(DocType) = DOC_TYPE_CNPJ Then
-                    If obj.RgNumber Is Nothing And obj.DocumentAgency Is Nothing And obj.DocumentIssueDate Is Nothing And obj.IdType Is Nothing Then
+                Dim DocType As String = obj.getDocTypeCode
+                Dim Dealer As Dealer
+                Dim DealerTypeCode As Guid
+                DealerTypeCode = Dealer.GetDealerTypeId(obj.DealerId)
+                'END DEF-1986
+
+                If obj.ValFlag = VALIDATION_FLAG_NONE Then
+                    Return True
+                End If
+
+                If obj.ValFlag = VALIDATION_FLAG_FULL Then
+                    'START DEF-1986
+                    'DOC_TYPE_CNPJ
+                    If UCase(DocType) = DOC_TYPE_CNPJ Then
+                        If obj.RgNumber Is Nothing And obj.DocumentAgency Is Nothing And obj.DocumentIssueDate Is Nothing And obj.IdType Is Nothing Then
+                            Return True
+                        Else
+                            MyBase.Message = Common.ErrorCodes.GUI_FIELD_MUST_BE_BLANK
+                            Return False
+                        End If
+                    End If
+
+                    'DOC_TYPE_CPF
+                    'VSC
+                    If (LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, DealerTypeCode) = "2" And UCase(DocType) = DOC_TYPE_CPF) Then
+                        If obj.RgNumber Is Nothing And obj.DocumentAgency Is Nothing And obj.DocumentIssueDate Is Nothing And obj.IdType Is Nothing Then
+                            Return False
+                        End If
+                    End If
+
+                    'ESC
+                    If (LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, DealerTypeCode) = "1" And UCase(DocType) = DOC_TYPE_CPF) Then
+                        Return True
+                    End If
+                    'Commented for DEF-1986
+                    'If obj.RgNumber Is Nothing Then
+                    '    Return False
+                    'End If
+                    'END   DEF-1986
+                End If
+
+                Return True
+
+            End Function
+        End Class
+
+
+        <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+        Public NotInheritable Class ValueMandatoryDocumentType
+            Inherits ValidBaseAttribute
+
+            Public Sub New(ByVal fieldDisplayName As String)
+                MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_DOCUMENT_TYPE_REQUIRED)
+            End Sub
+
+            Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+                Dim obj As Certificate = CType(objectToValidate, Certificate)
+                'Dim objCompany As New Company(obj.CompanyId)
+
+                'If objCompany.CompanyTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_COMPANY_TYPE, COMPANY_TYPE_SERVICES)) Then
+                '    Return True
+                'End If
+                If obj.ValFlag = VALIDATION_FLAG_NONE Then
+                    Return True
+                End If
+                'REQ 1070/DEF 2878-ELCI NO VALIDATION FLAG
+                If obj.ValFlag = VALIDATION_FLAG_NO_VALIDATION Then
+                    Return True
+                End If
+                'END REQ 1070
+                Dim docType As String = obj.getDocTypeCode
+                'DEF 2576
+                If obj.ValFlag = VALIDATION_FLAG_CPF_CNPJ Then
+                    If UCase(docType) = DOC_TYPE_CPF _
+                    Or UCase(docType) = DOC_TYPE_CNPJ Then
                         Return True
                     Else
-                        MyBase.Message = Common.ErrorCodes.GUI_FIELD_MUST_BE_BLANK
+                        MyBase.Message = UCase(Common.ErrorCodes.GUI_DOCUMENT_TYPE_4)
                         Return False
                     End If
+
+
+
                 End If
 
-                'DOC_TYPE_CPF
-                'VSC
-                If (LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, DealerTypeCode) = "2" And UCase(DocType) = DOC_TYPE_CPF) Then
-                    If obj.RgNumber Is Nothing And obj.DocumentAgency Is Nothing And obj.DocumentIssueDate Is Nothing And obj.IdType Is Nothing Then
-                        Return False
-                    End If
-                End If
-
-                'ESC
-                If (LookupListNew.GetCodeFromId(LookupListCache.LK_DEALER_TYPE, DealerTypeCode) = "1" And UCase(DocType) = DOC_TYPE_CPF) Then
-                    Return True
-                End If
-                'Commented for DEF-1986
-                'If obj.RgNumber Is Nothing Then
-                '    Return False
-                'End If
-                'END   DEF-1986
-            End If
-
-            Return True
-
-        End Function
-    End Class
-
-
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
-    Public NotInheritable Class ValueMandatoryDocumentType
-        Inherits ValidBaseAttribute
-
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_DOCUMENT_TYPE_REQUIRED)
-        End Sub
-
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-            Dim obj As Certificate = CType(objectToValidate, Certificate)
-            'Dim objCompany As New Company(obj.CompanyId)
-
-            'If objCompany.CompanyTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_COMPANY_TYPE, COMPANY_TYPE_SERVICES)) Then
-            '    Return True
-            'End If
-            If obj.ValFlag = VALIDATION_FLAG_NONE Then
-                Return True
-            End If
-            'REQ 1070/DEF 2878-ELCI NO VALIDATION FLAG
-            If obj.ValFlag = VALIDATION_FLAG_NO_VALIDATION Then
-                Return True
-            End If
-            'END REQ 1070
-            Dim docType As String = obj.getDocTypeCode
-            'DEF 2576
-            If obj.ValFlag = VALIDATION_FLAG_CPF_CNPJ Then
                 If UCase(docType) = DOC_TYPE_CPF _
-                    Or UCase(docType) = DOC_TYPE_CNPJ Then
-                    Return True
-                Else
-                    MyBase.Message = UCase(Common.ErrorCodes.GUI_DOCUMENT_TYPE_4)
-                    Return False
-                End If
-
-
-
-            End If
-
-            If UCase(docType) = DOC_TYPE_CPF _
                Or UCase(docType) = DOC_TYPE_CON _
                Or UCase(docType) = DOC_TYPE_CNPJ Then
-                Return True
-            Else
-                MyBase.Message = UCase(Common.ErrorCodes.GUI_DOCUMENT_TYPE)
-                Return False
-            End If
-
-        End Function
-    End Class
-
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
-    Public NotInheritable Class ValueMustBeBlankForDocumentNumber
-        Inherits ValidBaseAttribute
-
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_FIELD_MUST_BE_BLANK)
-        End Sub
-
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-            Dim obj As Certificate = CType(objectToValidate, Certificate)
-
-            If obj.ValFlag = VALIDATION_FLAG_NONE Then
-                Return True
-            End If
-
-            'DEF 2576
-            If obj.ValFlag = VALIDATION_FLAG_CPF_CNPJ Then
-                If UCase(obj.getDocTypeCode) = DOC_TYPE_CON Then
                     Return True
-
-                End If
-            End If
-
-            If UCase(obj.getDocTypeCode) = DOC_TYPE_CON Then
-                'DEF 2576
-                If obj.IdentificationNumber <> Nothing AndAlso obj.IdentificationNumber <> String.Empty Then
+                Else
+                    MyBase.Message = UCase(Common.ErrorCodes.GUI_DOCUMENT_TYPE)
                     Return False
                 End If
-            End If
 
-            Return True
+            End Function
+        End Class
 
-        End Function
-    End Class
+        <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+        Public NotInheritable Class ValueMustBeBlankForDocumentNumber
+            Inherits ValidBaseAttribute
 
+            Public Sub New(ByVal fieldDisplayName As String)
+                MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_FIELD_MUST_BE_BLANK)
+            End Sub
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
-    Public NotInheritable Class NonFutureDocumentIssueDate
-        Inherits ValidBaseAttribute
+            Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+                Dim obj As Certificate = CType(objectToValidate, Certificate)
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.FUTURE_DATES_NOT_ALLOWED)
-        End Sub
+                If obj.ValFlag = VALIDATION_FLAG_NONE Then
+                    Return True
+                End If
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-            Dim obj As Certificate = CType(objectToValidate, Certificate)
+                'DEF 2576
+                If obj.ValFlag = VALIDATION_FLAG_CPF_CNPJ Then
+                    If UCase(obj.getDocTypeCode) = DOC_TYPE_CON Then
+                        Return True
 
-            If obj.ValFlag = VALIDATION_FLAG_NONE Then
-                Return True
-            End If
+                    End If
+                End If
 
-            If obj.ValFlag = VALIDATION_FLAG_FULL Then
-                If Not obj.DocumentIssueDate Is Nothing Then
-                    If obj.DocumentIssueDate.Value > Date.Today Then
+                If UCase(obj.getDocTypeCode) = DOC_TYPE_CON Then
+                    'DEF 2576
+                    If obj.IdentificationNumber <> Nothing AndAlso obj.IdentificationNumber <> String.Empty Then
                         Return False
                     End If
                 End If
-            End If
 
-            Return True
+                Return True
 
-        End Function
-    End Class
-
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
-    Public NotInheritable Class SPValidationDocumentNumber
-        Inherits ValidBaseAttribute
-
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.ERROR_FOUND_BY_ORACLE_VALIDATION)
-        End Sub
-
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-            Dim obj As Certificate = CType(objectToValidate, Certificate)
-            Dim dal As New CertificateDAL
-            Dim oErrMess As String
+            End Function
+        End Class
 
 
-            Try
+        <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+        Public NotInheritable Class NonFutureDocumentIssueDate
+            Inherits ValidBaseAttribute
 
-                Select Case obj.ValFlag
-                    Case VALIDATION_FLAG_NONE
-                        Return True
+            Public Sub New(ByVal fieldDisplayName As String)
+                MyBase.New(fieldDisplayName, Common.ErrorCodes.FUTURE_DATES_NOT_ALLOWED)
+            End Sub
+
+            Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+                Dim obj As Certificate = CType(objectToValidate, Certificate)
+
+                If obj.ValFlag = VALIDATION_FLAG_NONE Then
+                    Return True
+                End If
+
+                If obj.ValFlag = VALIDATION_FLAG_FULL Then
+                    If Not obj.DocumentIssueDate Is Nothing Then
+                        If obj.DocumentIssueDate.Value > Date.Today Then
+                            Return False
+                        End If
+                    End If
+                End If
+
+                Return True
+
+            End Function
+        End Class
+
+        <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+        Public NotInheritable Class SPValidationDocumentNumber
+            Inherits ValidBaseAttribute
+
+            Public Sub New(ByVal fieldDisplayName As String)
+                MyBase.New(fieldDisplayName, Common.ErrorCodes.ERROR_FOUND_BY_ORACLE_VALIDATION)
+            End Sub
+
+            Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+                Dim obj As Certificate = CType(objectToValidate, Certificate)
+                Dim dal As New CertificateDAL
+                Dim oErrMess As String
+
+
+                Try
+
+                    Select Case obj.ValFlag
+                        Case VALIDATION_FLAG_NONE
+                            Return True
                     'DEF 2576
-                    Case VALIDATION_FLAG_FULL
-                        If obj.IdentificationNumber Is Nothing Or
+                        Case VALIDATION_FLAG_FULL
+                            If obj.IdentificationNumber Is Nothing Or
                             obj.IdentificationNumber = String.Empty Then
-                            If obj.getDocTypeCode = DOC_TYPE_CON Then
-                                Return True
+                                If obj.getDocTypeCode = DOC_TYPE_CON Then
+                                    Return True
+                                Else
+                                    oErrMess = dal.ExecuteSP(obj.getDocTypeCode, obj.IdentificationNumber)
+                                    If Not oErrMess Is Nothing Then
+                                        MyBase.Message = UCase(oErrMess)
+                                        Return False
+
+                                    End If
+                                End If
                             Else
+                                'Return True
+                                ' End If
                                 oErrMess = dal.ExecuteSP(obj.getDocTypeCode, obj.IdentificationNumber)
                                 If Not oErrMess Is Nothing Then
                                     MyBase.Message = UCase(oErrMess)
                                     Return False
-
                                 End If
-                            End If
-                        Else
-                            'Return True
-                            ' End If
-                            oErrMess = dal.ExecuteSP(obj.getDocTypeCode, obj.IdentificationNumber)
-                            If Not oErrMess Is Nothing Then
-                                MyBase.Message = UCase(oErrMess)
-                                Return False
-                            End If
-                            'Return True
+                                'Return True
 
-                        End If
+                            End If
 
-                    Case VALIDATION_FLAG_PARTIAL
-                        If Me.DisplayName = TAX_ID_NUMB _
+                        Case VALIDATION_FLAG_PARTIAL
+                            If Me.DisplayName = TAX_ID_NUMB _
                             AndAlso (obj.getDocTypeCode <> DOC_TYPE_CPF AndAlso obj.getDocTypeCode <> DOC_TYPE_CNPJ) _
                             AndAlso (obj.TaxIDNumb Is Nothing OrElse obj.TaxIDNumb.Trim.Length = 0) Then
-                            Return True
-                        End If
+                                Return True
+                            End If
 
-                        If Me.DisplayName = IDENTIFICATION_NUMBER _
+                            If Me.DisplayName = IDENTIFICATION_NUMBER _
                             AndAlso (Not obj.DocumentIssueDate Is Nothing _
                                 Or Not obj.IdType Is Nothing _
                                 Or Not obj.DocumentAgency Is Nothing _
                                 Or Not obj.RgNumber Is Nothing _
                                 Or Not obj.DocumentTypeID.Equals(Guid.Empty)) Then
-                            Return True
-                        End If
+                                Return True
+                            End If
 
-                        oErrMess = dal.ExecuteSP(obj.getDocTypeCode, obj.IdentificationNumber)
-                        If Not oErrMess Is Nothing Then
-                            MyBase.Message = UCase(oErrMess)
-                            Return False
-                        End If
+                            oErrMess = dal.ExecuteSP(obj.getDocTypeCode, obj.IdentificationNumber)
+                            If Not oErrMess Is Nothing Then
+                                MyBase.Message = UCase(oErrMess)
+                                Return False
+                            End If
 
                     'REQ-1012 for DEF-2576
-                    Case VALIDATION_FLAG_CPF_CNPJ
-                        If obj.IdentificationNumber Is Nothing Then
-                            obj.IdentificationNumber = String.Empty
-                        End If
-                        oErrMess = dal.ExecuteSP(obj.getDocTypeCode, obj.IdentificationNumber)
-                        If Not oErrMess Is Nothing Then
-                            MyBase.Message = UCase(oErrMess)
-                            Return False
-                        End If
-                        'END 1012
-                    Case Else
-                        Return True
-                End Select
+                        Case VALIDATION_FLAG_CPF_CNPJ
+                            If obj.IdentificationNumber Is Nothing Then
+                                obj.IdentificationNumber = String.Empty
+                            End If
+                            oErrMess = dal.ExecuteSP(obj.getDocTypeCode, obj.IdentificationNumber)
+                            If Not oErrMess Is Nothing Then
+                                MyBase.Message = UCase(oErrMess)
+                                Return False
+                            End If
+                            'END 1012
+                        Case Else
+                            Return True
+                    End Select
+
+                    Return True
+
+                Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+                    Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+                End Try
+            End Function
+
+        End Class
+
+        <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+        Public NotInheritable Class EmailAddress
+            Inherits ValidBaseAttribute
+
+            Public Sub New(ByVal fieldDisplayName As String)
+                MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
+            End Sub
+
+            Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+                Dim obj As Certificate = CType(objectToValidate, Certificate)
+
+                If obj.Email Is Nothing Then
+                    Return True
+                End If
+
+                Return MiscUtil.EmailAddressValidation(obj.Email)
+
+            End Function
+
+        End Class
+
+        <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+        Public NotInheritable Class ValueTaxIdLenht
+            Inherits ValidBaseAttribute
+
+            Public Sub New(ByVal fieldDisplayName As String)
+                MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_IS_TOO_SHORT_OR_TOO_LONG)
+            End Sub
+
+            Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+                Dim obj As Certificate = CType(objectToValidate, Certificate)
+
+                If Not obj.IsCompanyTypeInsurance Then
+                    Return True
+                End If
+
+                If obj.TaxIDNumb Is Nothing Then
+                    Return True
+                End If
+
+                If obj.TaxIDNumb.Length > 15 Then
+                    Return False
+                End If
 
                 Return True
 
-            Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-                Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-            End Try
-        End Function
+            End Function
+        End Class
 
-    End Class
+        <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+        Public NotInheritable Class NonFutureDate
+            Inherits ValidBaseAttribute
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
-    Public NotInheritable Class EmailAddress
-        Inherits ValidBaseAttribute
+            Public Sub New(ByVal fieldDisplayName As String)
+                MyBase.New(fieldDisplayName, Common.ErrorCodes.FUTURE_DATE_NOT_ALLOWED)
+            End Sub
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
-        End Sub
+            Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+                Dim obj As Certificate = CType(objectToValidate, Certificate)
 
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-            Dim obj As Certificate = CType(objectToValidate, Certificate)
+                If obj.DateOfBirth Is Nothing Then
+                    Return True
+                End If
 
-            If obj.Email Is Nothing Then
+
+                If obj.DateOfBirth.Value > Date.Today Then
+                    Return False
+                End If
+
                 Return True
-            End If
 
-            Return MiscUtil.EmailAddressValidation(obj.Email)
-
-        End Function
-
-    End Class
-
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
-    Public NotInheritable Class ValueTaxIdLenht
-        Inherits ValidBaseAttribute
-
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_IS_TOO_SHORT_OR_TOO_LONG)
-        End Sub
-
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-            Dim obj As Certificate = CType(objectToValidate, Certificate)
-
-            If Not obj.IsCompanyTypeInsurance Then
-                Return True
-            End If
-
-            If obj.TaxIDNumb Is Nothing Then
-                Return True
-            End If
-
-            If obj.TaxIDNumb.Length > 15 Then
-                Return False
-            End If
-
-            Return True
-
-        End Function
-    End Class
-
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
-    Public NotInheritable Class NonFutureDate
-        Inherits ValidBaseAttribute
-
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.FUTURE_DATE_NOT_ALLOWED)
-        End Sub
-
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-            Dim obj As Certificate = CType(objectToValidate, Certificate)
-
-            If obj.DateOfBirth Is Nothing Then
-                Return True
-            End If
-
-
-            If obj.DateOfBirth.Value > Date.Today Then
-                Return False
-            End If
-
-            Return True
-
-        End Function
-    End Class
+            End Function
+        End Class
 #End Region
 
 #Region "Functions"
 
-    Public Function GetInforceCertsLastestDate() As DataView
-        Dim dal As New CertificateDAL
-        Dim ds As DataSet
+        Public Function GetInforceCertsLastestDate() As DataView
+            Dim dal As New CertificateDAL
+            Dim ds As DataSet
 
-        ds = dal.GetInforceCertsLastestDate()
-        Return ds.Tables(0).DefaultView
+            ds = dal.GetInforceCertsLastestDate()
+            Return ds.Tables(0).DefaultView
 
-    End Function
+        End Function
 
-    Public Shared Function ValidateLicenseFlag(ByVal VehicleLicenceFlag As String, ByVal CertNumber As String, ByVal CompanyGroupId As Guid) As DataView
-        Dim dal As New CertificateDAL
-        Dim ds As DataSet
+        Public Shared Function ValidateLicenseFlag(ByVal VehicleLicenceFlag As String, ByVal CertNumber As String, ByVal CompanyGroupId As Guid) As DataView
+            Dim dal As New CertificateDAL
+            Dim ds As DataSet
 
-        ds = dal.ValidateLicenseFlag(VehicleLicenceFlag, CertNumber, CompanyGroupId)
-        Return ds.Tables(0).DefaultView
+            ds = dal.ValidateLicenseFlag(VehicleLicenceFlag, CertNumber, CompanyGroupId)
+            Return ds.Tables(0).DefaultView
 
-    End Function
+        End Function
 
-    Public Shared Function GetCertHistoryInfo(ByVal certNumber As String, ByVal DealerId As Guid, ByVal PremChanges As String) As CertificateHistoryDV
-        'Dim userId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
-        Dim dal As New CertificateDAL
-        Return New CertificateHistoryDV(dal.GetCertHistory(certNumber, DealerId, PremChanges).Tables(0))
-    End Function
-    Public Shared Function GetOtherCustomerInfo(ByVal CertId As Guid, ByVal IdentificationNumberType As String) As OtherCustomerInfoDV
-        Dim dal As New CertificateDAL
-        Return New OtherCustomerInfoDV(dal.GetOtherCustomerInfo(CertId, IdentificationNumberType).Tables("GetOtherCustomerInfo"))
-    End Function
-    Public Shared Function GetCustomerCurrentBankInfo(ByVal certId As Guid) As CustomerBankDetailDV
-        Dim dal As New CertificateDAL
-        Return New CustomerBankDetailDV(dal.GetCustomerCurrentBankInfo(certId).Tables("elp_bank_info"))
-    End Function
-    Public Shared Function GetOtherCustomerDetails(ByVal CustomerId As Guid, ByVal LangId As Guid, ByVal IdentificationNumberType As String) As OtherCustomerInfoDV
-        Dim dal As New CertificateDAL
-        Return New OtherCustomerInfoDV(dal.GetOtherCustomerDetails(CustomerId, LangId, IdentificationNumberType).Tables("GetOtherCustomerDetails"))
-    End Function
-    Public Shared Function GetCertInstallmentHistoryInfo(ByVal CertId As Guid) As CertInstallmentHistoryDV
-        'Dim userId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
-        Dim dal As New CertificateDAL
-
-        Return New CertInstallmentHistoryDV(dal.GetCertInstallmentHistory(CertId).Tables(0))
-
-    End Function
-    Public Shared Function GetCertExtensionsInfo(ByVal CertId As Guid) As CertExtensionsDV
-
-        Dim dal As New CertificateDAL
-
-        Return New CertExtensionsDV(dal.GetCertExtensionsInfo(CertId).Tables(0))
-
-    End Function
-
-    Public Shared Function GetCertUpgradeDataExtensionsInfo(ByVal CertId As Guid) As CertUpgradeExtensionsDV
-
-        Dim dal As New CertificateDAL
-
-        Return New CertUpgradeExtensionsDV(dal.GetCertUpgradeExtensionsInfo(CertId).Tables(0))
-
-    End Function
-
-
-    Public Shared Function GetFraudulentCertExtensions(ByVal certId As Guid) As CertExtensionsDV
-
-        Dim dal As New CertificateDAL
-
-        Return New CertExtensionsDV(dal.GetFraudulentCertExtensions(certId).Tables(0))
-
-    End Function
-
-    Public Shared Function getCallerListForCert(ByVal CertID As Guid) As DataTable
-
-        Try
+        Public Shared Function GetCertHistoryInfo(ByVal certNumber As String, ByVal DealerId As Guid, ByVal PremChanges As String) As CertificateHistoryDV
+            'Dim userId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
+            Dim dal As New CertificateDAL
+            Return New CertificateHistoryDV(dal.GetCertHistory(certNumber, DealerId, PremChanges).Tables(0))
+        End Function
+        Public Shared Function GetOtherCustomerInfo(ByVal CertId As Guid, ByVal IdentificationNumberType As String) As OtherCustomerInfoDV
+            Dim dal As New CertificateDAL
+            Return New OtherCustomerInfoDV(dal.GetOtherCustomerInfo(CertId, IdentificationNumberType).Tables("GetOtherCustomerInfo"))
+        End Function
+        Public Shared Function GetCustomerCurrentBankInfo(ByVal certId As Guid) As CustomerBankDetailDV
+            Dim dal As New CertificateDAL
+            Return New CustomerBankDetailDV(dal.GetCustomerCurrentBankInfo(certId).Tables("elp_bank_info"))
+        End Function
+        Public Shared Function GetOtherCustomerDetails(ByVal CustomerId As Guid, ByVal LangId As Guid, ByVal IdentificationNumberType As String) As OtherCustomerInfoDV
+            Dim dal As New CertificateDAL
+            Return New OtherCustomerInfoDV(dal.GetOtherCustomerDetails(CustomerId, LangId, IdentificationNumberType).Tables("GetOtherCustomerDetails"))
+        End Function
+        Public Shared Function GetCertInstallmentHistoryInfo(ByVal CertId As Guid) As CertInstallmentHistoryDV
+            'Dim userId As Guid = ElitaPlusIdentity.Current.ActiveUser.Id
             Dim dal As New CertificateDAL
 
-            Return (dal.LoadCallerList(CertID).Tables(0))
+            Return New CertInstallmentHistoryDV(dal.GetCertInstallmentHistory(CertId).Tables(0))
 
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Throw New DataBaseAccessException(ex.ErrorType, ex)
-        End Try
+        End Function
+        Public Shared Function GetCertExtensionsInfo(ByVal CertId As Guid) As CertExtensionsDV
 
-    End Function
-
-    Public Shared Function getCallerListForCase(ByVal CaseID As Guid) As DataTable
-
-        Try
             Dim dal As New CertificateDAL
 
-            Return (dal.LoadCallerListForCase(CaseID).Tables(0))
+            Return New CertExtensionsDV(dal.GetCertExtensionsInfo(CertId).Tables(0))
 
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Throw New DataBaseAccessException(ex.ErrorType, ex)
-        End Try
+        End Function
 
-    End Function
+        Public Shared Function GetCertUpgradeDataExtensionsInfo(ByVal CertId As Guid) As CertUpgradeExtensionsDV
 
-    Public Function GetCertPaymentPassedDueExtInfo(ByVal CertId As Guid) As Integer
+            Dim dal As New CertificateDAL
 
-        Dim dal As New CertificateDAL
+            Return New CertUpgradeExtensionsDV(dal.GetCertUpgradeExtensionsInfo(CertId).Tables(0))
 
-        Return dal.GetCertPaymentPassedDueExtInfo(CertId)
+        End Function
 
-    End Function
 
-    Public Shared Function GetCertExtensionFieldsList(ByVal CertId As Guid, ByVal languageId As Guid) As CertExtendedFieldsDv
+        Public Shared Function GetFraudulentCertExtensions(ByVal certId As Guid) As CertExtensionsDV
 
-        Dim dal As New CertificateDAL
+            Dim dal As New CertificateDAL
 
-        Return New CertExtendedFieldsDv(dal.GetCertExtFieldsList(CertId, languageId).Tables(0))
+            Return New CertExtensionsDV(dal.GetFraudulentCertExtensions(certId).Tables(0))
 
-    End Function
-    Public Shared Sub UpdateCertExtensionFieldsValue(ByVal CertextId As Guid, ByVal Value As String)
+        End Function
 
-        Dim dal As New CertificateDAL
+        Public Shared Function getCallerListForCert(ByVal CertID As Guid) As DataTable
 
-        dal.UpdateCertExtension(CertextId, Value, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+            Try
+                Dim dal As New CertificateDAL
 
-    End Sub
+                Return (dal.LoadCallerList(CertID).Tables(0))
 
-    Public Function MaskDatePart(txtDate As String, Optional noMask As Boolean = True) As String
-        If Not (String.IsNullOrEmpty(txtDate)) Then
-            If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
-                If (noMask) Then
-                    Return txtDate
+            Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+                Throw New DataBaseAccessException(ex.ErrorType, ex)
+            End Try
+
+        End Function
+
+        Public Shared Function getCallerListForCase(ByVal CaseID As Guid) As DataTable
+
+            Try
+                Dim dal As New CertificateDAL
+
+                Return (dal.LoadCallerListForCase(CaseID).Tables(0))
+
+            Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+                Throw New DataBaseAccessException(ex.ErrorType, ex)
+            End Try
+
+        End Function
+
+        Public Function GetCertPaymentPassedDueExtInfo(ByVal CertId As Guid) As Integer
+
+            Dim dal As New CertificateDAL
+
+            Return dal.GetCertPaymentPassedDueExtInfo(CertId)
+
+        End Function
+
+        Public Shared Function GetCertExtensionFieldsList(ByVal CertId As Guid, ByVal languageId As Guid) As CertExtendedFieldsDv
+
+            Dim dal As New CertificateDAL
+
+            Return New CertExtendedFieldsDv(dal.GetCertExtFieldsList(CertId, languageId).Tables(0))
+
+        End Function
+        Public Shared Sub UpdateCertExtensionFieldsValue(ByVal CertextId As Guid, ByVal Value As String)
+
+            Dim dal As New CertificateDAL
+
+            dal.UpdateCertExtension(CertextId, Value, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+
+        End Sub
+
+        Public Function MaskDatePart(txtDate As String, Optional noMask As Boolean = True) As String
+            If Not (String.IsNullOrEmpty(txtDate)) Then
+                If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
+                    If (noMask) Then
+                        Return txtDate
+                    Else
+                        txtDate = txtDate.Replace(txtDate.Substring(0, 4), "XXXX")
+                        Return txtDate
+                    End If
+                ElseIf (CultureInfo.CurrentCulture.Name.Equals("zh-CN")) Then
+                    If (noMask) Then
+                        Return txtDate
+                    Else
+                        txtDate = txtDate.Replace(txtDate.Substring(6, 4), "XXXX")
+                        Return txtDate
+                    End If
                 Else
-                    txtDate = txtDate.Replace(txtDate.Substring(0, 4), "XXXX")
-                    Return txtDate
+                    If (Not noMask) Then
+                        Dim dateofbirth As Date = txtDate
+                        Return dateofbirth.ToString("dd-MMM-xxxx")
+                    Else
+                        Return txtDate
+                    End If
                 End If
-            ElseIf (CultureInfo.CurrentCulture.Name.Equals("zh-CN")) Then
-                If (noMask) Then
-                    Return txtDate
-                Else
-                    txtDate = txtDate.Replace(txtDate.Substring(6, 4), "XXXX")
-                    Return txtDate
-                End If
-            Else
-                If (Not noMask) Then
-                    Dim dateofbirth As Date = txtDate
-                    Return dateofbirth.ToString("dd-MMM-xxxx")
-                Else
-                    Return txtDate
-                End If
+                Return txtDate
             End If
-            Return txtDate
-        End If
-    End Function
+        End Function
 
 #End Region
 
 #Region "CertificateHistoryDV"
-    Public Class CertificateHistoryDV
-        Inherits DataView
+        Public Class CertificateHistoryDV
+            Inherits DataView
 #Region "Constants"
-        Public Const COL_PROCESSED_DATE As String = "Processed_date"
+            Public Const COL_PROCESSED_DATE As String = "Processed_date"
 #End Region
-        Public Sub New()
-            MyBase.New()
-        End Sub
-        Public Sub New(ByVal table As DataTable)
-            MyBase.New(table)
-        End Sub
-    End Class
+            Public Sub New()
+                MyBase.New()
+            End Sub
+            Public Sub New(ByVal table As DataTable)
+                MyBase.New(table)
+            End Sub
+        End Class
 #End Region
 
 #Region "OtherCustomerInfoDV"
-    Public Class OtherCustomerInfoDV
-        Inherits DataView
+        Public Class OtherCustomerInfoDV
+            Inherits DataView
 #Region "Constants"
-        Public Sub New()
-            MyBase.New()
-        End Sub
-        Public Sub New(ByVal table As DataTable)
-            MyBase.New(table)
-        End Sub
+            Public Sub New()
+                MyBase.New()
+            End Sub
+            Public Sub New(ByVal table As DataTable)
+                MyBase.New(table)
+            End Sub
 #End Region
-    End Class
+        End Class
 #End Region
 #Region "CertInstallmentHistoryDV"
-    Public Class CertInstallmentHistoryDV
-        Inherits DataView
+        Public Class CertInstallmentHistoryDV
+            Inherits DataView
 #Region "Constants"
-        Public Const COL_START_DATE As String = "start_date"
-        Public Const COL_END_DATE As String = "end_date"
-        Public Const COL_INSTALLMENT_AMOUNT As String = "installment_amount"
-        Public Sub New()
-            MyBase.New()
-        End Sub
-        Public Sub New(ByVal table As DataTable)
-            MyBase.New(table)
-        End Sub
+            Public Const COL_START_DATE As String = "start_date"
+            Public Const COL_END_DATE As String = "end_date"
+            Public Const COL_INSTALLMENT_AMOUNT As String = "installment_amount"
+            Public Sub New()
+                MyBase.New()
+            End Sub
+            Public Sub New(ByVal table As DataTable)
+                MyBase.New(table)
+            End Sub
 #End Region
-    End Class
+        End Class
 #End Region
 
 #Region "CertExtensionsDV"
-    Public Class CertExtensionsDV
-        Inherits DataView
+        Public Class CertExtensionsDV
+            Inherits DataView
 #Region "Constants"
-        Public Const COL_FIELD_NAME As String = "field_name"
-        Public Const COL_FIELD_VALUE As String = "field_value"
+            Public Const COL_FIELD_NAME As String = "field_name"
+            Public Const COL_FIELD_VALUE As String = "field_value"
 
-        Public Sub New()
-            MyBase.New()
-        End Sub
-        Public Sub New(ByVal table As DataTable)
-            MyBase.New(table)
-        End Sub
+            Public Sub New()
+                MyBase.New()
+            End Sub
+            Public Sub New(ByVal table As DataTable)
+                MyBase.New(table)
+            End Sub
 #End Region
-    End Class
+        End Class
 #End Region
 
 #Region "CertUpgradeExtensionsDV"
-    Public Class CertUpgradeExtensionsDV
-        Inherits DataView
+        Public Class CertUpgradeExtensionsDV
+            Inherits DataView
 #Region "Constants"
-        Public Const COL_SEQUENCE_NUMBER As String = "sequence_number"
-        Public Const COL_UPGRADE_DATE As String = "upgrade_date"
-        Public Const COL_VOUCHER_NUMBER As String = "voucher_number"
-        Public Const COL_UPGRADE_FEE As String = "upgrade_fee"
-        Public Const COL_RMA As String = "RMA"
+            Public Const COL_SEQUENCE_NUMBER As String = "sequence_number"
+            Public Const COL_UPGRADE_DATE As String = "upgrade_date"
+            Public Const COL_VOUCHER_NUMBER As String = "voucher_number"
+            Public Const COL_UPGRADE_FEE As String = "upgrade_fee"
+            Public Const COL_RMA As String = "RMA"
 
-        Public Sub New()
-            MyBase.New()
-        End Sub
-        Public Sub New(ByVal table As DataTable)
-            MyBase.New(table)
-        End Sub
+            Public Sub New()
+                MyBase.New()
+            End Sub
+            Public Sub New(ByVal table As DataTable)
+                MyBase.New(table)
+            End Sub
 #End Region
-    End Class
+        End Class
 #End Region
 
 #Region "CertExtendedFieldsDV"
-    Public Class CertExtendedFieldsDv
-        Inherits DataView
+        Public Class CertExtendedFieldsDv
+            Inherits DataView
 #Region "Constants"
-        Public Const COL_CERT_EXT_ID As String = "cert_ext_id"
-        Public Const COL_CERT_ID As String = "cert_id"
-        Public Const COL_FIELD_NAME As String = "field_name"
-        Public Const COL_FIELD_VALUE As String = "field_value"
-        Public Const COL_CREATED_DATE As String = "created_date"
-        Public Const COL_CREATED_BY As String = "created_by"
-        Public Const COL_MODIFIED_DATE As String = "modified_date"
-        Public Const COL_MODIFIED_BY As String = "modified_by"
-        Public Const COL_ALLOW_UPDATE As String = "allow_update_xcd"
+            Public Const COL_CERT_EXT_ID As String = "cert_ext_id"
+            Public Const COL_CERT_ID As String = "cert_id"
+            Public Const COL_FIELD_NAME As String = "field_name"
+            Public Const COL_FIELD_VALUE As String = "field_value"
+            Public Const COL_CREATED_DATE As String = "created_date"
+            Public Const COL_CREATED_BY As String = "created_by"
+            Public Const COL_MODIFIED_DATE As String = "modified_date"
+            Public Const COL_MODIFIED_BY As String = "modified_by"
+            Public Const COL_ALLOW_UPDATE As String = "allow_update_xcd"
 
-        Public Sub New()
-            MyBase.New()
-        End Sub
-        Public Sub New(ByVal table As DataTable)
-            MyBase.New(table)
-        End Sub
+            Public Sub New()
+                MyBase.New()
+            End Sub
+            Public Sub New(ByVal table As DataTable)
+                MyBase.New(table)
+            End Sub
 #End Region
-    End Class
+        End Class
 #End Region
 
 #Region "GW Related functions"
-    Public Shared Function GWSearchCertificate(ByVal pCompanyCodes As String, ByVal pCertificateNumber As String, ByVal pCustomerName As String, ByVal pWorkPhone As String,
+        Public Shared Function GWSearchCertificate(ByVal pCompanyCodes As String, ByVal pCertificateNumber As String, ByVal pCustomerName As String, ByVal pWorkPhone As String,
                                         ByVal pHomePhone As String, ByVal pAccountNumber As String, ByVal pServiceLineNumber As String, ByVal pTaxId As String,
                                         ByVal pEmail As String, ByVal pPurchaseInvoiceNumber As String, ByVal pAddress As String, ByVal pAddress2 As String,
                                         ByVal pAddress3 As String, ByVal pCountry As String, ByVal pState As String, ByVal pCity As String,
                                         ByVal pZipCode As String, ByVal pSerialNumber As String, ByVal pIMEINumber As String, ByVal pCertStatus As String,
                                         ByVal pNumberOfRecords As Integer) As Collections.Generic.List(Of Guid)
-        Dim IdList As New Collections.Generic.List(Of Guid)
-        Dim dal As New CertificateDAL, ds As DataSet
-        ds = dal.GWSearchCertificate(pCompanyCodes, pCertificateNumber, pCustomerName, pWorkPhone, pHomePhone, pAccountNumber, pServiceLineNumber, pTaxId,
+            Dim IdList As New Collections.Generic.List(Of Guid)
+            Dim dal As New CertificateDAL, ds As DataSet
+            ds = dal.GWSearchCertificate(pCompanyCodes, pCertificateNumber, pCustomerName, pWorkPhone, pHomePhone, pAccountNumber, pServiceLineNumber, pTaxId,
                                      pEmail, pPurchaseInvoiceNumber, pAddress, pAddress2, pAddress3, pCountry, pState, pCity,
                                      pZipCode, pSerialNumber, pIMEINumber, pCertStatus, pNumberOfRecords)
-        If ds.Tables(0).Rows.Count > 0 Then
-            For Each r As DataRow In ds.Tables(0).Rows
-                IdList.Add(New Guid(CType(r(CertificateDAL.COL_NAME_CERT_ID), Byte())))
-            Next
-        End If
-        Return IdList
-    End Function
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each r As DataRow In ds.Tables(0).Rows
+                    IdList.Add(New Guid(CType(r(CertificateDAL.COL_NAME_CERT_ID), Byte())))
+                Next
+            End If
+            Return IdList
+        End Function
 #End Region
 
 
 #Region "SFR Related functions"
-    Public Shared Function SFRSearchCertificate(ByVal pCompanyCode As String, ByVal pDealerCode As String, ByVal pDealerGrp As String, ByVal pCustomerFirstName As String, ByVal pCustomerLastName As String,
+        Public Shared Function SFRSearchCertificate(ByVal pCompanyCode As String, ByVal pDealerCode As String, ByVal pDealerGrp As String, ByVal pCustomerFirstName As String, ByVal pCustomerLastName As String,
                                                 ByVal pWorkPhone As String, ByVal pEmail As String, ByVal pPostalCode As String, ByVal pAccountNumber As String) As DataSet
 
 
-        Dim dal As New CertificateDAL, ds As DataSet
-        ds = dal.SFRSearchCertificate(pCompanyCode, pDealerCode, pDealerGrp, pCustomerFirstName, pCustomerLastName, pWorkPhone, pEmail, pPostalCode, pAccountNumber)
+            Dim dal As New CertificateDAL, ds As DataSet
+            ds = dal.SFRSearchCertificate(pCompanyCode, pDealerCode, pDealerGrp, pCustomerFirstName, pCustomerLastName, pWorkPhone, pEmail, pPostalCode, pAccountNumber)
 
-        If ds.Tables(0).Rows.Count > 0 Then
+            If ds.Tables(0).Rows.Count > 0 Then
+                Return ds
+            End If
             Return ds
-        End If
-        Return ds
-    End Function
+        End Function
 #End Region
 #Region "Claim Images"
-    Public ReadOnly Property CertificateImagesList(Optional ByVal loadAllFiles As Boolean = False) As CertImage.CertImagesList
-        Get
-            Return New CertImage.CertImagesList(Me, loadAllFiles)
-        End Get
-    End Property
+        Public ReadOnly Property CertificateImagesList(Optional ByVal loadAllFiles As Boolean = False) As CertImage.CertImagesList
+            Get
+                Return New CertImage.CertImagesList(Me, loadAllFiles)
+            End Get
+        End Property
 
-    Public Function AttachImage(ByVal pDocumentTypeId As Nullable(Of Guid),
+        Public Function AttachImage(ByVal pDocumentTypeId As Nullable(Of Guid),
                                 ByVal pScanDate As Nullable(Of Date),
                                 ByVal pFileName As String,
                                 ByVal pComments As String,
                                 ByVal pUserName As String,
                                 ByVal pImageData As Byte()) As Guid
 
-        Dim validationErrors As New List(Of ValidationError)
+            Dim validationErrors As New List(Of ValidationError)
 
-        ' Check if Document Type ID is supplied otherwise default to Other
-        If (Not pDocumentTypeId.HasValue) Then
-            pDocumentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_DOCUMENT_TYPES, Codes.DOCUMENT_TYPE__OTHER)
-        End If
+            ' Check if Document Type ID is supplied otherwise default to Other
+            If (Not pDocumentTypeId.HasValue) Then
+                pDocumentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_DOCUMENT_TYPES, Codes.DOCUMENT_TYPE__OTHER)
+            End If
 
-        ' Check if Scan Date is supplied otherwise default to Current Date 
-        If (Not pScanDate.HasValue) Then
-            pScanDate = DateTime.Today
-        End If
+            ' Check if Scan Date is supplied otherwise default to Current Date 
+            If (Not pScanDate.HasValue) Then
+                pScanDate = DateTime.Today
+            End If
 
-        Dim oCertImage As CertImage
-        oCertImage = DirectCast(Me.CertificateImagesList.GetNewChild(Me.Id), CertImage)
+            Dim oCertImage As CertImage
+            oCertImage = DirectCast(Me.CertificateImagesList.GetNewChild(Me.Id), CertImage)
 
-        With oCertImage
-            .DocumentTypeId = pDocumentTypeId.Value
-            .ScanDate = pScanDate.Value
-            .FileName = pFileName
-            .Comments = pComments
-            .UserName = pUserName
-            .FileSizeBytes = pImageData.Length
-            .ImageId = Guid.NewGuid()
-        End With
-
-        Try
-
-            ' This is to avoid any orphan images because of Elita Validation
-            oCertImage.Validate()
-
-            Dim oRepository As Documents.Repository = Me.Company.GetCertificateImageRepository()
-            Dim doc As Documents.Document = oRepository.NewDocument
-            With doc
-                .Data = pImageData
+            With oCertImage
+                .DocumentTypeId = pDocumentTypeId.Value
+                .ScanDate = pScanDate.Value
                 .FileName = pFileName
-                .FileType = pFileName.Split(New Char() {"."}).Last()
+                .Comments = pComments
+                .UserName = pUserName
                 .FileSizeBytes = pImageData.Length
+                .ImageId = Guid.NewGuid()
             End With
 
-            oRepository.Upload(doc)
-            oCertImage.ImageId = doc.Id
+            Try
 
-            oCertImage.Save()
+                ' This is to avoid any orphan images because of Elita Validation
+                oCertImage.Validate()
 
-            Return doc.Id
-        Catch ex As Exception
-            oCertImage.Delete()
-            Throw
-        End Try
+                Dim oRepository As Documents.Repository = Me.Company.GetCertificateImageRepository()
+                Dim doc As Documents.Document = oRepository.NewDocument
+                With doc
+                    .Data = pImageData
+                    .FileName = pFileName
+                    .FileType = pFileName.Split(New Char() {"."}).Last()
+                    .FileSizeBytes = pImageData.Length
+                End With
 
-    End Function
+                oRepository.Upload(doc)
+                oCertImage.ImageId = doc.Id
+
+                oCertImage.Save()
+
+                Return doc.Id
+            Catch ex As Exception
+                oCertImage.Delete()
+                Throw
+            End Try
+
+        End Function
 
 #End Region
 
 #Region "Images/Documents"
-    Public Function GetCertificateImagesView(Optional ByVal loadAllFiles As Boolean = False) As CertificateImagesView
-        Dim t As DataTable = CertificateImagesView.CreateTable
-        Dim detail As CertImage
-        Dim filteredTable As DataTable
+        Public Function GetCertificateImagesView(Optional ByVal loadAllFiles As Boolean = False) As CertificateImagesView
+            Dim t As DataTable = CertificateImagesView.CreateTable
+            Dim detail As CertImage
+            Dim filteredTable As DataTable
 
-        Try
-            For Each detail In Me.CertificateImagesList(loadAllFiles)
-                Dim row As DataRow = t.NewRow
-                row(CertificateImagesView.COL_CERT_IMAGE_ID) = detail.Id.ToByteArray
-                row(CertificateImagesView.COL_IMAGE_ID) = detail.ImageId.ToByteArray
-                row(CertificateImagesView.COL_SCAN_DATE) = detail.ScanDate.ToString()
-                row(CertificateImagesView.COL_DOCUMENT_TYPE) = LookupListNew.GetDescriptionFromId(LookupListCache.LK_DOCUMENT_TYPES, detail.DocumentTypeId)
-                row(CertificateImagesView.COL_FILE_NAME) = detail.FileName
+            Try
+                For Each detail In Me.CertificateImagesList(loadAllFiles)
+                    Dim row As DataRow = t.NewRow
+                    row(CertificateImagesView.COL_CERT_IMAGE_ID) = detail.Id.ToByteArray
+                    row(CertificateImagesView.COL_IMAGE_ID) = detail.ImageId.ToByteArray
+                    row(CertificateImagesView.COL_SCAN_DATE) = detail.ScanDate.ToString()
+                    row(CertificateImagesView.COL_DOCUMENT_TYPE) = LookupListNew.GetDescriptionFromId(LookupListCache.LK_DOCUMENT_TYPES, detail.DocumentTypeId)
+                    row(CertificateImagesView.COL_FILE_NAME) = detail.FileName
 
-                Dim _ft As Documents.FileType = Documents.DocumentManager.Current.FileTypes.Where(Function(ft) ft.Extension = detail.FileName.Split(".".ToCharArray()).Last().ToUpper()).FirstOrDefault()
-                If (Not _ft Is Nothing) Then
-                    row(CertificateImagesView.COL_FILE_TYPE) = _ft.Description
-                End If
+                    Dim _ft As Documents.FileType = Documents.DocumentManager.Current.FileTypes.Where(Function(ft) ft.Extension = detail.FileName.Split(".".ToCharArray()).Last().ToUpper()).FirstOrDefault()
+                    If (Not _ft Is Nothing) Then
+                        row(CertificateImagesView.COL_FILE_TYPE) = _ft.Description
+                    End If
 
-                If (Not detail.FileSizeBytes Is Nothing) Then
-                    row(CertificateImagesView.COL_FILE_SIZE_BYTES) = detail.FileSizeBytes.Value
-                End If
-                row(CertificateImagesView.COL_COMMENTS) = detail.Comments
-                If (detail.UserName Is Nothing) OrElse (detail.UserName.Trim().Length = 0) Then
-                    row(CertificateImagesView.COL_USER_NAME) = detail.CreatedById
-                Else
-                    row(CertificateImagesView.COL_USER_NAME) = detail.UserName
-                End If
-                row(CertificateImagesView.COL_DELETE_FLAG) = detail.DeleteFlag
-                t.Rows.Add(row)
+                    If (Not detail.FileSizeBytes Is Nothing) Then
+                        row(CertificateImagesView.COL_FILE_SIZE_BYTES) = detail.FileSizeBytes.Value
+                    End If
+                    row(CertificateImagesView.COL_COMMENTS) = detail.Comments
+                    If (detail.UserName Is Nothing) OrElse (detail.UserName.Trim().Length = 0) Then
+                        row(CertificateImagesView.COL_USER_NAME) = detail.CreatedById
+                    Else
+                        row(CertificateImagesView.COL_USER_NAME) = detail.UserName
+                    End If
+                    row(CertificateImagesView.COL_DELETE_FLAG) = detail.DeleteFlag
+                    t.Rows.Add(row)
 
-            Next
+                Next
 
-            Return New CertificateImagesView(t)
+                Return New CertificateImagesView(t)
 
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Throw New DataBaseAccessException(ex.ErrorType, ex)
-        End Try
-    End Function
-
-    Public Class CertificateImagesView
-        Inherits DataView
-        Public Const COL_CERT_IMAGE_ID As String = "CERT_IMAGE_ID"
-        Public Const COL_IMAGE_ID As String = "IMAGE_ID"
-        Public Const COL_SCAN_DATE As String = "SCAN_DATE"
-        Public Const COL_DOCUMENT_TYPE As String = "DOCUMENT_TYPE"
-        Public Const COL_FILE_NAME As String = "FILE_NAME"
-        Public Const COL_FILE_TYPE As String = "FILE_TYPE"
-        Public Const COL_FILE_SIZE_BYTES As String = "FILE_SIZE_BYTES"
-        Public Const COL_COMMENTS As String = "COMMENTS"
-        Public Const COL_USER_NAME As String = "USER_NAME"
-        Public Const COL_DELETE_FLAG As String = "DELETE_FLAG"
-
-        Public Sub New(ByVal Table As DataTable)
-            MyBase.New(Table)
-        End Sub
-
-        Public Shared Function CreateTable() As DataTable
-            Dim t As New DataTable
-            t.Columns.Add(COL_CERT_IMAGE_ID, GetType(Byte()))
-            t.Columns.Add(COL_IMAGE_ID, GetType(Byte()))
-            t.Columns.Add(COL_SCAN_DATE, GetType(String))
-            t.Columns.Add(COL_DOCUMENT_TYPE, GetType(String))
-            t.Columns.Add(COL_FILE_NAME, GetType(String))
-            t.Columns.Add(COL_FILE_TYPE, GetType(String))
-            t.Columns.Add(COL_FILE_SIZE_BYTES, GetType(Long))
-            t.Columns.Add(COL_COMMENTS, GetType(String))
-            t.Columns.Add(COL_USER_NAME, GetType(String))
-            t.Columns.Add(COL_DELETE_FLAG, GetType(String))
-            Return t
+            Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+                Throw New DataBaseAccessException(ex.ErrorType, ex)
+            End Try
         End Function
-    End Class
+
+        Public Class CertificateImagesView
+            Inherits DataView
+            Public Const COL_CERT_IMAGE_ID As String = "CERT_IMAGE_ID"
+            Public Const COL_IMAGE_ID As String = "IMAGE_ID"
+            Public Const COL_SCAN_DATE As String = "SCAN_DATE"
+            Public Const COL_DOCUMENT_TYPE As String = "DOCUMENT_TYPE"
+            Public Const COL_FILE_NAME As String = "FILE_NAME"
+            Public Const COL_FILE_TYPE As String = "FILE_TYPE"
+            Public Const COL_FILE_SIZE_BYTES As String = "FILE_SIZE_BYTES"
+            Public Const COL_COMMENTS As String = "COMMENTS"
+            Public Const COL_USER_NAME As String = "USER_NAME"
+            Public Const COL_DELETE_FLAG As String = "DELETE_FLAG"
+
+            Public Sub New(ByVal Table As DataTable)
+                MyBase.New(Table)
+            End Sub
+
+            Public Shared Function CreateTable() As DataTable
+                Dim t As New DataTable
+                t.Columns.Add(COL_CERT_IMAGE_ID, GetType(Byte()))
+                t.Columns.Add(COL_IMAGE_ID, GetType(Byte()))
+                t.Columns.Add(COL_SCAN_DATE, GetType(String))
+                t.Columns.Add(COL_DOCUMENT_TYPE, GetType(String))
+                t.Columns.Add(COL_FILE_NAME, GetType(String))
+                t.Columns.Add(COL_FILE_TYPE, GetType(String))
+                t.Columns.Add(COL_FILE_SIZE_BYTES, GetType(Long))
+                t.Columns.Add(COL_COMMENTS, GetType(String))
+                t.Columns.Add(COL_USER_NAME, GetType(String))
+                t.Columns.Add(COL_DELETE_FLAG, GetType(String))
+                Return t
+            End Function
+        End Class
 
 
 #End Region
 
-End Class
+    End Class
 
 
 

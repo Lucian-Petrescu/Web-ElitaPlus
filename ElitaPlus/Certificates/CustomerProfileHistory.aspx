@@ -311,6 +311,39 @@
                 </div>
             </td>
         </tr>
+        <tr>
+            <td>
+                <br />
+            </td>
+        </tr>
+        <tr id="ExtendedFieldValueHist" runat="server">
+            <td style="text-align:left">
+                <h2 class="dataGridHeader">
+                    <a id="ExtendedFieldValueExpander" href="#">
+                        <img alt="sort indicator" src="../App_Themes/Default/Images/sort_indicator_des.png" /></a>
+                    <asp:Label ID="ExtendedFieldHistory" runat="server">EXTENDED_FIELD_HISTORY</asp:Label>
+                </h2>
+            </td>
+        </tr>
+        <tr id="ExtendedFieldValueHistInfo">
+            <td style="border-bottom: none">
+                <div style="width: 100%; height: 100%; min-height: 100%">
+                    <asp:GridView ID="grdExtendedFieldValueHist" runat="server" AutoGenerateColumns="false"
+                        Width="100%" BorderStyle="Solid" BorderWidth="1px" BorderColor="#999999"
+                        SkinID="DetailPageGridView" AllowPaging="false" AllowSorting="false">
+                        <Columns>
+                            <asp:BoundField DataField="field_name" HeaderText="Field_Name" HeaderStyle-Width="50" />
+                            <asp:BoundField DataField="field_value" HeaderText="FIELD_VALUE" HeaderStyle-Width="50" />
+                            <asp:BoundField DataField="changed_by" HeaderText="CREATED_BY" HeaderStyle-Width="50" />
+                            <asp:BoundField DataField="changed_date" HeaderText="CREATED_DATE" HeaderStyle-Width="50" />
+                            <asp:BoundField DataField="modified_by" HeaderText="MODIFIED_BY" HeaderStyle-Width="50" />
+                            <asp:BoundField DataField="modified_date" HeaderText="MODIFIED_DATE" HeaderStyle-Width="50" />
+                            
+                        </Columns>
+                    </asp:GridView>
+                </div>
+            </td>
+        </tr>
     </table>
     <div class="btnZone">
         <div class="">

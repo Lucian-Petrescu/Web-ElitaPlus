@@ -627,6 +627,33 @@ Namespace Certificates
         Protected WithEvents CustBankDetailHistory As Global.System.Web.UI.WebControls.GridView
 
         '''<summary>
+        '''ExtendedFieldValueHist control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ExtendedFieldValueHist As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+        '''<summary>
+        '''ExtendedFieldHistory control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ExtendedFieldHistory As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''grdExtendedFieldValueHist control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents grdExtendedFieldValueHist As Global.System.Web.UI.WebControls.GridView
+
+        '''<summary>
         '''btnBack control.
         '''</summary>
         '''<remarks>
