@@ -180,12 +180,10 @@ Public NotInheritable Class MultiAuthClaim
     End Function
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
-        'http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/test-p1/WebAppGateway/gateway
-        'http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/Test-J1/WebAppGateway/gateway
-
-        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", "http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/Test-J1/WebAppGateway/gateway")
-        client.ClientCredentials.UserName.UserName = "elita1"
-        client.ClientCredentials.UserName.Password = "elita1"
+        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
+        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPasswd.Url)
+        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+        client.ClientCredentials.UserName.Password = oWebPasswd.Password
         Return client
     End Function
     Public Overrides Sub CreateClaim()
