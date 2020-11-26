@@ -48,6 +48,18 @@ Public Class CertExtendedItemForm
     Private Const ADMIN As String = "Admin"
     Private Const CERTITEMEXTENDEDCONTROL As String = "Certificate Extended Item Control"
 #End Region
+#Region "Page Return Type"
+    Public Class ReturnType
+        Public LastOperation As DetailPageCommand
+        Public EditingBo As CertExtendedItem
+        Public HasDataChanged As Boolean
+        Public Sub New(ByVal lastOp As DetailPageCommand, ByVal curEditingBo As CertExtendedItem, ByVal hasDataChanged As Boolean)
+            Me.LastOperation = lastOp
+            Me.EditingBo = curEditingBo
+            Me.HasDataChanged = hasDataChanged
+        End Sub
+    End Class
+#End Region
 
 #Region "Page State"
     Class MyState
@@ -71,6 +83,9 @@ Public Class CertExtendedItemForm
         Public BnoRow As Boolean = False
         Public IsRowEdit As Boolean = False
         Public TempDataSet As DataSet
+        Public CallingFrom As Boolean=False
+        Public BlnIsComingFromNew As Boolean = False
+        Public IsBoDirty as Boolean=False
     End Class
 
     Public Sub New()
@@ -87,12 +102,15 @@ Public Class CertExtendedItemForm
 #Region "Button-Events"
     Public Sub BtnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
         Try
-            ReturnToCallingPage()
+            If State.IsBoDirty OrElse State.MyBO.IsDirty  Then
+                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+            Else
+                Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
+            End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            DisplayMessage(Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR, "", MSG_BTN_YES_NO_CANCEL, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
-            State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-            State.LastErrMsg = MasterPage.MessageController.Text
+            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, State.MyBO, State.HasDataChanged))
         End Try
     End Sub
     Public Sub BtnAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnAdd.Click
@@ -264,6 +282,7 @@ Public Class CertExtendedItemForm
                     BeginEdit(State.CertExtConfigId,State.DataSet)
                     EndEdit(ElitaPlusPage.DetailPageCommand.Delete)
                     DisableFields()
+                    State.IsBoDirty=True
                 Case ElitaPlusSearchPage.SAVE_COMMAND_NAME
                     nIndex = CInt(e.CommandArgument)
                     PopulateBoFromControls(GridViewCertItemConfig.Rows(nIndex))
@@ -274,6 +293,7 @@ Public Class CertExtendedItemForm
                     EndEdit(ElitaPlusPage.DetailPageCommand.OK)
                     DisableFields()
                     State.IsRowEdit = False
+                    State.IsBoDirty=True
                 Case ElitaPlusSearchPage.EDIT_COMMAND_NAME
                     nIndex = CInt(e.CommandArgument)
                     GridViewCertItemConfig.SelectedIndex = nIndex
@@ -392,7 +412,22 @@ Public Class CertExtendedItemForm
     Private Sub UpdateBreadCrum()
         MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator & CERTITEMEXTENDEDCONTROL
     End Sub
+    Private Sub Page_PageCall(ByVal callFromUrl As String, ByVal callingPar As Object) Handles MyBase.PageCall
 
+        Try
+            If Not Me.CallingParameters Is Nothing Then
+                'Get the id from the parent
+                State.CodeMask=callingPar
+                TextboxCertItemConfigCode.Enabled=False
+                State.CallingFrom=True
+                State.MyBo=New CertExtendedItem(Guid.Empty)
+            End If
+
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+
+    End Sub
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         'Put user code to initialize the page here
         MasterPage.MessageController.Clear_Hide()
@@ -402,15 +437,22 @@ Public Class CertExtendedItemForm
             MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(CERTITEMEXTENDEDCONTROL)
             UpdateBreadCrum()
             If Not IsPostBack Then
-                SetStateProperties()
+                'SetStateProperties()
                 SetGridItemStyleColor(GridViewCertItemConfig)
                 TranslateGridHeader(GridViewCertItemConfig)
                 ShowMissingTranslations(MasterPage.MessageController)
                 MenuEnabled = False
                 SortDirection = DEFAULT_SORT
-                PopulateEmptyGrid()
                 If State.MyBo Is Nothing Then
                     State.MyBo = New CertExtendedItem
+                End If
+                If State.CallingFrom Then
+                    State.IsGridVisible = True
+                    PopulateGrid()
+                Else
+                    State.CodeMask = TextboxCertItemConfigCode.Text.ToUpper().Trim()
+                    State.Description = TextboxCertItemConfigDesc.Text.Trim()
+                    PopulateEmptyGrid()
                 End If
                 PopulateUserConctrols()
                 rdoDealers.Attributes.Add("onClick", "javascript:changeSelection()")
@@ -422,6 +464,7 @@ Public Class CertExtendedItemForm
             Else
                 BindBoPropertiesToGridHeaders()
             End If
+            CheckIfComingFromSaveConfirm()
 
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -437,6 +480,48 @@ Public Class CertExtendedItemForm
 #End Region
 
 #Region "Controlling Logic"
+    Protected Sub CheckIfComingFromSaveConfirm()
+            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+            If Not State.BlnIsComingFromNew Then
+
+                If Not confResponse Is Nothing AndAlso confResponse = MSG_VALUE_YES Then 'Me.CONFIRM_MESSAGE_OK Then
+                If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                    If State.IsBoDirty Then
+                        SaveMain()
+                    End If
+                End If
+                Select Case Me.State.ActionInProgress
+                        Case ElitaPlusPage.DetailPageCommand.Back
+                            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        Case ElitaPlusPage.DetailPageCommand.New_
+                            Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        Case ElitaPlusPage.DetailPageCommand.NewAndCopy
+                            Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                            Me.ReturnToCallingPage(New ReturnType(Me.State.ActionInProgress, Me.State.MyBO, Me.State.HasDataChanged))
+                    End Select
+                ElseIf Not confResponse Is Nothing AndAlso confResponse = MSG_VALUE_NO Then 
+                    Select Case Me.State.ActionInProgress
+                        Case ElitaPlusPage.DetailPageCommand.Back
+                            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                        Case ElitaPlusPage.DetailPageCommand.New_
+                        Case ElitaPlusPage.DetailPageCommand.NewAndCopy
+                        Case ElitaPlusPage.DetailPageCommand.BackOnErr
+                            Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
+                    End Select
+                End If
+                'Clean after consuming the action
+                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+            Else
+                If Not confResponse Is Nothing AndAlso confResponse = MSG_VALUE_NO Then 'Me.CONFIRM_MESSAGE_CANCEL Then
+                    Select Case Me.State.ActionInProgress
+                        Case ElitaPlusPage.DetailPageCommand.Back
+                            Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO, Me.State.HasDataChanged))
+                    End Select
+                End If
+            End If
+            Me.HiddenSaveChangesPromptResponse.Value = ""
+        End Sub
     Public Sub PopulateGrid()
         If ((State.DataSet Is Nothing) OrElse (State.HasDataChanged)) Then
             State.DataSet = CertExtendedItem.GeDataSet(State.CodeMask)
@@ -564,6 +649,8 @@ Public Class CertExtendedItemForm
                     SaveDescription()
                 End If
                 If State.MyBo.IsDirty Then
+                    State.IsBoDirty=False
+                    State.blnIsComingFromNew = True
                     State.HasDataChanged = False
                     MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                     DisableFields()

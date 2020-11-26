@@ -179,6 +179,29 @@ Public Class CertExtendedItemDal
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
+    Public Function GetDealerCompanyConfig(ByVal code As String,ByVal id As Guid) As DataSet
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/COMPANY_DEALER_CONFIG"))
+                
+                cmd.AddParameter(PAR_I_NAME_REFERENCE_ID, OracleDbType.Raw, If(id=Guid.Empty,Nothing,id.ToByteArray()))
+                cmd.AddParameter(PAR_I_NAME_CODE, OracleDbType.Varchar2, code)
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
+    Public Function GetConfigCode() As DataSet
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/GET_CONFIG_CODE"))
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                Return OracleDbHelper.Fetch(cmd, TABLE_NAME)
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
 #End Region
 #Region "Overloaded Methods"
     Public Overloads Sub Update(ByVal fDataSet As DataSet, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)

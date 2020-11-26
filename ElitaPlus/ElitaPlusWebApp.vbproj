@@ -40,7 +40,7 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -1489,7 +1489,13 @@
       <DependentUpon>BenefitProductCodeSearchForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
- 
+    <Compile Include="Tables\CertExtendedItemListForm.aspx.designer.vb">
+      <DependentUpon>CertExtendedItemListForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tables\CertExtendedItemListForm.aspx.vb">
+      <DependentUpon>CertExtendedItemListForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Tables\CommissionPlanForm.aspx.designer.vb">
       <DependentUpon>CommissionPlanForm.aspx</DependentUpon>
     </Compile>
@@ -6460,7 +6466,7 @@
     </None>
     <Content Include="Tables\BenefitProductCodeForm.aspx" />
     <Content Include="Tables\BenefitProductCodeSearchForm.aspx" />
-
+    <Content Include="Tables\CertExtendedItemListForm.aspx" />
     <Content Include="Tables\CommissionPlanForm.aspx" />
     <Content Include="Tables\CommissionPlanSearchForm.aspx" />
     <Content Include="Tables\ProducerForm.aspx" />
