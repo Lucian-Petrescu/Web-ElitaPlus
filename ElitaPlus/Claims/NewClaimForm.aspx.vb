@@ -2894,7 +2894,7 @@ Partial Class NewClaimForm
                 .Address3 = sourceAddress.Address3,
                 .City = sourceAddress.City,
                 .PostalCode = sourceAddress.PostalCode,
-                .RegionId = LookupListNew.GetIdFromDescription(LookupListNew.DataView(LookupListNew.LK_REGIONS, False), sourceAddress.State)
+                .RegionId = LookupListNew.GetIdFromCode(LookupListNew.DataView(LookupListNew.LK_REGIONS, False), sourceAddress.State)
                 }
         Return convertAddress
     End Function

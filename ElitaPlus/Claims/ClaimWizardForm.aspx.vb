@@ -1065,7 +1065,6 @@ Public Class ClaimWizardForm
         InitializeCommonData()
         InitializeStepUI(Me.State.StepName)
         PopulateFormFromBO(Me.State.StepName)
-        PopulateLogisticStageAddress()
     End Sub
     Public ReadOnly Property UserControlLogisticStageAddressInfo() As UserControlLogisticStageAddress
         Get
@@ -1114,8 +1113,8 @@ Public Class ClaimWizardForm
 
                     Dim filteredLogisticStageAddresses = logisticStageAddresses.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing).ToList()
                     
-                    ValidateShippingAddressButtonControl()
                     State.LogisticAddressBo = FilteredLogisticStageAddresses
+                    ValidateShippingAddressButtonControl()
                     UserControlLogisticStageAddressInfo.Bind(State.LogisticAddressBo)
                 Else
                     UserControlLogisticStageAddressInfo.Visible = False
@@ -1157,7 +1156,7 @@ Public Class ClaimWizardForm
                 .City = sourceAddress.City,
                 .PostalCode = sourceAddress.PostalCode,
                 .RegionId =
-                LookupListNew.GetIdFromDescription(LookupListNew.DataView(LookupListNew.LK_REGIONS, False),
+                LookupListNew.GetIdFromCode(LookupListNew.DataView(LookupListNew.LK_REGIONS, False),
                                                    sourceAddress.State)
                 }
         Return convertAddress
@@ -1174,7 +1173,7 @@ Public Class ClaimWizardForm
                 .City = sourceAddress.City,
                 .PostalCode = sourceAddress.PostalCode,
                 .RegionId =
-                LookupListNew.GetIdFromDescription(LookupListNew.DataView(LookupListNew.LK_REGIONS, False),
+                LookupListNew.GetIdFromCode(LookupListNew.DataView(LookupListNew.LK_REGIONS, False),
                                                    sourceAddress.State)
                 }
         Return convertAddress
@@ -1404,8 +1403,9 @@ Public Class ClaimWizardForm
             Case ClaimWizardSteps.Step3
                 InitialEnableDisableControlsForStep3()
                 EnableDisableControlsForStep3()
+                PopulateLogisticStageAddress()
 
-            Case ClaimWizardSteps.Step4
+           Case ClaimWizardSteps.Step4
                 Dim showCityFields As Boolean = Me.step4_RadioButtonByCity.Checked
                 Dim showAllFields As Boolean = Me.step4_RadioButtonAll.Checked
                 Dim NO_SVC_OPTION As Boolean = Me.step4_RadioButtonNO_SVC_OPTION.Checked

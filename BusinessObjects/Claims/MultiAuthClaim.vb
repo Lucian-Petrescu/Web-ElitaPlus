@@ -655,7 +655,7 @@ Public NotInheritable Class MultiAuthClaim
                                                                                                                     .City = Me.ContactInfo.Address.City,
                                                                                                                     .Country = Me.ContactInfo.Address.countryBO.Code,
                                                                                                                     .PostalCode = Me.ContactInfo.Address.PostalCode,
-                                                                                                                    .State = LookupListNew.GetDescriptionFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS,
+                                                                                                                    .State = LookupListNew.GetCodeFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS,
                                                                                                                                                                                        False), Me.ContactInfo.Address.RegionId)
                                                                                                                 },
                                                                         .OptionCode = Me.MethodOfRepairCode,
