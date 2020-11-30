@@ -137,7 +137,7 @@ Public Class CertExtendedItem
                 Row = FindRow(id, CertExtendedItemDal.TABLE_KEY_NAME, Dataset.Tables(CertExtendedItemDal.TABLE_NAME))
             End If
             If Row Is Nothing Then
-                Throw New DataNotFoundException
+               Throw New DataNotFoundException
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -375,6 +375,24 @@ Public Class CertExtendedItem
             Dim dal As New CertExtendedItemDal
             Dim dv As DataView = dal.DealerCompanyConfigExist(code, reference, id).Tables(0).DefaultView
             Return dv
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+    Public Shared Function GetDealerCompanyConfig(ByVal code As String,ByVal id As Guid) As CertExtendedItemSearchDv
+
+        Try
+            Dim dal As New CertExtendedItemDal
+            Return New CertExtendedItemSearchDv(dal.GetDealerCompanyConfig(code,id).Tables(0))
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+    Public Shared Function GetConfigCode() As DataSet
+
+        Try
+            Dim dal As New CertExtendedItemDal
+            Return dal.GetConfigCode()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
