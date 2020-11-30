@@ -15,6 +15,7 @@ Public Class UserControlLogisticStageAddress
     Private Const ValidateAddressButton As String = "btnValidate_Address"
     Private Const AddressCtrlDdlCountry As String = "moCountryDrop_WRITE"
     Private Const AddressCtrlTxtPostal As String = "moPostalText"
+    Private Const AddressCtrlTxtAddress1 As String = "moAddress1Text"
 
 #End Region
 
@@ -93,35 +94,26 @@ Public Class UserControlLogisticStageAddress
         End If
     End Sub
 
-    Friend Sub PopulateBoFromRepeaterControl(ByVal fulfillmentDetails As FulfillmentDetails)
+     Friend Sub PopulateBoFromRepeaterControl(ByVal logisticAddressBo As List(Of LogisticStageAddress))
 
         For Each repeaterItem As RepeaterItem In repLogisticStageAddress.Items
-            Dim repAddress As new BusinessObjectsNew.Address
             Dim hdnLogisticStageCode As HiddenField = DirectCast(repeaterItem.FindControl(GridCtrlHdnLogisticStageCode), HiddenField)
             Dim addressControl As UserControlAddress_New = DirectCast(repeaterItem.FindControl(GridCtrlUcAddressController), UserControlAddress_New)
             Dim ddlCountry As DropDownList = DirectCast(addressControl.FindControl(AddressCtrlDdlCountry), DropDownList)
             Dim txtPostalCode As TextBox = DirectCast(addressControl.FindControl(AddressCtrlTxtPostal), TextBox)
-
+            Dim txtAddress1 As TextBox = DirectCast(addressControl.FindControl(AddressCtrlTxtAddress1), TextBox)
             Dim zd As New ZipDistrict()
-            zd.CountryId = New Guid(ddlCountry.SelectedValue.ToString())
-            zd.ValidateZipCode(txtPostalCode.Text)
-  
-            if FulfillmentProviderTypeInfo <> FulfillmentProviderType.V3 Then
-                 addressControl.PopulateBOFromControl(True)
+        
+            If txtAddress1.Text.Trim() = String.Empty Then
+                    Page.MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS1_FIELD_IS_REQUIRED, True)
+                    Throw New PopulateBOErrorException
             End If
 
-            addressControl.PopulateBOFromAddressControl(repAddress)
-            
-            For Each ls As SelectedLogisticStage In _
-                From lss In fulfillmentDetails.LogisticStages.ToList() Where lss.Code = hdnLogisticStageCode.Value
-                ls.Address.Address1 = repAddress.Address1
-                ls.Address.Address2 = repAddress.Address2
-                ls.Address.Address3 = repAddress.Address3
-                ls.Address.City = repAddress.City
-                ls.Address.State = LookupListNew.GetCodeFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS, False), repAddress.RegionId)
-                ls.Address.Country = repAddress.countryBO.Code
-                ls.Address.PostalCode = repAddress.PostalCode
-            Next
+            zd.CountryId = New Guid(ddlCountry.SelectedValue.ToString())
+            zd.ValidateZipCode(txtPostalCode.Text)
+
+            Dim ls as LogisticStageAddress = logisticAddressBo.FirstOrDefault(Function (lss) lss.LogisticStageCode = hdnLogisticStageCode.Value)
+           addressControl.PopulateBOFromAddressControl(ls.LogisticStageAddress)
 
         Next
     End Sub

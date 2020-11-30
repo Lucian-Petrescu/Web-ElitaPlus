@@ -503,7 +503,7 @@ Public Class ClaimWizardForm
                             End If
                             'user story 192764 - Task-199011--End------
                         End If
-
+ 
                         'User Story 186561 Number of active claims allowed under one certificate -- start
                         Dim blnClaimInProgress As Boolean = False
                         For Each i As ClaimIssue In State.ClaimBO.ClaimIssuesList
@@ -544,6 +544,10 @@ Public Class ClaimWizardForm
 
                         Me.State.CommentBO.Save()
                         Me.State.ClaimBO.Save()
+
+                        'Logistic Stage addresses will have either addresses or fulfillment addresses based on the Fulfillment Provider Type.
+                        'It requires a service calling if it has fulfillment addresses. So calling this method after ClaimBo.
+                        SaveLogisticStageAddresses()
 
                         ' Create Authorization
                         If (Me.State.ClaimBO.Status = BasicClaimStatus.Active) Then
@@ -1078,10 +1082,11 @@ Public Class ClaimWizardForm
    Private Sub PopulateLogisticStageAddress()
        
        Dim fullFilInfo As BO.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails
-        
-       If Me.State.FulfillmentDetails  is Nothing Then
-            fullFilInfo = Me.State.ClaimBO.GetFulfillmentDetails(Me.State.ClaimBO.ClaimNumber, Me.State.ClaimBO.Company.Code)
-            Me.State.FulfillmentDetails = fullFilInfo
+      
+       If Me.State.FulfillmentDetails  is Nothing AndAlso Me.State.LogisticAddressBo is Nothing Then
+           fullFilInfo = Me.State.ClaimBO.GetFulfillmentDetails(Me.State.ClaimBO.ClaimNumber, Me.State.ClaimBO.Company.Code)
+           Me.State.FulfillmentDetails = fullFilInfo
+           Me.State.FulfillmentDetails.LogisticStages = fullFilInfo.LogisticStages.Where(Function(ls) ls.Address.Address1 Isnot nothing).ToArray()
         End If
       
         If Me.State.FulfillmentDetails IsNot Nothing Then
@@ -1090,30 +1095,32 @@ Public Class ClaimWizardForm
                 If Me.State.FulfillmentDetails.LogisticStages IsNot Nothing AndAlso
                    Me.State.FulfillmentDetails.LogisticStages.Length > 0 Then
 
-                    Dim logisticStageAddresses As New List(Of LogisticStageAddress)
+                    If Me.State.LogisticAddressBo Is Nothing Then
+                        Dim logisticStageAddresses As New List(Of LogisticStageAddress)
 
-                    if Me.State.ClaimBO.FulfillmentProviderType =  BusinessObjectsNew.FulfillmentProviderType.V3 then
-                      
-                        logisticStageAddresses = New List(Of LogisticStageAddress)(
-                            From dr In Me.State.FulfillmentDetails.LogisticStages Select New LogisticStageAddress() With {
-                                                                                                                          .LogisticStageAddress = ConvertToAddressControllerFieldsForV3Providers(dr.Address),
-                                                                                                                          .LogisticStageName = dr.Description,
-                                                                                                                          .LogisticStageCode = dr.Code
-                                                                                                                          }
-                            )
-                        else
+                        if Me.State.ClaimBO.FulfillmentProviderType =  BusinessObjectsNew.FulfillmentProviderType.V3 then
                             logisticStageAddresses = New List(Of LogisticStageAddress)(
                                 From dr In Me.State.FulfillmentDetails.LogisticStages Select New LogisticStageAddress() With {
-                                                                                                                              .LogisticStageAddress = ConvertToAddressControllerFieldsForOtherProviders(dr.Address),
+                                                                                                                              .LogisticStageAddress = ConvertToAddressControllerFieldsForV3Providers(dr.Address),
                                                                                                                               .LogisticStageName = dr.Description,
-                                                                                                                              .LogisticStageCode = dr.Code
+                                                                                                                              .LogisticStageCode = dr.Code,
+                                                                                                                              .LogisticStageType = dr.Type
                                                                                                                               }
                                 )
-                    End If
+                            else
+                                logisticStageAddresses = New List(Of LogisticStageAddress)(
+                                    From dr In Me.State.FulfillmentDetails.LogisticStages Select New LogisticStageAddress() With {
+                                                                                                                                  .LogisticStageAddress = ConvertToAddressControllerFieldsForOtherProviders(dr.Address),
+                                                                                                                                  .LogisticStageName = dr.Description,
+                                                                                                                                  .LogisticStageCode = dr.Code,
+                                                                                                                                  .LogisticStageType = dr.Type
+                                                                                                                                  }
+                                    )
+                        End If
+                    State.LogisticAddressBo = logisticStageAddresses 
 
-                    Dim filteredLogisticStageAddresses = logisticStageAddresses.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing).ToList()
-                    
-                    State.LogisticAddressBo = FilteredLogisticStageAddresses
+                    End If
+                   
                     ValidateShippingAddressButtonControl()
                     UserControlLogisticStageAddressInfo.Bind(State.LogisticAddressBo)
                 Else
@@ -1158,7 +1165,7 @@ Public Class ClaimWizardForm
                 .RegionId =
                 LookupListNew.GetIdFromCode(LookupListNew.DataView(LookupListNew.LK_REGIONS, False),
                                                    sourceAddress.State)
-                }
+               }
         Return convertAddress
     End Function
     Private Shared Function ConvertToAddressControllerFieldsForOtherProviders(ByVal sourceAddress As Claim.FulfillmentaddressInfo) As BusinessObjectsNew.Address
@@ -1176,7 +1183,7 @@ Public Class ClaimWizardForm
                 LookupListNew.GetIdFromCode(LookupListNew.DataView(LookupListNew.LK_REGIONS, False),
                                                    sourceAddress.State)
                 }
-        Return convertAddress
+       Return convertAddress
   
     End Function
 
@@ -2850,14 +2857,94 @@ Public Class ClaimWizardForm
 
     Private Sub PopulateLogisticStageAddressBoFromForm()
         'Save Logistic stage Addresses
-        UserControlLogisticStageAddressInfo.FulfillmentProviderTypeInfo = Me.State.ClaimBO.FulfillmentProviderType
-        UserControlLogisticStageAddressInfo.PopulateBoFromRepeaterControl(Me.State.FulfillmentDetails)
-
-        if Me.State.ClaimBO.FulfillmentProviderType = BusinessObjectsNew.FulfillmentProviderType.V3 then
-            Me.State.ClaimBO.SaveLogisticStages(Me.State.ClaimBO.ClaimNumber, Me.State.ClaimBO.Company.Code,Me.State.FulfillmentDetails.LogisticStages.ToList())
-        End If
+        UserControlLogisticStageAddressInfo.PopulateBoFromRepeaterControl(Me.State.LogisticAddressBo)
 
     End Sub
+  
+    private  sub PopulateFulfillmentDetailsAddressesForProviderV3(logisticAddresses As List(Of LogisticStageAddress), logisticStages As List(Of SelectedLogisticStage), stEventArgs As Text.StringBuilder)
+        
+        For Each lsa As LogisticStageAddress In From lab In logisticAddresses Where lab.LogisticStageAddress IsNot Nothing 
+            For Each sls As SelectedLogisticStage In From ls In logisticStages Where ls.Code = lsa.LogisticStageCode
+
+                Dim isModified As Boolean = False
+                Dim strStateCode as String = LookupListNew.GetCodeFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS, False),  lsa.LogisticStageAddress.RegionId)
+
+                With sls.Address
+
+                    if .Address1 <> lsa.LogisticStageAddress.Address1 Then
+                        .Address1 = lsa.LogisticStageAddress.Address1
+                        isModified = True
+                    End If
+
+                    if .Address2 <> lsa.LogisticStageAddress.Address2 Then
+                        .Address2 = lsa.LogisticStageAddress.Address2
+                        isModified = True
+                    End If
+
+                    if .Address3 <> lsa.LogisticStageAddress.Address3 Then
+                        .Address3 = lsa.LogisticStageAddress.Address3
+                        isModified = True
+                    End If
+
+                    if .City <> lsa.LogisticStageAddress.City Then
+                        .City = lsa.LogisticStageAddress.City
+                        isModified = True
+                    End If
+                  
+                    if .Country <> lsa.LogisticStageAddress.countryBO.Code Then
+                        .Country = lsa.LogisticStageAddress.countryBO.Code
+                        isModified = True
+                    End If
+
+                    if .PostalCode <> lsa.LogisticStageAddress.PostalCode Then
+                        .PostalCode = lsa.LogisticStageAddress.PostalCode
+                        isModified = True
+                    End If
+
+                    if .State <> strStateCode Then
+                        .State = strStateCode
+                        isModified = True
+                    End If
+
+                End With
+
+              if isModified then
+                    if(stEventArgs.Length > 0) Then stEventArgs.Append(", ")
+                    stEventArgs.Append("Code: " & lsa.LogisticStageCode & " Type: " & lsa.LogisticStageType)
+                End If
+              
+            Next
+        Next
+    End sub
+
+    'Save Logistic stage Addresses
+    Private sub SaveLogisticStageAddresses()
+        try
+            if Me.State.LogisticAddressBo.Count > 0 Then
+                Dim stEventArgs as New System.Text.StringBuilder
+
+                if Me.State.ClaimBO.FulfillmentProviderType = BusinessObjectsNew.FulfillmentProviderType.V3 then
+
+                    PopulateFulfillmentDetailsAddressesForProviderV3(Me.State.LogisticAddressBo, Me.State.FulfillmentDetails.LogisticStages.ToList(),stEventArgs)
+                    If Me.State.FulfillmentDetails.LogisticStages.ToList().Count > 0 then
+                        Me.State.ClaimBO.SaveLogisticStages(Me.State.ClaimBO.ClaimNumber, Me.State.ClaimBO.Company.Code,Me.State.FulfillmentDetails.LogisticStages.ToList())
+                    End If
+                else
+                    For Each lsa As LogisticStageAddress In From lab In Me.State.LogisticAddressBo Where lab.LogisticStageAddress IsNot Nothing AndAlso lab.LogisticStageAddress.IsDirty = True
+                        lsa.LogisticStageAddress.Save()
+                        if(stEventArgs.Length > 0) Then stEventArgs.Append(", ")
+                        stEventArgs.Append("Code: " & lsa.LogisticStageCode & " Type: " & lsa.LogisticStageType)
+                    Next
+                End If
+                If (stEventArgs.Length > 0) then
+                    Me.State.ClaimBO.RaiseLogisticStageAddressUpdateEvent(Me.State.ClaimBO.Id,  Me.State.ClaimBO.Dealer.Id, "Claim Wizard Form", stEventArgs.ToString())
+                End If
+               
+            End If
+        Catch ex As Exception
+              Log(ex)
+        End Try
+ End sub
 
     Private Sub PopulatePoliceReportBOFromUserCtr(ByVal blnExcludePoliceReportSave As Boolean)
         With Me.State.PoliceReportBO
@@ -3562,6 +3649,7 @@ Public Class ClaimWizardForm
         Try
             If e.CommandName = SELECT_ACTION_COMMAND Then
                 If Not e.CommandArgument.ToString().Equals(String.Empty) Then
+                    PopulateLogisticStageAddressBoFromForm()
                     Me.State.SelectedClaimIssueId = New Guid(e.CommandArgument.ToString())
                     Me.callPage(ClaimIssueDetailForm.URL, New ClaimIssueDetailForm.Parameters(CType(Me.State.ClaimBO, ClaimBase), Me.State.SelectedClaimIssueId))
                 End If
@@ -3924,7 +4012,7 @@ Public Class ClaimWizardForm
 
 #End Region
 
-
+   
 End Class
 
 
