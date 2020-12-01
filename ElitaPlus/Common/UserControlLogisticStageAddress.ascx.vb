@@ -107,6 +107,8 @@ Public Class UserControlLogisticStageAddress
             If txtAddress1.Text.Trim() = String.Empty Then
                     Page.MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS1_FIELD_IS_REQUIRED, True)
                     Throw New PopulateBOErrorException
+            Else   
+                Page.MasterPage.MessageController.Clear()
             End If
 
             zd.CountryId = New Guid(ddlCountry.SelectedValue.ToString())
