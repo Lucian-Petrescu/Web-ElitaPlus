@@ -15,7 +15,9 @@ Public Class CommonBankInfo
         updateBankInfo.SwiftCode = bankinfo.SwiftCode
         updateBankInfo.BankLookupCode = bankinfo.BankLookupCode
         updateBankInfo.BankName = bankinfo.BankName
-        updateBankInfo.BranchNumber = bankinfo.BranchNumber
+        If bankinfo.BranchNumber IsNot Nothing Then
+            updateBankInfo.BranchNumber = bankinfo.BranchNumber
+        End If
         updateBankInfo.IbanCode = bankinfo.IbanNumber
 
         endorseRequest.DealerCode = dealerCode
