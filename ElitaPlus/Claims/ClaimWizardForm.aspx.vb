@@ -1086,8 +1086,11 @@ Public Class ClaimWizardForm
        If Me.State.FulfillmentDetails  is Nothing AndAlso Me.State.LogisticAddressBo is Nothing Then
            fullFilInfo = Me.State.ClaimBO.GetFulfillmentDetails(Me.State.ClaimBO.ClaimNumber, Me.State.ClaimBO.Company.Code)
            Me.State.FulfillmentDetails = fullFilInfo
-           Me.State.FulfillmentDetails.LogisticStages = fullFilInfo.LogisticStages.Where(Function(ls) ls.Address.Address1 Isnot nothing).ToArray()
-        End If
+           
+           If fullFilInfo.LogisticStages IsNot Nothing Then
+               Me.State.FulfillmentDetails.LogisticStages = fullFilInfo.LogisticStages.Where(Function(ls) ls.Address.Address1 Isnot nothing).ToArray()
+           End If
+       End If
       
         If Me.State.FulfillmentDetails IsNot Nothing Then
 
