@@ -178,12 +178,12 @@ Public NotInheritable Class MultiAuthClaim
         client.ClientCredentials.UserName.Password = oWebPasswd.Password
         Return client
     End Function
-        Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
-        'Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
-        'Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", " http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/test-p1/WebAppGateway/gateway")
-            Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", "http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/Test-J1/WebAppGateway/gateway")
-        client.ClientCredentials.UserName.UserName = "elita1"
-        client.ClientCredentials.UserName.Password = "elita1"
+
+    Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
+        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
+        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPasswd.Url)
+        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+        client.ClientCredentials.UserName.Password = oWebPasswd.Password
         Return client
     End Function
     Public Overrides Sub CreateClaim()
@@ -631,7 +631,7 @@ Public NotInheritable Class MultiAuthClaim
     Public Function GetFulfillmentDetails(claimNumber As String, companyCode As String) As FulfillmentDetails Implements IFullfillable.GetFulfillmentDetails
 
        Dim wsResponseObject As New FulfillmentDetails
-        If (MyBase.FulfillmentProviderType = FulfillmentProviderType.V3) Then
+        If (MyBase.FulfillmentProviderType = FulfillmentProviderType.V3) Then 
             wsResponseObject = GetFulfillmentDataForV3Provider(claimNumber, companyCode)
         Else
             wsResponseObject = GetFulfillmentDataForOtherProviders(claimNumber, companyCode)
@@ -647,14 +647,15 @@ Public NotInheritable Class MultiAuthClaim
         response.Charges = {New Charge()}
         response.Fees = {New Fee()}
         response.LogisticStages = {New SelectedLogisticStage() With {
-                                                                        .Address = New FulfillmentaddressInfo With {.AddressId =Me.ContactInfo.AddressId,
+                                                                        .Address = New FulfillmentAddressInfo With {
+                                                                                                                    .AddressId =Me.ContactInfo.AddressId,
                                                                                                                     .Address1 = Me.ContactInfo.Address.Address1,
                                                                                                                     .Address2 = Me.ContactInfo.Address.Address2,
                                                                                                                     .Address3 = Me.ContactInfo.Address.Address3,
                                                                                                                     .City = Me.ContactInfo.Address.City,
                                                                                                                     .Country = Me.ContactInfo.Address.countryBO.Code,
                                                                                                                     .PostalCode = Me.ContactInfo.Address.PostalCode,
-                                                                                                                    .State = LookupListNew.GetDescriptionFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS,
+                                                                                                                    .State = LookupListNew.GetCodeFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS,
                                                                                                                                                                                        False), Me.ContactInfo.Address.RegionId)
                                                                                                                 },
                                                                         .OptionCode = Me.MethodOfRepairCode,
@@ -672,7 +673,7 @@ Public NotInheritable Class MultiAuthClaim
         Return response
     End Function
 
- Private Function GetFulfillmentDataForV3Provider(claimNumber As String, companyCode As String) As FulfillmentDetails
+ Private Shared Function GetFulfillmentDataForV3Provider(claimNumber As String, companyCode As String) As FulfillmentDetails
 
         Dim wsRequest As GetFulfillmentDetailsRequest = New GetFulfillmentDetailsRequest()
         wsRequest.ClaimNumber = claimNumber
@@ -692,17 +693,14 @@ Public NotInheritable Class MultiAuthClaim
         Return wsResponseObject
     End Function
 
-  public Function SaveLogisticsStages(claimNumber As String, companyCode As String, stages As List(Of SelectedLogisticStage)) As UpdatedLogisticStagesResponse
-        try
-
+    public Function SaveLogisticStages(claimNumber As String, companyCode As String, logisticStages As List(Of SelectedLogisticStage)) As UpdatedLogisticStagesResponse  Implements IFullfillable.SaveLogisticStages
        
         Dim wsRequest As UpdateLogisticStageRequest = New UpdateLogisticStageRequest() With
                 {
                 .ClaimNumber = claimNumber,
                 .CompanyCode = companyCode,
-                .LogisticStages = stages.ToArray()
+                .LogisticStages = logisticStages.ToArray()
                 }
-
 
         Dim wsResponseObject As New UpdatedLogisticStagesResponse
         If Not String.IsNullOrEmpty(claimNumber) AndAlso Not String.IsNullOrEmpty(companyCode) Then
@@ -716,8 +714,7 @@ Public NotInheritable Class MultiAuthClaim
         End If
 
         Return wsResponseObject
-        Catch ex As Exception
-
-        End Try
+    
     End Function
+
 End Class

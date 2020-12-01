@@ -1,14 +1,12 @@
 ﻿Imports System.Linq
 Imports System.Reflection
 Imports System.Collections.Generic
-Imports System.Net
 Imports Assurant.ElitaPlus.Business
 Imports Assurant.ElitaPlus.DataEntities
 Imports Assurant.ElitaPlus.DataAccess
 Imports Assurant.ElitaPlus.DataAccessInterface
 Imports Assurant.Common
 Imports Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService
-Imports Assurant.ElitaPlus.BusinessObjectsNew.LegacyBridgeService
 
 ''' <summary>
 ''' Claim Base class acts as base class for Creating the Claim Objects. The class encapsulates common properties from SingleAuthorization Claim and 
@@ -2512,11 +2510,10 @@ Public MustInherit Class ClaimBase
             Return True
 
         End Function
-
     End Class
 
     <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
-    Public NotInheritable Class FulfillmentaddressInfo
+    Public NotInheritable Class FulfillmentAddressInfo
         Inherits FulfillmentAddress
         Public Property AddressId As Guid
     End Class
@@ -4000,7 +3997,7 @@ Public MustInherit Class ClaimBase
             Me.IsLocked = Codes.YESNO_N
             ''claim lock - End            
 
-            If Not Me.IsNew Then
+            If Not Me.IsNew Then                
                 If Me.GetDealerDRPTradeInQuoteFlag(Me.DealerCode) Then
                     If IsStatusChngdFromPendingOrClosedToActive() Then
                         If Me.VerifyIMEIWithDRPSystem(Me.SerialNumber) Then
@@ -4974,6 +4971,20 @@ Public MustInherit Class ClaimBase
         Dim dal As New ClaimDAL
         Return dal.IsServiceWarrantyValid(ClaimId) 'checks if service warranty is valid
     End Function
+
+    Public sub RaiseLogisticStageAddressUpdateEvent(ByVal claimId As Guid, ByVal dealerId As Guid, ByVal senderInfo as String, ByVal eventArgs as String) 
+        PublishedTask.AddEvent(companyGroupId:=Nothing,
+                               companyId:=Nothing,
+                               countryId:=Nothing,
+                               dealerId:= dealerId,
+                               productCode:=Nothing,
+                               coverageTypeId:=Nothing,
+                               sender:=senderInfo, 
+                               arguments:="ClaimId:" & DALBase.GuidToSQLString(claimId) & ", " & eventArgs,
+                               eventDate:=DateTime.UtcNow,
+                               eventTypeId:=LookupListNew.GetIdFromCode(Codes.EVNT_TYP, Codes.EVNT_TYP_LOGISTIC_STAGE_ADDRESS),
+                               eventArgumentId:=Nothing)
+    End sub
 
 End Class
 

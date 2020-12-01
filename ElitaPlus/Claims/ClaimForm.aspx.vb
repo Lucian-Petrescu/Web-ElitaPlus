@@ -2094,13 +2094,13 @@ Partial Class ClaimForm
 
     Private Function GetDeniedReason(deniedReasonsString As String, dv As DataView) As String
         Dim strDeniedReason As String = String.Empty
-        Dim stringDeniedReason As StringBuilder = New StringBuilder()
+        Dim stringDeniedReason  As StringBuilder= new StringBuilder()
         If (deniedReasonsString.IndexOf(";", StringComparison.Ordinal) > 0) Then
             For Each extendedcode As String In deniedReasonsString.Split(";")
-
+                
                 strDeniedReason = stringDeniedReason.Append(strDeniedReason) _
                     .Append(dv.ToTable().Select("extended_code ='" & extendedcode & "'").First()("description")) _
-                    .Append(Environment.NewLine).ToString()
+                    .Append(Environment.NewLine).ToString()      
             Next
         Else
             strDeniedReason = dv.ToTable().Select("extended_code ='" & Me.State.MyBO.DeniedReasons & "'").First()("description")
@@ -2262,7 +2262,7 @@ Partial Class ClaimForm
     End Sub
 
     Private Function IsDfFulfillment() As Boolean
-        Return Me.State.MyBO.FulfillmentProviderType = FulfillmentProviderType.V2
+        Return Me.State.MyBO.FulfillmentProviderType = FulfillmentProviderType.V4
     End Function
 
     Protected Sub PopulateClaimDetailContactInfoBOsFromForm()
@@ -4184,7 +4184,7 @@ Partial Class ClaimForm
     Private Function getClaimKey(ByVal companyCode As String, ByVal claimNumber As String) As String
         Dim handler As New DynamicFulfillmentKeyHandler()
         Dim keys As New Dictionary(Of String, String)
-        Dim tenant As String = $"{GetTenant(ElitaConfig.Current.General.Environment)}-{ElitaConfig.Current.General.Hub.ToString()}"
+        Dim tenant As String = $"{GetTenant(ElitaConfig.Current.General.Environment)}-{ElitaConfig.Current.General.Hub.ToLower()}"
         keys.Add("Tenant", tenant)
         keys.Add("CompanyCode", companyCode)
         keys.Add("ClaimNumber", claimNumber)
@@ -4193,10 +4193,16 @@ Partial Class ClaimForm
 
     Private Function GetTenant(value As Environments) As String
         Select Case value
+            Case Environments.Development
+                Return "dev"
             Case Environments.Model
-                Return "Modl"
+                Return "modl"
+            Case Environments.Production
+                Return "prod"
+            Case Environments.Test
+                Return "test"
             Case Else
-                Return value.ToString()
+                Throw New ArgumentException($"Environment value {value}, not implemented")
         End Select
     End Function
 
