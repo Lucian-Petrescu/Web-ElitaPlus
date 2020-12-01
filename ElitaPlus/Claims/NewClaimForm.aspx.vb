@@ -1920,8 +1920,7 @@ Partial Class NewClaimForm
         Dim price As Decimal = 0
         dv = Me.State.MyBO.GetRePairPricesByMethodOfRepair
 
-        If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
-            price = CDec(dv.Table.Rows(0)(COL_PRICE_DV))
+        If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 AndAlso Not IsDBNull(dv.Table.Rows(0)(COL_PRICE_DV)) AndAlso Decimal.TryParse(dv.Table.Rows(0)(COL_PRICE_DV), price) Then
             Select Case dv.Table.Rows(0)(PriceListDetailDAL.COL_NAME_SERVICE_TYPE_CODE).ToString()
                 Case Codes.METHOD_OF_REPAIR_SEND_IN
                     nCarryInPrice = price 'CDec(dv.Table.Rows(0)(COL_PRICE_DV))
