@@ -15,7 +15,7 @@ Public Class CommonBankInfo
         updateBankInfo.SwiftCode = bankinfo.SwiftCode
         updateBankInfo.BankLookupCode = bankinfo.BankLookupCode
         updateBankInfo.BankName = bankinfo.BankName
-        If Not bankinfo.BranchNumber Is Nothing Then
+        If bankinfo.BranchNumber IsNot Nothing Then
             updateBankInfo.BranchNumber = bankinfo.BranchNumber
         End If
         updateBankInfo.IbanCode = bankinfo.IbanNumber
