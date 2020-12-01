@@ -2066,8 +2066,11 @@ Namespace Tables
             Dim exitingDealerCode As String = String.Empty
 
             Try
+
+                Page.MaintainScrollPositionOnPostBack = False
                 exitingDealerCode = State.MyBO.Dealer
                 PopulateBOsFromForm()
+
                 If Not isDealerDuplicate() Then
                     If State.MyBO.IsDirty OrElse moBankInfo.State.IsBODirty OrElse State.MyBO.IsFamilyDirty Then
                         ' check HERE !! if coming from clicking on New or New with Copy button
