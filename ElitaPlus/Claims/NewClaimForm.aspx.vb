@@ -758,7 +758,9 @@ Partial Class NewClaimForm
         If Me.State.FulfillmentDetails  is Nothing AndAlso Me.State.FilteredLogistics is Nothing Then
             fullFilInfo = Me.State.MyBO.GetFulfillmentDetails(Me.State.MyBO.ClaimNumber, Me.State.MyBO.Company.Code)
             Me.State.FulfillmentDetails = fullFilInfo
-            Me.State.FulfillmentDetails.LogisticStages = fullFilInfo.LogisticStages.Where(Function(ls) ls.Address.Address1 Isnot nothing).ToArray()
+            If fullFilInfo.LogisticStages IsNot Nothing Then
+                Me.State.FulfillmentDetails.LogisticStages = fullFilInfo.LogisticStages.Where(Function(ls) ls.Address.Address1 Isnot nothing).ToArray()
+            End If
         End If
 
       If Me.State.FulfillmentDetails IsNot Nothing Then
@@ -2914,7 +2916,7 @@ Partial Class NewClaimForm
                 .Address3 = sourceAddress.Address3,
                 .City = sourceAddress.City,
                 .PostalCode = sourceAddress.PostalCode,
-                .RegionId = LookupListNew.GetIdFromCode(LookupListNew.DataView(LookupListNew.LK_REGIONS, False), sourceAddress.State)
+                .RegionId = LookupListNew.GetIdFromDescription(LookupListNew.DataView(LookupListNew.LK_REGIONS, False), sourceAddress.State)
                 }
         Return convertAddress
     End Function
@@ -3074,9 +3076,10 @@ Partial Class NewClaimForm
                 End If
             End If
 
+            SaveLogisticStageAddresses()
+
            Me.CreateClaim()
 
-           SaveLogisticStageAddresses()
             'End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
