@@ -56,6 +56,7 @@ Namespace Tables
             Public DescriptionMask As String
             Public CodeMask As String
             Public DealerId As Guid = Guid.Empty
+            Public DealerGroupId As String = Guid.Empty.ToString
             Public IsGridVisible As Boolean
             Public searchDV As Dealer.DealerSearchDV = Nothing
             Public selectedPageSize As Integer = DEFAULT_NEW_UI_PAGE_SIZE
@@ -110,9 +111,14 @@ Namespace Tables
                     Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
                     UpdateBreadCrum()
 
-                    ControlMgr.SetVisibleControl(Me, trPageSize, False)
+                    If Not Me.IsReturningFromChild Then
+                        ControlMgr.SetVisibleControl(Me, trPageSize, False)
+                    End If
+
                     Me.SortDirection = Me.State.SortExpression
                     PopulateDropdown()
+                    GetStateProperties()
+
                     If Me.State.IsGridVisible Then
                         If Not (Me.State.selectedPageSize = DEFAULT_NEW_UI_PAGE_SIZE) Or Not (State.selectedPageSize = Grid.PageSize) Then
                             Grid.PageSize = Me.State.selectedPageSize
@@ -140,7 +146,7 @@ Namespace Tables
                     Case ElitaPlusPage.DetailPageCommand.Back
                         If Not retObj Is Nothing Then
                             Me.State.DealerId = retObj.EditingBo.Id
-
+                            Me.State.searchDV = Nothing
                             'Me.State.CompanyId = CType(Session(ELPWebConstants.OLDCOMPANYID), Guid)
                             'Me.UpdateUserCompany()
                             'Session(ELPWebConstants.OLDCOMPANYID) = Nothing
@@ -160,8 +166,10 @@ Namespace Tables
 #Region "Controlling Logic"
 
         Public Sub PopulateGrid()
+
             If ((Me.State.searchDV Is Nothing) OrElse (Me.State.HasDataChanged)) Then
                 'Me.State.searchDV = Dealer.getList(Me.DealerMultipleDrop.SelectedGuid, Me.GetSelectedItem(moDealerGroupDrop), ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
+                Me.SetStateProperties()
                 Me.State.searchDV = Dealer.getList(moDealerMultipleDrop.SelectedGuid, Me.GetSelectedItem(moDealerGroupDrop), ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id)
                 'Ticket # 748479 - Search grids in Tables tab should not show pop-up message when number of retrieved record is over 1,000
                 'If (Not (Me.State.HasDataChanged)) Then
@@ -339,13 +347,21 @@ Namespace Tables
 #End Region
 
 #Region " Button Clicks "
-        'Private Sub SetStateProperties()
+        Private Sub SetStateProperties()
 
-        'Me.State.DescriptionMask = SearchDescriptionTextBox.Text
-        'Me.State.CodeMask = SearchCodeTextBox.Text
-        'Me.State.DealerId = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
+            Me.State.DealerGroupId = (Me.GetSelectedItem(moDealerGroupDrop)).ToString
+            Me.State.CodeMask = moDealerMultipleDrop.SelectedGuid.ToString
 
-        'End Sub
+        End Sub
+
+        Private Sub GetStateProperties()
+            Try
+                moDealerMultipleDrop.CodeDropDown.SelectedValue = Me.State.CodeMask
+                moDealerGroupDrop.SelectedValue = Me.State.DealerGroupId
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
 
         Private Sub moBtnSearch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles moBtnSearch.Click
             Try
