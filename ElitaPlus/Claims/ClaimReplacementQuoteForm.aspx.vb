@@ -224,6 +224,8 @@ Namespace Claims
             ucSelectServiceCenter.RiskTypeEnglish = State.ClaimBO.RiskType
             ucSelectServiceCenter.MethodOfRepairXcd = MethodOfRepairXcd
             ucSelectServiceCenter.ShowControl = True
+            ucSelectServiceCenter.City =  State.ClaimBO.ContactInfo.Address.City
+            ucSelectServiceCenter.PostalCode = State.ClaimBO.ContactInfo.Address.PostalCode
         End Sub
 
         Private Sub AddClaimExtendedStatus(oClaim As ClaimBase)
