@@ -231,10 +231,75 @@
                     <asp:BoundField DataField="source" HeaderText="SOURCE" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField DataField="doc_unique_identifier" HeaderText="DOCUMENT_UNIQUE_ID" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField Visible="False" DataField="invoice_header_id"></asp:BoundField> 
+                    <asp:BoundField Visible="False"></asp:BoundField> 
                 </Columns>
                 <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
                 <PagerStyle />
             </asp:GridView>
         </div>
-    </div>    
+        <div class="btnZone" id="divButtons" runat="server" style="text-align:left">
+            <asp:Button ID="btnReviewDecision_WRITE" runat="server" SkinID="AlternateLeftButton" Text="INVOICE_REVIEW" />
+        </div>
+    </div>
+    
+    <asp:HiddenField ID="HiddenFieldReviewDecision" runat="server" Value="N" />
+    
+    
+
+    <div id="ModalReviewDecision" class="overlay">
+        <div id="light" class="overlay_message_content" style="left: 20%; top: 5%; width: 60%; max-height: 80%">
+          
+            <h2 class="dataGridHeader" runat="server">
+                <asp:Label runat="server" ID="moReviewDecisionLabel" Text="INVOICE_REVIEW" />
+            </h2>
+            
+            <table width="95%" style="border:none;margin:10px; padding: 10px;">
+                <tr>
+                    <td colspan="2">
+                        <asp:Label ID="lblReviewDecisionResult" runat="server" Visible="False"></asp:Label>
+                    </td>
+                </tr>
+                <tr>
+                    <td nowrap="nowrap" style="width: 20%;text-align:right;">
+                        <asp:Label runat="server" ID="lblReviewDecision" Text="REVIEW_DECISION" />*:
+                    </td>   
+                    <td nowrap="nowrap" style="width: 80%; text-align: left;">
+                        <asp:DropDownList runat="server" id="ddlReviewDecision" SkinID="MediumDropDown" Width="250px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td nowrap="nowrap" style="text-align: right;">
+                        <asp:Label runat="server" ID="lblReviewComments" Text="COMMENTS" />*:
+                    </td>   
+                    <td nowrap="nowrap" style="text-align:left">
+                        <asp:TextBox ID="txtReviewComments" runat="server" CssClass="formFont" MaxLength="500" ForeColor="black" TextMode="MultiLine" Rows="5" Columns="100" Width="850px" ></asp:TextBox>
+                    </td>
+                </tr>
+                <tr style="padding-bottom:20px;">
+                    <td colspan="2" style="text-align: right;margin-top:20px;">
+                        <asp:Button ID="btnReviewDecisionSave" runat="server" SkinID="SearchButton" Text="Save" /> &nbsp;
+                        <asp:Button ID="btnReviewDecisionCancel" runat="server" SkinID="SearchButton" Text="Cancel"
+                                    OnClientClick="SetShowReviewDecision('N'); hideModal('ModalReviewDecision'); return false;"/> &nbsp;
+                        <asp:Button ID="btnReviewDecisionClose" runat="server" Visible="False" SkinID="SearchButton" Text="Close" /> &nbsp;
+                                              
+                    </td>
+                </tr>                
+            </table>
+                
+        </div>
+        <div id="fade" class="black_overlay">
+        </div>
+    </div>
+    <script type="text/javascript">
+        function SetShowReviewDecision(newValue) {
+            $('#<% =HiddenFieldReviewDecision.ClientID%>').val(newValue);
+        }    
+        //debugger;
+        if ($('#<% =HiddenFieldReviewDecision.ClientID%>').val() === "Y") {
+            revealModal("ModalReviewDecision");
+        } else {
+            hideModal('ModalReviewDecision');
+        };
+    </script>
+
 </asp:Content>
