@@ -887,6 +887,7 @@ Public NotInheritable Class Claim
             Me.SetValue(ClaimDAL.COL_NAME_BANK_INFO_ID, Value)
         End Set
     End Property
+    Public Property FilteredLogistics As List(Of LogisticStageAddress) = Nothing
 #End Region
 
 #Region "Extended Properties"
