@@ -130,6 +130,12 @@ Namespace Tables
                     Case ElitaPlusPage.DetailPageCommand.Delete
                         _childMessage = Message.DELETE_RECORD_CONFIRMATION
                 End Select
+                With State
+                    .DealerId=Guid.Empty
+                    .CompanyId=Guid.Empty
+                    .CertExtCode=String.Empty
+                    .ReferenceId=Guid.Empty
+                End With
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
@@ -152,7 +158,6 @@ Namespace Tables
                 With State
                     .DealerId=Guid.Empty
                     .CompanyId=Guid.Empty
-                    .CertExtCodeId=Guid.Empty
                     .CertExtCode=String.Empty
                     .ReferenceId=Guid.Empty
                 End With
@@ -169,7 +174,14 @@ Namespace Tables
                     .searchDV = Nothing
                     .HasDataChanged = False
                 End With
-                PopulateGrid()
+                If Not  State.CompanyId.Equals(Guid.Empty) AndAlso Not  State.DealerId.Equals(Guid.Empty) Then
+                    State.SearchDv=new CertExtendedItem.CertExtendedItemSearchDv()
+                    SortAndBindGrid(true)
+                    MasterPage.MessageController.AddInformation(Message.MsgDealerCompanyExclusive, True)
+                Else 
+                    PopulateGrid()
+                End If
+                
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try

@@ -347,6 +347,89 @@ Public Class CertExtendedItem
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
+    Function IsDealerListModified(ByVal dealerList As ArrayList, ByVal codeMask As String) As Boolean
+        Try
+            Dim dv As DataView
+            dv = GetSelectedDealers(codeMask)
+            Me.SetCreatedAuditInfo()
+            'compare with what we have and what is there in the user control
+            'user control will always have the final selection so remove from our list what we don't find
+            For Each rowView As DataRowView In dv
+                Dim dFound As Boolean = False
+                Dim row As DataRow = rowView.Row
+                Dim currentDealerId As Guid = New Guid(CType(row("ID"), Byte()))
+                For Each Str As String In dealerList
+                    Dim dealerId As Guid = New Guid(Str)
+                    If currentDealerId = dealerId Then
+                        dFound = True : Exit For
+                    End If
+                Next
+                If Not dFound Then
+                    return True
+                End If
+            Next
+            'next now add those items which are there in user control but we don't have it
+            For Each Str As String In dealerList
+                Dim dFound As Boolean = False
+                For Each rowView As DataRowView In dv
+                    Dim dealerId As Guid = New Guid(Str)
+                    Dim row As DataRow = rowView.Row
+                    Dim currentDealerId As Guid = New Guid(CType(row("ID"), Byte()))
+                    If currentDealerId = dealerId Then
+                        dFound = True : Exit For
+                    End If
+                Next
+                If Not dFound Then
+                    return True
+                End If
+            Next
+
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+        Return False
+    End Function
+    Function IsCompanyListModified(ByVal companyList As ArrayList, ByVal codeMask As String) As Boolean
+        Try
+            Dim dv As DataView
+            dv = GetSelectedCompanies(codeMask)
+            Me.SetCreatedAuditInfo()
+            'compare with what we have and what is there in the user control
+            'user control will always have the final selection so remove from our list what we don't find
+            For Each rowView As DataRowView In dv
+                Dim dFound As Boolean = False
+                Dim row As DataRow = rowView.Row
+                Dim currentCompanyId As Guid = New Guid(CType(row("ID"), Byte()))
+                For Each str As String In companylist
+                    Dim companyId As Guid = New Guid(str)
+                    If currentCompanyId = companyId Then
+                        dFound = True : Exit For
+                    End If
+                Next
+                If Not dFound Then
+                    return True
+                End If
+            Next
+            'next now add those items which are there in user control but we don't have it
+            For Each Str As String In companylist
+                Dim dFound As Boolean = False
+                For Each rowView As DataRowView In dv
+                    Dim companyId As Guid = New Guid(Str)
+                    Dim row As DataRow = rowView.Row
+                    Dim currentCompanyId As Guid = New Guid(CType(row("ID"), Byte()))
+                    If currentCompanyId = companyId Then
+                        dFound = True : Exit For
+                    End If
+                Next
+                If Not dFound Then
+                    return True
+                End If
+            Next
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+        return False
+    End Function
 #End Region
 #Region "Dealer Company List Validation"
     Public Shared Function GetFieldConfigExist(ByVal codeMask As String, ByVal fieldName As String) As DataView
