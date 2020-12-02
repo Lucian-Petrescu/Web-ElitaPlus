@@ -103,10 +103,12 @@ Public Class UserControlLogisticStageAddress
             Dim txtPostalCode As TextBox = DirectCast(addressControl.FindControl(AddressCtrlTxtPostal), TextBox)
             Dim txtAddress1 As TextBox = DirectCast(addressControl.FindControl(AddressCtrlTxtAddress1), TextBox)
             Dim zd As New ZipDistrict()
-        
+
             If txtAddress1.Text.Trim() = String.Empty Then
-                    Page.MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS1_FIELD_IS_REQUIRED, True)
-                    Throw New PopulateBOErrorException
+                Page.MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS1_FIELD_IS_REQUIRED, True)
+                Throw New PopulateBOErrorException
+            Else
+                Page.MasterPage.MessageController.Clear()
             End If
 
             zd.CountryId = New Guid(ddlCountry.SelectedValue.ToString())
