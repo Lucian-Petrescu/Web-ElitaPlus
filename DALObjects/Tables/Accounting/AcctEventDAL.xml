@@ -43,45 +43,45 @@
   </LOAD>
   <LOAD_LIST>
     <![CDATA[	
-			SELECT
-        elp_acct_event.acct_event_id,
-				elp_acct_event.acct_company_id,
-				dealer_id,
-				service_center_id,
-				acct_event_type_id,
-				event_condition,
-				last_run_date,
-				last_complete_date,
-				dyn_sql,
-				allow_bal_tran,
-				allow_over_budget,
-				allow_post_to_suspended,
-				balancing_options,
-				journal_type,
-				load_only,
-				posting_type,
-				post_provisional,
-				post_to_hold,
-				reporting_account,
-				suppress_substituted_messages,
-				suspense_account,
-				transaction_amount_account,
-				elp_acct_event.modified_date,
-				elp_acct_event.modified_by,
-				elp_acct_event.created_date,
-				elp_acct_event.created_by,
-				layout_code,
-				event_name, 
-        dit.translation AS event_type,
-        event_description,
-        journal_level
-     FROM elp_acct_event, 
-                elp_list_item li,
-                elp_dictionary_item di,
-                elp_dict_item_translation dit
+			SELECT elp_acct_event.acct_event_id,
+             elp_acct_event.acct_company_id,
+             dealer_id,
+             service_center_id,
+             acct_event_type_id,
+             event_condition,
+             last_run_date,
+             last_complete_date,
+             dyn_sql,
+             allow_bal_tran,
+             allow_over_budget,
+             allow_post_to_suspended,
+             balancing_options,
+             journal_type,
+             load_only,
+             posting_type,
+             post_provisional,
+             post_to_hold,
+             reporting_account,
+             suppress_substituted_messages,
+             suspense_account,
+             transaction_amount_account,
+             elp_acct_event.modified_date,
+             elp_acct_event.modified_by,
+             elp_acct_event.created_date,
+             elp_acct_event.created_by,
+             layout_code,
+             event_name, 
+             dit.translation AS event_type,
+             event_description,
+             journal_level,
+             li.code as event_code
+      FROM   elp_acct_event, 
+             elp_list_item li,
+             elp_dictionary_item di,
+             elp_dict_item_translation dit
 			WHERE  elp_acct_event.acct_event_type_id = li.list_item_id
-			and li.dict_item_id = di.dict_item_id
-			and dit.dict_item_id = di.dict_item_id
+			   and li.dict_item_id = di.dict_item_id
+			   and dit.dict_item_id = di.dict_item_id
 			--dynamic_where_clause
 		]]>
   </LOAD_LIST>
