@@ -282,4 +282,112 @@ Partial Public Class ArInvoiceListForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+
+    '''<summary>
+    '''divButtons control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents divButtons As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''btnReviewDecision_WRITE control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnReviewDecision_WRITE As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''HiddenFieldReviewDecision control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents HiddenFieldReviewDecision As Global.System.Web.UI.WebControls.HiddenField
+
+    '''<summary>
+    '''moReviewDecisionLabel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents moReviewDecisionLabel As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblReviewDecisionResult control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblReviewDecisionResult As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblReviewDecision control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblReviewDecision As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''ddlReviewDecision control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ddlReviewDecision As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''lblReviewComments control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblReviewComments As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtReviewComments control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtReviewComments As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''btnReviewDecisionSave control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnReviewDecisionSave As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnReviewDecisionCancel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnReviewDecisionCancel As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnReviewDecisionClose control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnReviewDecisionClose As Global.System.Web.UI.WebControls.Button
 End Class

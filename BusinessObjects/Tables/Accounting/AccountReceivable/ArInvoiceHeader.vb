@@ -585,6 +585,22 @@ Public Class ArInvoiceHeader
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
+
+
+    Public Shared Sub UpdateReviewDecisions(ByVal invoiceIds As Generic.List(Of Guid),
+                                            ByVal strReviewDecision As String, 
+                                            ByVal strReviewComments As String,
+                                            ByRef errCode As Integer,
+                                            ByRef errMsg As String)
+        Dim dal As New ArInvoiceHeaderDal
+        dal.UpdateReviewDecisions(invoiceIds,
+                                  strReviewDecision,
+                                  strReviewComments,
+                                  Authentication.CurrentUser.NetworkId,
+                                  errCode,
+                                  errMsg)
+    End Sub
+
 #End Region
 
 #Region "DataView Retrieveing Methods"
