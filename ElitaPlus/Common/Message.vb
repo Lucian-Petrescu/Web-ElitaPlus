@@ -506,7 +506,8 @@ Public Class Message
     Public Const MSG_EMPTY_SELECTED_COMPANY_REQUIRED As String = "MSG_SELECTED_COMPANY_CAN_NOT_BE_NULL"
     Public Const MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY As String = "MSG_DUPLICATE_FIELD_NAME_DEALER_COMPANY"
 
-
+    'PBI-595727
+    Public Const MsgDealerCompanyExclusive as String ="MSG_DEALER_COMPANY_EXCLUSIVE"
 
 #End Region
 End Class

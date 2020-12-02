@@ -37,7 +37,7 @@
     <![CDATA[elp_tbl_crt_ext_flds_config.modifycodedesc]]>
   </SAVE_CODE_DESCRIPTION>
   <COMPANY_DEALER_CONFIG>
-    <![CDATA[elp_tbl_crt_ext_flds_config.getcompanydealerconfig]]>
+    <![CDATA[elp_tbl_crt_ext_flds_config.getdlrcompconfiglist]]>
   </COMPANY_DEALER_CONFIG>
   <GET_CONFIG_CODE>
     <![CDATA[elp_tbl_crt_ext_flds_config.getconfigcode]]>

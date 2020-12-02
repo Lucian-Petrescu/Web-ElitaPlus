@@ -102,7 +102,7 @@ Public Class CertExtendedItemForm
 #Region "Button-Events"
     Public Sub BtnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
         Try
-            If State.IsBoDirty OrElse State.MyBO.IsDirty  Then
+            If State.IsBoDirty OrElse State.MyBo.IsDealerListModified(UserControlAvailableSelectedDealers.SelectedList,TextboxCertItemConfigCode.Text.ToUpper().Trim()) OrElse State.MyBo.IsCompanyListModified(UserControlAvailableSelectedCompanies.SelectedList,TextboxCertItemConfigCode.Text.ToUpper().Trim())  Then
                 Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
                 Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
             Else
@@ -486,7 +486,7 @@ Public Class CertExtendedItemForm
 
                 If Not confResponse Is Nothing AndAlso confResponse = MSG_VALUE_YES Then 'Me.CONFIRM_MESSAGE_OK Then
                 If State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
-                    If State.IsBoDirty Then
+                    If State.IsBoDirty OrElse State.MyBo.IsDealerListModified(UserControlAvailableSelectedDealers.SelectedList,TextboxCertItemConfigCode.Text.ToUpper().Trim()) OrElse State.MyBo.IsCompanyListModified(UserControlAvailableSelectedCompanies.SelectedList,TextboxCertItemConfigCode.Text.ToUpper().Trim())  Then
                         SaveMain()
                     End If
                 End If
