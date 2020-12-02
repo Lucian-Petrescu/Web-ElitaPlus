@@ -3518,8 +3518,13 @@ Public Class ClaimRecordingForm
                                                   Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
                                               End Function
 
-        userControl.City = state.serviceCentreCity
-        userControl.PostalCode = state.serviceCentrePostalCode
+        If NavController.CurrentNavState.Name = "CHANGE_FULFILLMENT" Then
+            userControl.City = State.ClaimBo.ContactInfo.Address.City
+            userControl.PostalCode = State.ClaimBo.ContactInfo.Address.PostalCode
+        Else
+            userControl.City = State.serviceCentreCity
+            userControl.PostalCode = State.serviceCentrePostalCode
+        End If
 
         userControl.HostMessageController = MasterPage.MessageController
     End Sub
