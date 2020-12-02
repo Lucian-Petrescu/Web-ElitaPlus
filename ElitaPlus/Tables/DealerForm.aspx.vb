@@ -2066,6 +2066,7 @@ Namespace Tables
             Dim exitingDealerCode As String = String.Empty
 
             Try
+                Page.MaintainScrollPositionOnPostBack = False
                 exitingDealerCode = Me.State.MyBO.Dealer
                 Me.PopulateBOsFromForm()
                 If Not isDealerDuplicate() Then
