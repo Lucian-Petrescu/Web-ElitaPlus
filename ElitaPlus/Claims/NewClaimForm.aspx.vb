@@ -2054,8 +2054,6 @@ Partial Class NewClaimForm
     '' REQ-784
     Protected Sub PopulateNewClaimLogisticAddressBOsFromForm()
         UserControlLogisticStageAddressInfo.PopulateBoFromRepeaterControl(Me.State.MyBO.FilteredLogistics)
-        SaveLogisticStageAddresses()
-
     End Sub
 
     'Save Logistic stage Addresses
@@ -3079,13 +3077,14 @@ Partial Class NewClaimForm
                 End If
             End If
 
+            SaveLogisticStageAddresses()
 
             Me.CreateClaim()
 
-            'End If
+        'End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 
