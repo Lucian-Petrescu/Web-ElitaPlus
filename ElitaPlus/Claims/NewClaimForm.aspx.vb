@@ -212,7 +212,7 @@ Partial Class NewClaimForm
 
         Public CaseQuestionAnswerListDV As CaseQuestionAnswer.CaseQuestionAnswerDV = Nothing
         Public ClaimActionListDV As CaseAction.CaseActionDV = Nothing
-        Public FulfillmentDetailsResponse As BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails = Nothing
+        Public FulfillmentDetails As BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails = Nothing
         Public FilteredLogistics As List(Of LogisticStageAddress) = Nothing
     End Class
 
@@ -755,32 +755,43 @@ Partial Class NewClaimForm
 
         Dim fullFilInfo As Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails
 
-        fullFilInfo = Me.State.MyBO.GetFulfillmentDetails(Me.State.MyBO.ClaimNumber, Me.State.MyBO.Company.Code)
-        Me.State.FulfillmentDetailsResponse = fullFilInfo
-        If Me.State.FulfillmentDetailsResponse IsNot Nothing Then
+        If Me.State.FulfillmentDetails Is Nothing AndAlso Me.State.MyBO.FilteredLogistics Is Nothing Then
+            fullFilInfo = Me.State.MyBO.GetFulfillmentDetails(Me.State.MyBO.ClaimNumber, Me.State.MyBO.Company.Code)
+            Me.State.FulfillmentDetails = fullFilInfo
+            If fullFilInfo.LogisticStages IsNot Nothing Then
+                Me.State.FulfillmentDetails.LogisticStages = fullFilInfo.LogisticStages.Where(Function(ls) ls.Address.Address1 IsNot Nothing).ToArray()
+            End If
+        End If
 
-            If Me.State.FulfillmentDetailsResponse.GetType() Is GetType(Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails) Then
-                If Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
-                   Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
+        If Me.State.FulfillmentDetails IsNot Nothing Then
 
-                    Dim logisticStages As New List(Of LogisticStageAddress)
+            If Me.State.FulfillmentDetails.GetType() Is GetType(Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails) Then
+                If Me.State.FulfillmentDetails.LogisticStages IsNot Nothing AndAlso
+                   Me.State.FulfillmentDetails.LogisticStages.Length > 0 Then
 
-                    logisticStages = New List(Of LogisticStageAddress)(
-                        From dr In Me.State.FulfillmentDetailsResponse.LogisticStages Select New LogisticStageAddress() With {
-                                                                          .LogisticStageAddress = ConvertToAddressControllerField(dr.Address),
-                                                                          .LogisticStageName = dr.Description
-                                                                          }
-                        )
-                    Dim filteredLogisticStages = logisticStages.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing).ToList()
-                    Me.State.FilteredLogistics = filteredLogisticStages
+                    If Me.State.MyBO.FilteredLogistics Is Nothing Then
+                        Dim logisticStages As New List(Of LogisticStageAddress)
+
+                        logisticStages = New List(Of LogisticStageAddress)(
+                            From dr In Me.State.FulfillmentDetails.LogisticStages Select New LogisticStageAddress() With {
+                                                                              .LogisticStageAddress = ConvertToAddressControllerField(dr.Address),
+                                                                              .LogisticStageName = dr.Description,
+                                                                              .LogisticStageCode = dr.Code,
+                                                                              .LogisticStageType = dr.Type
+                                                                              }
+                            )
+                        Dim filteredLogisticStages = logisticStages.Where(Function(item) item.LogisticStageAddress.Address1 IsNot Nothing).ToList()
+                        Me.State.MyBO.FilteredLogistics = filteredLogisticStages
+                    End If
                     ValidateShippingAddressButtonControl()
-                    UserControlLogisticStageAddressInfo.Bind(Me.State.FilteredLogistics)
+                    UserControlLogisticStageAddressInfo.Bind(Me.State.MyBO.FilteredLogistics)
                 Else
                     UserControlLogisticStageAddressInfo.Visible = False
                 End If
-
             End If
-
+        ElseIf Me.State.MyBO.FilteredLogistics IsNot Nothing Then
+            ValidateShippingAddressButtonControl()
+            UserControlLogisticStageAddressInfo.Bind(Me.State.MyBO.FilteredLogistics)
         Else
             UserControlLogisticStageAddressInfo.Visible = False
         End If
@@ -790,7 +801,7 @@ Partial Class NewClaimForm
 
         Dim oCertificate As Certificate = New Certificate(Me.State.MyBO.CertificateId)
 
-        If Me.State.FilteredLogistics IsNot Nothing AndAlso oCertificate.Dealer.Validate_Address = Codes.EXT_YESNO_Y Then
+        If Me.State.MyBO.FilteredLogistics IsNot Nothing AndAlso oCertificate.Dealer.Validate_Address = Codes.EXT_YESNO_Y Then
             If Not String.IsNullOrWhiteSpace(oCertificate.Product.ClaimProfile) Then
                 If Not String.IsNullOrWhiteSpace(Assurant.ElitaPlus.BusinessObjectsNew.Address.ClaimProfileData(oCertificate.Product.ClaimProfile).Url) Then
                     moLogisticStageAddressInfo.ValidateAddress = True
@@ -817,7 +828,7 @@ Partial Class NewClaimForm
         End Get
     End Property
 
-       Public ReadOnly Property UserControlMessageController() As MessageController
+    Public ReadOnly Property UserControlMessageController() As MessageController
         Get
             If MessageController Is Nothing Then
                 MessageController = DirectCast(Me.MasterPage.MessageController, MessageController)
@@ -1777,9 +1788,9 @@ Partial Class NewClaimForm
             Me.CheckBoxLoanerTaken.Checked = Me.State.MyBO.LoanerTaken
 
             If Me.State.MyBO.LoanerRquestedXcd = Codes.EXT_YESNO_Y Then
-                ChkLoanerRequested.Checked = True
+                chkLoanerRequested.Checked = True
             Else
-                ChkLoanerRequested.Checked = False
+                chkLoanerRequested.Checked = False
             End If
 
             Me.PopulateControlFromBOProperty(Me.TextboxCALLER_TAX_NUMBER, .CallerTaxNumber)
@@ -1795,7 +1806,7 @@ Partial Class NewClaimForm
             '    Me.UserControlAddress.ClaimDetailsBind(Me.State.MyBO.ContactInfo.Address)
             '    Me.UserControlContactInfo.Bind(Me.State.MyBO.ContactInfo)
             'End If
-             PopulateLogisticStageAddress()
+            PopulateLogisticStageAddress()
             hdnDealerId.Value = Me.State.MyBO.Dealer.Id.ToString
         End With
 
@@ -1858,7 +1869,7 @@ Partial Class NewClaimForm
                     .ClaimBO = CType(State.MyBO, ClaimBase)
                     If Not allowEnrolledDeviceUpdate Is Nothing AndAlso allowEnrolledDeviceUpdate.Value = Codes.YESNO_Y Then
                         For Each i As ClaimIssue In State.MyBO.ClaimIssuesList
-                            If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS and i.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Then
+                            If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS And i.StatusCode = Codes.CLAIMISSUE_STATUS__OPEN Then
                                 .ShowDeviceEditImg = True
                                 Exit For
                             Else
@@ -2042,10 +2053,25 @@ Partial Class NewClaimForm
 
     '' REQ-784
     Protected Sub PopulateNewClaimLogisticAddressBOsFromForm()
-        UserControlLogisticStageAddressInfo.PopulateBOFromControl(True)
-
+        UserControlLogisticStageAddressInfo.PopulateBoFromRepeaterControl(Me.State.MyBO.FilteredLogistics)
     End Sub
 
+    'Save Logistic stage Addresses
+    Private Sub SaveLogisticStageAddresses()
+        Try
+            Dim stEventArgs As New System.Text.StringBuilder
+            For Each lsa As LogisticStageAddress In From lab In Me.State.MyBO.FilteredLogistics Where lab.LogisticStageAddress IsNot Nothing AndAlso lab.LogisticStageAddress.IsDirty = True
+                lsa.LogisticStageAddress.Save()
+                If (stEventArgs.Length > 0) Then stEventArgs.Append(", ")
+                stEventArgs.Append("Code: " & lsa.LogisticStageCode & " Type: " & lsa.LogisticStageType)
+            Next
+            If (stEventArgs.Length > 0) Then
+                Me.State.MyBO.RaiseLogisticStageAddressUpdateEvent(Me.State.MyBO.Id, Me.State.MyBO.Dealer.Id, "New Claim Form", stEventArgs.ToString())
+            End If
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
     Protected Sub PopulateBOsFromForm()
 
         ' Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")
@@ -2093,7 +2119,7 @@ Partial Class NewClaimForm
 
             Me.State.MyBO.LoanerTaken = Me.CheckBoxLoanerTaken.Checked
 
-            If Me.ChkLoanerRequested.Checked Then
+            If Me.chkLoanerRequested.Checked Then
                 Me.PopulateBOProperty(Me.State.MyBO, "LoanerRquestedXcd", Codes.EXT_YESNO_Y)
             Else
                 Me.PopulateBOProperty(Me.State.MyBO, "LoanerRquestedXcd", Codes.EXT_YESNO_N)
@@ -2664,11 +2690,11 @@ Partial Class NewClaimForm
 
         If Not lossType Is Nothing AndAlso lossType.Length > 0 Then
             If Not lossType(0)("field_value") Is Nothing AndAlso (lossType(0)("field_value").ToString().ToUpper() = "ADH1234" Or lossType(0)("field_value").ToString().ToUpper() = "ADH5") Then
-                caseFieldXcds = { "CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING" }
-                caseFieldValues = { Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper() }
-            Else If Not lossType(0)("field_value") Is Nothing AndAlso lossType(0)("field_value").ToString().ToUpper() = "THEFT/LOSS" Then
-                caseFieldXcds = { "CASEFLD-HASBENEFIT" }
-                caseFieldValues = { Boolean.TrueString.ToUpper() }
+                caseFieldXcds = {"CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING"}
+                caseFieldValues = {Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper()}
+            ElseIf Not lossType(0)("field_value") Is Nothing AndAlso lossType(0)("field_value").ToString().ToUpper() = "THEFT/LOSS" Then
+                caseFieldXcds = {"CASEFLD-HASBENEFIT"}
+                caseFieldValues = {Boolean.TrueString.ToUpper()}
             End If
         End If
 
@@ -2883,7 +2909,7 @@ Partial Class NewClaimForm
 
         End Select
     End Sub
-    Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As Claim.FulfilmentaddressInfo) As BusinessObjectsNew.Address
+    Private Shared Function ConvertToAddressControllerField(ByVal sourceAddress As Claim.FulfillmentAddressInfo) As BusinessObjectsNew.Address
         Dim convertAddress As New BusinessObjectsNew.Address(sourceAddress.AddressId) With {
                 .CountryId = LookupListNew.GetIdFromCode(LookupListNew.DataView(LookupListNew.LK_COUNTRIES, False), sourceAddress.Country),
                 .Address1 = sourceAddress.Address1,
@@ -3051,11 +3077,14 @@ Partial Class NewClaimForm
                 End If
             End If
 
+            SaveLogisticStageAddresses()
+
             Me.CreateClaim()
-            'End If
+
+        'End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 
@@ -3461,6 +3490,7 @@ Partial Class NewClaimForm
         Try
             If e.CommandName = SELECT_ACTION_COMMAND Then
                 If Not e.CommandArgument.ToString().Equals(String.Empty) Then
+                    PopulateNewClaimLogisticAddressBOsFromForm()
                     Me.State.SelectedClaimIssueId = New Guid(e.CommandArgument.ToString())
                     Me.NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM_ISSUE_ID) = Me.State.SelectedClaimIssueId
                     Me.NavController.Navigate(Me, FlowEvents.EVENT_NEXT, New ClaimIssueDetailForm.Parameters(Me.State.MyBO, Me.State.SelectedClaimIssueId))

@@ -887,6 +887,7 @@ Public NotInheritable Class Claim
             Me.SetValue(ClaimDAL.COL_NAME_BANK_INFO_ID, Value)
         End Set
     End Property
+    Public Property FilteredLogistics As List(Of LogisticStageAddress) = Nothing
 #End Region
 
 #Region "Extended Properties"
@@ -3896,11 +3897,6 @@ Public NotInheritable Class Claim
         Return client
     End Function
 
-    Public NotInheritable Class FulfilmentaddressInfo
-        Inherits FulfillmentAddress
-        Public Property AddressId As Guid
-    End Class
-
     Public Function GetFulfillmentDetails(claimNumber As String, companyCode As String) As FulfillmentDetails Implements IFullfillable.GetFulfillmentDetails
 
         Dim response As New FulfillmentDetails
@@ -3908,15 +3904,15 @@ Public NotInheritable Class Claim
         response.Charges = {New Charge()}
         response.Fees = {New Fee()}
         response.LogisticStages = {New SelectedLogisticStage() With {
-                                                                                                .Address = New FulfilmentaddressInfo With {.AddressId = Me.ContactInfo.Address.Id,
-                                                                                                .Address1 = ContactInfo.Address.Address1,
-                                                                                                     .Address2 = Me.ContactInfo.Address.Address2,
-                                                                                                     .Address3 = Me.ContactInfo.Address.Address3,
-                                                                                                     .City = Me.ContactInfo.Address.City,
-                                                                                                     .Country = Me.ContactInfo.Address.countryBO.Code,
-                                                                                                     .PostalCode = Me.ContactInfo.Address.PostalCode,
-                                                                                                     .State = LookupListNew.GetDescriptionFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS, False), Me.ContactInfo.Address.RegionId)
-                                                                                                                },
+                                                                        .Address = New FulfillmentAddressInfo With {.AddressId = Me.ContactInfo.Address.Id,
+                                                                             .Address1 = ContactInfo.Address.Address1,
+                                                                             .Address2 = Me.ContactInfo.Address.Address2,
+                                                                             .Address3 = Me.ContactInfo.Address.Address3,
+                                                                             .City = Me.ContactInfo.Address.City,
+                                                                             .Country = Me.ContactInfo.Address.countryBO.Code,
+                                                                             .PostalCode = Me.ContactInfo.Address.PostalCode,
+                                                                             .State = LookupListNew.GetDescriptionFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS, False), Me.ContactInfo.Address.RegionId)
+                                                                                        },
                                                                         .OptionCode = Me.MethodOfRepairCode,
                                                                         .OptionDescription = Me.MethodOfRepairDescription,
                                                                         .Code = "FW",
@@ -3928,6 +3924,10 @@ Public NotInheritable Class Claim
             }}
         End If
         Return response
+    End Function
+
+    Public Function SaveLogisticStages(claimNumber As String, companyCode As String, logisticStages As List(Of SelectedLogisticStage)) As UpdatedLogisticStagesResponse Implements IFullfillable.SaveLogisticStages
+        Throw New NotImplementedException()
     End Function
 
 #End Region

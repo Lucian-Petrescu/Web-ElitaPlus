@@ -81,20 +81,21 @@ Public Class ClaimIssueDAL
 
             If (familyDataset.Tables.Contains(ClaimIssueStatusDAL.TABLE_NAME)) Then
                 Dim publishedTaskDal As New PublishedTaskDAL()
-                For Each dr As DataRow In familyDataset.Tables(ClaimIssueStatusDAL.TABLE_NAME).GetChanges(DataRowState.Added).Rows
+                If familyDataset.Tables(ClaimIssueStatusDAL.TABLE_NAME).GetChanges(DataRowState.Added) IsNot Nothing Then
+                    For Each dr As DataRow In familyDataset.Tables(ClaimIssueStatusDAL.TABLE_NAME).GetChanges(DataRowState.Added).Rows
 
-                    Dim claimIssueId As Guid = New Guid(DirectCast(dr(ClaimIssueStatusDAL.COL_NAME_CLAIM_ISSUE_ID), Byte()))
-                    Dim issueId As Guid = Guid.Empty
-                    For Each drClaimIssue As DataRow In familyDataset.Tables(ClaimIssueDAL.TABLE_NAME).Rows
-                        If (claimIssueId = New Guid(DirectCast(drClaimIssue(ClaimIssueDAL.COL_NAME_ENTITY_ISSUE_ID), Byte()))) Then
-                            issueId = New Guid(DirectCast(drClaimIssue(ClaimIssueDAL.COL_NAME_ISSUE_ID), Byte()))
-                            Exit For
-                        End If
-                    Next
+                        Dim claimIssueId As Guid = New Guid(DirectCast(dr(ClaimIssueStatusDAL.COL_NAME_CLAIM_ISSUE_ID), Byte()))
+                        Dim issueId As Guid = Guid.Empty
+                        For Each drClaimIssue As DataRow In familyDataset.Tables(ClaimIssueDAL.TABLE_NAME).Rows
+                            If (claimIssueId = New Guid(DirectCast(drClaimIssue(ClaimIssueDAL.COL_NAME_ENTITY_ISSUE_ID), Byte()))) Then
+                                issueId = New Guid(DirectCast(drClaimIssue(ClaimIssueDAL.COL_NAME_ISSUE_ID), Byte()))
+                                Exit For
+                            End If
+                        Next
 
-                    If (issueId <> Guid.Empty) Then
+                        If (issueId <> Guid.Empty) Then
 
-                        publishedTaskDal.AddEvent(
+                            publishedTaskDal.AddEvent(
                              publishEventData.CompanyGroupId,
                              publishEventData.CompanyId,
                              publishEventData.CountryId,
@@ -107,17 +108,18 @@ Public Class ClaimIssueDAL
                              publishEventData.Data.EventTypeLookup(New Guid(CType(dr(ClaimIssueStatusDAL.COL_NAME_CLAIM_ISSUE_STATUS_C_ID), Byte()))),
                              issueId)
 
+                        End If
+
+                    Next
+
+                    claimIsssueStatusDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
+                    If Transaction Is Nothing Then
+                        'We are the creator of the transaction we shoul commit it  and close the connection
+                        DBHelper.Commit(tr)
                     End If
-
-                Next
+                End If
             End If
 
-            claimIsssueStatusDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
-
-            If Transaction Is Nothing Then
-                'We are the creator of the transaction we shoul commit it  and close the connection
-                DBHelper.Commit(tr)
-            End If
         Catch ex As Exception
             If Transaction Is Nothing Then
                 'We are the creator of the transaction we shoul commit it  and close the connection

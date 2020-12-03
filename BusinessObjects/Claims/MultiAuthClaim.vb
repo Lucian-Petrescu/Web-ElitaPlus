@@ -647,13 +647,15 @@ Public NotInheritable Class MultiAuthClaim
         response.Charges = {New Charge()}
         response.Fees = {New Fee()}
         response.LogisticStages = {New SelectedLogisticStage() With {
-                                                                        .Address = New FulfillmentAddress With {.Address1 = Me.ContactInfo.Address.Address1,
+                                                                        .Address = New FulfillmentAddressInfo With {
+                                                                                                                    .AddressId =Me.ContactInfo.AddressId,
+                                                                                                                    .Address1 = Me.ContactInfo.Address.Address1,
                                                                                                                     .Address2 = Me.ContactInfo.Address.Address2,
                                                                                                                     .Address3 = Me.ContactInfo.Address.Address3,
                                                                                                                     .City = Me.ContactInfo.Address.City,
                                                                                                                     .Country = Me.ContactInfo.Address.countryBO.Code,
                                                                                                                     .PostalCode = Me.ContactInfo.Address.PostalCode,
-                                                                                                                    .State = LookupListNew.GetDescriptionFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS,
+                                                                                                                    .State = LookupListNew.GetCodeFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS,
                                                                                                                                                                                        False), Me.ContactInfo.Address.RegionId)
                                                                                                                 },
                                                                         .OptionCode = Me.MethodOfRepairCode,
@@ -689,6 +691,30 @@ Public NotInheritable Class MultiAuthClaim
         End If
 
         Return wsResponseObject
+    End Function
+
+    public Function SaveLogisticStages(claimNumber As String, companyCode As String, logisticStages As List(Of SelectedLogisticStage)) As UpdatedLogisticStagesResponse  Implements IFullfillable.SaveLogisticStages
+       
+        Dim wsRequest As UpdateLogisticStageRequest = New UpdateLogisticStageRequest() With
+                {
+                .ClaimNumber = claimNumber,
+                .CompanyCode = companyCode,
+                .LogisticStages = logisticStages.ToArray()
+                }
+
+        Dim wsResponseObject As New UpdatedLogisticStagesResponse
+        If Not String.IsNullOrEmpty(claimNumber) AndAlso Not String.IsNullOrEmpty(companyCode) Then
+
+            wsResponseObject = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, UpdatedLogisticStagesResponse)(
+                GetClaimFulfillmentWebAppGatewayClient(),
+                New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                Function(ByVal c As WebAppGatewayClient)
+                    Return c.UpdateLogistics(wsRequest)
+                End Function)
+        End If
+
+        Return wsResponseObject
+    
     End Function
 
 End Class
