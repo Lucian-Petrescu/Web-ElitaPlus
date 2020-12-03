@@ -280,8 +280,6 @@
                         <asp:Button ID="btnReviewDecisionSave" runat="server" SkinID="SearchButton" Text="Save" /> &nbsp;
                         <asp:Button ID="btnReviewDecisionCancel" runat="server" SkinID="SearchButton" Text="Cancel"
                                     OnClientClick="SetShowReviewDecision('N'); hideModal('ModalReviewDecision'); return false;"/> &nbsp;
-                        <asp:Button ID="btnReviewDecisionClose" runat="server" Visible="False" SkinID="SearchButton" Text="Close" /> &nbsp;
-                                              
                     </td>
                 </tr>                
             </table>
