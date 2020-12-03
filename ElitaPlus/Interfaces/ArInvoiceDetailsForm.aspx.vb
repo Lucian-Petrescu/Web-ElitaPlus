@@ -1,4 +1,5 @@
-﻿Imports Assurant.Elita.CommonConfiguration
+﻿Imports System.Collections.Generic
+Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita.CommonConfiguration.DataElements
 
@@ -9,10 +10,9 @@ Public Class ArInvoiceDetailsForm
     Public Const Url As String = "~/Interfaces/ArInvoiceDetailsForm.aspx"
     Public Const PageTitle = "AR_INVOICE_DETAILS"
     Public Const PageTab As String = "INTERFACE"
-    Public Const LineBatchSize As Integer = 100
-    Public Const MaxLineNumberAllowed As Integer = 99999999
     Public Const DefaultGridPageSize As Integer = 15
 
+    Public Const InvoiceStatusXcdPending As String = "CMSTAUS-PENDING"
 #End Region
 
     #Region "Page State"
@@ -83,6 +83,9 @@ Class MyState
         End Try
     End Sub
 
+    Private Sub ArInvoiceDetailsForm_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
+        EnableDisableButtons()
+    End Sub
 
 #End Region
 
@@ -155,6 +158,10 @@ Class MyState
             ddlReference.Items.Add(New WebControls.ListItem() With {.Value = $"ELP_CERT", .Text = TranslationBase.TranslateLabelOrMessage("CERTIFICATE")})
             ddlReference.Items.Add(New WebControls.ListItem() With {.Value = $"ELP_CLAIM", .Text = TranslationBase.TranslateLabelOrMessage("CLAIM")})
             ddlReference.Items.Add(New WebControls.ListItem() With {.Value = $"ELP_CLAIM_AUTHORIZATION", .Text = TranslationBase.TranslateLabelOrMessage("CLAIM_AUTHORIZATION")})
+
+            ddlReviewDecision.Items.Add(New WebControls.ListItem() With {.Value = String.Empty, .Text = String.Empty, .Selected = True})
+            ddlReviewDecision.Items.Add(New WebControls.ListItem() With {.Value = $"A", .Text = TranslationBase.TranslateLabelOrMessage("APPROVE")})
+            ddlReviewDecision.Items.Add(New WebControls.ListItem() With {.Value = $"D", .Text = TranslationBase.TranslateLabelOrMessage("DENY")})
 
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -242,6 +249,15 @@ Class MyState
            lblRecordCount.Text = State.InvoiceLines.Count & $" " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND) 
         End If
     End Sub
+
+    Private Sub EnableDisableButtons()
+        If State.MyBo IsNot Nothing AndAlso (Not String.IsNullOrEmpty(State.MyBo.StatusXcd)) AndAlso State.MyBo.StatusXcd = InvoiceStatusXcdPending then
+            btnReviewDecision_WRITE.Visible = True    
+        Else 
+            btnReviewDecision_WRITE.Visible = False    
+        End If
+    End Sub
+
 #End Region
 
 #Region "Button handler"
@@ -295,5 +311,89 @@ Class MyState
         End Try
     End Sub
 
+    
+
 #End Region
+
+#Region "Invoice Review"
+    
+    Private sub ClearReviewErrorLabels() 
+        ClearLabelErrSign(lblReviewDecision)
+        ClearLabelErrSign(lblReviewComments)
+    End sub
+
+    Private Sub InitInvoiceReviewControls()
+        ClearReviewErrorLabels()
+
+        'erase the previous process result message 
+        lblReviewDecisionResult.Visible = False
+        lblReviewDecisionResult.Text = String.Empty
+        ddlReviewDecision.SelectedIndex = -1
+        txtReviewComments.Text = String.Empty
+    End Sub
+    Private Function ValidReviewInputs() As Boolean
+        dim blnValid As Boolean = True
+
+        if string.IsNullOrEmpty(ddlReviewDecision.SelectedValue) Then
+            blnValid = False
+            lblReviewDecision.ForeColor = Color.Red
+        End If
+
+        If String.IsNullOrEmpty(txtReviewComments.Text.Trim()) Then
+            blnValid = False
+            lblReviewComments.ForeColor = Color.Red
+        End If
+
+        Return blnValid
+    End Function
+    
+    Private Sub btnReviewDecisionSave_Click(sender As Object, e As EventArgs) Handles btnReviewDecisionSave.Click
+        Try
+            ClearReviewErrorLabels()
+            lblReviewDecisionResult.Visible = True
+            Dim idList As List(Of Guid) = New List(Of Guid)()
+            idList.Add(State.MyBo.Id)
+            if ValidReviewInputs() Then
+                Dim errCode As Integer, errMsg As String
+                ArInvoiceHeader.UpdateReviewDecisions(idList,
+                                                      ddlReviewDecision.SelectedValue,
+                                                      String.Format("{0}: {1}", TranslationBase.TranslateLabelOrMessage("REVIEW_COMMENTS"),txtReviewComments.Text.Trim()),
+                                                      errCode,
+                                                      errMsg)
+
+                if errCode <> 0 Then
+                    lblReviewDecisionResult.Text = errMsg
+                    lblReviewDecisionResult.CssClass = MessageController.ERROR_CSS
+                Else 
+                    HiddenFieldReviewDecision.Value = "N" ' 
+                    MasterPage.MessageController.AddSuccess("MSG_RECORD_SAVED_OK")
+                    State.HasDataChanged = True
+                    'reload the BO and refresh the screen
+                    State.MyBo = New ArInvoiceHeader(State.MyBo.Id)
+                    PopulateFormFromBo()
+                End If
+            Else 
+                lblReviewDecisionResult.Text = TranslationBase.TranslateLabelOrMessage("Required fields are missing.")
+                lblReviewDecisionResult.CssClass = MessageController.ERROR_CSS
+            End If
+            
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub btnReviewDecision_WRITE_Click(sender As Object, e As EventArgs) Handles btnReviewDecision_WRITE.Click
+        Try
+            InitInvoiceReviewControls()
+            HiddenFieldReviewDecision.Value = "Y"
+            
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+
+    
+
+#End Region
+
 End Class

@@ -168,8 +168,8 @@ Public Class ArInvoiceListForm
     End Sub
 
     Private Sub ArInvoiceListForm_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
-        btnReviewDecision_WRITE.Visible = State.IsGridVisible
-
+        
+        Dim searchResultCount As Integer = 0
         If State.IsGridVisible = True AndAlso Not State.SearchDv Is Nothing AndAlso State.SearchDv.Count > 0 Then
             'add CCS class to check box so that jquery script will work correctly
             Dim chkBox As CheckBox, strAllowSelection as String
@@ -185,13 +185,18 @@ Public Class ArInvoiceListForm
                     If (chkBox IsNot Nothing) Then
                         If strAllowSelection = AllowSelectionYes Then
                             chkBox.InputAttributes("class") = "checkboxLine"
+                            searchResultCount = searchResultCount + 1
                         Else 
                             chkBox.InputAttributes("style") = "display:none;"
                         End If
                     End If
                 End If
             Next
-
+        End If
+        if searchResultCount > 0 Then
+            btnReviewDecision_WRITE.Visible = True
+        Else 
+            btnReviewDecision_WRITE.Visible = False
         End If
     End Sub
 
