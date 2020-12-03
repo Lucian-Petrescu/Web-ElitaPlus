@@ -547,6 +547,8 @@ Public Class AcctEvent
         Public Const COL_EVENT_NAME As String = "event_name"
         Public Const COL_EVENT_ID As String = "acct_event_id"
         Public Const COL_EVENT_TYPE As String = "event_type"
+        Public Const COL_EVENT_CODE As String = "event_code"
+        Public Const COL_ACCT_EVENT_TYPE_ID As String = "acct_event_type_id"
 
 #End Region
 
