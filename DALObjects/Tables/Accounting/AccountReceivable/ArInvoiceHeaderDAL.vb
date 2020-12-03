@@ -275,6 +275,28 @@ Public Class ArInvoiceHeaderDal
 
     End Sub
 
+    Public sub GetArInvoiceLinesByHeaderId(ByVal invoiceHeaderId As Guid, ByVal languageId As Guid, ByRef invoiceLines As DataSet)
+        Dim selectStmt As String = Config("/SQL/GET_AR_INVOICE_LINES")
+        Dim da As OracleDataAdapter
+        Try
+            Dim cmd As OracleCommand = DB_OracleCommand(selectStmt, CommandType.StoredProcedure)
+            cmd.BindByName = True
+            'output parameters
+            cmd.Parameters.Add("po_cur_lines", OracleDbType.RefCursor, ParameterDirection.Output)
+
+            'input parameters
+            cmd.Parameters.Add("pi_invoice_header_id", OracleDbType.Raw).Value = invoiceHeaderId.ToByteArray
+            cmd.Parameters.Add("pi_language_id", OracleDbType.Raw).Value = languageId.ToByteArray
+
+            da = New OracleDataAdapter(cmd)
+            da.Fill(invoiceLines, "INVOICE_LINES")
+            invoiceLines.Locale = Globalization.CultureInfo.InvariantCulture
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End sub
+
 #End Region
 End Class
 

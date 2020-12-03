@@ -1287,6 +1287,12 @@ Partial Class ClaimAuthorizationDetailForm
         ucSelectServiceCenter.City = State.ClaimBO.ContactInfo.Address.City
         ucSelectServiceCenter.PostalCode = State.ClaimBO.ContactInfo.Address.PostalCode
         ucSelectServiceCenter.RiskTypeEnglish = State.ClaimBO.RiskType
+
+        If State.ClaimBO.ContactInfo IsNot Nothing Then
+            ucSelectServiceCenter.City = State.ClaimBO.ContactInfo.Address.City
+            ucSelectServiceCenter.PostalCode = State.ClaimBO.ContactInfo.Address.PostalCode
+        End If
+
         ucSelectServiceCenter.MethodOfRepairXcd = "METHR-" + State.ClaimBO.MethodOfRepairCode
         ucSelectServiceCenter.InitializeComponent()
     End Sub
