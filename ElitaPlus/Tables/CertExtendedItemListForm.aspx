@@ -67,7 +67,7 @@
         </h2>
         <table width="100%" class="dataGrid" border="0" cellspacing="0" cellpadding="0">
             <tbody>
-                <tr>
+                <tr id="trPageSize" runat="server">
                     <td class="bor">
                         <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label>
                         <asp:DropDownList ID="cboPageSize" runat="server" SkinID="SmallDropDown" AutoPostBack="true">
@@ -119,6 +119,6 @@
         <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261" />
     </div>
     <div class="btnZone">
-        <asp:Button runat="server" ID="btnNew" Text="New" SkinID="AlternateLeftButton" />
+        <asp:Button runat="server" ID="btnNew" Text="New" SkinID="PrimaryLeftButton" />
     </div>
 </asp:Content>
