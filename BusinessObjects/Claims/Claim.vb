@@ -3920,7 +3920,8 @@ Public NotInheritable Class Claim
                                                                         .HandlingStore = New HandlingStore(),
                                                                         .ServiceCenterCode = Me.ServiceCenterObject.Code,
                                                                         .ServiceCenterDescription = Me.ServiceCenterObject.Description,
-                                                                        .Shipping = New ClaimFulfillmentWebAppGatewayService.ShippingInfo()
+                                                                        .Shipping = New ClaimFulfillmentWebAppGatewayService.ShippingInfo(),
+                                                                        .Type ="CustomerAddress"
             }}
         End If
         Return response
