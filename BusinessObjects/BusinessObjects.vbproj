@@ -137,6 +137,9 @@
       <HintPath>..\packages\Elita.Assurant.Common.Validation.2.0.0\lib\net462\Assurant.Common.Validation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Assurant.Elita.AddressValidationProvider, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.AddressvalidationProvider.1.0.3\lib\net46\Assurant.Elita.AddressValidationProvider.dll</HintPath>
+    </Reference>
     <Reference Include="Assurant.Elita.Base.DataAccess, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.8\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
     </Reference>
@@ -150,11 +153,16 @@
     <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.13.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.13\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
     </Reference>
+    <Reference Include="Assurant.Elita.CommonConfiguration.Claim, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.Claim.4.1.0\lib\net462\Assurant.Elita.CommonConfiguration.Claim.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Assurant.Elita.Configuration, Version=5.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Configuration.5.0.3\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Logging.Interface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Assurant.Elita.Logging.Interface.1.0.0\lib\netstandard2.0\Assurant.Elita.Logging.Interface.dll</HintPath>
+      <HintPath>..\packages\Assurant.Elita.Logging.Interface.1.0.1\lib\netstandard2.0\Assurant.Elita.Logging.Interface.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Assurant.Elita.Logging.OracleLogger, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Logging.OracleLogger.1.0.1\lib\net462\Assurant.Elita.Logging.OracleLogger.dll</HintPath>
@@ -286,8 +294,11 @@
     <Compile Include="Claims\ClaimAgingDetails.vb" />
     <Compile Include="Claims\ClaimShipping.vb" />
     <Compile Include="Claims\ClaimStatusByUserRole.vb" />
+    <Compile Include="Claims\IFulfillable.vb" />
+    <Compile Include="Claims\LogisticStageAddress.vb" />
     <Compile Include="Claims\PreInvoice.vb" />
     <Compile Include="Claims\PreInvoiceDetails.vb" />
+    <Compile Include="Common\AddressValidationSettings.vb" />
     <Compile Include="Common\ClaimCloseRules.vb" />
     <Compile Include="Common\DealerInflation.vb" />
     <Compile Include="Common\InvoiceRegionTax.vb" />
@@ -353,6 +364,11 @@
     <Compile Include="Security\SpUserClaimProperties.vb" />
     <Compile Include="Security\SpUserClaims.vb" />
     <Compile Include="Security\UserNotification.vb" />
+    <Compile Include="Service References\ClaimFulfillmentWebAppGatewayService\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\DRPSystem\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1385,6 +1401,41 @@
     <None Include="Service References\Auth\AuthorizationService65.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.ChangeServiceCenterResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.CustomerDecisionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.FulfillmentServicesCenter.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.BusinessObjectsNew.ClaimFulfillmentWebAppGatewayService.GetDeliverySlotsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway.wsdl" />
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway.wsdl" />
     <None Include="Service References\DocAdmin\Assurant.ElitaPlus.BusinessObjectsNew.DocAdmin.DocumentFormat.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -1669,6 +1720,7 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\Auth\" />
+    <WCFMetadataStorage Include="Service References\ClaimFulfillmentWebAppGatewayService\" />
     <WCFMetadataStorage Include="Service References\DocAdmin\" />
     <WCFMetadataStorage Include="Service References\Doc\" />
     <WCFMetadataStorage Include="Service References\DRPSystem\" />
@@ -2162,6 +2214,12 @@
     <EmbeddedResource Include="..\ElitaPlus\Reports\ServiceOrder_APT.xslt">
       <Link>ServiceOrderXslt\ServiceOrder_APT.xslt</Link>
     </EmbeddedResource>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\configuration91.svcinfo" />
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\configuration.svcinfo" />
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
     <Content Include="Settings.xml">
       <SubType>Designer</SubType>
     </Content>

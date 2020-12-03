@@ -2262,7 +2262,7 @@ Partial Class ClaimForm
     End Sub
 
     Private Function IsDfFulfillment() As Boolean
-        Return Me.State.MyBO.FulfillmentProviderType = FulfillmentProviderType.DynamicFulfillment
+        Return Me.State.MyBO.FulfillmentProviderType = FulfillmentProviderType.V4
     End Function
 
     Protected Sub PopulateClaimDetailContactInfoBOsFromForm()
@@ -4112,7 +4112,7 @@ Partial Class ClaimForm
 #Region "Call To claim Fulfillment WebAppGateway"
 
     Public Sub BindclaimFulfillmentDetails()
-        If Me.State.MyBO.FulfillmentProviderType = FulfillmentProviderType.DynamicFulfillment Then
+        If Me.State.MyBO.FulfillmentProviderType = FulfillmentProviderType.V4 Then
             BindExternalClaimFulfillmentDetails()
         Else
             BindElitaClaimFulfillmentDetails()

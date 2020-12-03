@@ -1,4 +1,6 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (10/28/2004)  ********************
+Imports Assurant.Elita.CommonConfiguration.Claim
+
 
 Public Class Address
     Inherits BusinessObjectBase
@@ -222,7 +224,7 @@ Public Class Address
     End Property
 
 
-    <ValidStringLength("", Max:=100), RequiredFieldBySetting("", Nothing, "[ADR2]")> _
+    <ValidStringLength("", Max:=100), RequiredFieldBySetting("", Nothing, "[ADR2]")>
     Public Property Address2() As String
         Get
             CheckDeleted()
@@ -238,7 +240,7 @@ Public Class Address
         End Set
     End Property
 
-    <ValidStringLength("", Max:=100), RequiredFieldBySetting("", Nothing, "[ADR3]")> _
+    <ValidStringLength("", Max:=100), RequiredFieldBySetting("", Nothing, "[ADR3]")>
     Public Property Address3() As String
         Get
             CheckDeleted()
@@ -270,7 +272,7 @@ Public Class Address
             Me.SetValue(AddressDAL.COL_NAME_CITY, Value)
         End Set
     End Property
-    <MandatoryForVscAttribute(""), MandatoryCountryAddressFormatAttribute("RegionId"), RequiredFieldBySetting("", Nothing, "[REGION]")> _
+    <MandatoryForVscAttribute(""), MandatoryCountryAddressFormatAttribute("RegionId"), RequiredFieldBySetting("", Nothing, "[REGION]")>
     Public Property RegionId() As Guid
         Get
             CheckDeleted()
@@ -303,7 +305,7 @@ Public Class Address
         End Set
     End Property
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property CountryId() As Guid
         Get
             CheckDeleted()
@@ -320,7 +322,7 @@ Public Class Address
     End Property
 
 
-    <ValidStringLength("", Max:=25)> _
+    <ValidStringLength("", Max:=25)>
     Public Property ZipLocator() As String
         Get
             CheckDeleted()
@@ -387,10 +389,10 @@ Public Class Address
 
     Public Property PayeeId() As Guid
         Get
-            Return _payeeId
+            Return _PayeeId
         End Get
         Set(ByVal Value As Guid)
-            _payeeId = Value
+            _PayeeId = Value
         End Set
     End Property
 
@@ -446,7 +448,7 @@ Public Class Address
                 'Reload the Data from the DB
                 If Me.Row.RowState <> DataRowState.Detached Then
                     Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
+                    Me.Dataset = New DataSet
                     Me.Row = Nothing
                     Me.Load(objId)
                 End If
@@ -476,8 +478,8 @@ Public Class Address
 
     Public ReadOnly Property IsEmpty() As Boolean
         Get
-            If (Not IsEmptyString(Me.Address1)) OrElse (Not IsEmptyString(Me.Address2)) OrElse (Not IsEmptyString(Me.Address3)) OrElse _
-            (Not IsEmptyString(Me.City)) OrElse (Not IsEmptyString(Me.PostalCode)) OrElse _
+            If (Not IsEmptyString(Me.Address1)) OrElse (Not IsEmptyString(Me.Address2)) OrElse (Not IsEmptyString(Me.Address3)) OrElse
+            (Not IsEmptyString(Me.City)) OrElse (Not IsEmptyString(Me.PostalCode)) OrElse
             (Not Me.RegionId.Equals(Guid.Empty)) Then
                 Return False
             End If
@@ -488,6 +490,7 @@ Public Class Address
     Private Function IsEmptyString(ByVal value As String)
         Return (value Is Nothing OrElse value.Trim.Length = 0)
     End Function
+
 #End Region
 
 #Region "DataView Retrieveing Methods"
@@ -495,8 +498,8 @@ Public Class Address
 #End Region
 
 #Region "Custom Validation"
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
-Public NotInheritable Class MandatoryForVscAttribute
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+    Public NotInheritable Class MandatoryForVscAttribute
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
@@ -526,8 +529,8 @@ Public NotInheritable Class MandatoryForVscAttribute
 
 
 #Region "Custom Validation"
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
-Public NotInheritable Class MandatoryForServCenterAttribute
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+    Public NotInheritable Class MandatoryForServCenterAttribute
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
@@ -554,7 +557,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
         End Function
     End Class
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class MandatoryCountryAddressFormatAttribute
         Inherits ValidBaseAttribute
 
@@ -594,7 +597,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
         End Function
     End Class
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class ValidUserCountry
         Inherits ValidBaseAttribute
 
@@ -633,7 +636,7 @@ Public NotInheritable Class MandatoryForServCenterAttribute
         End Function
     End Class
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class RequiredFieldBySetting
         Inherits ValidBaseAttribute
 
@@ -765,6 +768,23 @@ Public NotInheritable Class MandatoryForServCenterAttribute
             End While
         End If
         Return blnRequired
+    End Function
+
+    Public Shared Function ClaimProfileData(ByVal ProfileCode As String) As AddressValidationSettings
+        Dim profile = CommonConfigurationClaimManager.Current.ClaimProfileManager.Get(ProfileCode)
+        Dim confidencePercent As Decimal = 0
+        Decimal.TryParse(profile.AddressValidationProvider.ConfidencePercentage, confidencePercent)
+        Dim profileSettings = New AddressValidationSettings With {
+                .ConfidencePercentage = confidencePercent,
+                .FormattingRequired = profile.AddressValidationProvider.FormattingRequired,
+                .FormattingOverrideAllowed = profile.AddressValidationProvider.FormattingOverrideAllowed,
+                .OverrideAllowed = profile.AddressValidationProvider.OverrideAllowed,
+                .Url = profile.AddressValidationProvider.Url,
+                .ServiceTypeCode = profile.AddressValidationProvider.ServiceTypeCode,
+                .ValidationRequired = profile.AddressValidationProvider.ValidationRequired,
+                .ProviderCode = profile.AddressValidationProvider.ProviderCode
+                }
+        Return profileSettings
     End Function
 #End Region
 
