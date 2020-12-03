@@ -105,6 +105,15 @@ Namespace Tables
         Protected WithEvents moSearchResultsHeader As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
+        '''trPageSize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+        '''<summary>
         '''lblPageSize control.
         '''</summary>
         '''<remarks>

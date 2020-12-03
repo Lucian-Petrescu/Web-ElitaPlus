@@ -91,7 +91,7 @@ Namespace Tables
                     TranslateGridHeader(Grid)
                     cboPageSize.SelectedValue = CType(State.PageSize, String)
                     Grid.PageSize = State.PageSize
-
+                    ControlMgr.SetVisibleControl(Me, trPageSize, False)
                     If State.IsGridVisible Then
                         PopulateGrid()
                     End If
@@ -247,7 +247,9 @@ Namespace Tables
                     blnNewSearch = True
                 End If
                 If Not (.searchDV Is Nothing) Then
-                    .searchDV.Sort = SortDirection
+                    If .searchDV.Count>0 Then
+                        .searchDV.Sort = SortDirection
+                    End If
 
                     Grid.AutoGenerateColumns = False
 
@@ -275,15 +277,16 @@ Namespace Tables
                 Grid.DataSource = State.searchDV
                 HighLightSortColumn(Grid, SortDirection, True)
                 Grid.DataBind()
+                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
             End If
 
             If Not Grid.BottomPagerRow.Visible Then Grid.BottomPagerRow.Visible = True
 
             Session("recCount") = State.searchDV.Count
 
-            If State.IsGridVisible Then
-                lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
-            End If
+            
+            lblRecordCount.Text = State.searchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+
 
         End Sub
 #End Region
