@@ -272,7 +272,6 @@ Namespace Tables
 
                 dv.Table.Rows.InsertAt(dv.Table.NewRow(), 0)
                 Grid.PagerSettings.Visible = True
-                'HighLightSortColumn(Grid, SortDirection)
                 Grid.DataSource = dv
                 Grid.DataBind()
                 Grid.Rows(0).Visible = False
