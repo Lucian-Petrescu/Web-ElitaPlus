@@ -689,6 +689,13 @@
       <DependentUpon>CertificateDocumentForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Certificates\CertificateExtendedFieldHistory.aspx.designer.vb">
+      <DependentUpon>CertificateExtendedFieldHistory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\CertificateExtendedFieldHistory.aspx.vb">
+      <DependentUpon>CertificateExtendedFieldHistory.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Certificates\CertificateForm.aspx.designer.vb">
       <DependentUpon>CertificateForm.aspx</DependentUpon>
     </Compile>
@@ -5772,6 +5779,7 @@
     <Content Include="App_Themes\Default\Images\edit.png" />
     <Content Include="App_Themes\Default\Images\flatInputbg.png" />
     <Content Include="App_Themes\Default\Images\globalMenu_sep.png" />
+    <Content Include="App_Themes\Default\Images\history.png" />
     <Content Include="App_Themes\Default\Images\icon-arrow-up-hover.gif" />
     <Content Include="App_Themes\Default\Images\icon-arrow-up-old.gif" />
     <Content Include="App_Themes\Default\Images\icon-arrow-up.gif" />
@@ -5836,6 +5844,7 @@
     <Content Include="Certificates\CertAddRegisterItemForm.aspx" />
     <Content Include="Certificates\CertByPhoneNumListForm.aspx" />
     <Content Include="Certificates\CertificateDocumentForm.aspx" />
+    <Content Include="Certificates\CertificateExtendedFieldHistory.aspx" />
     <Content Include="Certificates\CertificateForm.aspx" />
     <Content Include="Certificates\CertificateListForm.aspx" />
     <Content Include="Certificates\CertItemDetailForm.aspx" />

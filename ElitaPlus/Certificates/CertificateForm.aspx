@@ -2352,8 +2352,12 @@
                                     HeaderText="MODIFIED_DATE" HeaderStyle-HorizontalAlign="Center" />
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:ImageButton runat="server" ID="EditButton" CommandName="EditRecord" AlternateText="Edit" ImageUrl="~/App_Themes/Default/Images/edit.png"
-                                            CommandArgument="<%#Container.DisplayIndex %>" />
+                                           <asp:ImageButton runat="server" ID="HistoryButton" CommandName="HistoryRecord"  ToolTip="History" AlternateText="History"  ImageUrl="~/App_Themes/Default/Images/history.png"
+                                            CommandArgument="<%#Container.DisplayIndex %>" /> 
+
+                                        <asp:ImageButton runat="server" ID="EditButton" CommandName="EditRecord"  ToolTip="Edit" AlternateText="Edit" ImageUrl="~/App_Themes/Default/Images/edit.png"
+                                            CommandArgument="<%#Container.DisplayIndex %>" />                                    
+
                                     </ItemTemplate>
                                     <EditItemTemplate>
                                         <asp:ImageButton runat="server" ID="SaveButton" AlternateText="Save" CommandName="SaveRecord" ImageUrl="~/App_Themes/Default/Images/save.png"
@@ -2362,6 +2366,7 @@
                                             CommandArgument="<%#Container.DisplayIndex %>" />
                                     </EditItemTemplate>
                                 </asp:TemplateField>
+                                
                                  <asp:BoundField DataField="ALLOW_UPDATE" SortExpression="ALLOW_UPDATE" ReadOnly="true" HeaderStyle-CssClass="MODIFIED_DATE" ItemStyle-CssClass="MODIFIED_DATE"
                                     HeaderText="ALLOW_UPDATE" Visible="false" HeaderStyle-HorizontalAlign="Center"  />
                             </Columns>
