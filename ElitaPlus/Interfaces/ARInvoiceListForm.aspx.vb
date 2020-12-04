@@ -684,7 +684,7 @@ Public Class ArInvoiceListForm
                     strStatusXcd = dv(index)(ArInvoiceHeader.ArInvoiceSearchDv.ColStatusXcd)
 
                     If String.IsNullOrEmpty(strStatusXcd) OrElse strStatusXcd <>  InvoiceStatusXcdPending Then 'invoice can be only reviewed when in pending status
-                        MasterPage.MessageController.AddError(String.Format("{0}", TranslationBase.TranslateLabelOrMessage("INVOICE_NOT_IN_PENDING_STATUS")), False)
+                        MasterPage.MessageController.AddError(String.Format("{0}", TranslationBase.TranslateLabelOrMessage("INVOICE_NOT_PENDING_REVIEW")), False)
                         isSelectionValid = False
                     End If
                 End If
@@ -741,7 +741,7 @@ Public Class ArInvoiceListForm
                 Dim errCode As Integer, errMsg As String
                 ArInvoiceHeader.UpdateReviewDecisions(State.InvoiceToBeReviewed,
                                                       ddlReviewDecision.SelectedValue,
-                                                      String.Format("{0}: {1}", TranslationBase.TranslateLabelOrMessage("REVIEW_COMMENTS"),txtReviewComments.Text.Trim()),
+                                                      String.Format("*{0}: {1}", TranslationBase.TranslateLabelOrMessage("REVIEW_COMMENTS"),txtReviewComments.Text.Trim()),
                                                       errCode,
                                                       errMsg)
 

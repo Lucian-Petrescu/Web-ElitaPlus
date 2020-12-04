@@ -357,7 +357,7 @@ Class MyState
                 Dim errCode As Integer, errMsg As String
                 ArInvoiceHeader.UpdateReviewDecisions(idList,
                                                       ddlReviewDecision.SelectedValue,
-                                                      String.Format("{0}: {1}", TranslationBase.TranslateLabelOrMessage("REVIEW_COMMENTS"),txtReviewComments.Text.Trim()),
+                                                      String.Format("*{0}: {1}", TranslationBase.TranslateLabelOrMessage("REVIEW_COMMENTS"),txtReviewComments.Text.Trim()),
                                                       errCode,
                                                       errMsg)
 
