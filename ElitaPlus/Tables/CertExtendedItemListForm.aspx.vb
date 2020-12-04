@@ -265,8 +265,16 @@ Namespace Tables
 
             If (State.searchDV.Count = 0) Then
                 Me.State.bnoRow = True
-                CreateHeaderForEmptyGrid(Grid, Me.SortDirection)
                 State.IsGridVisible = False
+                
+                Dim dt As DataTable = New DataTable()
+                Dim dv As New DataView(dt)
+
+                dv.Table.Rows.InsertAt(dv.Table.NewRow(), 0)
+                Grid.PagerSettings.Visible = True
+                Grid.DataSource = dv
+                Grid.DataBind()
+                Grid.Rows(0).Visible = False
                 If blnShowErr Then
                     MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
                 End If
