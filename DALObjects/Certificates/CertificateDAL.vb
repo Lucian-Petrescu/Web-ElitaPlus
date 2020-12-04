@@ -28,6 +28,7 @@ Public Class CertificateDAL
     Public Const COL_NAME_MONTHSPASSED As String = "MonthsPassed"
     Public Const COL_NAME_USER_ID As String = "user_id" 'Amod Added
     Public Const COL_NAME_CERT_ID As String = "cert_id"
+    Public Const COL_NAME_CERT_EXT_ID As String = "cert_ext_id"
     Public Const COL_NAME_CERT_ID_GUID As String = "cert_id_guid"
     Public Const COL_NAME_DEALER_ID As String = "dealer_id"
     Public Const COL_NAME_CERT_NUMBER As String = "cert_number"
@@ -2692,18 +2693,22 @@ Public Class CertificateDAL
 
     End Function
 
-    Public Function LoadCertExtendedFieldHistory(ByVal CertId As Guid) As DataSet
+    Public Function LoadCertExtendedFieldHistory(ByVal CertId As Guid, cert_ext_id As Guid) As DataSet
 
         Dim ds As New DataSet
 
 
         Dim selectstmt As String = Me.Config("/SQL/LOAD_CERT_EXT_FIELDS_VALUE_HISTORY")
 
+        Dim outputParameter(Me.TOTAL_INPUT_PARAM_CERT_HISTORY) As DBHelper.DBHelperParameter
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                        {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, CertId.ToByteArray)
+                        {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, CertId.ToByteArray),
+                        New DBHelper.DBHelperParameter(COL_NAME_CERT_EXT_ID, cert_ext_id.ToByteArray)
                         }
+        outputParameter(PO_CURSOR_CERT_HISTORY) = New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))
         Try
-            DBHelper.Fetch(ds, selectstmt, Me.TABLE_NAME, parameters)
+            DBHelper.FetchSp(selectstmt, parameters, outputParameter, ds, "GetCertExtHistory")
+            ds.Tables(0).TableName = "GetCertExtHistory"
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

@@ -166,6 +166,7 @@ Namespace Certificates
         Public Const CERT_EXT_GRID_FIELD_VALUE_TEXT_CTRL As String = "TXT_FIELD_VALUE"
         Public Const CERT_EXT_GRID_FIELD_VALUE_LBL_CTRL As String = "LBL_FIELD_VALUE"
         Public Const CERT_EXT_GRID_FIELD_EDIT_BTN_CTRL As String = "EditButton"
+        Public Const CERT_EXT_GRID_FIELD_HISTORY_BTN_CTRL As String = "HistoryButton"
         Public Const CERT_EXT_ID_ID_IDX As Integer = 0
         Public Const CERT_EXT_CERT_ID_IDX As Integer = 1
         Public Const CERT_EXT_FIELD_NAME_IDX As Integer = 2
@@ -716,8 +717,6 @@ Namespace Certificates
             Public IsCallerAuthenticated As Boolean = False
             Public blnMFGChanged As Boolean = False
             Public IsRowBeingEdited As Boolean = False
-            Public SelectedPageSize As Integer
-
 #End Region
 #Region "MyState Constructor"
             Public Sub New()
@@ -6909,11 +6908,21 @@ Namespace Certificates
 
             If (rowType = DataControlRowType.DataRow) AndAlso (dvRow IsNot Nothing) Then
                 Dim editButton As ImageButton = CType(e.Row.FindControl(CERT_EXT_GRID_FIELD_EDIT_BTN_CTRL), ImageButton)
-                If Not editButton Is Nothing Then
+                Dim histButton As ImageButton = CType(e.Row.FindControl(CERT_EXT_GRID_FIELD_HISTORY_BTN_CTRL), ImageButton)
+
+                If editButton IsNot Nothing Then
                     If dvRow(Certificate.CertExtendedFieldsDv.COL_ALLOW_UPDATE).ToString = "YESNO-Y" Then
                         editButton.Visible = True
                     Else
                         editButton.Visible = False
+                    End If
+                End If
+
+                If histButton IsNot Nothing Then
+                    If dvRow(Certificate.CertExtendedFieldsDv.COL_MODIFIED_BY).ToString.Trim() = "" Then
+                        histButton.Enabled = False
+                    Else
+                        histButton.Enabled = True
                     End If
                 End If
             End If
@@ -6978,7 +6987,17 @@ Namespace Certificates
                         Me.State.SelectedCertExtId = New Guid(GrdCertExtFields.Rows(nIndex).Cells(CERT_EXT_ID_ID_IDX).Text)
                         State.IsRowBeingEdited = True
 
-                        'DisableFields()
+                    Case ElitaPlusSearchPage.HISTORY_COMMAND_NAME
+                        nIndex = CInt(e.CommandArgument)
+                        GrdCertExtFields.SelectedIndex = nIndex
+                        Me.State.SelectedCertExtId = New Guid(GrdCertExtFields.Rows(nIndex).Cells(CERT_EXT_ID_ID_IDX).Text)
+                        Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERTIFICATE) = Me.State.MyBO
+                        Dim fieldValueLabelBox As Label = CType(GrdCertExtFields.Rows(nIndex).FindControl(CERT_EXT_GRID_FIELD_VALUE_LBL_CTRL), Label)
+                        Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERT_FIELD_VALUE) = fieldValueLabelBox.Text
+                        Me.NavController.FlowSession(FlowSessionKeys.SESSION_CERT_FIELD_NAME) = GrdCertExtFields.Rows(nIndex).Cells(CERT_EXT_FIELD_NAME_IDX).Text
+                        Me.State.selectedTab = CERT_EXTENDED_FIELDS_TAB
+
+                        callPage(CertificateExtendedFieldHistory.URL, Me.State.SelectedCertExtId)
 
 
                 End Select

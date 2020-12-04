@@ -4338,12 +4338,12 @@ Public Class Certificate
         End Try
     End Function
 
-    Public Shared Function GetCertExtendedFieldHistory(ByVal certId As Guid) As DataView
+    Public Shared Function GetCertExtendedFieldHistory(ByVal certId As Guid, cert_ext_id As Guid) As DataView
         Try
             Dim dal As New CertificateDAL
             Dim ds As New DataSet
 
-            ds = dal.LoadCertExtendedFieldHistory(certId)
+            ds = dal.LoadCertExtendedFieldHistory(certId, cert_ext_id)
             Return New CertExtendedFieldsDv(ds.Tables(0))
 
         Catch ex As Exception
