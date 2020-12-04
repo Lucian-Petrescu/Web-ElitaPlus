@@ -23,6 +23,9 @@
             $('#tabs').tabs();
         } );
     </script>
+    <style type="text/css">
+        .wrapText{white-space:pre-wrap;}
+    </style>
     <div class="dataContainer">
         <table class="formGrid" style="border-spacing: 0; border-collapse: collapse; border: none; padding: 0;" width="100%">
             <tr>
@@ -186,7 +189,7 @@
                     <asp:Label ID="lblComments" runat="server">COMMENTS</asp:Label>:
                 </td>
                 <td style="text-align: left" nowrap="nowrap" colspan="3">
-                    <asp:TextBox ID="txtComments" runat="server" ReadOnly="true" SkinID="LargeTextBox" AutoPostBack="False" TextMode="MultiLine" Rows="3" Width="850px"></asp:TextBox>
+                    <asp:TextBox ID="txtComments" runat="server" ReadOnly="true" CssClass="wrapText" AutoPostBack="False" TextMode="MultiLine" Wrap="True" Columns="126" Rows="4" Width="1000px"></asp:TextBox>
                 </td>
             </tr>
             <tr> 
@@ -308,7 +311,7 @@
                         <asp:Label runat="server" ID="lblReviewComments" Text="COMMENTS" />*:
                     </td>   
                     <td nowrap="nowrap" style="text-align:left">
-                        <asp:TextBox ID="txtReviewComments" runat="server" CssClass="formFont" MaxLength="500" ForeColor="black" TextMode="MultiLine" Rows="5" Columns="100" Width="850px" ></asp:TextBox>
+                        <asp:TextBox ID="txtReviewComments" runat="server" CssClass="formFont wrapText" Wrap="True" MaxLength="500" ForeColor="black" TextMode="MultiLine" Rows="5" Columns="100" Width="850px" ></asp:TextBox>
                     </td>
                 </tr>
                 <tr style="padding-bottom:20px;">

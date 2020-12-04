@@ -19,6 +19,8 @@
         .formFont{
             font-size:13px;
         }
+
+        .wrapText{white-space:pre-wrap;}
     </style>
     
     <script language="JavaScript" type="text/javascript">
@@ -272,7 +274,7 @@
                         <asp:Label runat="server" ID="lblReviewComments" Text="COMMENTS" />*:
                     </td>   
                     <td nowrap="nowrap" style="text-align:left">
-                        <asp:TextBox ID="txtReviewComments" runat="server" CssClass="formFont" MaxLength="500" ForeColor="black" TextMode="MultiLine" Rows="5" Columns="100" Width="850px" ></asp:TextBox>
+                        <asp:TextBox ID="txtReviewComments" runat="server" CssClass="formFont wrapText" Wrap="True" MaxLength="500" ForeColor="black" TextMode="MultiLine" Rows="5" Columns="100" Width="850px" ></asp:TextBox>
                     </td>
                 </tr>
                 <tr style="padding-bottom:20px;">
