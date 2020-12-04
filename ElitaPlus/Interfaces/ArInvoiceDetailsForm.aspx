@@ -23,6 +23,9 @@
             $('#tabs').tabs();
         } );
     </script>
+    <style type="text/css">
+        .wrapText{white-space:pre-wrap;}
+    </style>
     <div class="dataContainer">
         <table class="formGrid" style="border-spacing: 0; border-collapse: collapse; border: none; padding: 0;" width="100%">
             <tr>
@@ -186,7 +189,7 @@
                     <asp:Label ID="lblComments" runat="server">COMMENTS</asp:Label>:
                 </td>
                 <td style="text-align: left" nowrap="nowrap" colspan="3">
-                    <asp:TextBox ID="txtComments" runat="server" ReadOnly="true" SkinID="LargeTextBox" AutoPostBack="False" TextMode="MultiLine" Rows="3" Width="850px"></asp:TextBox>
+                    <asp:TextBox ID="txtComments" runat="server" ReadOnly="true" CssClass="wrapText" AutoPostBack="False" TextMode="MultiLine" Wrap="True" Columns="126" Rows="4" Width="1000px"></asp:TextBox>
                 </td>
             </tr>
             <tr> 
@@ -278,8 +281,65 @@
     </div>
     <div class="btnZone">
         <asp:Button ID="btnBack" runat="server" CausesValidation="False" Text="BACK" SkinID="AlternateLeftButton"></asp:Button>        
+        <asp:Button ID="btnReviewDecision_WRITE" runat="server" SkinID="AlternateRightButton" Text="INVOICE_REVIEW" />
     </div>
     <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server" />
+    <asp:HiddenField ID="HiddenFieldReviewDecision" runat="server" Value="N" />
+    <div id="ModalReviewDecision" class="overlay">
+        <div id="light" class="overlay_message_content" style="left: 20%; top: 5%; width: 60%; max-height: 80%">
+          
+            <h2 class="dataGridHeader" runat="server">
+                <asp:Label runat="server" ID="moReviewDecisionLabel" Text="INVOICE_REVIEW" />
+            </h2>
+            
+            <table width="95%" style="border:none;margin:10px; padding: 10px;">
+                <tr>
+                    <td colspan="2">
+                        <asp:Label ID="lblReviewDecisionResult" runat="server" Visible="False"></asp:Label>
+                    </td>
+                </tr>
+                <tr>
+                    <td nowrap="nowrap" style="width: 20%;text-align:right;">
+                        <asp:Label runat="server" ID="lblReviewDecision" Text="REVIEW_DECISION" />*:
+                    </td>   
+                    <td nowrap="nowrap" style="width: 80%; text-align: left;">
+                        <asp:DropDownList runat="server" id="ddlReviewDecision" SkinID="MediumDropDown" Width="250px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td nowrap="nowrap" style="text-align: right;">
+                        <asp:Label runat="server" ID="lblReviewComments" Text="COMMENTS" />*:
+                    </td>   
+                    <td nowrap="nowrap" style="text-align:left">
+                        <asp:TextBox ID="txtReviewComments" runat="server" CssClass="formFont wrapText" Wrap="True" MaxLength="500" ForeColor="black" TextMode="MultiLine" Rows="5" Columns="100" Width="850px" ></asp:TextBox>
+                    </td>
+                </tr>
+                <tr style="padding-bottom:20px;">
+                    <td colspan="2" style="text-align: right;margin-top:20px;">
+                        <asp:Button ID="btnReviewDecisionSave" runat="server" SkinID="SearchButton" Text="Save" /> &nbsp;
+                        <asp:Button ID="btnReviewDecisionCancel" runat="server" SkinID="SearchButton" Text="Cancel"
+                                    OnClientClick="SetShowReviewDecision('N'); hideModal('ModalReviewDecision'); return false;"/> &nbsp;
+                                              
+                    </td>
+                </tr>                
+            </table>
+                
+        </div>
+        <div id="fade" class="black_overlay">
+        </div>
+    </div>
+    <script type="text/javascript">
+        function SetShowReviewDecision(newValue) {
+            $('#<% =HiddenFieldReviewDecision.ClientID%>').val(newValue);
+        }   
+
+        //debugger;
+        if ($('#<% =HiddenFieldReviewDecision.ClientID%>').val() === "Y") {
+            revealModal("ModalReviewDecision");
+        } else {
+            hideModal('ModalReviewDecision');
+        };
+    </script>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
 </asp:Content>

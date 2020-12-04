@@ -1,5 +1,5 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject v2.cst (10/29/2020)********************
-
+Imports System.Collections.Generic
 
 Public Class ArInvoiceHeaderDal
     Inherits OracleDALBase
@@ -195,7 +195,74 @@ Public Class ArInvoiceHeaderDal
 
 #End Region
 
+#Region "Invoice processing methods"
+    Public Sub UpdateReviewDecisions(ByVal invoiceIds As List(Of Guid), 
+                                     ByVal strReviewDecision As String, 
+                                     ByVal strReviewComments As String,
+                                     ByVal strUserId As String,
+                                     ByRef errCode As Integer, 
+                                     ByRef errMsg As String)
 
+        Dim strStmt As String = Config("/SQL/UPDATE_REVIEW_DECISIONS")
+
+        errCode = 0
+        errMsg = String.Empty
+        Try
+            Using conn As IDbConnection = New OracleConnection(DBHelper.ConnectString)
+                conn.Open
+                Using cmd As OracleCommand = CType(conn.CreateCommand(), OracleCommand)
+                    Using tran As OracleTransaction = CType(conn.BeginTransaction(IsolationLevel.ReadCommitted), OracleTransaction)
+                        cmd.Transaction = tran
+
+                        cmd.CommandText = strStmt
+                        cmd.CommandType = CommandType.StoredProcedure
+                        cmd.BindByName = True
+
+                        'input parameters
+                        cmd.Parameters.Add("pi_review_decision", OracleDbType.Varchar2, 100).Value = strReviewDecision
+                        cmd.Parameters.Add("pi_review_comments", OracleDbType.Varchar2, 500).Value = strReviewComments
+                        cmd.Parameters.Add("pi_user", OracleDbType.Varchar2, 10).Value = strUserId 
+
+                        'id array parameters
+
+                        ' Setup the values for PL/SQL Associative Array
+                        Dim arrayIds(invoiceIds.Count - 1) As String
+                        Dim arrayIdsSize(invoiceIds.Count - 1) As Integer
+                        Dim batchCnt As Integer = 0
+                        For Each guidTemp As Guid In invoiceIds
+                            arrayIds(batchCnt) = GuidControl.GuidToHexString(guidTemp)
+                            arrayIdsSize(batchCnt) = 50
+                            batchCnt = batchCnt + 1
+                        Next
+
+                        Dim paramIds As OracleParameter = cmd.Parameters.Add("pi_invoice_header_ids", OracleDbType.Varchar2)
+                        paramIds.Direction = ParameterDirection.Input
+                        paramIds.CollectionType = OracleCollectionType.PLSQLAssociativeArray
+                        paramIds.Value = arrayIds
+                        paramIds.Size = invoiceIds.Count
+                        paramIds.ArrayBindSize = arrayIdsSize
+
+                        'output parameters
+                        Dim paramErrCode As OracleParameter = cmd.Parameters.Add("po_error_code", OracleDbType.Int32, ParameterDirection.Output)
+                        paramErrCode.Size = 25
+
+                        Dim paramErrMsg As OracleParameter = cmd.Parameters.Add("po_error_msg", OracleDbType.Varchar2, ParameterDirection.Output)
+                        paramErrMsg.Size = 3000
+
+                        cmd.ExecuteNonQuery
+
+                        errCode = CType(paramErrCode.Value.ToString, Integer)
+                        errMsg = paramErrMsg.Value.ToString
+
+                    End Using
+                End Using
+            End Using
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
+#End Region
 
 #Region "Data query methods"
     Private Function DB_OracleCommand(ByVal pSqlStatement As String, ByVal pCommandType As CommandType) As OracleCommand

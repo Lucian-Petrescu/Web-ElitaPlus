@@ -1,4 +1,5 @@
-﻿Imports System.Globalization
+﻿Imports System.Collections.Generic
+Imports System.Globalization
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
@@ -27,8 +28,13 @@ Public Class ArInvoiceListForm
     Public Const GridColIdxSource As Integer = 8
     Public Const GridColIdxDocumentUniqueId As Integer = 9
     Public Const GridColIdxInvoiceHeaderId As Integer = 10
+    Public Const GridColIdxAllowSelection As Integer = 11
 
     Public Const MaxResultRowCount As Integer = 200
+
+    Public Const InvoiceStatusXcdPending As String = "CMSTAUS-PENDING"
+    Public Const AllowSelectionYes As String = "Y"
+    Public Const AllowSelectionNo As String = "N"
 
 #End Region
 
@@ -92,6 +98,8 @@ Public Class ArInvoiceListForm
         Public SearchDv As ArInvoiceHeader.ArInvoiceSearchDv= Nothing
         Public Criteria As ArInvoiceSearchCriteria = New ArInvoiceSearchCriteria()
         Public GridSortExpression as String = "dealer_code" 'default sort by dealer
+
+        Public InvoiceToBeReviewed As List(Of Guid)
 
         Public Sub New()
         End Sub
@@ -158,6 +166,40 @@ Public Class ArInvoiceListForm
             HandleErrors(ex, ErrControllerMaster)
         End Try
     End Sub
+
+    Private Sub ArInvoiceListForm_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
+        
+        Dim searchResultCount As Integer = 0
+        If State.IsGridVisible = True AndAlso Not State.SearchDv Is Nothing AndAlso State.SearchDv.Count > 0 Then
+            'add CCS class to check box so that jquery script will work correctly
+            Dim chkBox As CheckBox, strAllowSelection as String
+            chkBox = CType(Grid.HeaderRow.FindControl(GridColCtrlSelectAll), CheckBox)
+            If (chkBox IsNot Nothing) Then
+                chkBox.InputAttributes("class") = "checkboxHeader"
+            End If
+
+            For Each row As GridViewRow In Grid.Rows
+                If row.RowType = DataControlRowType.DataRow Then
+                    chkBox = CType(row.Cells(GridColIdxCheckbox).FindControl(GridColCtrlSelect), CheckBox)
+                    strAllowSelection = row.Cells(GridColIdxAllowSelection).Text
+                    If (chkBox IsNot Nothing) Then
+                        If strAllowSelection = AllowSelectionYes Then
+                            chkBox.InputAttributes("class") = "checkboxLine"
+                            searchResultCount = searchResultCount + 1
+                        Else 
+                            chkBox.InputAttributes("style") = "display:none;"
+                        End If
+                    End If
+                End If
+            Next
+        End If
+        if searchResultCount > 0 Then
+            btnReviewDecision_WRITE.Visible = True
+        Else 
+            btnReviewDecision_WRITE.Visible = False
+        End If
+    End Sub
+
 #End Region
     
 
@@ -351,33 +393,33 @@ Public Class ArInvoiceListForm
                                   })
 
     End Sub
-        Private Sub PopulateCompanyDropdown()
-            Dim companyList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Company")
+    Private Sub PopulateCompanyDropdown()
+        Dim companyList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Company")
 
-            Dim filteredCompanyList As ListItem() = (From x In companyList
-                                                     Where Authentication.CurrentUser.Companies.Contains(x.ListItemId)
-                                                     Select x).ToArray()
+        Dim filteredCompanyList As ListItem() = (From x In companyList
+                                                 Where Authentication.CurrentUser.Companies.Contains(x.ListItemId)
+                                                 Select x).ToArray()
 
-            Dim companyTextFunc As Func(Of ListItem, String) = Function(li As ListItem)
-                                                                   Return li.Code + " - " + li.Translation
-                                                               End Function
+        Dim companyTextFunc As Func(Of ListItem, String) = Function(li As ListItem)
+                                                               Return li.Code + " - " + li.Translation
+                                                           End Function
 
-            ddlCompany.Populate(filteredCompanyList, New PopulateOptions() With
-                                   {
-                                   .AddBlankItem = False,
-                                   .TextFunc = companyTextFunc
-                                   })
+        ddlCompany.Populate(filteredCompanyList, New PopulateOptions() With
+                               {
+                               .AddBlankItem = False,
+                               .TextFunc = companyTextFunc
+                               })
 
-            If State IsNot Nothing AndAlso State.Criteria isNot Nothing AndAlso State.Criteria.CompanyId <> guid.Empty Then
-                Try
-                    SetSelectedItem(ddlCompany, State.Criteria.CompanyId)
-                Catch ex As Exception
-                    ddlCompany.SelectedIndex = 0
-                End Try
-            Else
+        If State IsNot Nothing AndAlso State.Criteria isNot Nothing AndAlso State.Criteria.CompanyId <> guid.Empty Then
+            Try
+                SetSelectedItem(ddlCompany, State.Criteria.CompanyId)
+            Catch ex As Exception
                 ddlCompany.SelectedIndex = 0
-            End If
-        End Sub
+            End Try
+        Else
+            ddlCompany.SelectedIndex = 0
+        End If
+    End Sub
 
     Private Sub PopulateDropDown()
 
@@ -408,6 +450,10 @@ Public Class ArInvoiceListForm
         ddlReference.Items.Add(New WebControls.ListItem() With {.Value = $"ELP_CERT", .Text = TranslationBase.TranslateLabelOrMessage("CERTIFICATE")})
         ddlReference.Items.Add(New WebControls.ListItem() With {.Value = $"ELP_CLAIM", .Text = TranslationBase.TranslateLabelOrMessage("CLAIM")})
         ddlReference.Items.Add(New WebControls.ListItem() With {.Value = $"ELP_CLAIM_AUTHORIZATION", .Text = TranslationBase.TranslateLabelOrMessage("CLAIM_AUTHORIZATION")})
+
+        ddlReviewDecision.Items.Add(New WebControls.ListItem() With {.Value = String.Empty, .Text = String.Empty, .Selected = True})
+        ddlReviewDecision.Items.Add(New WebControls.ListItem() With {.Value = $"A", .Text = TranslationBase.TranslateLabelOrMessage("APPROVE")})
+        ddlReviewDecision.Items.Add(New WebControls.ListItem() With {.Value = $"D", .Text = TranslationBase.TranslateLabelOrMessage("DENY")})
 
     End Sub
 
@@ -459,6 +505,7 @@ Public Class ArInvoiceListForm
     Private Sub ddlCompany_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlCompany.SelectedIndexChanged
         PopulateDealerDropdown()
     End Sub
+
 #End Region
 
 
@@ -476,7 +523,7 @@ Public Class ArInvoiceListForm
     Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim btnEditItem As LinkButton
-        Dim strTemp As String
+        Dim strTemp As String, strStatusXcd as String
         Try
 
             If e.Row.RowType = DataControlRowType.DataRow Then
@@ -502,8 +549,14 @@ Public Class ArInvoiceListForm
                 End If
 
                 If Not dvRow(ArInvoiceHeader.ArInvoiceSearchDV.ColStatusXcd) Is DBNull.Value Then
-                    strTemp = dvRow(ArInvoiceHeader.ArInvoiceSearchDV.ColStatusXcd)
-                    PopulateControlFromBOProperty(e.Row.Cells(GridColIdxStatus), GetDescriptionFromDropdownCode(ddlStatus, strTemp))
+                    strStatusXcd = dvRow(ArInvoiceHeader.ArInvoiceSearchDV.ColStatusXcd)
+                    PopulateControlFromBOProperty(e.Row.Cells(GridColIdxStatus), GetDescriptionFromDropdownCode(ddlStatus, strStatusXcd))
+                End If
+
+                if strStatusXcd = InvoiceStatusXcdPending Then
+                    e.Row.Cells(GridColIdxAllowSelection).Text = AllowSelectionYes
+                Else 
+                    e.Row.Cells(GridColIdxAllowSelection).Text = AllowSelectionNo
                 End If
 
                 If Not dvRow(ArInvoiceHeader.ArInvoiceSearchDV.ColReference) Is DBNull.Value Then
@@ -577,27 +630,7 @@ Public Class ArInvoiceListForm
         End Try
     End Sub
 
-    Private Sub ArInvoiceListForm_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
-        
-        If State.IsGridVisible = True AndAlso Not State.SearchDv Is Nothing AndAlso State.SearchDv.Count > 0 Then
-            'add CCS class to check box so that jquery script will work correctly
-            Dim chkbox As CheckBox
-            chkbox = CType(Grid.HeaderRow.FindControl(GridColCtrlSelectAll), CheckBox)
-            If (Not chkbox Is Nothing) Then
-                chkbox.InputAttributes("class") = "checkboxHeader"
-            End If
-
-            For Each row As GridViewRow In Grid.Rows
-                If row.RowType = DataControlRowType.DataRow Then
-                    chkbox = CType(row.Cells(GridColIdxCheckbox).FindControl(GridColCtrlSelect), CheckBox)
-                    If (Not chkbox Is Nothing) Then
-                        chkbox.InputAttributes("class") = "checkboxLine"
-                    End If
-                End If
-            Next
-        
-        End If
-    End Sub
+    
 
     Private Sub Grid_Sorting(sender As Object, e As GridViewSortEventArgs) Handles Grid.Sorting
         Try
@@ -617,7 +650,136 @@ Public Class ArInvoiceListForm
         End Try
     End Sub
 
+#End Region
+
+#Region "Invoice review logic"
+    Private Function GetSelectedInvoices() As List(Of Guid)
+        Dim chkBox As CheckBox, invoiceHeaderIdStr As String
+        Dim selectedInvoices As List(Of Guid) = New List(Of Guid)
+
+        For Each row As GridViewRow In Grid.Rows
+            If row.RowType = DataControlRowType.DataRow Then
+                chkBox = CType(row.Cells(GridColIdxCheckbox).FindControl(GridColCtrlSelect), CheckBox)
+                If chkBox IsNot nothing AndAlso chkBox.Checked Then
+                    invoiceHeaderIdStr = row.Cells(GridColIdxInvoiceHeaderId).Text.Trim
+                    If String.IsNullOrEmpty(invoiceHeaderIdStr) = False Then
+                        selectedInvoices.Add(New Guid(invoiceHeaderIdStr))
+                    End If
+                End If
+            End If
+        Next
+        Return selectedInvoices
+    End Function
+
+    Private Function ValidInvoiceSelectionForReview(ByVal invoiceList As List(Of Guid)) As Boolean
+        Dim isSelectionValid As Boolean = True
+        If invoiceList.Count > 0 Then
+            Dim dv As DataView = State.SearchDv
+            dv.Sort = ArInvoiceHeader.ArInvoiceSearchDV.ColInvoiceHeaderId
+
+            Dim strStatusXcd As String, index As Integer
+            For Each guidtemp As Guid In invoiceList
+                index = dv.Find(guidtemp.ToByteArray)
+                If index <> -1 Then 'found the record
+                    strStatusXcd = dv(index)(ArInvoiceHeader.ArInvoiceSearchDv.ColStatusXcd)
+
+                    If String.IsNullOrEmpty(strStatusXcd) OrElse strStatusXcd <>  InvoiceStatusXcdPending Then 'invoice can be only reviewed when in pending status
+                        MasterPage.MessageController.AddError(String.Format("{0}", TranslationBase.TranslateLabelOrMessage("INVOICE_NOT_PENDING_REVIEW")), False)
+                        isSelectionValid = False
+                    End If
+                End If
+            Next
+        Else
+            'must select at least one invoice to review
+            MasterPage.MessageController.AddError("MSG_NO_RECORD_SELECTED", True)
+            isSelectionValid = False
+        End If
+
+        If isSelectionValid = False Then
+            MasterPage.MessageController.Show()
+        End If
+
+        Return isSelectionValid
+    End Function
+
+    Private sub ClearReviewErrorLabels() 
+        ClearLabelErrSign(lblReviewDecision)
+        ClearLabelErrSign(lblReviewComments)
+    End sub
+
+    Private Sub InitInvoiceReviewControls()
+        ClearReviewErrorLabels()
+
+        'erase the previous process result message 
+        lblReviewDecisionResult.Visible = False
+        lblReviewDecisionResult.Text = String.Empty
+        ddlReviewDecision.SelectedIndex = -1
+        txtReviewComments.Text = String.Empty
+    End Sub
+    Private Function ValidReviewInputs() As Boolean
+        dim blnValid As Boolean = True
+
+        if string.IsNullOrEmpty(ddlReviewDecision.SelectedValue) Then
+            blnValid = False
+            lblReviewDecision.ForeColor = Color.Red
+        End If
+
+        If String.IsNullOrEmpty(txtReviewComments.Text.Trim()) Then
+            blnValid = False
+            lblReviewComments.ForeColor = Color.Red
+        End If
+
+        Return blnValid
+    End Function
     
+    Private Sub btnReviewDecisionSave_Click(sender As Object, e As EventArgs) Handles btnReviewDecisionSave.Click
+        Try
+            ClearReviewErrorLabels()
+            lblReviewDecisionResult.Visible = True
+
+            if ValidReviewInputs() Then
+                Dim errCode As Integer, errMsg As String
+                ArInvoiceHeader.UpdateReviewDecisions(State.InvoiceToBeReviewed,
+                                                      ddlReviewDecision.SelectedValue,
+                                                      String.Format("*{0}: {1}", TranslationBase.TranslateLabelOrMessage("REVIEW_COMMENTS"),txtReviewComments.Text.Trim()),
+                                                      errCode,
+                                                      errMsg)
+
+                if errCode <> 0 Then
+                    lblReviewDecisionResult.Text = errMsg
+                    lblReviewDecisionResult.CssClass = MessageController.ERROR_CSS
+                Else 
+                    HiddenFieldReviewDecision.Value = "N" ' 
+                    MasterPage.MessageController.AddSuccess("MSG_RECORD_SAVED_OK")
+                    RefreshSearchGrid()
+                End If
+            Else 
+                lblReviewDecisionResult.Text = TranslationBase.TranslateLabelOrMessage("Required fields are missing.")
+                lblReviewDecisionResult.CssClass = MessageController.ERROR_CSS
+            End If
+            
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub btnReviewDecision_WRITE_Click(sender As Object, e As EventArgs) Handles btnReviewDecision_WRITE.Click
+        Try
+            InitInvoiceReviewControls()
+
+            State.InvoiceToBeReviewed = GetSelectedInvoices()
+
+            If ValidInvoiceSelectionForReview(State.InvoiceToBeReviewed) Then
+                'show the review dialog box
+                HiddenFieldReviewDecision.Value = "Y"
+            Else 
+                HiddenFieldReviewDecision.Value = "N"
+            End If
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+
 
 #End Region
 End Class
