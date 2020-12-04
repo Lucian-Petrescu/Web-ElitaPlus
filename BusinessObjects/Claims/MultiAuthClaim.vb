@@ -644,32 +644,35 @@ Public NotInheritable Class MultiAuthClaim
 
         Dim serviceCenterObject = New ServiceCenter(MyBase.ServiceCenterId)
         Dim response As New FulfillmentDetails
-        response.Charges = {New Charge()}
-        response.Fees = {New Fee()}
-        response.LogisticStages = {New SelectedLogisticStage() With {
-                                                                        .Address = New FulfillmentAddressInfo With {
-                                                                                                                    .AddressId =Me.ContactInfo.AddressId,
-                                                                                                                    .Address1 = Me.ContactInfo.Address.Address1,
-                                                                                                                    .Address2 = Me.ContactInfo.Address.Address2,
-                                                                                                                    .Address3 = Me.ContactInfo.Address.Address3,
-                                                                                                                    .City = Me.ContactInfo.Address.City,
-                                                                                                                    .Country = Me.ContactInfo.Address.countryBO.Code,
-                                                                                                                    .PostalCode = Me.ContactInfo.Address.PostalCode,
-                                                                                                                    .State = LookupListNew.GetCodeFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS,
-                                                                                                                                                                                       False), Me.ContactInfo.Address.RegionId)
-                                                                                                                },
-                                                                        .OptionCode = Me.MethodOfRepairCode,
-                                                                        .OptionDescription = Me.MethodOfRepairDescription,
-                                                                        .Code = "FW",
-                                                                        .Description = "Forward Logistics",
-                                                                        .HandlingStore = New HandlingStore(),
-                                                                        .ServiceCenterCode = serviceCenterObject.Code,
-                                                                        .ServiceCenterDescription = serviceCenterObject.Description,
-                                                                        .Shipping = New ClaimFulfillmentWebAppGatewayService.ShippingInfo()
-                                                                    }
-                                  }
 
- 
+        If Me.ContactInfo IsNot Nothing Then
+            response.Charges = {New Charge()}
+            response.Fees = {New Fee()}
+            response.LogisticStages = {New SelectedLogisticStage() With {
+                                                                            .Address = New FulfillmentAddressInfo With {
+                                                                                                                        .AddressId =Me.ContactInfo.AddressId,
+                                                                                                                        .Address1 = Me.ContactInfo.Address.Address1,
+                                                                                                                        .Address2 = Me.ContactInfo.Address.Address2,
+                                                                                                                        .Address3 = Me.ContactInfo.Address.Address3,
+                                                                                                                        .City = Me.ContactInfo.Address.City,
+                                                                                                                        .Country = Me.ContactInfo.Address.countryBO.Code,
+                                                                                                                        .PostalCode = Me.ContactInfo.Address.PostalCode,
+                                                                                                                        .State = LookupListNew.GetCodeFromId(LookupListNew.DataView(LookupListNew.LK_REGIONS,
+                                                                                                                                                                                           False), Me.ContactInfo.Address.RegionId)
+                                                                                                                    },
+                                                                            .OptionCode = Me.MethodOfRepairCode,
+                                                                            .OptionDescription = Me.MethodOfRepairDescription,
+                                                                            .Code = "FW",
+                                                                            .Description = "Forward Logistics",
+                                                                            .HandlingStore = New HandlingStore(),
+                                                                            .ServiceCenterCode = serviceCenterObject.Code,
+                                                                            .ServiceCenterDescription = serviceCenterObject.Description,
+                                                                            .Shipping = New ClaimFulfillmentWebAppGatewayService.ShippingInfo(),
+                                                                            .Type ="CustomerAddress"
+                                                                        }
+                                      }
+
+        End If
         Return response
     End Function
 
